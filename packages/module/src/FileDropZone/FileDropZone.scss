@@ -7,6 +7,11 @@
   overflow: hidden;
   display: grid;
   grid-template-rows: 1fr auto;
+
+  // allows for zoom conditions; try zooming to 200% to see
+  @media screen and (max-height: 518px) {
+    overflow-y: auto;
+  }
 }
 
 .pf-chatbot__dropzone--visible.pf-chatbot__dropzone {

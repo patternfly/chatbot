@@ -7,6 +7,16 @@
   flex-direction: column;
   row-gap: var(--pf-t--global--spacer--sm);
   padding: var(--pf-t--global--spacer--lg);
+
+  // 32 rem is the width of the overlay chatbot plus the insets
+  // if the screen is smaller, we want to be 100%
+  @media screen and (max-width: 32rem) {
+    width: 100%;
+  }
+  // allows for zoom conditions; try zooming to 200% to see
+  @media screen and (max-height: 518px) {
+    overflow-y: visible;
+  }
 }
 
 .pf-chatbot__messagebox--bottom > :first-child {

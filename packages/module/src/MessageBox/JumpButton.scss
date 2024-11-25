@@ -43,4 +43,9 @@
   &--bottom {
     inset-block-end: var(--pf-t--global--spacer--md) !important;
   }
+
+  // allows for zoom conditions; try zooming to 200% to see
+  @media screen and (max-height: 518px) {
+    display: none;
+  }
 }

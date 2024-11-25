@@ -21,6 +21,18 @@
   &--hidden {
     pointer-events: none;
   }
+
+  // 32 rem is the width of the overlay chatbot plus the insets
+  // if the screen is smaller, we want to be 100%
+  @media screen and (max-width: 32rem) {
+    width: 100vw;
+    inset-inline-end: 0;
+  }
+
+  // allows for zoom conditions; try zooming to 200% to see
+  @media screen and (max-height: 518px) {
+    overflow: auto;
+  }
 }
 
 // ============================================================================
@@ -34,10 +46,22 @@
   border-radius: 0;
   box-shadow: var(--pf-t--global--box-shadow--lg--left);
   overflow: inherit;
+
+  // 30rem is the width of the docked chatbot
+  // if the screen is smaller, we want to be 100%
+  @media screen and (max-width: 30rem) {
+    width: 100%;
+  }
 }
 
 html.pf-chatbot-allow--docked {
   padding-right: 480px;
+
+  // 30rem is the width of the docked chatbot
+  // if the screen is smaller, we want to be 100%
+  @media screen and (max-width: 30rem) {
+    padding-right: 0px;
+  }
 }
 
 // ============================================================================
@@ -75,6 +99,11 @@ html.pf-chatbot-allow--docked {
   // Hide chatbot
   &--hidden {
     pointer-events: none;
+  }
+
+  // allows for zoom conditions; try zooming to 200% to see
+  @media screen and (max-height: 518px) {
+    overflow: auto;
   }
 }
 
