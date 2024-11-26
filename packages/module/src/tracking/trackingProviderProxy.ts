@@ -18,7 +18,7 @@ class TrackingProviderProxy implements TrackingApi {
     }
   }
 
-  trackPageView(url: string | undefined): void {
+  trackPageView(url: any) {
     for (const provider of this.providers) {
       provider.trackPageView(url);
     }
