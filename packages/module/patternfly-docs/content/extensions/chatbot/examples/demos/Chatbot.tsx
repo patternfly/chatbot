@@ -33,6 +33,7 @@ import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import { getTrackingProviders } from "@patternfly/chatbot/dist/dynamic/tracking";
+import { InitProps } from "../../../../../../src/tracking/tracking_spi";
 
 const footnoteProps = {
   label: 'ChatBot uses AI. Check for mistakes.',
@@ -96,7 +97,12 @@ export default MessageLoading;
 // The timestamps re-render with them.
 const date = new Date();
 
-const tracking = getTrackingProviders();
+const initProps: InitProps = {
+  segmentKey: 'TODO-key', // TODO add your key here
+  something: 'test'
+};
+
+const tracking = getTrackingProviders(initProps);
 
 const actionEventName = 'MessageAction';
 const initialMessages: MessageProps[] = [
