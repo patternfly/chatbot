@@ -1,7 +1,8 @@
 import { AnalyticsBrowser } from '@segment/analytics-next';
 
 import { TrackingApi } from './tracking_api';
-import { TrackingSpi } from './tracking_spi';
+import { InitProps, TrackingSpi } from "./tracking_spi";
+
 
 export class SegmentTrackingProvider implements TrackingSpi, TrackingApi {
   private analytics: AnalyticsBrowser | undefined;
@@ -15,10 +16,10 @@ export class SegmentTrackingProvider implements TrackingSpi, TrackingApi {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   registerProvider(): void {}
 
-  initialize(): void {
+  initialize(props: InitProps): void {
     // eslint-disable-next-line no-console
     console.log('SegmentProvider initialize');
-    const segmentKey = 'TODO-key'; // TODO add your key here
+    const segmentKey = 'qylQB4US91okwS4xtHIxtnka9FFHcC7g'; // TODO add your key here
 
     this.analytics = AnalyticsBrowser.load(
       {
