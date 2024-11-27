@@ -57,7 +57,7 @@ import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
-import { getTrackingProviders } from "@patternfly/virtual-assistant/dist/dynamic/tracking";
+import { getTrackingProviders } from "@patternfly/chatbot/dist/dynamic/tracking";
 
 
 ### Basic ChatBot

@@ -33,7 +33,7 @@ import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import { getTrackingProviders } from "@patternfly/chatbot/dist/dynamic/tracking";
-import { InitProps } from "../../../../../../src/tracking/tracking_spi";
+import { InitProps } from "@patternfly/chatbot/dist/tracking/tracking_spi";
 
 const footnoteProps = {
   label: 'ChatBot uses AI. Check for mistakes.',
@@ -103,7 +103,7 @@ const initProps: InitProps = {
 };
 
 const tracking = getTrackingProviders(initProps);
-tracking.identify('user-123');
+tracking.identify('user-123'); // TODO get real user id
 tracking.trackPageView();
 
 const actionEventName = 'MessageAction';
