@@ -2,9 +2,9 @@ import { TrackingSpi } from './tracking_spi';
 import { TrackingApi } from './tracking_api';
 
 export class ConsoleTrackingProvider implements TrackingSpi, TrackingApi {
-  trackPageView(url: any) {
+  trackPageView(url: string | undefined) {
     // eslint-disable-next-line no-console
-    console.log('ConsoleProvider', url);
+    console.log('ConsoleProvider pageView', url);
   }
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   registerProvider(): void {}
@@ -12,6 +12,11 @@ export class ConsoleTrackingProvider implements TrackingSpi, TrackingApi {
   initialize(): void {
     // eslint-disable-next-line no-console
     console.log('ConsoleProvider initialize');
+  }
+
+  identify(userID: string): void {
+    // eslint-disable-next-line no-console
+    console.log('ConsoleProvider identify', userID);
   }
 
   trackSingleItem(item: string, options: string | undefined): void {

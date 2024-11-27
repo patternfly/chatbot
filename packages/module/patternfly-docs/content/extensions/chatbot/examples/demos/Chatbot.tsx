@@ -103,6 +103,8 @@ const initProps: InitProps = {
 };
 
 const tracking = getTrackingProviders(initProps);
+tracking.identify('user-123');
+tracking.trackPageView();
 
 const actionEventName = 'MessageAction';
 const initialMessages: MessageProps[] = [

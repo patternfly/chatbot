@@ -6,13 +6,19 @@ class TrackingProviderProxy implements TrackingApi {
     this.providers = providers;
   }
 
+  identify(userID: string): void {
+    for (const provider of this.providers) {
+      provider.identify(userID);
+    }
+  }
+
   trackSingleItem(eventName: string, options: string | undefined): void {
     for (const provider of this.providers) {
       provider.trackSingleItem(eventName, options);
     }
   }
 
-  trackPageView(url: any) {
+  trackPageView(url: string | undefined): void {
     for (const provider of this.providers) {
       provider.trackPageView(url);
     }
