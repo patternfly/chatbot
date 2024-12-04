@@ -345,7 +345,10 @@ export const ChatbotDemo: React.FunctionComponent = () => {
       <ChatbotToggle
         tooltipLabel="Chatbot"
         isChatbotVisible={chatbotVisible}
-        onToggleChatbot={() => setChatbotVisible(!chatbotVisible)}
+        onToggleChatbot={function () {
+          setChatbotVisible(!chatbotVisible);
+          tracking.trackSingleItem('Chatbot Visible', (!chatbotVisible) as string);
+        }}
         id="chatbot-toggle"
         ref={toggleRef}
       />
