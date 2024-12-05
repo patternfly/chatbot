@@ -32,8 +32,8 @@ import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
-import { getTrackingProviders } from "@patternfly/chatbot/dist/dynamic/tracking";
-import { InitProps } from "@patternfly/chatbot/dist/tracking/tracking_spi";
+import { getTrackingProviders } from '@patternfly/chatbot/dist/dynamic/tracking';
+import { InitProps } from '@patternfly/chatbot/dist/dynamic/tracking/';
 
 const footnoteProps = {
   label: 'ChatBot uses AI. Check for mistakes.',
@@ -99,6 +99,7 @@ const date = new Date();
 
 const initProps: InitProps = {
   segmentKey: 'TODO-key', // TODO add your key here
+  posthogKey: 'TODO-key',
   something: 'test'
 };
 
@@ -347,7 +348,7 @@ export const ChatbotDemo: React.FunctionComponent = () => {
         isChatbotVisible={chatbotVisible}
         onToggleChatbot={function () {
           setChatbotVisible(!chatbotVisible);
-          tracking.trackSingleItem('Chatbot Visible', (!chatbotVisible) as string);
+          tracking.trackSingleItem('Chatbot Visible', !chatbotVisible as string);
         }}
         id="chatbot-toggle"
         ref={toggleRef}
