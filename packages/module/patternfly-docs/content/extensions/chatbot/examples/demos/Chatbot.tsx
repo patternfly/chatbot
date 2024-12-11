@@ -126,11 +126,11 @@ const initialMessages: MessageProps[] = [
     avatar: patternflyAvatar,
     timestamp: date.toLocaleString(),
     actions: {
-      positive: { onClick: () => tracking.trackSingleItem(actionEventName, 'Good response') },
-      negative: { onClick: () => tracking.trackSingleItem(actionEventName, 'Bad response') },
-      copy: { onClick: () => tracking.trackSingleItem(actionEventName, 'Copy') },
-      share: { onClick: () => tracking.trackSingleItem(actionEventName, 'Share') },
-      listen: { onClick: () => tracking.trackSingleItem(actionEventName, 'Listen') }
+      positive: { onClick: () => tracking.trackSingleItem(actionEventName, { response: 'Good response' }) },
+      negative: { onClick: () => tracking.trackSingleItem(actionEventName, { response: 'Bad response' }) },
+      copy: { onClick: () => tracking.trackSingleItem(actionEventName, { response: 'Copy' }) },
+      share: { onClick: () => tracking.trackSingleItem(actionEventName, { response: 'Share' }) },
+      listen: { onClick: () => tracking.trackSingleItem(actionEventName, { response: 'Listen' }) }
     }
   }
 ];
@@ -202,7 +202,7 @@ export const ChatbotDemo: React.FunctionComponent = () => {
     value: string | number | undefined
   ) => {
     setSelectedModel(value as string);
-    tracking.trackSingleItem('ModelSelected', value as string);
+    tracking.trackSingleItem('ModelSelected', { model: value });
   };
 
   const onSelectDisplayMode = (
@@ -220,7 +220,7 @@ export const ChatbotDemo: React.FunctionComponent = () => {
 
   const handleSend = (message: string) => {
     setIsSendButtonDisabled(true);
-    tracking.trackSingleItem('UserInputReceived', message);
+    tracking.trackSingleItem('UserInputReceived', { text: message });
     const newMessages: MessageProps[] = [];
     // We can't use structuredClone since messages contains functions, but we can't mutate
     // items that are going into state or the UI won't update correctly
@@ -266,17 +266,17 @@ export const ChatbotDemo: React.FunctionComponent = () => {
         avatar: patternflyAvatar,
         timestamp: date.toLocaleString(),
         actions: {
-          positive: { onClick: () => tracking.trackSingleItem(actionEvent2, 'Good response') },
-          negative: { onClick: () => tracking.trackSingleItem(actionEvent2, 'Bad response') },
-          copy: { onClick: () => tracking.trackSingleItem(actionEvent2, 'Copy') },
-          share: { onClick: () => tracking.trackSingleItem(actionEvent2, 'Share') },
-          listen: { onClick: () => tracking.trackSingleItem(actionEvent2, 'Listen') }
+          positive: { onClick: () => tracking.trackSingleItem(actionEvent2, { response: 'Good response' }) },
+          negative: { onClick: () => tracking.trackSingleItem(actionEvent2, { response: 'Bad response' }) },
+          copy: { onClick: () => tracking.trackSingleItem(actionEvent2, { response: 'Copy' }) },
+          share: { onClick: () => tracking.trackSingleItem(actionEvent2, { response: 'Share' }) },
+          listen: { onClick: () => tracking.trackSingleItem(actionEvent2, { response: 'Listen' }) }
         }
       });
       setMessages(loadedMessages);
       // make announcement to assistive devices that new message has loaded
       setAnnouncement(`Message from Bot: API response goes here`);
-      tracking.trackSingleItem('BotResponded', '');
+      tracking.trackSingleItem('BotResponded', { undefined });
       setIsSendButtonDisabled(false);
     }, 5000);
   };
@@ -348,7 +348,7 @@ export const ChatbotDemo: React.FunctionComponent = () => {
         isChatbotVisible={chatbotVisible}
         onToggleChatbot={function () {
           setChatbotVisible(!chatbotVisible);
-          tracking.trackSingleItem('Chatbot Visible', !chatbotVisible as string);
+          tracking.trackSingleItem('Chatbot Visible', { isVisible: !chatbotVisible }); // TODO correct?
         }}
         id="chatbot-toggle"
         ref={toggleRef}

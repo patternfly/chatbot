@@ -1,4 +1,4 @@
-import { TrackingApi } from './tracking_api';
+import { TrackingApi, TrackingEventProperties } from './tracking_api';
 class TrackingProviderProxy implements TrackingApi {
   providers: TrackingApi[] = [];
 
@@ -12,9 +12,9 @@ class TrackingProviderProxy implements TrackingApi {
     }
   }
 
-  trackSingleItem(eventName: string, options: string | undefined): void {
+  trackSingleItem(eventName: string, properties?: TrackingEventProperties): void {
     for (const provider of this.providers) {
-      provider.trackSingleItem(eventName, options);
+      provider.trackSingleItem(eventName, properties);
     }
   }
 

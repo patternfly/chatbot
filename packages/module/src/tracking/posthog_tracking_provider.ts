@@ -1,6 +1,6 @@
 import { posthog } from 'posthog-js';
 
-import { TrackingApi } from './tracking_api';
+import { TrackingApi, TrackingEventProperties } from './tracking_api';
 import { InitProps, TrackingSpi } from './tracking_spi';
 
 export class PosthogTrackingProvider implements TrackingSpi, TrackingApi {
@@ -33,9 +33,9 @@ export class PosthogTrackingProvider implements TrackingSpi, TrackingApi {
     //  How to not clash with this here? Just leave as no-op?
   }
 
-  trackSingleItem(item: string, options: string | undefined): void {
+  trackSingleItem(item: string, properties?: TrackingEventProperties): void {
     // eslint-disable-next-line no-console
-    console.log('PosthogProvider: trackSingleItem' + item, options);
-    posthog.capture(item, { options });
+    console.log('PosthogProvider: trackSingleItem' + item, properties);
+    posthog.capture(item, { properties });
   }
 }

@@ -1,5 +1,5 @@
 import { TrackingSpi } from './tracking_spi';
-import { TrackingApi } from './tracking_api';
+import { TrackingApi, TrackingEventProperties } from './tracking_api';
 
 export class ConsoleTrackingProvider implements TrackingSpi, TrackingApi {
   trackPageView(url: string | undefined) {
@@ -19,8 +19,8 @@ export class ConsoleTrackingProvider implements TrackingSpi, TrackingApi {
     console.log('ConsoleProvider identify', userID);
   }
 
-  trackSingleItem(item: string, options: string | undefined): void {
+  trackSingleItem(item: string, properties?: TrackingEventProperties): void {
     // eslint-disable-next-line no-console
-    console.log('ConsoleProvider: ' + item, options);
+    console.log('ConsoleProvider: ' + item, properties);
   }
 }

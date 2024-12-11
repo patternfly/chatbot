@@ -1,6 +1,6 @@
 import { AnalyticsBrowser } from '@segment/analytics-next';
 
-import { TrackingApi } from './tracking_api';
+import { TrackingApi, TrackingEventProperties } from './tracking_api';
 import { InitProps, TrackingSpi } from './tracking_spi';
 
 export class SegmentTrackingProvider implements TrackingSpi, TrackingApi {
@@ -50,11 +50,11 @@ export class SegmentTrackingProvider implements TrackingSpi, TrackingApi {
     }
   }
 
-  trackSingleItem(item: string, options: string | undefined): void {
+  trackSingleItem(item: string, properties?: TrackingEventProperties): void {
     // eslint-disable-next-line no-console
-    console.log('SegmentProvider: trackSingleItem' + item, options);
+    console.log('SegmentProvider: trackSingleItem' + item, properties);
     if (this.analytics) {
-      this.analytics.track(item, { options });
+      this.analytics.track(item, { properties });
     }
   }
 }
