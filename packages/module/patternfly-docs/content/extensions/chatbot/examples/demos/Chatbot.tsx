@@ -100,6 +100,8 @@ const date = new Date();
 const initProps: InitProps = {
   segmentKey: 'TODO-key', // TODO add your key here
   posthogKey: 'TODO-key',
+  umamiKey: 'TODO-key',
+  umamiHostUrl: 'http://localhost:3000', // TODO where is your JS provider?
   something: 'test'
 };
 
