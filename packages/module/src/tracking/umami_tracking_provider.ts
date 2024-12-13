@@ -1,6 +1,12 @@
 import { InitProps, TrackingSpi } from './tracking_spi';
 import { TrackingApi, TrackingEventProperties } from './tracking_api';
 
+declare global {
+  interface Window {
+    umami: any;
+  }
+}
+
 export class UmamiTrackingProvider implements TrackingSpi, TrackingApi {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   registerProvider(): void {}
