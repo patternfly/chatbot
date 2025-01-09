@@ -83,6 +83,15 @@ This demo displays a basic ChatBot, which includes:
 
 ```
 
+### Ollama ChatBot
+
+This is the basic ChatBot from above, but wired with an Ollama server
+
+```js file="./OllamaChatbot.tsx" isFullscreen
+
+```
+
+
 ### Embedded ChatBot
 
 This demo displays an embedded ChatBot. Embedded ChatBots are meant to be placed within a page in your product. This demo includes:
