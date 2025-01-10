@@ -39,6 +39,9 @@ export * from './ChatbotWelcomePrompt';
 export { default as CodeModal } from './CodeModal';
 export * from './CodeModal';
 
+export { default as Compare } from './Compare';
+export * from './Compare';
+
 export { default as FileDetails } from './FileDetails';
 export * from './FileDetails';
 
