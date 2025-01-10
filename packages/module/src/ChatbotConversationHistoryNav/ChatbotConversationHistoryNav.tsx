@@ -22,7 +22,14 @@ import {
   MenuItem,
   MenuContent,
   MenuItemProps,
-  MenuProps
+  MenuProps,
+  DrawerPanelContentProps,
+  DrawerContentProps,
+  DrawerContentBodyProps,
+  DrawerHeadProps,
+  DrawerActionsProps,
+  DrawerCloseButtonProps,
+  DrawerPanelBodyProps
 } from '@patternfly/react-core';
 
 import { OutlinedCommentAltIcon } from '@patternfly/react-icons';
@@ -82,6 +89,20 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   drawerActionsTestId?: string;
   /** Additional props applied to menu  */
   menuProps?: MenuProps;
+  /** Additional props applied to panel */
+  drawerPanelContentProps?: DrawerPanelContentProps;
+  /** Additional props applied to drawer content */
+  drawerContentProps?: Omit<DrawerContentProps, 'panelContent'>;
+  /** Additional props applied to drawer content body */
+  drawerContentBodyProps?: DrawerContentBodyProps;
+  /** Additional props applied to drawer head */
+  drawerHeadProps?: DrawerHeadProps;
+  /** Additional props applied to drawer actions */
+  drawerActionsProps?: DrawerActionsProps;
+  /** Additional props applied to drawer close button */
+  drawerCloseButtonProps?: DrawerCloseButtonProps;
+  /** Additional props appleid to drawer panel body */
+  drawerPanelBodyProps?: DrawerPanelBodyProps;
 }
 
 export const ChatbotConversationHistoryNav: React.FunctionComponent<ChatbotConversationHistoryNavProps> = ({
@@ -101,6 +122,13 @@ export const ChatbotConversationHistoryNav: React.FunctionComponent<ChatbotConve
   reverseButtonOrder = false,
   drawerActionsTestId = 'chatbot-nav-drawer-actions',
   menuProps,
+  drawerPanelContentProps,
+  drawerContentProps,
+  drawerContentBodyProps,
+  drawerHeadProps,
+  drawerActionsProps,
+  drawerCloseButtonProps,
+  drawerPanelBodyProps,
   ...props
 }: ChatbotConversationHistoryNavProps) => {
   const drawerRef = React.useRef<HTMLDivElement>(null);
@@ -173,13 +201,14 @@ export const ChatbotConversationHistoryNav: React.FunctionComponent<ChatbotConve
   );
 
   const panelContent = (
-    <DrawerPanelContent focusTrap={{ enabled: true }} minSize="384px" maxSize="384px">
-      <DrawerHead>
+    <DrawerPanelContent focusTrap={{ enabled: true }} defaultSize="384px" {...drawerPanelContentProps}>
+      <DrawerHead {...drawerHeadProps}>
         <DrawerActions
           data-testid={drawerActionsTestId}
           className={reverseButtonOrder ? 'pf-v6-c-drawer__actions--reversed' : ''}
+          {...drawerActionsProps}
         >
-          <DrawerCloseButton onClick={onDrawerToggle} />
+          <DrawerCloseButton onClick={onDrawerToggle} {...drawerCloseButtonProps} />
           {onNewChat && <Button onClick={onNewChat}>{newChatButtonText}</Button>}
         </DrawerActions>
       </DrawerHead>
@@ -192,7 +221,7 @@ export const ChatbotConversationHistoryNav: React.FunctionComponent<ChatbotConve
           />
         </div>
       )}
-      <DrawerPanelBody>{menuContent}</DrawerPanelBody>
+      <DrawerPanelBody {...drawerPanelBodyProps}>{menuContent}</DrawerPanelBody>
     </DrawerPanelContent>
   );
 
@@ -217,8 +246,8 @@ export const ChatbotConversationHistoryNav: React.FunctionComponent<ChatbotConve
       isInline={displayMode === ChatbotDisplayMode.fullscreen || displayMode === ChatbotDisplayMode.embedded}
       {...props}
     >
-      <DrawerContent panelContent={panelContent}>
-        <DrawerContentBody>
+      <DrawerContent panelContent={panelContent} {...drawerContentProps}>
+        <DrawerContentBody {...drawerContentBodyProps}>
           <>
             <div
               className={`${isDrawerOpen && (displayMode === ChatbotDisplayMode.default || displayMode === ChatbotDisplayMode.docked) ? 'pf-v6-c-backdrop pf-chatbot__drawer-backdrop' : undefined} `}

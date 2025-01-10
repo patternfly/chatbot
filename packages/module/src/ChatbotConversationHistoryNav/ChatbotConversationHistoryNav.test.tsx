@@ -123,4 +123,113 @@ describe('ChatbotConversationHistoryNav', () => {
       expect(screen.queryByText('ChatBot documentation')).not.toBeInTheDocument();
     });
   });
+
+  it('should be resizable', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        drawerPanelContentProps={{ isResizable: true, minSize: '200px' }}
+      />
+    );
+    expect(screen.getByRole('dialog', { name: /Resize/i })).toBeTruthy();
+    expect(screen.getByRole('separator', { name: /Resize/i })).toBeTruthy();
+    expect(screen.getByRole('dialog', { name: /Resize/i })).toHaveAttribute(
+      'style',
+      '--pf-v6-c-drawer__panel--md--FlexBasis: 384px; --pf-v6-c-drawer__panel--md--FlexBasis--min: 200px;'
+    );
+  });
+
+  it('should accept drawerContentProps', () => {
+    const { container } = render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        drawerContentProps={{ className: 'test' }}
+      />
+    );
+    const element = container.querySelector('.test');
+    expect(element).toBeInTheDocument();
+  });
+
+  it('should accept drawerContentBodyProps', () => {
+    const { container } = render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        drawerContentBodyProps={{ className: 'test' }}
+      />
+    );
+    const element = container.querySelector('.test');
+    expect(element).toBeInTheDocument();
+  });
+
+  it('should accept drawerHeadProps', () => {
+    const { container } = render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        drawerHeadProps={{ className: 'test' }}
+      />
+    );
+    const element = container.querySelector('.test');
+    expect(element).toBeInTheDocument();
+  });
+
+  it('should accept drawerActionsProps', () => {
+    const { container } = render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        drawerActionsProps={{ className: 'test' }}
+      />
+    );
+    const element = container.querySelector('.test');
+    expect(element).toBeInTheDocument();
+  });
+
+  it('should accept drawerCloseButtonProps', () => {
+    const { container } = render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        drawerCloseButtonProps={{ className: 'test' }}
+      />
+    );
+    const element = container.querySelector('.test');
+    expect(element).toBeInTheDocument();
+  });
+
+  it('should accept drawerPanelBodyProps', () => {
+    const { container } = render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        drawerPanelBodyProps={{ className: 'test' }}
+      />
+    );
+    const element = container.querySelector('.test');
+    expect(element).toBeInTheDocument();
+  });
 });

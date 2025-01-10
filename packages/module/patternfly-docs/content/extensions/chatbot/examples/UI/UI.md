@@ -371,6 +371,16 @@ If you're showing a conversation that is already active, you can set the `active
 
 ```
 
+### Resizable drawer
+
+By default, the conversation history drawer has a fixed width (384px) and a focus trap. To provide users with more flexibility as they navigate their conversation history, or to better support embedded ChatBots on tablet-sized devices or smaller browser windows, you can instead make the drawer resizable. By default, even resizable drawers will still open to their full width on mobile devices.
+
+In this example, the drawer can be resized up to the max size of the parent and resized down to 200px wide. To customize this behavior further (including width, style, and focus behavior, for example) use [PatternFly `<Drawer>` and `<DrawerPanelContent>` props](/components/drawer/#drawerpanelcontent).
+
+```js file="./ChatbotHeaderDrawerResizable.tsx"
+
+```
+
 ### Drawer with simple menu
 
 The drawer can also be used to display a list of basic menu items.
