@@ -8,8 +8,9 @@ declare global {
 }
 
 export class UmamiTrackingProvider implements TrackingSpi, TrackingApi {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  registerProvider(): void {}
+  getKey(): string {
+    return 'umamiKey';
+  }
 
   initialize(props: InitProps): void {
     // eslint-disable-next-line no-console

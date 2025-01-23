@@ -23,4 +23,8 @@ export class ConsoleTrackingProvider implements TrackingSpi, TrackingApi {
     // eslint-disable-next-line no-console
     console.log('ConsoleProvider: ' + item, properties);
   }
+
+  getKey(): string {
+    return 'console';
+  }
 }

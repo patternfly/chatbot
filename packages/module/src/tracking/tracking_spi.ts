@@ -5,8 +5,10 @@ export interface InitProps {
 }
 
 export interface TrackingSpi extends TrackingApi {
-  // register our tracking provider
-  registerProvider: () => void;
+  // Return a key in InitProps to check if the provided should be enabled
+  getKey: () => string;
+  // Initialize the provider
   initialize: (props: InitProps) => void;
+  // Track a single item
   trackSingleItem: (item: string, properties?: TrackingEventProperties) => void;
 }

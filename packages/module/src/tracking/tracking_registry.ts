@@ -8,7 +8,6 @@ import { UmamiTrackingProvider } from './umami_tracking_provider';
 
 export const getTrackingProviders = (initProps: InitProps): TrackingApi => {
   const providers: TrackingSpi[] = [];
-  providers.push(new ConsoleTrackingProvider()); // TODO noop- provider?
   providers.push(new SegmentTrackingProvider());
   providers.push(new PosthogTrackingProvider());
   providers.push(new UmamiTrackingProvider());
@@ -16,8 +15,12 @@ export const getTrackingProviders = (initProps: InitProps): TrackingApi => {
 
   // Initialize them
   for (const provider of providers) {
-    provider.initialize(initProps);
+    if (Object.keys(provider).length > 0) {
+      provider.initialize(initProps);
+    }
   }
+  // Add the console provider
+  providers.push(new ConsoleTrackingProvider()); // TODO noop- provider?
 
   return new TrackingProviderProxy(providers);
 };

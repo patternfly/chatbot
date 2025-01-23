@@ -4,8 +4,9 @@ import { TrackingApi, TrackingEventProperties } from './tracking_api';
 import { InitProps, TrackingSpi } from './tracking_spi';
 
 export class PosthogTrackingProvider implements TrackingSpi, TrackingApi {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  registerProvider(): void {}
+  getKey(): string {
+    return 'posthogKey';
+  }
 
   initialize(props: InitProps): void {
     // eslint-disable-next-line no-console

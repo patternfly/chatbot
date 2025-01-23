@@ -5,8 +5,9 @@ import { InitProps, TrackingSpi } from './tracking_spi';
 
 export class SegmentTrackingProvider implements TrackingSpi, TrackingApi {
   private analytics: AnalyticsBrowser | undefined;
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  registerProvider(): void {}
+  getKey(): string {
+    return 'segmentKey';
+  }
 
   initialize(props: InitProps): void {
     // eslint-disable-next-line no-console

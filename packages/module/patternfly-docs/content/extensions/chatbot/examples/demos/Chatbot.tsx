@@ -102,6 +102,7 @@ const initProps: InitProps = {
   posthogKey: 'TODO-key',
   umamiKey: 'TODO-key',
   umamiHostUrl: 'http://localhost:3000', // TODO where is your JS provider?
+  console: true,
   something: 'test'
 };
 
