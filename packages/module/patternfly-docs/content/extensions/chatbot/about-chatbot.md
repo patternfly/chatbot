@@ -37,5 +37,8 @@ Explore our documentation, which covers both ChatBot UI components and message-r
 - Messages
     - [Bot and user messages](/patternfly-ai/chatbot/messages)
     - [File attachments](/patternfly-ai/chatbot/messages#attachments)
+- Analytics support
+    - [Overview](/patternfly-ai/chatbot/analytics)
+  
 
 We will continue to grow and evolve our ChatBot. If you notice a bug or have any suggestions, feel free to file an issue in our [GitHub repository!](https://github.com/patternfly/chatbot/issues) Make sure to check if there is already a pre-existing issue before creating a new one.
