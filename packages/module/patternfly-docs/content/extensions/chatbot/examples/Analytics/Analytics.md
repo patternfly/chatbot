@@ -135,12 +135,55 @@ If you know upfront that you only want to use one of the providers, it is possib
 
 ## Examples
 
+I have started the ChatBot and done the actions 1-5 in order:
 
+<div class="ws-docs-content-img">
+![Events done in the chatbot.](./Events.png)
+</div>
+
+1) Select a Model
+2) Posted a question
+3) Got an answer from the model
+4) Clicked the thumbsUp button
+5) Closed the chatbot
+
+### Segment
+
+Segment shows the events in its Source debugger with the newest event at the top.
+Below the numbered events, you can also see the results of `identify` and `trackPageView`.
+
+<div class="ws-docs-content-img">
+![Events display in the Segment debugger.](./Events_segment.png)
+</div>
+
+If you clicked on an event, you'd get to see the passed properties.
+
+### Umami
+
+Events are visible in Umami under Website -> Events:
+
+The list is pretty similar to Segment, just differently formatted.
+
+<div class="ws-docs-content-img">
+![Events in Umami.](./Events_umami.png)
+</div>
+
+### PostHog
+
+PostHog shows the Events in the Activity section. 
+
+<div class="ws-docs-content-img">
+![Events in PostHog.](./Events_posthog.png)
+</div>
+
+PostHog sends more events, as it integrates deeper in the provided code,
+you can nevertheless see the main events that we have created in our code.
 
 
 ## Add a new analytics provider
 
-To add another analytics provider, you need to implement two interfaces, `TrackingSpi` and `TrackingApi`. Most easy is probably to copy the `ConsoleTrackingProvider`. 
+To add another analytics provider, you need to implement two interfaces, `TrackingSpi` and `TrackingApi`. 
+Most easy is probably to copy the `ConsoleTrackingProvider`. 
 The first thing you should do is to provide a correct value in `getKey()`.
 Once you are happy enough with the implementation, you should add it in `getTrackingProviders()` to the array of providers
 
