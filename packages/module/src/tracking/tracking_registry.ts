@@ -11,18 +11,23 @@ export const getTrackingProviders = (initProps: InitProps): TrackingApi => {
   providers.push(new SegmentTrackingProvider());
   providers.push(new PosthogTrackingProvider());
   providers.push(new UmamiTrackingProvider());
+
   // TODO dynamically find and register providers
 
   // Initialize them
+  const enabledProviders: TrackingSpi[] = [];
   for (const provider of providers) {
-    if (Object.keys(provider).length > 0) {
+    const key = provider.getKey();
+    if (Object.keys(initProps).indexOf(key) > -1) {
       provider.initialize(initProps);
+      enabledProviders.push(provider);
     }
   }
   // Add the console provider
-  providers.push(new ConsoleTrackingProvider()); // TODO noop- provider?
+  const consoleTrackingProvider = new ConsoleTrackingProvider();
+  enabledProviders.push(consoleTrackingProvider); // TODO noop- provider?
 
-  return new TrackingProviderProxy(providers);
+  return new TrackingProviderProxy(enabledProviders);
 };
 
 export default getTrackingProviders;
