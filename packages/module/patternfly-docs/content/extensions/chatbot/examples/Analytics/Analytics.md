@@ -36,6 +36,14 @@ Before the code can be used, it is necessary to once supply the api-keys of the 
 ```nolive
 const initProps: InitProps = {
   segmentKey: 'TODO-key', // TODO add your key here
+//  segmentCdn: 'https://my.org/cdn',  // Set up segment cdn (optional)
+//  segmentIntegrations: { // Provide Segment integations (optional)
+//          'Segment.io': {
+//            apiHost: 'my.api.host/api/v1',
+//            protocol: 'https'
+//          }
+        },
+  
   posthogKey: 'TODO-key',
   umamiKey: 'TODO-key',
   umamiHostUrl: 'http://localhost:3000', // TODO where is your JS provider?
@@ -131,7 +139,15 @@ const initProps: InitProps = {
 If you know upfront that you only want to use one of the providers, it is possible to modify
 `getTrackingProviders()` and omit the unneeded providers in the providers array. 
 
-// TODO talk about package.json
+### package.json
+
+When using the providers you need to add some dependencies in package.json like:
+
+```nolive
+"dependencies": {
+  "@segment/analytics-next": "^1.76.0",
+  "posthog-js": "^1.194.4"
+```
 
 ## Examples
 
@@ -141,11 +157,11 @@ I have started the ChatBot and done the actions 1-5 in order:
 ![Events done in the chatbot.](./Events.png)
 </div>
 
-1) Select a Model
-2) Posted a question
-3) Got an answer from the model
-4) Clicked the thumbsUp button
-5) Closed the chatbot
+1. Select a Model
+2. Posted a question 
+3. Got an answer from the model
+4. Clicked the thumbsUp button
+5. Closed the chatbot
 
 ### Segment
 
@@ -157,6 +173,9 @@ Below the numbered events, you can also see the results of `identify` and `track
 </div>
 
 If you clicked on an event, you'd get to see the passed properties.
+
+**Note**: When using the Segment provider, you may also want to set the 
+`segmentCdn` and `segmentIntegrations` initialization properties.
 
 ### Umami
 
@@ -185,5 +204,7 @@ you can nevertheless see the main events that we have created in our code.
 To add another analytics provider, you need to implement two interfaces, `TrackingSpi` and `TrackingApi`. 
 Most easy is probably to copy the `ConsoleTrackingProvider`. 
 The first thing you should do is to provide a correct value in `getKey()`.
-Once you are happy enough with the implementation, you should add it in `getTrackingProviders()` to the array of providers
+Once you are happy enough with the implementation, you should add it in `getTrackingProviders()` to the array of providers.
+
+
 

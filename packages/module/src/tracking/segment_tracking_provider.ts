@@ -17,15 +17,12 @@ export class SegmentTrackingProvider implements TrackingSpi, TrackingApi {
     this.analytics = AnalyticsBrowser.load(
       {
         writeKey: segmentKey,
-        cdnURL: 'https://console.redhat.com/connections/cdn'
+        cdnURL: props.segmentCdn as string
       },
 
       {
         integrations: {
-          'Segment.io': {
-            apiHost: 'console.redhat.com/connections/api/v1',
-            protocol: 'https'
-          }
+          ...props.segmentIntegrations
         }
       }
     );
