@@ -2,14 +2,6 @@
 // Chatbot Message
 // ============================================================================
 .pf-chatbot__message {
-  --pf-t--chatbot-message--type--background--color--default: var(--pf-t--global--background--color--tertiary--default);
-  --pf-t--chatbot-message--type--background--color--primary: var(--pf-t--global--color--brand--default);
-  --pf-t--chatbot-message--type--padding: var(--pf-t--global--spacer--sm);
-  --pf-t--chatbot-message--type--text--color--default: var(--pf-t--global--text--color--regular);
-  --pf-t--chatbot-message--type--text--color--primary: var(--pf-t--global--text--color--inverse);
-  --pf-t--chatbot-message--type--border--radius: var(--pf-t--global--border--radius--small);
-  --pf-t--chatbot-message--meta--label--color: var(--pf-t--global--border--color--on-secondary);
-
   display: flex;
   align-items: flex-start;
   gap: var(--pf-t--global--spacer--lg);
@@ -63,12 +55,12 @@
 
     // Badge
     .pf-v6-c-label {
-      --pf-v6-c-label--m-outline--BorderColor: var(--pf-t--chatbot-message--meta--label--color);
+      --pf-v6-c-label--m-outline--BorderColor: var(--pf-t--global--border--color--on-secondary);
       --pf-v6-c-label--FontSize: var(--pf-t--global--font--size--xs);
       font-weight: var(--pf-t--global--font--weight--body--bold);
 
       .pf-v6-c-label__content {
-        --pf-v6-c-label--Color: var(--pf-t--chatbot-message--meta--label--color);
+        --pf-v6-c-label--Color: var(--pf-t--global--border--color--on-secondary);
       }
     }
 
@@ -88,7 +80,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: var(--pf-t--global--font--size--sm);
-    color: var(--pf-t--chatbot-message--type--text--color--default);
+    color: var(--pf-t--global--text--color--regular);
   }
 
   &-and-actions {

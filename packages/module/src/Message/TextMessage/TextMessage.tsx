@@ -4,11 +4,11 @@
 
 import React from 'react';
 import { ExtraProps } from 'react-markdown';
-import { Content, ContentVariants } from '@patternfly/react-core';
+import { Content, ContentProps } from '@patternfly/react-core';
 
-const TextMessage = ({ children, ...props }: JSX.IntrinsicElements['p'] & ExtraProps) => (
+const TextMessage = ({ component, children, ...props }: ContentProps & ExtraProps) => (
   <span className="pf-chatbot__message-text">
-    <Content component={ContentVariants.p} {...props}>
+    <Content component={component} {...props}>
       {children}
     </Content>
   </span>

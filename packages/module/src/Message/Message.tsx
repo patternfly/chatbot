@@ -6,7 +6,15 @@ import React from 'react';
 
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { Avatar, AvatarProps, Label, LabelGroupProps, Timestamp, Truncate } from '@patternfly/react-core';
+import {
+  Avatar,
+  AvatarProps,
+  ContentVariants,
+  Label,
+  LabelGroupProps,
+  Timestamp,
+  Truncate
+} from '@patternfly/react-core';
 import MessageLoading from './MessageLoading';
 import CodeBlockMessage from './CodeBlockMessage/CodeBlockMessage';
 import TextMessage from './TextMessage/TextMessage';
@@ -173,11 +181,22 @@ export const MessageBase: React.FunctionComponent<MessageProps> = ({
             ) : (
               <Markdown
                 components={{
-                  p: TextMessage,
-                  code: ({ children }) => <CodeBlockMessage {...codeBlockProps}>{children}</CodeBlockMessage>,
+                  p: (props) => <TextMessage component={ContentVariants.p} {...props} />,
+                  code: ({ children, ...props }) => (
+                    <CodeBlockMessage {...props} {...codeBlockProps}>
+                      {children}
+                    </CodeBlockMessage>
+                  ),
                   ul: UnorderedListMessage,
                   ol: (props) => <OrderedListMessage {...props} />,
-                  li: ListItemMessage
+                  li: ListItemMessage,
+                  h1: (props) => <TextMessage component={ContentVariants.h1} {...props} />,
+                  h2: (props) => <TextMessage component={ContentVariants.h2} {...props} />,
+                  h3: (props) => <TextMessage component={ContentVariants.h3} {...props} />,
+                  h4: (props) => <TextMessage component={ContentVariants.h4} {...props} />,
+                  h5: (props) => <TextMessage component={ContentVariants.h5} {...props} />,
+                  h6: (props) => <TextMessage component={ContentVariants.h6} {...props} />,
+                  blockquote: (props) => <TextMessage component={ContentVariants.blockquote} {...props} />
                 }}
                 remarkPlugins={[remarkGfm]}
               >

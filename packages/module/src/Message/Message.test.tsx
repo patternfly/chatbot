@@ -71,6 +71,24 @@ const ORDERED_LIST_WITH_CODE = `
 3. Item 3
 `;
 
+const HEADING = `
+# h1 Heading
+
+## h2 Heading
+
+### h3 Heading
+
+#### h4 Heading
+
+##### h5 Heading
+
+###### h6 Heading
+`;
+
+const BLOCK_QUOTES = `> Blockquotes can also be nested...
+>> ...by using additional greater-than signs (>) right next to each other...
+> > > ...or with spaces between each sign.`;
+
 const checkListItemsRendered = () => {
   const items = ['Item 1', 'Item 2', 'Item 3'];
   expect(screen.getAllByRole('listitem')).toHaveLength(3);
@@ -377,13 +395,17 @@ describe('Message', () => {
     render(<Message avatar="./img" role="user" name="User" content={CODE_MESSAGE} />);
     expect(screen.getByText('Here is some YAML code:')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Copy code button' })).toBeTruthy();
-    expect(screen.getByText(/apiVersion: helm.openshift.io\/v1beta1/i)).toBeTruthy();
+    expect(screen.getByText(/yaml/)).toBeTruthy();
+    expect(screen.getByText(/apiVersion:/i)).toBeTruthy();
+    expect(screen.getByText(/helm.openshift.io\/v1beta1/i)).toBeTruthy();
     expect(screen.getByText(/metadata:/i)).toBeTruthy();
-    expect(screen.getByText(/name: azure-sample-repo0oooo00ooo/i)).toBeTruthy();
+    expect(screen.getByText(/name:/i)).toBeTruthy();
+    expect(screen.getByText(/azure-sample-repo0oooo00ooo/i)).toBeTruthy();
     expect(screen.getByText(/spec/i)).toBeTruthy();
     expect(screen.getByText(/connectionConfig:/i)).toBeTruthy();
+    expect(screen.getByText(/url:/i)).toBeTruthy();
     expect(
-      screen.getByText(/url: https:\/\/raw.githubusercontent.com\/Azure-Samples\/helm-charts\/master\/docs/i)
+      screen.getByText(/https:\/\/raw.githubusercontent.com\/Azure-Samples\/helm-charts\/master\/docs/i)
     ).toBeTruthy();
   });
   it('can click copy code button', async () => {
@@ -490,5 +512,20 @@ describe('Message', () => {
       />
     );
     expect(screen.getAllByRole('img')[1]).toHaveAttribute('src', 'test.png');
+  });
+  it('should handle block quote correctly', () => {
+    render(<Message avatar="./img" role="user" name="User" content={BLOCK_QUOTES} />);
+    expect(screen.getByText(/Blockquotes can also be nested.../)).toBeTruthy();
+    expect(screen.getByText('...by using additional greater-than signs (>) right next to each other...')).toBeTruthy();
+    expect(screen.getByText(/...or with spaces between each sign./)).toBeTruthy();
+  });
+  it('should handle heading correctly', () => {
+    render(<Message avatar="./img" role="user" name="User" content={HEADING} />);
+    expect(screen.getByRole('heading', { name: /h1 Heading/i })).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /h2 Heading/i })).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /h3 Heading/i })).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /h4 Heading/i })).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /h5 Heading/i })).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /h6 Heading/i })).toBeTruthy();
   });
 });

@@ -3,8 +3,8 @@
 // ============================================================================
 .pf-chatbot__message-code-block {
   width: 100%;
-  background-color: var(--pf-t--color--gray--80); // same in light + dark theme
-  color: var(--pf-t--color--white); // same in light + dark theme
+  background-color: var(--pf-t--global--background--color--inverse--default);
+  color: var(--pf-t--global--text--color--inverse);
   border-radius: var(--pf-t--global--border--radius--small);
 
   // Code block
@@ -19,7 +19,7 @@
     --pf-v6-c-code-block__header--PaddingBlockEnd: var(--pf-t--global--spacer--sm);
     --pf-v6-c-code-block__header--PaddingInlineStart: var(--pf-t--global--spacer--md);
     --pf-v6-c-code-block__header--PaddingInlineEnd: var(--pf-t--global--spacer--md);
-    color: var(--pf-t--color--white); // same in light + dark theme
+    color: var(--pf-t--global--text--color--inverse);
 
     .pf-v6-c-code-block__actions {
       width: 100%;
@@ -40,11 +40,11 @@
     }
 
     .pf-chatbot__button--copy.pf-v6-c-button {
-      color: var(--pf-t--color--white);
+      color: var(--pf-t--global--text--color--inverse);
 
       &:hover,
       &:focus {
-        color: var(--pf-t--color--white);
+        color: var(--pf-t--global--text--color--inverse);
       }
     }
   }
@@ -77,6 +77,6 @@
 }
 
 .pf-chatbot__message-inline-code {
-  background-color: var(--pf-t--chatbot--code--background);
+  background-color: var(--pf-t--global--background--color--tertiary--default);
   font-size: var(--pf-t--global--font--size--body--default);
 }

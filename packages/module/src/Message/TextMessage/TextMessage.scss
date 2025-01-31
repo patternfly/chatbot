@@ -13,8 +13,8 @@
 // Need to inline shorter text
 .pf-chatbot__message-text {
   width: fit-content;
-  padding: var(--pf-t--chatbot-message--type--padding) 0 var(--pf-t--chatbot-message--type--padding) 0;
-  border-radius: var(--pf-t--chatbot-message--type--border--radius);
+  padding: var(--pf-t--global--spacer--sm) 0 var(--pf-t--global--spacer--sm) 0;
+  border-radius: var(--pf-t--global--border--radius--small);
 
   .pf-v6-c-content,
   .pf-v6-c-content--small,
@@ -25,27 +25,24 @@
   }
 
   code {
-    background-color: var(--pf-t--chatbot-message--type--background--color--default);
+    background-color: var(--pf-t--global--background--color--tertiary--default);
     font-size: var(--pf-t--global--font--size--body--default);
   }
 }
 
 .pf-chatbot__message--user {
   .pf-chatbot__message-text {
-    background-color: var(--pf-t--chatbot-message--type--background--color--primary);
-    color: var(--pf-t--chatbot-message--type--text--color--primary);
-    padding: var(--pf-t--chatbot-message--type--padding);
+    background-color: var(--pf-t--global--color--brand--default);
+    color: var(--pf-t--global--text--color--on-brand--default);
+    --pf-v6-c-content--Color: var(--pf-t--global--text--color--on-brand--default);
+    padding: var(--pf-t--global--spacer--sm);
 
     .pf-v6-c-content,
     .pf-v6-c-content--small,
     .pf-v6-c-content--blockquote,
     p,
     a {
-      color: var(--pf-t--chatbot-message--type--text--color--primary);
-    }
-
-    code {
-      background-color: initial;
+      color: var(--pf-t--global--text--color--on-brand--default);
     }
   }
 }

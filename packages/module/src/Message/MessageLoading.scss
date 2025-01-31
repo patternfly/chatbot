@@ -3,9 +3,9 @@
 // ============================================================================
 .pf-chatbot__message-loading {
   width: 36px;
-  padding: var(--pf-t--chatbot-message--type--padding);
+  padding: var(--pf-t--global--spacer--sm);
   background-color: var(--pf-t--global--background--color--tertiary--default);
-  border-radius: var(--pf-t--chatbot-message--type--border--radius);
+  border-radius: var(--pf-t--global--border--radius--small);
 
   &-dots {
     position: relative;
