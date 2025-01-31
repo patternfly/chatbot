@@ -116,7 +116,8 @@ export const ChatbotWelcomeInteractionDemo: React.FunctionComponent = () => {
         so that users of assistive devices receive sufficient context  */}
           <MessageBox announcement={announcement} position={position}>
             {messages.length === 0 && (
-              <ChatbotWelcomePrompt title="Hello, Chatbot User" description="How may I help you today?" />
+              <ChatbotWelcomePrompt title="Hi, ChatBot User!"
+              description="How can I help you today?" />
             )}
             {/* This code block enables scrolling to the top of the last message.
           You can instead choose to move the div with scrollToBottomRef on it below 

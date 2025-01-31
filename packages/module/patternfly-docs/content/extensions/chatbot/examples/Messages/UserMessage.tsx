@@ -27,7 +27,7 @@ Here is an unordered list:
       <Message
         name="User"
         role="user"
-        content="Example content with updated timestamp text"
+        content="This is a user message with an updated timestamp."
         timestamp="1 hour ago"
         avatar={userAvatar}
       />
@@ -35,7 +35,7 @@ Here is an unordered list:
       <Message
         name="User"
         role="user"
-        content="Example user message with `avatarProps` set to add a border"
+        content="This is a user message with `avatarProps` set to add a border."
         avatar={userAvatar}
         avatarProps={{ isBordered: true }}
       />

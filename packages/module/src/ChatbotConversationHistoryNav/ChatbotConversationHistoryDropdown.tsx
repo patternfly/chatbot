@@ -9,11 +9,11 @@ import { MenuToggleElement, Tooltip, MenuToggle, Dropdown, DropdownProps } from 
 import EllipsisIcon from '@patternfly/react-icons/dist/esm/icons/ellipsis-v-icon';
 
 export interface ChatbotConversationHistoryDropdownProps extends Omit<DropdownProps, 'toggle'> {
-  /** Dropdown items rendered in conversation options dropdown */
+  /** Dropdown items rendered in conversation settings dropdown */
   menuItems: React.ReactNode;
-  /** Optional classname applied to conversation options dropdown */
+  /** Optional classname applied to conversation settings dropdown */
   menuClassName?: string;
-  /** Tooltip content and aria-label applied to conversation options dropdown */
+  /** Tooltip content and aria-label applied to conversation settings dropdown */
   label?: string;
   /** Callback for when user selects item. */
   onSelect?: (event?: React.MouseEvent, value?: string | number) => void;

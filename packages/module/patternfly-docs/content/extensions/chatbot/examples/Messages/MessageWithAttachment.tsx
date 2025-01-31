@@ -32,14 +32,14 @@ export const AttachmentMenuExample: React.FunctionComponent = () => {
         name="User"
         role="user"
         avatar={userAvatar}
-        content="Here is an uploaded file"
+        content="Here is an uploaded file:"
         attachments={[{ name: 'auth-operator.yml', id: '1', onClick, onClose }]}
       />
       <Message
         name="User"
         role="user"
         avatar={userAvatar}
-        content="Here are two uploaded files"
+        content="Here are 2 uploaded files:"
         attachments={[
           { name: 'auth-operator.yml', id: '1' },
           { name: 'patternfly.svg', id: '2' }

@@ -8,6 +8,6 @@ export const AttachmentErrorExample: React.FunctionComponent = () => (
     onClose={() => console.log('Clicked the close button')}
     title="File upload failed"
   >
-    Your file size is too large. Please ensure that your file is less than 25 MB.
+    Your file size must be less than 25 MB.
   </ChatbotAlert>
 );

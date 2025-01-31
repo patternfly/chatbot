@@ -11,7 +11,7 @@ export const MessageWithQuickStartExample: React.FunctionComponent = () => (
       name="Bot"
       role="bot"
       avatar={patternflyAvatar}
-      content="Text-based bot message with a quick start tile."
+      content="Follow this quick guide to install the Pipelines Operator."
       quickStarts={{
         quickStart: explorePipelinesQuickStart as QuickStart,
         onSelectQuickStart: (id) => alert(id)
@@ -21,7 +21,7 @@ export const MessageWithQuickStartExample: React.FunctionComponent = () => (
       name="Bot"
       role="bot"
       avatar={patternflyAvatar}
-      content="Text-based bot message with a quick start tile that includes prerequisites and a default icon."
+      content="This quick start tile includes prerequisites and a default icon."
       quickStarts={{
         quickStart: monitorSampleAppQuickStart,
         onSelectQuickStart: (id) => alert(id)

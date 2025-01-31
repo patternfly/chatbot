@@ -53,7 +53,7 @@ export const DropzoneExample: React.FunctionComponent = () => {
   return (
     <FileDropZone onFileDrop={handleFileDrop} displayMode="fullscreen">
       <div className="pf-chatbot__file-drop-zone-example">
-        Content that shows when no dragging is happening (drag an item here to see the drop zone)
+        This is example content that would be shown when no dragging is happening. To see the drop zone, start to drag an item into this section. The static content will be replaced by an active drop zone message. 
       </div>
     </FileDropZone>
   );

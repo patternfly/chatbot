@@ -117,7 +117,8 @@ export const CompareChild = ({ name, input, hasNewInput, setIsSendButtonDisabled
       </ChatbotHeader>
       <ChatbotContent>
         <MessageBox ariaLabel={`Scrollable message log for ${name}`} announcement={announcement}>
-          <ChatbotWelcomePrompt title="Hello, Chatbot User" description="How may I help you today?" />
+          <ChatbotWelcomePrompt title="Hi, ChatBot User!"
+                    description="How can I help you today?" />
           {messages.map((message) => (
             <Message key={message.id} {...message} />
           ))}

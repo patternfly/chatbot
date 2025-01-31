@@ -53,8 +53,8 @@ export default MessageLoading;
 
 1. **Using a \`toaster\`:**
 
-   - Place \`bread\` in a \`toaster\`
-   - Once \`bread\` is lightly browned, remove from \`toaster\`
+   - Place \`bread\` in a \`toaster\`.
+   - Once \`bread\` is lightly browned, remove from \`toaster\`.
 
 2. **Using a \`knife\`:**
 
@@ -63,12 +63,12 @@ export default MessageLoading;
 
   return (
     <>
-      <Message name="Bot" role="bot" avatar={patternflyAvatar} content={`Text-based message from a bot named "Bot"`} />
+      <Message name="Bot" role="bot" avatar={patternflyAvatar} content={`This is a text-based message from a bot named "Bot."`} />
       <Message
         name="Bot"
         role="bot"
         avatar={patternflyAvatar}
-        content={`Text-based message from a bot named "Bot," with updated timestamp`}
+        content={`This is a text-based message from "Bot," with an updated timestamp.`}
         timestamp="1 hour ago"
       />
       <Message name="Bot" role="bot" avatar={patternflyAvatar} content={markdown} />
@@ -76,18 +76,18 @@ export default MessageLoading;
       <Message name="Bot" role="bot" avatar={patternflyAvatar} content={unorderedList} />
       <Message name="Bot" role="bot" avatar={patternflyAvatar} content={moreComplexList} />
       <Message name="Bot" role="bot" avatar={patternflyAvatar} content="Example content" isLoading />
-      <Message role="bot" avatar={patternflyAvatar} content="Text-based message from a nameless bot" />
+      <Message role="bot" avatar={patternflyAvatar} content="This message is from a nameless bot." />
       <Message
         name="Default Openshift Container Platform Assistant That Can Help With Any Query You Might Need Help With"
         role="bot"
         avatar={patternflyAvatar}
-        content="Text-based message, where the bot's name is truncated"
+        content="This is a message from a bot with really long name: it's truncated!"
       />
       <Message
         name="Bot"
         role="bot"
         avatar={squareImg}
-        content="Text-based message from a bot with a square avatar. You can further customize the avatar by applying an additional class or passing [PatternFly avatar props](/components/avatar) to the `<Message>` component via `avatarProps`."
+        content="This bot has a square avatar. You can further customize the avatar by applying an additional class or passing [PatternFly avatar props](/components/avatar) to the `<Message>` component via `avatarProps`."
         hasRoundAvatar={false}
       />
     </>

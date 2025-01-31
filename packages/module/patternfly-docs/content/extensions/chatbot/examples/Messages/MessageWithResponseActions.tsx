@@ -8,7 +8,7 @@ export const ResponseActionExample: React.FunctionComponent = () => (
     name="Bot"
     role="bot"
     avatar={patternflyAvatar}
-    content="Example with all prebuilt actions"
+    content="I updated your account with those settings. You're ready to set up your first dashboard!"
     actions={{
       // eslint-disable-next-line no-console
       positive: { onClick: () => console.log('Good response') },

@@ -32,7 +32,7 @@ export interface ChatbotFootnotePopover {
   bannerImage?: ChatbotFootnotePopoverBannerImage;
   /** Optional CTA button that can be used to trigger an action and close the popover */
   cta?: ChatbotFootnotePopoverCTA;
-  /** Optional link that can be used to show and external link like **Learn More** */
+  /** Optional link that can be used to show and external link like **View AI policy** */
   link?: ChatbotFootnotePopoverLink;
   /** Props for PF Popover */
   popoverProps?: PopoverProps;
@@ -87,7 +87,7 @@ export const ChatbotFootnote: React.FunctionComponent<ChatbotFootnoteProps> = ({
             popover.cta?.onClick();
           }}
         >
-          {popover.cta?.label || 'Got it'}
+          {popover.cta?.label || 'Dismiss'}
         </Button>
       )}
       {popover?.link && (

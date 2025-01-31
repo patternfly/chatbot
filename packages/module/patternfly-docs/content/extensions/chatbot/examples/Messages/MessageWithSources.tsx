@@ -61,7 +61,7 @@ export const MessageWithSourcesExample: React.FunctionComponent = () => {
         name="Bot"
         role="bot"
         avatar={patternflyAvatar}
-        content="Example with only one source"
+        content="Example with only 1 source"
         sources={{
           sources: [
             {

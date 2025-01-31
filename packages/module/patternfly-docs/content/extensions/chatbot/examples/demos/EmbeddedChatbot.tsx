@@ -44,20 +44,20 @@ import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 const footnoteProps = {
   label: 'ChatBot uses AI. Check for mistakes.',
   popover: {
-    title: 'Verify accuracy',
-    description: `While ChatBot strives for accuracy, there's always a possibility of errors. It's a good practice to verify critical information from reliable sources, especially if it's crucial for decision-making or actions.`,
+    title: 'Verify information',
+    description: `While ChatBot strives for accuracy, AI is experimental and can make mistakes. We cannot guarantee that all information provided by ChatBot is up to date or without error. You should always verify responses using reliable sources, especially for crucial information and decision making.`,
     bannerImage: {
       src: 'https://cdn.dribbble.com/userupload/10651749/file/original-8a07b8e39d9e8bf002358c66fce1223e.gif',
       alt: 'Example image for footnote popover'
     },
     cta: {
-      label: 'Got it',
+      label: 'Dismiss',
       onClick: () => {
         alert('Do something!');
       }
     },
     link: {
-      label: 'Learn more',
+      label: 'View AI policy',
       url: 'https://www.redhat.com/'
     }
   }
@@ -137,12 +137,12 @@ const initialMessages: MessageProps[] = [
 
 const welcomePrompts = [
   {
-    title: 'Topic 1',
-    message: 'Helpful prompt for Topic 1'
+    title: 'Set up account',
+    message: 'Choose the necessary settings and preferences for your account.'
   },
   {
-    title: 'Topic 2',
-    message: 'Helpful prompt for Topic 2'
+    title: 'Troubleshoot issue',
+    message: 'Find documentation and instructions to resolve your issue.'
   }
 ];
 
@@ -400,8 +400,8 @@ export const EmbeddedChatbotDemo: React.FunctionComponent = () => {
                  so that users of assistive devices receive sufficient context  */}
                 <MessageBox announcement={announcement}>
                   <ChatbotWelcomePrompt
-                    title="Hello, Chatbot User"
-                    description="How may I help you today?"
+                    title="Hi, ChatBot User!"
+                    description="How can I help you today?"
                     prompts={welcomePrompts}
                   />
                   {/* This code block enables scrolling to the top of the last message.
