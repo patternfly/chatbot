@@ -8,16 +8,16 @@ source: design-guidelines
 
 import "./images.css"
 
-## Elements
+## Elements 
 
-<div class="ws-docs-content-img">
+<div class="ws-docs-content-img" >
 ![Main elements of a ChatBot.](./img/chatbot-elements.svg)
 </div>
 
 1. **Container:** The window that contains the entire ChatBot experience and all of its components.
 1. **Header:** A persistent region at the top of the ChatBot window that contains navigation, branding, and actions.
 1. **Navigation:** A menu that contains navigational options, including access to the conversation history.
-1. **Options menu:** Contains display options and other settings. More details can be found in the [ChatBot variations section](#variations).
+1. **Options menu:** Contains display options (more details in the [ChatBot variations section](#variations)) and other settings (more details in the [ChatBOt settings and preferences section](#chatbot-settings-and-preferences)).
 1. **Messages:** Elements of the conversation between a ChatBot and user. More details can be found in the [message guidelines](#messages).
 1. **Attachments:** Details about files that a user has uploaded to the ChatBot.
 1. **Footer:** A persistent region at the bottom of the ChatBot window that contains the message bar and the footnote.
@@ -37,8 +37,25 @@ import "./images.css"
 1. **Timestamp:** The relative or absolute time that a message was sent.
 1. **Label:** Labels ChatBot messages as "AI."
 1. **Quick responses:** Programmable, clickable actions that allow users to quickly answer questions from the ChatBot.
-1. **Sources:** Cards that link to documentation or other external resources. When multiple sources are included, users can paginate through the different options.
 1. **Response actions:** Actions that allow users to interact with a bot message. these typically include providing feedback, copying, sharing, or reading aloud, but [custom message actions](/patternfly-ai/chatbot/messages#custom-message-actions) are also supported.
+
+#### Source tiles
+
+A ChatBot can share relevant sources with users, like documentation that could provide the information a user is searching for. These sources will be contained in a single tile, which users can paginate through and select to navigate to other resources. 
+
+To provide users with enough context, sources should have descriptive titles and descriptions. The title is limited to 1 line and the body is limited to 2 lines.
+
+<div class="ws-docs-content-img">
+![Bot message that include multiple source tiles.](./img/source-tile.svg)
+</div>
+
+#### Quick start tiles
+
+A ChatBot can share a link to a [quick start](/extensions/quick-starts) that will help users complete a given task. Users can either select **Start** or the tile's title to initiate the linked quick start.
+
+<div class="ws-docs-content-img">
+![Bot message that links a quick start tile.](./img/chatbot-quickstarts-tile.svg)
+</div>
 
 ### Message bar
 
@@ -126,6 +143,12 @@ When there is an unread message from the ChatBot, a notification badge should be
 ![Toggle with notification badge.](./img/chatbot-toggle-notification.svg)
 </div>
 
+If necessary for brand consistency, you can customize the toggle shape and icon.
+
+<div class="ws-docs-content-img">
+![Different toggle shapes and icons.](./img/toggle-customizations.svg)
+</div>
+
 ### Using the navigation menu
 
 The ChatBot navigation menu primarily contains a users' conversation history with the ChatBot. Clicking the menu icon opens a side drawer in the ChatBot window.
@@ -134,6 +157,20 @@ By clicking into the navigation menu, users can search through previous conversa
 
 <div class="ws-docs-content-img">
 ![Conversation history with an options menu opened on a previous conversation.](./img/conversation-history.svg)
+</div>
+
+### ChatBot settings and preferences
+
+Users can access ChatBot settings and preferences via the options menu.
+
+<div class="ws-docs-content-img">
+![ChatBot options menu dropdown.](./img/settings-menu.svg)
+</div>
+
+Within the settings menu, users can select their preferences for a variety of ChatBot features, like theme or language. You can also support additional content management here, like adding or deleting chats. This menu can be customized to meet the needs of your ChatBot's users.
+
+<div class="ws-docs-content-img">
+![ChatBot global settings menu.](./img/chatbot-settings.svg)
 </div>
 
 ### Attaching files

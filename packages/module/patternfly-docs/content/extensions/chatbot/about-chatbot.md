@@ -12,11 +12,13 @@ It is important to leverage AI in a way that improves the experiences of your us
 
 _Only use this ChatBot when it adds value to your users' experiences._ Don't use it simply for the sake of novelty&mdash;your users will only be excited to interact with a new ChatBot feature if it directly helps them reach their goals.
 
-## How to use the ChatBot
+## ChatBot demos
 
-To illustrate the capabilities of the ChatBot, we offer a few demos: 
+To illustrate the capabilities of the ChatBot, including more complex interaction patterns, we've created these demos: 
 - [Basic ChatBot](/patternfly-ai/chatbot/overview/demo#basic-chatbot)
 - [Embedded ChatBot](/patternfly-ai/chatbot/overview/demo#embedded-chatbot)
+- [Comparing ChatBots](/patternfly-ai/chatbot/overview/demo/#comparing-chatbots)
+- [Message feedback](/patternfly-ai/chatbot/messages/demo#message-feedback)
 - [ChatBot attachments via file upload](/patternfly-ai/chatbot/messages/demo#attach-via-upload-button-in-message-bar)
 - [ChatBot attachments via built-in menu](/patternfly-ai/chatbot/messages/demo#attach-via-menu-of-options-in-message-bar)
 
@@ -31,6 +33,7 @@ Explore our documentation, which covers both ChatBot UI components and message-r
     - [Header](/patternfly-ai/chatbot/ui#header)
     - [Footer](/patternfly-ai/chatbot/ui#footer)
     - [Navigation](/patternfly-ai/chatbot/ui#navigation)
+    - [Modals](/patternfly-ai/chatbot/ui#modals)
 - Messages
     - [Bot and user messages](/patternfly-ai/chatbot/messages)
     - [File attachments](/patternfly-ai/chatbot/messages#attachments)
