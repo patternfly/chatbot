@@ -63,11 +63,11 @@
       .pf-v6-c-button:hover,
       .pf-v6-c-button:focus {
         .pf-v6-c-button__icon {
-          color: var(--pf-t--chatbot--icon--fill--hover);
+          color: var(--pf-t--global--icon--color--regular);
         }
       }
       .pf-v6-c-button__icon {
-        color: var(--pf-t--chatbot--icon--fill);
+        color: var(--pf-t--global--icon--color--subtle);
       }
     }
   }

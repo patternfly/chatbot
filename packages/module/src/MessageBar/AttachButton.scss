@@ -8,13 +8,29 @@
   height: 3rem;
 
   .pf-v6-c-button__icon {
-    color: var(--pf-t--chatbot--icon--fill);
+    color: var(--pf-t--global--icon--color--subtle);
   }
 
   // Interactive states
-  &:hover, &:focus {
+  &:hover {
     .pf-v6-c-button__icon {
-      color: var(--pf-t--chatbot--icon--fill--hover);
+      color: var(--pf-t--global--icon--color--regular);
+    }
+  }
+
+  &:active,
+  &:focus {
+    background-color: var(--pf-t--global--color--brand--clicked);
+
+    .pf-v6-c-button__icon {
+      color: var(--pf-t--global--icon--color--inverse);
+    }
+
+    &:hover,
+    &:focus {
+      .pf-v6-c-button__icon {
+        color: var(--pf-t--global--icon--color--inverse);
+      }
     }
   }
 }

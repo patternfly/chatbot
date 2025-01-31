@@ -21,7 +21,8 @@
   justify-content: flex-end;
   background-color: var(--pf-t--global--background--color--primary--default);
   border-radius: calc(var(--pf-t--global--border--radius--medium) * 2);
-  transition: box-shadow var(--pf-t--chatbot--timing-function) var(--pf-t--global--motion--duration--sm);
+  transition: box-shadow var(--pf-t--global--motion--timing-function--accelerate)
+    var(--pf-t--global--motion--duration--sm);
 
   overflow: hidden;
 
@@ -38,7 +39,7 @@
     justify-content: end;
     padding-block-start: var(--pf-t--global--spacer--xs);
     padding-block-end: var(--pf-t--global--spacer--xs);
-    gap: var(--pf-t--global--spacer--xs);
+    gap: var(--pf-t--global--spacer--gap--action-to-action--plain);
   }
 
   &-input {

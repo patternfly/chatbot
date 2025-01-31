@@ -12,11 +12,25 @@
   align-items: center;
 
   .pf-v6-c-button__icon {
-    color: var(--pf-t--global--icon--color--inverse);
+    color: var(--pf-t--global--icon--color--on-brand--default);
   }
 
-  &:hover,
-  &:focus {
+  &:hover {
     background-color: var(--pf-t--global--color--brand--hover);
+  }
+
+  &:focus {
+    background-color: var(--pf-t--global--color--brand--clicked);
+
+    .pf-v6-c-button__icon {
+      color: var(--pf-t--global--icon--color--on-brand--default);
+    }
+
+    &:hover,
+    &:focus {
+      .pf-v6-c-button__icon {
+        color: var(--pf-t--global--icon--color--on-brand--default);
+      }
+    }
   }
 }
