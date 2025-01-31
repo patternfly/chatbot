@@ -2,7 +2,7 @@
 // Chatbot Main - Message
 // ============================================================================
 
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -41,6 +41,17 @@ export interface MessageAttachment {
   spinnerTestId?: string;
 }
 
+export interface MessageExtraContent {
+  /** Content to display before the main content */
+  beforeMainContent?: ReactNode;
+
+  /** Content to display after the main content */
+  afterMainContent?: ReactNode;
+
+  /** Content to display at the end */
+  endContent?: ReactNode;
+}
+
 export interface MessageProps extends Omit<React.HTMLProps<HTMLDivElement>, 'role'> {
   /** Unique id for message */
   id?: string;
@@ -48,6 +59,8 @@ export interface MessageProps extends Omit<React.HTMLProps<HTMLDivElement>, 'rol
   role: 'user' | 'bot';
   /** Message content */
   content?: string;
+  /** Extra Message content */
+  extraContent?: MessageExtraContent;
   /** Name of the user */
   name?: string;
   /** Avatar src for the user */
@@ -106,6 +119,7 @@ export interface MessageProps extends Omit<React.HTMLProps<HTMLDivElement>, 'rol
 export const MessageBase: React.FunctionComponent<MessageProps> = ({
   role,
   content,
+  extraContent,
   name,
   avatar,
   timestamp,
@@ -127,6 +141,7 @@ export const MessageBase: React.FunctionComponent<MessageProps> = ({
   innerRef,
   ...props
 }: MessageProps) => {
+  const { beforeMainContent, afterMainContent, endContent } = extraContent || {};
   let avatarClassName;
   if (avatarProps && 'className' in avatarProps) {
     const { className, ...rest } = avatarProps;
@@ -171,18 +186,22 @@ export const MessageBase: React.FunctionComponent<MessageProps> = ({
             {isLoading ? (
               <MessageLoading loadingWord={loadingWord} />
             ) : (
-              <Markdown
-                components={{
-                  p: TextMessage,
-                  code: ({ children }) => <CodeBlockMessage {...codeBlockProps}>{children}</CodeBlockMessage>,
-                  ul: UnorderedListMessage,
-                  ol: (props) => <OrderedListMessage {...props} />,
-                  li: ListItemMessage
-                }}
-                remarkPlugins={[remarkGfm]}
-              >
-                {content}
-              </Markdown>
+              <>
+                {beforeMainContent && <>{beforeMainContent}</>}
+                <Markdown
+                  components={{
+                    p: TextMessage,
+                    code: ({ children }) => <CodeBlockMessage {...codeBlockProps}>{children}</CodeBlockMessage>,
+                    ul: UnorderedListMessage,
+                    ol: (props) => <OrderedListMessage {...props} />,
+                    li: ListItemMessage
+                  }}
+                  remarkPlugins={[remarkGfm]}
+                >
+                  {content}
+                </Markdown>
+                {afterMainContent && <>{afterMainContent}</>}
+              </>
             )}
             {!isLoading && sources && <SourcesCard {...sources} />}
             {quickStarts && quickStarts.quickStart && (
@@ -224,6 +243,7 @@ export const MessageBase: React.FunctionComponent<MessageProps> = ({
               ))}
             </div>
           )}
+          {!isLoading && endContent && <>{endContent}</>}
         </div>
       </div>
     </section>

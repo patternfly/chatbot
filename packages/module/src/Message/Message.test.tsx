@@ -491,4 +491,118 @@ describe('Message', () => {
     );
     expect(screen.getAllByRole('img')[1]).toHaveAttribute('src', 'test.png');
   });
+  it('should render beforeMainContent with main content', () => {
+    const mainContent = 'Main message content';
+    const beforeMainContentText = 'Before main content';
+    const beforeMainContent = <div>{beforeMainContentText}</div>;
+
+    render(
+      <Message avatar="./img" role="user" name="User" content={mainContent} extraContent={{ beforeMainContent }} />
+    );
+
+    expect(screen.getByText(beforeMainContentText)).toBeTruthy();
+    expect(screen.getByText(mainContent)).toBeTruthy();
+  });
+  it('should render afterMainContent with main content', () => {
+    const mainContent = 'Main message content';
+    const afterMainContentText = 'After main content';
+    const afterMainContent = <div>{afterMainContentText}</div>;
+
+    render(
+      <Message avatar="./img" role="user" name="User" content={mainContent} extraContent={{ afterMainContent }} />
+    );
+
+    expect(screen.getByText(afterMainContentText)).toBeTruthy();
+    expect(screen.getByText(mainContent)).toBeTruthy();
+  });
+
+  it('should render endContent with main content', () => {
+    const mainContent = 'Main message content';
+    const endMainContentText = 'End content';
+    const endContent = <div>{endMainContentText}</div>;
+
+    render(<Message avatar="./img" role="user" name="User" content={mainContent} extraContent={{ endContent }} />);
+
+    expect(screen.getByText(endMainContentText)).toBeTruthy();
+    expect(screen.getByText(mainContent)).toBeTruthy();
+  });
+  it('should render all parts of extraContent with main content', () => {
+    const beforeMainContent = <div>Before main content</div>;
+    const afterMainContent = <div>After main content</div>;
+    const endContent = <div>End content</div>;
+
+    render(
+      <Message
+        avatar="./img"
+        role="user"
+        name="User"
+        content="Main message content"
+        extraContent={{ beforeMainContent, afterMainContent, endContent }}
+      />
+    );
+
+    expect(screen.getByText('Before main content')).toBeTruthy();
+    expect(screen.getByText('Main message content')).toBeTruthy();
+    expect(screen.getByText('After main content')).toBeTruthy();
+    expect(screen.getByText('End content')).toBeTruthy();
+  });
+
+  it('should not render extraContent when not provided', () => {
+    render(<Message avatar="./img" role="user" name="User" content="Main message content" />);
+
+    // Ensure no extraContent is rendered
+    expect(screen.getByText('Main message content')).toBeTruthy();
+    expect(screen.queryByText('Before main content')).toBeFalsy();
+    expect(screen.queryByText('After main content')).toBeFalsy();
+    expect(screen.queryByText('end message content')).toBeFalsy();
+  });
+
+  it('should handle undefined or null values in extraContent gracefully', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="user"
+        name="User"
+        content="Main message content"
+        extraContent={{ beforeMainContent: null, afterMainContent: undefined, endContent: null }}
+      />
+    );
+
+    // Ensure that no extraContent is rendered if they are null or undefined
+    expect(screen.getByText('Main message content')).toBeTruthy();
+    expect(screen.queryByText('Before main content')).toBeFalsy();
+    expect(screen.queryByText('After main content')).toBeFalsy();
+    expect(screen.queryByText('end message content')).toBeFalsy();
+  });
+  it('should render JSX in extraContent correctly', () => {
+    const beforeMainContent = (
+      <div data-testid="before-main-content">
+        <strong>Bold before content</strong>
+      </div>
+    );
+    const afterMainContent = (
+      <div data-testid="after-main-content">
+        <strong>Bold after content</strong>
+      </div>
+    );
+    const endContent = (
+      <div data-testid="end-main-content">
+        <strong>Bold end content</strong>
+      </div>
+    );
+    render(
+      <Message
+        avatar="./img"
+        role="user"
+        name="User"
+        content="Main message content"
+        extraContent={{ beforeMainContent, afterMainContent, endContent }}
+      />
+    );
+
+    // Check that the JSX is correctly rendered
+    expect(screen.getByTestId('before-main-content')).toContainHTML('<strong>Bold before content</strong>');
+    expect(screen.getByTestId('after-main-content')).toContainHTML('<strong>Bold after content</strong>');
+    expect(screen.getByTestId('end-main-content')).toContainHTML('<strong>Bold end content</strong>');
+  });
 });
