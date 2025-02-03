@@ -57,6 +57,8 @@ import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
+import { getTrackingProviders } from "@patternfly/chatbot/dist/dynamic/tracking";
+
 
 ### Basic ChatBot
 
@@ -80,6 +82,7 @@ This demo displays a basic ChatBot, which includes:
 6. A [`<ChatbotConversationHistoryNav>`](/patternfly-ai/chatbot/ui#navigation) toggled open and closed by the `<ChatbotHeaderMenu`> in the `<ChatbotHeader>`.
 
 7. A "Skip to chatbot" button that allows you to skip to the chatbot content via the [PatternFly skip to content component](/patternfly-ai/chatbot/ui#skip-to-content). To display this button you must tab into the main window.
+
 
 ```js file="./Chatbot.tsx" isFullscreen
 
@@ -126,3 +129,7 @@ Your code structure should look like this:
 ```js file="./EmbeddedComparisonChatbot.tsx" isFullscreen
 
 ```
+
+
+### Analytics
+
