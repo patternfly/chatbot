@@ -14,6 +14,10 @@ export class SegmentTrackingProvider implements TrackingSpi, TrackingApi {
     console.log('SegmentProvider initialize');
     const segmentKey = props.segmentKey as string;
 
+    // We need to create an object here, as ts lint is unhappy otherwise
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const integrations = props.segmentIntegrations as any;
+
     this.analytics = AnalyticsBrowser.load(
       {
         writeKey: segmentKey,
@@ -22,7 +26,7 @@ export class SegmentTrackingProvider implements TrackingSpi, TrackingApi {
 
       {
         integrations: {
-          ...props.segmentIntegrations
+          ...integrations
         }
       }
     );

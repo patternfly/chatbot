@@ -3,6 +3,7 @@ import { TrackingApi, TrackingEventProperties } from './tracking_api';
 
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     umami: any;
   }
 }
