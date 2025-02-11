@@ -45,11 +45,11 @@ export interface Conversation {
   noIcon?: boolean;
   /** Conversation */
   text: string;
-  /** Dropdown items rendered in conversation options dropdown */
+  /** Dropdown items rendered in conversation settings dropdown */
   menuItems?: React.ReactNode;
-  /** Optional classname applied to conversation options dropdown */
+  /** Optional classname applied to conversation settings dropdown */
   menuClassName?: string;
-  /** Tooltip content and aria-label applied to conversation options dropdown */
+  /** Tooltip content and aria-label applied to conversation settings dropdown */
   label?: string;
   /** Callback for when user selects item. */
   onSelect?: (event?: React.MouseEvent, value?: string | number) => void;
@@ -115,7 +115,7 @@ export const ChatbotConversationHistoryNav: React.FunctionComponent<ChatbotConve
   newChatButtonText = 'New chat',
   drawerContent,
   onNewChat,
-  searchInputPlaceholder = 'Search...',
+  searchInputPlaceholder = 'Search previous conversations...',
   searchInputAriaLabel = 'Filter menu items',
   handleTextInputChange,
   displayMode,

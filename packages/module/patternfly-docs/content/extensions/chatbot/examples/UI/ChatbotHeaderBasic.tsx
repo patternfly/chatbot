@@ -121,7 +121,7 @@ export const BasicDemo: React.FunctionComponent = () => {
             showAll && setShowAll(!showAll);
           }}
           name="basic-inline-radio"
-          label="With options dropdown"
+          label="With settings dropdown"
           id="options-dropdown"
         />
       </FormGroup>

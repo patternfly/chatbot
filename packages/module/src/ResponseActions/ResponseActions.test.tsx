@@ -90,7 +90,7 @@ describe('ResponseActions', () => {
         name="Bot"
         role="bot"
         avatar=""
-        content="Example with all prebuilt actions"
+        content="I updated your account with those settings. You're ready to set up your first dashboard!"
         actions={{
           positive: {},
           negative: {}
@@ -113,7 +113,9 @@ describe('ResponseActions', () => {
       'pf-chatbot__button--response-action-clicked'
     );
     expect(goodBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
-    await userEvent.click(screen.getByText('Example with all prebuilt actions'));
+    await userEvent.click(
+      screen.getByText("I updated your account with those settings. You're ready to set up your first dashboard!")
+    );
     expect(goodBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
     expect(badBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
   });

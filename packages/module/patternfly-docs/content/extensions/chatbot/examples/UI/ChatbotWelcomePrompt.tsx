@@ -1,19 +1,19 @@
 import React from 'react';
 
 import ChatbotWelcomePrompt from '@patternfly/chatbot/dist/dynamic/ChatbotWelcomePrompt';
-import Checkbox from '@patternfly/react-core';
+import { Checkbox } from '@patternfly/react-core';
 
 export const ChatbotWelcomePromptExample: React.FunctionComponent = () => {
   const [showWelcomePrompts, setShowWelcomePrompts] = React.useState(true);
 
   const welcomePrompts = [
     {
-      title: 'Topic 1',
-      message: 'Helpful prompt for Topic 1'
+      title: 'Set up account',
+      message: 'Choose the necessary settings and preferences for your account.'
     },
     {
-      title: 'Topic 2',
-      message: 'Helpful prompt for Topic 2'
+      title: 'Troubleshoot issue',
+      message: 'Find documentation and instructions to resolve your issue.'
     }
   ];
 
@@ -29,8 +29,8 @@ export const ChatbotWelcomePromptExample: React.FunctionComponent = () => {
         id="showWelcomePrompts"
       />
       <ChatbotWelcomePrompt
-        title="Hello, Chatbot User"
-        description="How may I help you today?"
+        title="Hi, ChatBot User!"
+        description="How can I help you today?"
         {...(showWelcomePrompts && { prompts: welcomePrompts })}
       />
     </>

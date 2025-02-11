@@ -15,13 +15,13 @@ exports[`ChatbotWelcomePrompt should render welcome prompt 1`] = `
       <span
         class="pf-chatbot__hello"
       >
-        Hello, Chatbot User
+        Hi, ChatBot User!
       </span>
       <br />
       <span
         class="pf-chatbot__question"
       >
-        How may I help you today?
+        How can I help you today?
       </span>
     </h1>
   </div>

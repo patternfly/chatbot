@@ -15,7 +15,7 @@ describe('ChatbotHeaderSelectorDropdown', () => {
   it('should render ChatbotHeaderSelectorDropdown', () => {
     render(<ChatbotHeaderSelectorDropdown value="Option 1">{dropdownItems}</ChatbotHeaderSelectorDropdown>);
 
-    expect(screen.getByRole('button', { name: 'Chatbot selector' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Select model/i })).toBeTruthy();
   });
 
   it('should call onselect handler when a dropdown item is clicked', async () => {
@@ -27,7 +27,7 @@ describe('ChatbotHeaderSelectorDropdown', () => {
     );
 
     act(() => {
-      fireEvent.click(screen.getByRole('button', { name: 'Chatbot selector' }));
+      fireEvent.click(screen.getByRole('button', { name: /Select model/i }));
     });
 
     await waitFor(() => {

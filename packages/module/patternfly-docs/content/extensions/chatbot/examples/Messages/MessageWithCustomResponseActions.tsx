@@ -11,7 +11,7 @@ export const CustomActionExample: React.FunctionComponent = () => (
     name="Bot"
     role="bot"
     avatar={patternflyAvatar}
-    content="Example with custom actions"
+    content="I updated your account with those settings. You're ready to set up your first dashboard!"
     actions={{
       regenerate: {
         ariaLabel: 'Regenerate',
