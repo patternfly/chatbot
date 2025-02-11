@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonProps, DropEvent } from '@patternfly/react-core';
+import { ButtonProps, DropEvent, TextArea } from '@patternfly/react-core';
 
 // Import Chatbot components
 import SendButton from './SendButton';
@@ -7,7 +7,7 @@ import MicrophoneButton from './MicrophoneButton';
 import { AttachButton } from './AttachButton';
 import AttachMenu from '../AttachMenu';
 import StopButton from './StopButton';
-import DOMPurify from 'dompurify';
+import { ChatbotDisplayMode } from '../Chatbot';
 
 export interface MessageBarWithAttachMenuProps {
   /** Flag to enable whether attach menu is open */
@@ -63,7 +63,9 @@ export interface MessageBarProps {
     };
   };
   /** A callback for when the text area value changes. */
-  onChange?: (event: React.ChangeEvent<HTMLDivElement>, value: string) => void;
+  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>, value: string) => void;
+  /** Display mode of chatbot, if you want to message bar to resize when the display mode changes */
+  displayMode?: ChatbotDisplayMode;
 }
 
 export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
@@ -79,46 +81,148 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
   hasStopButton,
   buttonProps,
   onChange,
+  displayMode,
   ...props
 }: MessageBarProps) => {
   // Text Input
   // --------------------------------------------------------------------------
   const [message, setMessage] = React.useState<string>('');
   const [isListeningMessage, setIsListeningMessage] = React.useState<boolean>(false);
-  const [showPlaceholder, setShowPlaceholder] = React.useState(true);
-  const textareaRef = React.useRef<HTMLDivElement>(null);
+  const [hasSentMessage, setHasSentMessage] = React.useState(false);
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const attachButtonRef = React.useRef<HTMLButtonElement>(null);
 
-  const handleInput = (event) => {
-    // newMessage === '' doesn't work unless we trim, which causes other problems
-    // textContent seems to work, but doesn't allow for markdown, so we need both
-    const messageText = DOMPurify.sanitize(event.target.textContent);
-    if (messageText === '') {
-      setShowPlaceholder(true);
-      setMessage('');
-      onChange && onChange(event, '');
-    } else {
-      setShowPlaceholder(false);
-      // this is so that tests work; RTL doesn't seem to like event.target.innerText, but browsers don't pick up markdown without it
-      let newMessage = messageText;
-      if (event.target.innerText) {
-        newMessage = DOMPurify.sanitize(event.target.innerText);
+  const setInitialLineHeight = (field: HTMLTextAreaElement) => {
+    field.style.setProperty('line-height', '1rem');
+    const parent = field.parentElement;
+    if (parent) {
+      parent.style.setProperty('margin-top', `1rem`);
+      parent.style.setProperty('margin-bottom', `0rem`);
+      parent.style.setProperty('height', 'inherit');
+
+      const grandparent = parent.parentElement;
+      if (grandparent) {
+        grandparent.style.setProperty('flex-basis', 'auto');
       }
-      setMessage(newMessage);
-      onChange && onChange(event, newMessage);
     }
   };
 
+  const setAutoHeight = (field: HTMLTextAreaElement) => {
+    const parent = field.parentElement;
+    if (parent) {
+      parent.style.setProperty('height', 'inherit');
+      const computed = window.getComputedStyle(field);
+      // Calculate the height
+      const height =
+        parseInt(computed.getPropertyValue('border-top-width')) +
+        parseInt(computed.getPropertyValue('padding-top')) +
+        field.scrollHeight +
+        parseInt(computed.getPropertyValue('padding-bottom')) +
+        parseInt(computed.getPropertyValue('border-bottom-width'));
+      parent.style.setProperty('height', `${height}px`);
+
+      if (height > 32 || window.innerWidth <= 507) {
+        parent.style.setProperty('margin-bottom', `1rem`);
+        parent.style.setProperty('margin-top', `1rem`);
+      }
+    }
+  };
+
+  const textIsLongerThan2Lines = (field: HTMLTextAreaElement) => {
+    const lineHeight = parseFloat(window.getComputedStyle(field).lineHeight);
+    const lines = field.scrollHeight / lineHeight;
+    return lines > 2;
+  };
+
+  const setAutoWidth = (field: HTMLTextAreaElement) => {
+    const parent = field.parentElement;
+    if (parent) {
+      const grandparent = parent.parentElement;
+      if (textIsLongerThan2Lines(field) && grandparent) {
+        grandparent.style.setProperty('flex-basis', `100%`);
+      }
+    }
+  };
+
+  const handleNewLine = (field: HTMLTextAreaElement) => {
+    const parent = field.parentElement;
+    if (parent) {
+      parent.style.setProperty('margin-bottom', `1rem`);
+      parent.style.setProperty('margin-top', `1rem`);
+    }
+  };
+
+  React.useEffect(() => {
+    const field = textareaRef.current;
+    if (field) {
+      if (field.value === '') {
+        if (window.innerWidth > 507) {
+          setInitialLineHeight(field);
+        }
+      } else {
+        setAutoHeight(field);
+        setAutoWidth(field);
+      }
+    }
+    const resetHeight = () => {
+      if (field) {
+        if (field.value === '') {
+          if (window.innerWidth > 507) {
+            setInitialLineHeight(field);
+          }
+        } else {
+          setAutoHeight(field);
+          setAutoWidth(field);
+        }
+      }
+    };
+    window.addEventListener('resize', resetHeight);
+
+    return () => {
+      window.removeEventListener('resize', resetHeight);
+    };
+  }, []);
+
+  React.useEffect(() => {
+    const field = textareaRef.current;
+    if (field) {
+      if (field.value === '') {
+        setInitialLineHeight(textareaRef.current);
+      } else {
+        setAutoHeight(textareaRef.current);
+        setAutoWidth(field);
+      }
+    }
+  }, [displayMode, message]);
+
+  React.useEffect(() => {
+    const field = textareaRef.current;
+    if (field) {
+      setInitialLineHeight(field);
+      setHasSentMessage(false);
+    }
+  }, [hasSentMessage]);
+
+  const handleChange = React.useCallback((event) => {
+    onChange && onChange(event, event.target.value);
+    if (textareaRef.current) {
+      if (event.target.value === '') {
+        setInitialLineHeight(textareaRef.current);
+      } else {
+        setAutoHeight(textareaRef.current);
+      }
+    }
+    setMessage(event.target.value);
+  }, []);
+
   // Handle sending message
   const handleSend = React.useCallback(() => {
-    onSendMessage(message);
-    if (textareaRef.current) {
-      textareaRef.current.innerText = '';
-      setShowPlaceholder(true);
-      textareaRef.current.blur();
-    }
-    setMessage('');
-  }, [onSendMessage, message]);
+    setMessage((m) => {
+      onSendMessage(m);
+      setHasSentMessage(true);
+      return '';
+    });
+  }, [onSendMessage]);
 
   const handleKeyDown = React.useCallback(
     (event: React.KeyboardEvent) => {
@@ -126,6 +230,11 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
         event.preventDefault();
         if (!isSendButtonDisabled && !hasStopButton) {
           handleSend();
+        }
+      }
+      if (event.key === 'Enter' && event.shiftKey) {
+        if (textareaRef.current) {
+          handleNewLine(textareaRef.current);
         }
       }
     },
@@ -139,12 +248,7 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
 
   const handleSpeechRecognition = (message) => {
     setMessage(message);
-    const textarea = textareaRef.current;
-    if (textarea) {
-      textarea.focus();
-      textarea.textContent = DOMPurify.sanitize(message);
-    }
-    onChange && onChange({} as React.ChangeEvent<HTMLDivElement>, message);
+    onChange && onChange({} as React.ChangeEvent<HTMLTextAreaElement>, message);
   };
 
   const renderButtons = () => {
@@ -200,28 +304,15 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
     );
   };
 
-  const placeholder = isListeningMessage ? 'Listening' : 'Send a message...';
-
   const messageBarContents = (
     <>
       <div className="pf-chatbot__message-bar-input">
-        {(showPlaceholder || message === '') && (
-          <div className="pf-chatbot__message-bar-placeholder">{placeholder}</div>
-        )}
-        <div
-          contentEditable
-          suppressContentEditableWarning={true}
-          role="textbox"
-          aria-multiline="false"
+        <TextArea
           className="pf-chatbot__message-textarea"
-          onInput={handleInput}
-          onFocus={() => setShowPlaceholder(false)}
-          onBlur={() => {
-            if (message === '') {
-              setShowPlaceholder(!showPlaceholder);
-            }
-          }}
-          aria-label={placeholder}
+          value={message}
+          onChange={handleChange}
+          aria-label={isListeningMessage ? 'Listening' : 'Send a message...'}
+          placeholder={isListeningMessage ? 'Listening' : 'Send a message...'}
           ref={textareaRef}
           onKeyDown={handleKeyDown}
           {...props}
