@@ -32,6 +32,8 @@ import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
+import { getTrackingProviders } from '@patternfly/chatbot/dist/dynamic/tracking';
+import { InitProps } from '@patternfly/chatbot/dist/dynamic/tracking';
 
 const footnoteProps = {
   label: 'ChatBot uses AI. Check for mistakes.',
@@ -95,6 +97,20 @@ export default MessageLoading;
 // The timestamps re-render with them.
 const date = new Date();
 
+const initProps: InitProps = {
+  segmentKey: 'TODO-key', // TODO add your key here
+  posthogKey: 'TODO-key',
+  umamiKey: 'TODO-key',
+  umamiHostUrl: 'http://localhost:3000', // TODO where is your JS provider?
+  console: true,
+  something: 'test'
+};
+
+const tracking = getTrackingProviders(initProps);
+tracking.identify('user-123'); // TODO get real user id
+tracking.trackPageView(window.document.documentURI);
+
+const actionEventName = 'MessageAction';
 const initialMessages: MessageProps[] = [
   {
     id: '1',
@@ -113,16 +129,11 @@ const initialMessages: MessageProps[] = [
     avatar: patternflyAvatar,
     timestamp: date.toLocaleString(),
     actions: {
-      // eslint-disable-next-line no-console
-      positive: { onClick: () => console.log('Good response') },
-      // eslint-disable-next-line no-console
-      negative: { onClick: () => console.log('Bad response') },
-      // eslint-disable-next-line no-console
-      copy: { onClick: () => console.log('Copy') },
-      // eslint-disable-next-line no-console
-      share: { onClick: () => console.log('Share') },
-      // eslint-disable-next-line no-console
-      listen: { onClick: () => console.log('Listen') }
+      positive: { onClick: () => tracking.trackSingleItem(actionEventName, { response: 'Good response' }) },
+      negative: { onClick: () => tracking.trackSingleItem(actionEventName, { response: 'Bad response' }) },
+      copy: { onClick: () => tracking.trackSingleItem(actionEventName, { response: 'Copy' }) },
+      share: { onClick: () => tracking.trackSingleItem(actionEventName, { response: 'Share' }) },
+      listen: { onClick: () => tracking.trackSingleItem(actionEventName, { response: 'Listen' }) }
     }
   }
 ];
@@ -164,6 +175,7 @@ const initialConversations = {
   ]
 };
 
+const actionEvent2 = 'ActionEvent2';
 export const ChatbotDemo: React.FunctionComponent = () => {
   const [chatbotVisible, setChatbotVisible] = React.useState<boolean>(true);
   const [displayMode, setDisplayMode] = React.useState<ChatbotDisplayMode>(ChatbotDisplayMode.default);
@@ -180,7 +192,7 @@ export const ChatbotDemo: React.FunctionComponent = () => {
   const chatbotRef = React.useRef<HTMLDivElement>(null);
   const historyRef = React.useRef<HTMLButtonElement>(null);
 
-  // Autu-scrolls to the latest message
+  // Auto-scrolls to the latest message
   React.useEffect(() => {
     // don't scroll the first load - in this demo, we know we start with two messages
     if (messages.length > 2) {
@@ -193,6 +205,7 @@ export const ChatbotDemo: React.FunctionComponent = () => {
     value: string | number | undefined
   ) => {
     setSelectedModel(value as string);
+    tracking.trackSingleItem('ModelSelected', { model: value });
   };
 
   const onSelectDisplayMode = (
@@ -210,6 +223,7 @@ export const ChatbotDemo: React.FunctionComponent = () => {
 
   const handleSend = (message: string) => {
     setIsSendButtonDisabled(true);
+    tracking.trackSingleItem('UserInputReceived', { text: message });
     const newMessages: MessageProps[] = [];
     // We can't use structuredClone since messages contains functions, but we can't mutate
     // items that are going into state or the UI won't update correctly
@@ -255,21 +269,17 @@ export const ChatbotDemo: React.FunctionComponent = () => {
         avatar: patternflyAvatar,
         timestamp: date.toLocaleString(),
         actions: {
-          // eslint-disable-next-line no-console
-          positive: { onClick: () => console.log('Good response') },
-          // eslint-disable-next-line no-console
-          negative: { onClick: () => console.log('Bad response') },
-          // eslint-disable-next-line no-console
-          copy: { onClick: () => console.log('Copy') },
-          // eslint-disable-next-line no-console
-          share: { onClick: () => console.log('Share') },
-          // eslint-disable-next-line no-console
-          listen: { onClick: () => console.log('Listen') }
+          positive: { onClick: () => tracking.trackSingleItem(actionEvent2, { response: 'Good response' }) },
+          negative: { onClick: () => tracking.trackSingleItem(actionEvent2, { response: 'Bad response' }) },
+          copy: { onClick: () => tracking.trackSingleItem(actionEvent2, { response: 'Copy' }) },
+          share: { onClick: () => tracking.trackSingleItem(actionEvent2, { response: 'Share' }) },
+          listen: { onClick: () => tracking.trackSingleItem(actionEvent2, { response: 'Listen' }) }
         }
       });
       setMessages(loadedMessages);
       // make announcement to assistive devices that new message has loaded
       setAnnouncement(`Message from Bot: API response goes here`);
+      tracking.trackSingleItem('BotResponded', { undefined });
       setIsSendButtonDisabled(false);
     }, 5000);
   };
@@ -339,7 +349,10 @@ export const ChatbotDemo: React.FunctionComponent = () => {
       <ChatbotToggle
         tooltipLabel="Chatbot"
         isChatbotVisible={chatbotVisible}
-        onToggleChatbot={() => setChatbotVisible(!chatbotVisible)}
+        onToggleChatbot={function () {
+          setChatbotVisible(!chatbotVisible);
+          tracking.trackSingleItem('Chatbot Visible', { isVisible: !chatbotVisible }); // TODO correct?
+        }}
         id="chatbot-toggle"
         ref={toggleRef}
       />
@@ -441,9 +454,9 @@ export const ChatbotDemo: React.FunctionComponent = () => {
                     prompts={welcomePrompts}
                   />
                   {/* This code block enables scrolling to the top of the last message.
-                  You can instead choose to move the div with scrollToBottomRef on it below 
+                  You can instead choose to move the div with scrollToBottomRef on it below
                   the map of messages, so that users are forced to scroll to the bottom.
-                  If you are using streaming, you will want to take a different approach; 
+                  If you are using streaming, you will want to take a different approach;
                   see: https://github.com/patternfly/chatbot/issues/201#issuecomment-2400725173 */}
                   {messages.map((message, index) => {
                     if (index === messages.length - 1) {
