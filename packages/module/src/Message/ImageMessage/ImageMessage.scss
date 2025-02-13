@@ -1,0 +1,9 @@
+.pf-chatbot__message-image {
+  border-radius: var(--pf-t--global--border--radius--small);
+  max-width: 37.5rem; // 600px
+  max-height: 25rem; // 400px
+  min-height: 6.25rem; // 100px
+  // with rehypePlugins={[rehypeUnwrapImages]}, image is not wrapped in p if it is by itself
+  // however, if in a paragraph tag as part of other content, it should be a block element
+  display: block;
+}

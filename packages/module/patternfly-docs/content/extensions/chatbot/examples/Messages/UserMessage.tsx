@@ -30,6 +30,8 @@ export const UserMessageExample: React.FunctionComponent = () => {
         return link;
       case 'table':
         return table;
+      case 'image':
+        return image;
       default:
         return;
     }
@@ -136,6 +138,8 @@ _Italic text, formatted with single underscores_
  | 3.0 | April 1, 2025 | Administrator
  `;
 
+  const image = `![Multi-colored wavy lines on a black background](https://cdn.dribbble.com/userupload/10651749/file/original-8a07b8e39d9e8bf002358c66fce1223e.gif)`;
+
   return (
     <>
       <Message
@@ -223,6 +227,13 @@ _Italic text, formatted with single underscores_
             name="user-message-type"
             label="Table"
             id="user-table"
+          />
+          <Radio
+            isChecked={variant === 'image'}
+            onChange={() => setVariant('image')}
+            name="user-message-type"
+            label="Image"
+            id="user-image"
           />
         </FormGroup>
       </Form>
