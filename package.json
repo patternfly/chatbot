@@ -39,7 +39,7 @@
     "@babel/preset-react": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
     "@octokit/rest": "^18.0.0",
-    "@patternfly/documentation-framework": "^6.5.0",
+    "@patternfly/documentation-framework": "^6.5.13",
     "@patternfly/patternfly": "^6.1.0",
     "@patternfly/react-icons": "^6.1.0",
     "@patternfly/react-table": "^6.1.0",
