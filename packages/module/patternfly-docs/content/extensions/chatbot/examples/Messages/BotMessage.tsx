@@ -140,10 +140,6 @@ _Italic text, formatted with single underscores_
         content={`This is a text-based message from "Bot," with an updated timestamp.`}
         timestamp="1 hour ago"
       />
-      <Message name="Bot" role="bot" avatar={patternflyAvatar} content={code} />
-      <Message name="Bot" role="bot" avatar={patternflyAvatar} content={orderedList} />
-      <Message name="Bot" role="bot" avatar={patternflyAvatar} content={unorderedList} />
-      <Message name="Bot" role="bot" avatar={patternflyAvatar} content={moreComplexList} />
       <Message name="Bot" role="bot" avatar={patternflyAvatar} content="Example content" isLoading />
       <Message role="bot" avatar={patternflyAvatar} content="This message is from a nameless bot." />
       <Message

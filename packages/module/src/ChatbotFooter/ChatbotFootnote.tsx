@@ -32,7 +32,7 @@ export interface ChatbotFootnotePopover {
   bannerImage?: ChatbotFootnotePopoverBannerImage;
   /** Optional CTA button that can be used to trigger an action and close the popover */
   cta?: ChatbotFootnotePopoverCTA;
-  /** Optional link that can be used to show and external link like **View AI policy** */
+  /** Optional link that can be used to show an external link like **View AI policy** */
   link?: ChatbotFootnotePopoverLink;
   /** Props for PF Popover */
   popoverProps?: PopoverProps;
