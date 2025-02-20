@@ -38,6 +38,9 @@ import ThMessage from './TableMessage/ThMessage';
 import { TableProps } from '@patternfly/react-table';
 import ImageMessage from './ImageMessage/ImageMessage';
 import rehypeUnwrapImages from 'rehype-unwrap-images';
+import rehypeExternalLinks from 'rehype-external-links';
+import rehypeSanitize from 'rehype-sanitize';
+import LinkMessage from './LinkMessage/LinkMessage';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -133,6 +136,8 @@ export interface MessageProps extends Omit<React.HTMLProps<HTMLDivElement>, 'rol
   innerRef?: React.Ref<HTMLDivElement>;
   /** Props for table message. It is important to include a detailed aria-label that describes the purpose of the table. */
   tableProps?: Required<Pick<TableProps, 'aria-label'>> & TableProps;
+  /** Whether to open links in message in new tab. */
+  openLinkInNewTab?: boolean;
 }
 
 export const MessageBase: React.FunctionComponent<MessageProps> = ({
@@ -159,9 +164,14 @@ export const MessageBase: React.FunctionComponent<MessageProps> = ({
   isLiveRegion = true,
   innerRef,
   tableProps,
+  openLinkInNewTab = true,
   ...props
 }: MessageProps) => {
   const { beforeMainContent, afterMainContent, endContent } = extraContent || {};
+  let rehypePlugins;
+  if (openLinkInNewTab) {
+    rehypePlugins = [[rehypeExternalLinks, { target: '_blank' }, rehypeSanitize]];
+  }
   let avatarClassName;
   if (avatarProps && 'className' in avatarProps) {
     const { className, ...rest } = avatarProps;
@@ -237,10 +247,11 @@ export const MessageBase: React.FunctionComponent<MessageProps> = ({
                       return <TdMessage {...rest} />;
                     },
                     th: (props) => <ThMessage {...props} />,
-                    img: (props) => <ImageMessage {...props} />
+                    img: (props) => <ImageMessage {...props} />,
+                    a: (props) => <LinkMessage {...props} />
                   }}
                   remarkPlugins={[remarkGfm]}
-                  rehypePlugins={[rehypeUnwrapImages]}
+                  rehypePlugins={[rehypeUnwrapImages, ...rehypePlugins]}
                 >
                   {content}
                 </Markdown>
