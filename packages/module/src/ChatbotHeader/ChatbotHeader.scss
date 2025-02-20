@@ -70,8 +70,9 @@
 }
 
 // ============================================================================
-// Chatbot Display Mode - Docked
+// Chatbot Display Mode - Docked and Drawer
 // ============================================================================
+.pf-chatbot--drawer,
 .pf-chatbot--docked {
   .pf-chatbot__header {
     background-color: var(--pf-t--chatbot--background);

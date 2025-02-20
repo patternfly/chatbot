@@ -14,8 +14,10 @@ export interface ChatbotHeaderTitleProps {
   showOnFullScreen?: React.ReactNode | string;
   /** Content to display on docked screen */
   showOnDocked?: React.ReactNode | string;
-  /** Content to display on overlay screen */
+  /** Content to display on embedded screen */
   showOnEmbedded?: React.ReactNode | string;
+  /** Content to display in drawer mode */
+  showOnDrawer?: React.ReactNode | string;
   /** Content to display by default; this will be shown if a case is not explicitly set */
   showOnDefault?: React.ReactNode | string;
 }
@@ -27,10 +29,11 @@ export const ChatbotHeaderTitle: React.FunctionComponent<ChatbotHeaderTitleProps
   showOnFullScreen,
   showOnDocked,
   showOnEmbedded,
+  showOnDrawer,
   showOnDefault
 }: ChatbotHeaderTitleProps) => {
   const renderChildren = () => {
-    if (displayMode && (showOnDefault || showOnFullScreen || showOnEmbedded || showOnDocked)) {
+    if (displayMode) {
       /* eslint-disable indent */
       switch (displayMode) {
         case ChatbotDisplayMode.fullscreen:
@@ -39,6 +42,8 @@ export const ChatbotHeaderTitle: React.FunctionComponent<ChatbotHeaderTitleProps
           return showOnDocked ?? showOnDefault;
         case ChatbotDisplayMode.embedded:
           return showOnEmbedded ?? showOnDefault;
+        case ChatbotDisplayMode.drawer:
+          return showOnDrawer ?? showOnDefault;
         default:
           return showOnDefault;
       }

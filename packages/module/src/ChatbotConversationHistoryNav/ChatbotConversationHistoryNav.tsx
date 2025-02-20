@@ -285,7 +285,7 @@ export const ChatbotConversationHistoryNav: React.FunctionComponent<ChatbotConve
         <DrawerContentBody {...drawerContentBodyProps}>
           <>
             <div
-              className={`${isDrawerOpen && (displayMode === ChatbotDisplayMode.default || displayMode === ChatbotDisplayMode.docked) ? 'pf-v6-c-backdrop pf-chatbot__drawer-backdrop' : undefined} `}
+              className={`${isDrawerOpen && (displayMode === ChatbotDisplayMode.default || displayMode === ChatbotDisplayMode.docked || displayMode === ChatbotDisplayMode.drawer) ? 'pf-v6-c-backdrop pf-chatbot__drawer-backdrop' : undefined} `}
             ></div>
             {drawerContent}
           </>

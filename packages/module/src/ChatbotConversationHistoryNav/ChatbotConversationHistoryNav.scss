@@ -155,6 +155,7 @@
 // ============================================================================
 // Chatbot Display Mode - Fullscreen
 // ============================================================================
+.pf-chatbot--drawer,
 .pf-chatbot--fullscreen {
   .pf-chatbot__history.pf-v6-c-drawer {
     height: 100vh;
@@ -181,6 +182,7 @@
 }
 
 .pf-chatbot--docked,
+.pf-chatbot--drawer,
 .pf-chatbot--embedded,
 .pf-chatbot--fullscreen {
   .pf-chatbot__history {

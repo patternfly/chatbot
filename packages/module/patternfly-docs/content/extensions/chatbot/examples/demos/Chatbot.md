@@ -106,6 +106,17 @@ This demo displays an embedded ChatBot. Embedded ChatBots are meant to be placed
 
 ```
 
+### Drawer ChatBot
+
+This demo displays a ChatBot in a drawer. This demo includes:
+
+1. An empty [PatternFly page](/components/page) with a sidebar and masthead.
+2. A [basic ChatBot](#basic-chatbot), placed beside the page content. It does not overlay the page content, cannot be minimized, and does not allow you to change the display mode by default.
+
+```js file="./ChatbotInDrawer.tsx" isFullscreen
+
+```
+
 ### Comparing ChatBots
 
 To let users compare how different ChatBots respond to the same prompt, you can add multiple ChatBots within the same window. The following demo illustrates a comparison view pattern that allows users to toggle between different conversations in a single ChatBot window.

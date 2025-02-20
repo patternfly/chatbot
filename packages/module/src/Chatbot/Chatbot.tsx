@@ -23,7 +23,8 @@ export enum ChatbotDisplayMode {
   default = 'default',
   embedded = 'embedded',
   docked = 'docked',
-  fullscreen = 'fullscreen'
+  fullscreen = 'fullscreen',
+  drawer = 'drawer'
 }
 
 const ChatbotBase: React.FunctionComponent<ChatbotProps> = ({
