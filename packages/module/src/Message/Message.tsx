@@ -38,6 +38,7 @@ import ThMessage from './TableMessage/ThMessage';
 import { TableProps } from '@patternfly/react-table';
 import ImageMessage from './ImageMessage/ImageMessage';
 import rehypeUnwrapImages from 'rehype-unwrap-images';
+import { PluggableList } from 'react-markdown/lib';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -133,6 +134,8 @@ export interface MessageProps extends Omit<React.HTMLProps<HTMLDivElement>, 'rol
   innerRef?: React.Ref<HTMLDivElement>;
   /** Props for table message. It is important to include a detailed aria-label that describes the purpose of the table. */
   tableProps?: Required<Pick<TableProps, 'aria-label'>> & TableProps;
+  /** Additional rehype plugins passed from the consumer */
+  additionalRehypePlugins?: PluggableList;
 }
 
 export const MessageBase: React.FunctionComponent<MessageProps> = ({
@@ -159,6 +162,7 @@ export const MessageBase: React.FunctionComponent<MessageProps> = ({
   isLiveRegion = true,
   innerRef,
   tableProps,
+  additionalRehypePlugins = [],
   ...props
 }: MessageProps) => {
   const { beforeMainContent, afterMainContent, endContent } = extraContent || {};
@@ -171,6 +175,9 @@ export const MessageBase: React.FunctionComponent<MessageProps> = ({
   // Keep timestamps consistent between Timestamp component and aria-label
   const date = new Date();
   const dateString = timestamp ?? `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+
+  const rehypePlugins = [rehypeUnwrapImages, ...(additionalRehypePlugins ?? [])];
+
   return (
     <section
       aria-label={`Message from ${role} - ${dateString}`}
@@ -240,7 +247,7 @@ export const MessageBase: React.FunctionComponent<MessageProps> = ({
                     img: (props) => <ImageMessage {...props} />
                   }}
                   remarkPlugins={[remarkGfm]}
-                  rehypePlugins={[rehypeUnwrapImages]}
+                  rehypePlugins={rehypePlugins}
                 >
                   {content}
                 </Markdown>
