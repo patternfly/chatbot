@@ -6,70 +6,109 @@ subsection: ChatBot
 # Sidenav secondary level section
 # should be the same for all markdown files
 id: Analytics
+source: Analytics
 # Tab (react | react-demos | html | html-demos | design-guidelines | accessibility)
-source: react
 # If you use typescript, the name of the interface to display props for
 # These are found through the sourceProps function provided in patternfly-docs.source.js
-propComponents: []
 sortValue: 4
 ---
+import "../../images.css"
 
-import eventsSegment from './Events_Segment.png';
-import eventsUmami from './Events_umami.png';
-import eventsImg from './Events.png';
-import eventsPosthog from './Events_posthog.png';
+To gain more insight into the ways that your users interact with your ChatBot, you can add support for **analytics**. To add analytics tracking, you can refer to this guide and configure tracking for the interactions you care about most.   
 
-## Overview
+## Elements
 
-The following diagram shows the main components of the Analytics tracking code:
+This following diagram shows the main components of ChatBot analytics tracking code, as well as the flow of information between components:
 
 <div class="ws-docs-content-img">
-![Main elements of the tracking code.](./analytics-layout.svg)
+![Main elements of the tracking code.](../../img/chatbot-analytics.svg)
 </div>
 
-The user code first calls the static `getTrackingProviders()` method which initialises the tracking providers.
-This returns an instance of the `TrackingAPI` , which can then subsequently be used to emit analytics events.
+The user code (1) first calls the static `getTrackingProviders()` method (3) which initializes the tracking providers (4). This returns an instance of the `trackingAPI` (2), which can then subsequently be used to emit analytics events.
 
-User code (blueish box) only interacts with the classes/methods in green.
+Note that user code only interacts with:
+- `trackingAPI` (including `identify`, `trackPageview`, `trackSingleItem`)
+- `TrackingRegistry` (including `getTrackingProviders`)
 
 ## Usage
 
-Before the code can be used, it is necessary to once supply the api-keys of the respective providers:
+### Setup
+
+1. Before you can use the `trackingAPI`, you must first supply the API keys of the respective providers. 
+
+  ```nolive
+  const initProps: InitProps = {
+    segmentKey: 'TODO-key', // TODO add your key here
+  //  segmentCdn: 'https://my.org/cdn',  // Set up segment cdn (optional)
+  //  segmentIntegrations: { // Provide Segment integrations (optional)
+  //          'Segment.io': {
+  //            apiHost: 'my.api.host/api/v1',
+  //            protocol: 'https'
+  //          }
+          },
+
+    posthogKey: 'TODO-key',
+    umamiKey: 'TODO-key',
+    umamiHostUrl: 'http://localhost:3000', // TODO where is your JS provider?
+    something: 'test',
+    console: 'true' // Console provider
+  };
+  ```
+
+1. Once this is done, you can create an instance of the `trackingAPI` and start sending events.
+
+    ```nolive
+    const trackingAPI = getTrackingProviders(initProps);
+    ```
+
+1. One of your first events should identify the user in some way, such as a UUID that stays consistent for the same user. 
+
+  ```nolive
+  const trackingAPI = getTrackingProviders(initProps);
+  trackingAPI.identify('user-123'); // TODO get real user id
+  // Track the page that is currently visited. Best put into a react effect (see below)
+  trackingAPI.trackPageView();
+  // Track a single Event
+  trackingAPI.trackSingleItem("MyEvent", { response: 'Good response' })
+  ```
+
+#### Tracking providers
+
+Only providers with a matching key in the `InitProps` will be started and used.
 
 ```nolive
 const initProps: InitProps = {
   segmentKey: 'TODO-key', // TODO add your key here
-//  segmentCdn: 'https://my.org/cdn',  // Set up segment cdn (optional)
-//  segmentIntegrations: { // Provide Segment integations (optional)
-//          'Segment.io': {
-//            apiHost: 'my.api.host/api/v1',
-//            protocol: 'https'
-//          }
-        },
-
   posthogKey: 'TODO-key',
   umamiKey: 'TODO-key',
   umamiHostUrl: 'http://localhost:3000', // TODO where is your JS provider?
-  something: 'test',
-  console: 'true' // Console provider
-};
+  console: true
 ```
 
-Once this is done, you can get an instance of the `TrackingAPI` and then start sending events.
-One of the first events should be to identify the user in some way (this can be a UUID, which stays the same for the same user).
+##### Modifying providers 
+
+If you know upfront that you only want to use 1 of the supported providers, you can modify `getTrackingProviders()` and remove all other providers in the providers array.
+
+When using the providers you need to add additional dependencies to your package.json file:
 
 ```nolive
-const trackingAPI = getTrackingProviders(initProps);
-trackingAPI.identify('user-123'); // TODO get real user id
-// Track the page, that is currently visited. Best put into a react effect (see below)
-trackingAPI.trackPageView();
-// Track a single Event
-trackingAPI.trackSingleItem("MyEvent", { response: 'Good response' })
+"dependencies": {
+  "@segment/analytics-next": "^1.76.0",
+  "posthog-js": "^1.194.4"
 ```
 
-### Page hit tracking
+##### Adding providers
 
-For page flow tracking, you can use a snippet like this.
+To add another analytics provider, you need to implement 2 interfaces, `TrackingSpi` and `trackingApi`.
+1. It is easiest to start by copying the `ConsoleTrackingProvider`
+1. The first thing you should do is to provide a correct value in `getKey()`
+1. Once you are happy enough with the implementation, add it to the array of providers in `getTrackingProviders()`
+
+### Page flow tracking
+
+To understand how users move through their ChatBot journey, you can track their page flow. 
+
+To add tracking to each page view, use the `trackPageView()` method.
 
 ```nolive
 import React from 'react';
@@ -85,28 +124,23 @@ export const useTrackPageFlow = (): void => {
 };
 ```
 
-### Single Event tracking
+### Event tracking
 
-To track single events (e.g. Button Press, Form Submission), you use the `trackSingleItem` method.
+To get more specific insight into how users are interacting with the UI, you can track single events, including button clicks, form submissions, and so on. 
+
+To add tracking to an interaction of your choice, use the `trackSingleItem` method.
 
 ```nolive
 trackingAPI.trackSingleItem(eventName, propertyDict)
 ```
 
-The method takes two parameters:
+This method takes 2 parameters:
+- `eventName`: The unique name of the event. To differentiate different events that use the same name, you'll need to add an additional property.
+- `propertyDict`: A dict with key-value pairs that represent important properties of the event. If there are none, this value can be empty.
 
-- eventName : name of the event. Should be unique throughout the application (or you need to differentiate different events with the same name by supplying an additional property).
-- propertyDict: a dict with key-value pairs that represent important properties of the event. The dict can be empty.
+#### Form submissions
 
-When submitting forms, you only instrument the form itself. Don't instrument the button that calls the form.
-Two major cases need to be distinguished:
-
-- Form submitted
-  * Form submission action was successful
-  * Form submission action failed
-- Form was cancelled
-
-For form submission, you can use the
+Only add tracking to the form itself, not the button that opens the form. You should track both successful and failed form submissions, as well as cancelled forms
 
 ```nolive
 trackingAPI.trackSingleItem(Event_Name, {
@@ -116,92 +150,65 @@ trackingAPI.trackSingleItem(Event_Name, {
     <properties>, string/number/boolean } )
 ```
 
-call. Outcome is obvious, for `outcome=submit`, `success` denotes if the action (in the backend) was successful or not.
-For the case of failure, `error` would yield the error message (try to strip out variable parts like the random part of a container-name).
-`<properties>` are some additional properties from the form, that should be sent to analytics.
-Take good judgement, what to send.
-Items like names provided by the user above should not be sent.
-Likewise for the content of a description field.
-On the other hand for Deployments, replica count or memory server size are items that could be sent and will help us to better understand the users.
-
-### Enable analytics gathering
-
-Only providers that have a matching key in the `InitProps` will be started and used.
-
-```nolive
-const initProps: InitProps = {
-  segmentKey: 'TODO-key', // TODO add your key here
-  posthogKey: 'TODO-key',
-  umamiKey: 'TODO-key',
-  umamiHostUrl: 'http://localhost:3000', // TODO where is your JS provider?
-  console: true
-```
-
-If you know upfront that you only want to use one of the providers, it is possible to modify
-`getTrackingProviders()` and omit the unneeded providers in the providers array.
-
-### package.json
-
-When using the providers you need to add some dependencies in package.json like:
-
-```nolive
-"dependencies": {
-  "@segment/analytics-next": "^1.76.0",
-  "posthog-js": "^1.194.4"
-```
+Parameters to pass with the `trackSingleItem` method can include:
+- `outcome`: Communicates if the form was submitted or cancelled. 
+- `success`: Used for a "submit" outcome to communicate if the submission was successful for not in the backend.
+- `error`: Used for a "submit" outcome to communicate the error message associated with a failed submission. Try to remove extraneous parts of the message, like part of a container-name.
+- `properties`: Any additional properties from the form, to be tracked for analytics. 
+  - Use your judgement to determine what will be useful for your analytics.
+  - Highly specific data, like names provided by the user or description text input, should not be tracked. 
+  - Less personal data, like deployment replica count or memory server size, is more likely to help you understand your users.
 
 ## Examples
 
-I have started the ChatBot and done the actions 1-5 in order:
+To better understand the analytics tracking process, here are 3 examples of what you could see in an analytics tool.
 
-<div class="ws-docs-content-img">
-<img src={eventsImg} alt="Events done in the ChatBot" />
+For all 3 tools, consider the following example, where the users has started a ChatBot and taken actions 1-5 in order:
+
+<div class="ws-docs-content-img" style="width:60%">
+![Events done in the ChatBot](../../img/analytics-example.svg)
 </div>
 
-1. Select a Model
-2. Posted a question
-3. Got an answer from the model
-4. Clicked the thumbsUp button
-5. Closed the chatbot
+1. Selected a model
+2. Sent a question
+3. Received a response from the model
+4. Clicked the "thumbs up" button
+5. Closed the ChatBot window
 
-### Segment
+This pattern of actions will be applied to the following 3 analytics tools.
 
-Segment shows the events in its Source debugger with the newest event at the top.
-Below the numbered events, you can also see the results of `identify` and `trackPageView`.
+1. Segment
 
-<div class="ws-docs-content-img">
-<img src={eventsSegment} alt="Events displayed in the Segment debugger" />
-</div>
+    - [Segment](https://segment.com/) shows all user events in its source debugger: 
 
-If you clicked on an event, you'd get to see the passed properties.
+      <div class="ws-docs-content-img" style="width:70%">
+      ![Events displayed in the Segment debugger](../../img/segment.svg)
+      </div>
+    
+      - 1-5: User actions with the newest event at the top.
+      - 6-7: You can also see the results of `identify` (6) and `trackPageView` (7).
+      - If you clicked on an event, you would also see the properties.
 
-**Note**: When using the Segment provider, you may also want to set the
-`segmentCdn` and `segmentIntegrations` initialization properties.
+    - **Note**: When using the Segment provider, you may also want to set the `segmentCdn` and `segmentIntegrations` initialization properties.
 
-### Umami
+1. Umami
 
-Events are visible in Umami under Website -> Events:
+    - In [Umami](https://umami.is/), events are visible within **Website** / **Events**.
+    - The list is similar to Segment, with different formatting:
 
-The list is pretty similar to Segment, just differently formatted.
+      <div class="ws-docs-content-img">
+      ![Events in Umami](../../img/umami.svg)
+      </div>
 
-<div class="ws-docs-content-img">
-<img src={eventsUmami} alt="Events in Umami" />
-</div>
+      - 1-5: User actions with the newest event at the top.
 
-### PostHog
+3. PostHog
 
-PostHog shows the Events in the Activity section.
+    - In [PostHog](https://posthog.com/), events are located in the **Activity** section. 
+    - PostHog integrates deeper in the provided code, so there are more default events tracked:
 
-<div class="ws-docs-content-img">
-<img src={eventsPosthog} alt="Events in PostHog" />
-</div>
+      <div class="ws-docs-content-img">
+      ![Events in PostHog](../../img/posthog.svg)
+      </div>
 
-PostHog sends more events, as it integrates deeper in the provided code,
-you can nevertheless see the main events that we have created in our code.
-
-## Add a new analytics provider
-
-To add another analytics provider, you need to implement two interfaces, `TrackingSpi` and `TrackingApi`.
-Most easy is probably to copy the `ConsoleTrackingProvider`.
-The first thing you should do is to provide a correct value in `getKey()`.
-Once you are happy enough with the implementation, you should add it in `getTrackingProviders()` to the array of providers.
+      - 1-5: User actions with the newest event at the top.
