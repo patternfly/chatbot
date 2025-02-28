@@ -87,6 +87,22 @@ This demo displays a basic ChatBot, which includes:
 
 ```
 
+### OpenAI ChatBot
+
+This is the basic ChatBot from above, but wired with an OPenAI server.
+To get started set the URL and access token as needed: 
+
+```
+const openAIServerBaseUrl = 'http://127.0.0.1:11434'; // Ollama server
+// const openAIServerBaseUrl = 'http://127.0.0.1:8000';  // InstructLab server
+const openAIToken = 'add-your-token-here': 
+```
+
+```js file="./OpenAIChatbot.tsx" isFullscreen
+
+```
+
+
 ### Embedded ChatBot
 
 This demo displays an embedded ChatBot. Embedded ChatBots are meant to be placed within a page in your product. This demo includes:
