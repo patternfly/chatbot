@@ -34,6 +34,9 @@
     "@patternfly/react-core": "^6.1.0",
     "@patternfly/react-code-editor": "^6.1.0",
     "@patternfly/react-icons": "^6.1.0",
+    "@patternfly/react-table": "^6.1.0",
+    "@segment/analytics-next": "^1.76.0",
+    "posthog-js": "^1.194.4",
     "clsx": "^2.1.0",
     "framer-motion": "^11.3.28",
     "react-markdown": "^9.0.1",
@@ -52,7 +55,6 @@
     "@patternfly/documentation-framework": "^6.5.13",
     "@patternfly/patternfly": "^6.1.0",
     "@patternfly/patternfly-a11y": "^5.0.0",
-    "@patternfly/react-table": "^6.1.0",
     "@types/dom-speech-recognition": "^0.0.4",
     "@types/react": "^18.2.61",
     "react": "^18.2.0",
@@ -71,9 +73,7 @@
     "victory-create-container": "^37.1.1",
     "victory-cursor-container": "^37.1.1",
     "victory-tooltip": "^37.1.1",
-    "victory-bar": "^37.1.1",
-    "@segment/analytics-next": "^1.76.0",
-    "posthog-js": "^1.194.4"
+    "victory-bar": "^37.1.1"
   },
   "overrides": {
     "puppeteer": "^23.6.1",
