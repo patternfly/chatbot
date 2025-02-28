@@ -20,7 +20,6 @@ describe('UserFeedback', () => {
     expect(screen.getByRole('button', { name: /Resolved my issue/i })).toBeTruthy();
     expect(screen.getByRole('button', { name: /Submit/i })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Close feedback for message received at 12/12/12' })).toBeTruthy();
-    expect(screen.getByRole('button', { name: /Cancel/i })).toBeTruthy();
     expect(screen.queryByRole('textbox', { name: /Provide optional additional feedback/i })).toBeFalsy();
   });
   it('should render different title correctly', () => {
@@ -124,26 +123,6 @@ describe('UserFeedback', () => {
       />
     );
     expect(screen.getByRole('button', { name: /Ima button/i })).toBeTruthy();
-  });
-  it('should handle onClose correctly when cancel button is clicked', async () => {
-    const spy = jest.fn();
-    render(<UserFeedback onSubmit={jest.fn} quickResponses={MOCK_RESPONSES} onClose={spy} timestamp="12/12/12" />);
-    const cancelButton = screen.getByRole('button', { name: 'Cancel' });
-    expect(cancelButton).toBeTruthy();
-    await userEvent.click(cancelButton);
-    expect(spy).toHaveBeenCalledTimes(1);
-  });
-  it('should change cancel word correctly', () => {
-    render(
-      <UserFeedback
-        onSubmit={jest.fn}
-        quickResponses={MOCK_RESPONSES}
-        onClose={jest.fn}
-        cancelWord="Exit"
-        timestamp="12/12/12"
-      />
-    );
-    expect(screen.getByRole('button', { name: 'Exit' })).toBeTruthy();
   });
   it('should handle className', async () => {
     render(

@@ -42,7 +42,7 @@ export interface UserFeedbackProps extends Omit<CardProps, 'onSubmit'>, OUIAProp
   closeButtonAriaLabel?: string;
   /** Label for the English word "Submit." */
   submitWord?: string;
-  /** Label for the English word "Cancel." */
+  /** @deprecated Cancel button has been deprecated. Use the close button instead. Label for the English word "Cancel." */
   cancelWord?: string;
   /** Uniquely identifies the card. */
   id?: string;
@@ -71,7 +71,6 @@ const UserFeedback: React.FunctionComponent<UserFeedbackProps> = ({
   id,
   headingLevel: HeadingLevel = 'h1',
   focusOnLoad = true,
-  cancelWord = 'Cancel',
   ...props
 }: UserFeedbackProps) => {
   const [selectedResponse, setSelectedResponse] = React.useState<string>();
@@ -118,9 +117,6 @@ const UserFeedback: React.FunctionComponent<UserFeedbackProps> = ({
             )}
             <ActionGroup>
               <Button onClick={() => onSubmit(selectedResponse, value)}>{submitWord}</Button>
-              <Button variant="link" onClick={onClose}>
-                {cancelWord}
-              </Button>
             </ActionGroup>
           </Form>
         </CardBody>
