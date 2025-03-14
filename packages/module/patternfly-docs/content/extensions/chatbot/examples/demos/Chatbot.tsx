@@ -98,6 +98,7 @@ export default MessageLoading;
 const date = new Date();
 
 const initProps: InitProps = {
+  verbose: false,
   segmentKey: 'TODO-key', // TODO add your key here
   posthogKey: 'TODO-key',
   umamiKey: 'TODO-key',
