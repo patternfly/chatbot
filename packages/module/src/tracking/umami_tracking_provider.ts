@@ -9,13 +9,17 @@ declare global {
 }
 
 export class UmamiTrackingProvider implements TrackingSpi, TrackingApi {
+  private verbose = false;
   getKey(): string {
     return 'umamiKey';
   }
 
   initialize(props: InitProps): void {
-    // eslint-disable-next-line no-console
-    console.log('UmamiProvider initialize');
+    this.verbose = props.verbose;
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('UmamiProvider initialize');
+    }
     const umamiKey = props.umamiKey as string;
     const hostUrl = props.umamiHostUrl as string;
 
@@ -35,20 +39,26 @@ export class UmamiTrackingProvider implements TrackingSpi, TrackingApi {
   }
 
   identify(userID: string): void {
-    // eslint-disable-next-line no-console
-    console.log('UmamiProvider userID: ' + userID);
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('UmamiProvider userID: ' + userID);
+    }
     window.umami?.identify({ userID });
   }
 
   trackPageView(url: string | undefined): void {
-    // eslint-disable-next-line no-console
-    console.log('UmamiProvider url', url);
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('UmamiProvider url', url);
+    }
     window.umami?.track({ url });
   }
 
   trackSingleItem(item: string, properties?: TrackingEventProperties): void {
-    // eslint-disable-next-line no-console
-    console.log('UmamiProvider: trackSingleItem' + item, properties);
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('UmamiProvider: trackSingleItem' + item, properties);
+    }
     window.umami?.track(item, properties);
   }
 }
