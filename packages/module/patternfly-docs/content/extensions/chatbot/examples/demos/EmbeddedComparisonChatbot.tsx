@@ -36,71 +36,70 @@ export const CompareChild = ({ name, input, hasNewInput, setIsSendButtonDisabled
     return id.toString();
   };
 
-  const handleSend = (input: string) => {
-    const date = new Date();
-    const newMessages: MessageProps[] = [];
-    messages.forEach((message) => newMessages.push(message));
-    newMessages.push({
-      avatar: userAvatar,
-      avatarProps: { isBordered: true },
-      id: generateId(),
-      name: 'You',
-      role: 'user',
-      content: input,
-      timestamp: `${date?.toLocaleDateString()} ${date?.toLocaleTimeString()}`
-    });
-    newMessages.push({
-      avatar: patternflyAvatar,
-      id: generateId(),
-      name,
-      role: 'bot',
-      timestamp: `${date?.toLocaleDateString()} ${date?.toLocaleTimeString()}`,
-      isLoading: true
-    });
-    setMessages(newMessages);
-    // make announcement to assistive devices that new messages have been added
-    setAnnouncement(`Message from You: ${input}. Message from ${name} is loading.`);
-
-    // this is for demo purposes only; in a real situation, there would be an API response we would wait for
-    setTimeout(() => {
-      const loadedMessages: MessageProps[] = [];
-      // we can't use structuredClone since messages contains functions, but we can't mutate
-      // items that are going into state or the UI won't update correctly
-      newMessages.forEach((message) => loadedMessages.push(message));
-      loadedMessages.pop();
-      loadedMessages.push({
-        id: generateId(),
-        role: 'bot',
-        content: `API response from ${name} goes here`,
-        name,
-        avatar: patternflyAvatar,
-        isLoading: false,
-        actions: {
-          // eslint-disable-next-line no-console
-          positive: { onClick: () => console.log('Good response') },
-          // eslint-disable-next-line no-console
-          negative: { onClick: () => console.log('Bad response') },
-          // eslint-disable-next-line no-console
-          copy: { onClick: () => console.log('Copy') },
-          // eslint-disable-next-line no-console
-          share: { onClick: () => console.log('Share') },
-          // eslint-disable-next-line no-console
-          listen: { onClick: () => console.log('Listen') }
-        },
-        timestamp: date.toLocaleString()
-      });
-      setMessages(loadedMessages);
-      // make announcement to assistive devices that new message has loaded
-      setAnnouncement(`Message from ${name}: API response goes here`);
-      setIsSendButtonDisabled(false);
-    }, 5000);
-  };
-
   React.useEffect(() => {
+    const handleSend = (input: string) => {
+      const date = new Date();
+      const newMessages: MessageProps[] = [];
+      messages.forEach((message) => newMessages.push(message));
+      newMessages.push({
+        avatar: userAvatar,
+        avatarProps: { isBordered: true },
+        id: generateId(),
+        name: 'You',
+        role: 'user',
+        content: input,
+        timestamp: `${date?.toLocaleDateString()} ${date?.toLocaleTimeString()}`
+      });
+      newMessages.push({
+        avatar: patternflyAvatar,
+        id: generateId(),
+        name,
+        role: 'bot',
+        timestamp: `${date?.toLocaleDateString()} ${date?.toLocaleTimeString()}`,
+        isLoading: true
+      });
+      setMessages(newMessages);
+      // make announcement to assistive devices that new messages have been added
+      setAnnouncement(`Message from You: ${input}. Message from ${name} is loading.`);
+
+      // this is for demo purposes only; in a real situation, there would be an API response we would wait for
+      setTimeout(() => {
+        const loadedMessages: MessageProps[] = [];
+        // we can't use structuredClone since messages contains functions, but we can't mutate
+        // items that are going into state or the UI won't update correctly
+        newMessages.forEach((message) => loadedMessages.push(message));
+        loadedMessages.pop();
+        loadedMessages.push({
+          id: generateId(),
+          role: 'bot',
+          content: `API response from ${name} goes here`,
+          name,
+          avatar: patternflyAvatar,
+          isLoading: false,
+          actions: {
+            // eslint-disable-next-line no-console
+            positive: { onClick: () => console.log('Good response') },
+            // eslint-disable-next-line no-console
+            negative: { onClick: () => console.log('Bad response') },
+            // eslint-disable-next-line no-console
+            copy: { onClick: () => console.log('Copy') },
+            // eslint-disable-next-line no-console
+            share: { onClick: () => console.log('Share') },
+            // eslint-disable-next-line no-console
+            listen: { onClick: () => console.log('Listen') }
+          },
+          timestamp: date.toLocaleString()
+        });
+        setMessages(loadedMessages);
+        // make announcement to assistive devices that new message has loaded
+        setAnnouncement(`Message from ${name}: API response goes here`);
+        setIsSendButtonDisabled(false);
+      }, 5000);
+    };
     if (input) {
       handleSend(input);
     }
-  }, [hasNewInput]);
+  }, [hasNewInput, input, messages, name, setIsSendButtonDisabled]);
 
   // Auto-scrolls to the latest message
   React.useEffect(() => {
