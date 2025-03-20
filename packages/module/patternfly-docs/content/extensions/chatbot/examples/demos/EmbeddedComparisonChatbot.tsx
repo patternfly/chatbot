@@ -36,8 +36,8 @@ export const CompareChild = ({ name, input, hasNewInput, setIsSendButtonDisabled
     return id.toString();
   };
 
-  React.useEffect(() => {
-    const handleSend = (input: string) => {
+  const handleSend = React.useCallback(
+    (input: string) => {
       const date = new Date();
       const newMessages: MessageProps[] = [];
       messages.forEach((message) => newMessages.push(message));
@@ -95,11 +95,15 @@ export const CompareChild = ({ name, input, hasNewInput, setIsSendButtonDisabled
         setAnnouncement(`Message from ${name}: API response goes here`);
         setIsSendButtonDisabled(false);
       }, 5000);
-    };
+    },
+    [messages, name, setIsSendButtonDisabled]
+  );
+
+  React.useEffect(() => {
     if (input) {
       handleSend(input);
     }
-  }, [hasNewInput, input, messages, name, setIsSendButtonDisabled]);
+  }, [hasNewInput, input, handleSend]);
 
   // Auto-scrolls to the latest message
   React.useEffect(() => {
