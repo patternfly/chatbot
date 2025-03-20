@@ -77,7 +77,7 @@ const UserFeedbackComplete: React.FunctionComponent<UserFeedbackCompleteProps> =
     if (focusOnLoad) {
       divRef.current?.focus();
     }
-  }, []);
+  });
 
   React.useEffect(() => {
     const calculatedTimeout = timeout === true ? 8000 : Number(timeout);
