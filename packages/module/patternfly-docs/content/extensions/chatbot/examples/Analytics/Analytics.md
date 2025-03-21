@@ -36,10 +36,12 @@ Note that user code only interacts with:
 
 ### Setup
 
-1. Before you can use the `trackingAPI`, you must first supply the API keys of the respective providers.
+1. Before you can use the `trackingAPI`, you must first supply the API keys of the respective providers. Providers are enabled by adding them to the `activeProviders` property:
 
 ```nolive
 const initProps: InitProps = {
+  verbose: false,
+  activeProviders: ['Segment', 'Umami', 'Posthog', 'Console' ], 
   segmentKey: 'TODO-key', // TODO add your key here
 //  segmentCdn: 'https://my.org/cdn',  // Set up segment cdn (optional)
 //  segmentIntegrations: { // Provide Segment integrations (optional)
@@ -50,12 +52,14 @@ const initProps: InitProps = {
         },
 
   posthogKey: 'TODO-key',
-  umamiKey: 'TODO-key',
+  umamiKey: 'TODO-umami-key',
   umamiHostUrl: 'http://localhost:3000', // TODO where is your JS provider?
+  'umami-data-domains': 'TODO umami data domain',
   something: 'test',
-  console: 'true' // Console provider
 };
 ```
+
+Note, that there is also a key `verbose` that allows you to enable debugging output on web-browser console. By default, this is set to `false`.
 
 1. Once this is done, you can create an instance of the `trackingAPI` and start sending events.
 
@@ -76,22 +80,20 @@ trackingAPI.trackSingleItem("MyEvent", { response: 'Good response' })
 
 #### Tracking providers
 
-Only providers with a matching key in the `InitProps` will be started and used.
+Only providers with a matching entry in the `InitProps.activeProviders` array will be started and used.
 
-```nolive
-const initProps: InitProps = {
-  segmentKey: 'TODO-key', // TODO add your key here
-  posthogKey: 'TODO-key',
-  umamiKey: 'TODO-key',
-  umamiHostUrl: 'http://localhost:3000', // TODO where is your JS provider?
-  console: true
-```
+Possible values are:
+* Umami
+* Posthog
+* Segment
+* Console
+
 
 ##### Modifying providers
 
 If you know upfront that you only want to use 1 of the supported providers, you can modify `getTrackingProviders()` and remove all other providers in the providers array.
 
-When using the providers you need to add additional dependencies to your package.json file:
+When using the providers you may need to add additional dependencies to your package.json file:
 
 ```nolive
 "dependencies": {
@@ -99,12 +101,15 @@ When using the providers you need to add additional dependencies to your package
   "posthog-js": "^1.194.4"
 ```
 
+This depends on your local setup. If you pull in
+the chatbot codebase as dependency into your project, you are already set. 
+
 ##### Adding providers
 
 To add another analytics provider, you need to implement 2 interfaces, `TrackingSpi` and `trackingApi`.
 
 1. It is easiest to start by copying the `ConsoleTrackingProvider`
-1. The first thing you should do is to provide a correct value in `getKey()`
+1. The first thing you should do is to add it to the `Providers` enum in `tracking_spi.ts`
 1. Once you are happy enough with the implementation, add it to the array of providers in `getTrackingProviders()`
 
 ### Page flow tracking

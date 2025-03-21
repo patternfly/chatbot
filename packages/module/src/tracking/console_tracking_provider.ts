@@ -1,30 +1,34 @@
-import { TrackingSpi } from './tracking_spi';
+import { InitProps, TrackingSpi } from './tracking_spi';
 import { TrackingApi, TrackingEventProperties } from './tracking_api';
 
 export class ConsoleTrackingProvider implements TrackingSpi, TrackingApi {
+  private verbose = false;
   trackPageView(url: string | undefined) {
-    // eslint-disable-next-line no-console
-    console.log('ConsoleProvider pageView', url);
-  }
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  registerProvider(): void {}
-
-  initialize(): void {
-    // eslint-disable-next-line no-console
-    console.log('ConsoleProvider initialize');
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('ConsoleProvider pageView ', url);
+    }
   }
 
-  identify(userID: string): void {
-    // eslint-disable-next-line no-console
-    console.log('ConsoleProvider identify', userID);
+  initialize(props: InitProps): void {
+    this.verbose = props.verbose;
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('ConsoleProvider initialize');
+    }
+  }
+
+  identify(userID: string, userProperties: TrackingEventProperties = {}): void {
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('ConsoleProvider identify ', userID, userProperties);
+    }
   }
 
   trackSingleItem(item: string, properties?: TrackingEventProperties): void {
-    // eslint-disable-next-line no-console
-    console.log('ConsoleProvider: ' + item, properties);
-  }
-
-  getKey(): string {
-    return 'console';
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('ConsoleProvider: ' + item, properties);
+    }
   }
 }
