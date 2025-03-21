@@ -115,6 +115,8 @@ This demo displays a ChatBot in a static, inline drawer. This demo includes:
 1. An empty [PatternFly page](/components/page) with a sidebar and masthead.
 2. A [basic ChatBot](#basic-chatbot), placed beside the page content. It does not overlay the page content, cannot be minimized, and does not allow you to change the display mode by default.
 
+**Note:** The inline drawer ChatBot is built to fit and perform within a drawer, but the implementation of the drawer is up to you. This drawer can look different for each product, but will often be placed to the side of the page, inline with the page content.
+
 ```js file="./ChatbotInDrawer.tsx" isFullscreen
 
 ```
