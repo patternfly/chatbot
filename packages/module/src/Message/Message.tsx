@@ -10,6 +10,7 @@ import {
   AlertProps,
   Avatar,
   AvatarProps,
+  ButtonProps,
   ContentVariants,
   Label,
   LabelGroupProps,
@@ -145,6 +146,8 @@ export interface MessageProps extends Omit<React.HTMLProps<HTMLDivElement>, 'rol
   openLinkInNewTab?: boolean;
   /** Optional inline error message that can be displayed in the message */
   error?: AlertProps;
+  /** Props for links */
+  linkProps?: ButtonProps;
 }
 
 export const MessageBase: React.FunctionComponent<MessageProps> = ({
@@ -173,6 +176,7 @@ export const MessageBase: React.FunctionComponent<MessageProps> = ({
   tableProps,
   openLinkInNewTab = true,
   additionalRehypePlugins = [],
+  linkProps,
   error,
   ...props
 }: MessageProps) => {
@@ -264,7 +268,7 @@ export const MessageBase: React.FunctionComponent<MessageProps> = ({
                       th: (props) => <ThMessage {...props} />,
                       img: (props) => <ImageMessage {...props} />,
                       a: (props) => (
-                        <LinkMessage href={props.href} rel={props.rel} target={props.target}>
+                        <LinkMessage href={props.href} rel={props.rel} target={props.target} {...linkProps}>
                           {props.children}
                         </LinkMessage>
                       )

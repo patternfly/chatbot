@@ -784,6 +784,20 @@ describe('Message', () => {
     // we are mocking rehype libraries, so we can't test target _blank addition on links directly with RTL
     expect(rehypeExternalLinks).not.toHaveBeenCalled();
   });
+  it('should handle extra link props correctly', async () => {
+    const spy = jest.fn();
+    render(
+      <Message
+        avatar="./img"
+        role="user"
+        name="User"
+        content={`[PatternFly](https://www.patternfly.org/)`}
+        linkProps={{ onClick: spy }}
+      />
+    );
+    await userEvent.click(screen.getByRole('link', { name: /PatternFly/i }));
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
   it('should handle error correctly', () => {
     render(<Message avatar="./img" role="user" name="User" error={ERROR} />);
     expect(screen.getByRole('heading', { name: /Could not load chat/i })).toBeTruthy();
