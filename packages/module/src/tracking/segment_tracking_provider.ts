@@ -5,13 +5,16 @@ import { InitProps, TrackingSpi } from './tracking_spi';
 
 export class SegmentTrackingProvider implements TrackingSpi, TrackingApi {
   private analytics: AnalyticsBrowser | undefined;
+  private verbose = false;
   getKey(): string {
     return 'segmentKey';
   }
 
   initialize(props: InitProps): void {
-    // eslint-disable-next-line no-console
-    console.log('SegmentProvider initialize');
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('SegmentProvider initialize');
+    }
     const segmentKey = props.segmentKey as string;
 
     // We need to create an object here, as ts lint is unhappy otherwise
@@ -33,16 +36,20 @@ export class SegmentTrackingProvider implements TrackingSpi, TrackingApi {
   }
 
   identify(userID: string): void {
-    // eslint-disable-next-line no-console
-    console.log('SegmentProvider userID: ' + userID);
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('SegmentProvider userID: ' + userID);
+    }
     if (this.analytics) {
       this.analytics.identify(userID);
     }
   }
 
   trackPageView(url: string | undefined): void {
-    // eslint-disable-next-line no-console
-    console.log('SegmentProvider url', url);
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('SegmentProvider url', url);
+    }
     if (this.analytics) {
       if (url) {
         this.analytics.page(url);
@@ -53,8 +60,10 @@ export class SegmentTrackingProvider implements TrackingSpi, TrackingApi {
   }
 
   trackSingleItem(item: string, properties?: TrackingEventProperties): void {
-    // eslint-disable-next-line no-console
-    console.log('SegmentProvider: trackSingleItem' + item, properties);
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('SegmentProvider: trackSingleItem' + item, properties);
+    }
     if (this.analytics) {
       this.analytics.track(item, { properties });
     }
