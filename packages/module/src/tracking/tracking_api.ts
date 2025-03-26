@@ -3,7 +3,7 @@ export interface TrackingEventProperties {
 }
 
 export interface TrackingApi {
-  identify: (userID: string) => void;
+  identify: (userID: string, userProperties: TrackingEventProperties) => void;
 
   trackPageView: (url: string | undefined) => void;
 

@@ -4,13 +4,14 @@ import { TrackingApi, TrackingEventProperties } from './tracking_api';
 import { InitProps, TrackingSpi } from './tracking_spi';
 
 export class PosthogTrackingProvider implements TrackingSpi, TrackingApi {
-  getKey(): string {
-    return 'posthogKey';
-  }
+  private verbose = false;
 
   initialize(props: InitProps): void {
-    // eslint-disable-next-line no-console
-    console.log('PosthogProvider initialize');
+    this.verbose = props.verbose;
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('PosthogProvider initialize');
+    }
     const posthogKey = props.posthogKey as string;
 
     posthog.init(posthogKey, {
@@ -21,22 +22,28 @@ export class PosthogTrackingProvider implements TrackingSpi, TrackingApi {
     });
   }
 
-  identify(userID: string): void {
-    // eslint-disable-next-line no-console
-    console.log('PosthogProvider userID: ' + userID);
-    posthog.identify(userID);
+  identify(userID: string, userProperties: TrackingEventProperties = {}): void {
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('PosthogProvider userID: ' + userID);
+    }
+    posthog.identify(userID, userProperties);
   }
 
   trackPageView(url: string | undefined): void {
-    // eslint-disable-next-line no-console
-    console.log('PostHogProvider url', url);
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('PostHogProvider url ', url);
+    }
     // TODO posthog seems to record that automatically.
     //  How to not clash with this here? Just leave as no-op?
   }
 
   trackSingleItem(item: string, properties?: TrackingEventProperties): void {
-    // eslint-disable-next-line no-console
-    console.log('PosthogProvider: trackSingleItem' + item, properties);
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('PosthogProvider: trackSingleItem ' + item, properties);
+    }
     posthog.capture(item, { properties });
   }
 }
