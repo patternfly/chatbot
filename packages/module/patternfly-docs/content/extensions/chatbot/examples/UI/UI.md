@@ -83,7 +83,7 @@ import PFHorizontalLogoReverse from './PF-HorizontalLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import termsAndConditionsHeader from './PF-TermsAndConditionsHeader.svg';
-import { CloseIcon } from '@patternfly/react-icons';
+import { CloseIcon, SearchIcon, OutlinedCommentsIcon } from '@patternfly/react-icons';
 
 ## Structure
 

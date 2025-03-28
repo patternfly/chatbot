@@ -4,6 +4,7 @@ import ChatbotConversationHistoryNav, {
   Conversation
 } from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
 import { Checkbox, EmptyStateStatus, Spinner } from '@patternfly/react-core';
+import { OutlinedCommentsIcon, SearchIcon } from '@patternfly/react-icons';
 
 const initialConversations: { [key: string]: Conversation[] } = {
   Today: [{ id: '1', text: 'Red Hat products and services' }],
@@ -46,6 +47,18 @@ const ERROR = {
   onClick: () => alert('Clicked Reload')
 };
 
+const NO_RESULTS = {
+  bodyText: 'Adjust your search query and try again. Check your spelling or try a more general term.',
+  titleText: 'No results found',
+  icon: SearchIcon
+};
+
+const EMPTY_STATE = {
+  bodyText: 'Access timely assistance by starting a conversation with an AI model.',
+  titleText: 'Start a new chat',
+  icon: OutlinedCommentsIcon
+};
+
 export const ChatbotHeaderTitleDemo: React.FunctionComponent = () => {
   const [isOpen, setIsOpen] = React.useState(true);
   const [isButtonOrderReversed, setIsButtonOrderReversed] = React.useState(false);
@@ -54,10 +67,12 @@ export const ChatbotHeaderTitleDemo: React.FunctionComponent = () => {
   );
   const [isLoading, setIsLoading] = React.useState(false);
   const [hasError, setHasError] = React.useState(false);
+  const [isEmpty, setIsEmpty] = React.useState(false);
+  const [hasNoResults, setHasNoResults] = React.useState(false);
   const displayMode = ChatbotDisplayMode.embedded;
 
   const findMatchingItems = (targetValue: string) => {
-    let filteredConversations = Object.entries(initialConversations).reduce((acc, [key, items]) => {
+    const filteredConversations = Object.entries(initialConversations).reduce((acc, [key, items]) => {
       const filteredItems = items.filter((item) => item.text.toLowerCase().includes(targetValue.toLowerCase()));
       if (filteredItems.length > 0) {
         acc[key] = filteredItems;
@@ -67,7 +82,9 @@ export const ChatbotHeaderTitleDemo: React.FunctionComponent = () => {
 
     // append message if no items are found
     if (Object.keys(filteredConversations).length === 0) {
-      filteredConversations = [{ id: '13', noIcon: true, text: 'No results found' }];
+      setHasNoResults(true);
+    } else {
+      setHasNoResults(false);
     }
     return filteredConversations;
   };
@@ -105,6 +122,20 @@ export const ChatbotHeaderTitleDemo: React.FunctionComponent = () => {
         id="drawer-has-error"
         name="drawer-has-error"
       ></Checkbox>
+      <Checkbox
+        label="Show empty state"
+        isChecked={isEmpty}
+        onChange={() => setIsEmpty(!isEmpty)}
+        id="drawer-is-empty"
+        name="drawer-is-empty"
+      ></Checkbox>
+      <Checkbox
+        label="Show no results state"
+        isChecked={hasNoResults}
+        onChange={() => setHasNoResults(!hasNoResults)}
+        id="drawer-has-no-results"
+        name="drawer-has-no-results"
+      ></Checkbox>
       <ChatbotConversationHistoryNav
         displayMode={displayMode}
         onDrawerToggle={() => setIsOpen(!isOpen)}
@@ -129,6 +160,8 @@ export const ChatbotHeaderTitleDemo: React.FunctionComponent = () => {
         drawerContent={<div>Drawer content</div>}
         isLoading={isLoading}
         errorState={hasError ? ERROR : undefined}
+        emptyState={isEmpty ? EMPTY_STATE : undefined}
+        noResultsState={hasNoResults ? NO_RESULTS : undefined}
       />
     </>
   );

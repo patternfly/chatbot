@@ -112,6 +112,10 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   loadingState?: SkeletonProps;
   /** Content to show in error state. Error state will appear once content is passed in. */
   errorState?: HistoryEmptyStateProps;
+  /** Content to show in empty state. Empty state will appear once content is passed in. */
+  emptyState?: HistoryEmptyStateProps;
+  /** Content to show in no results state. No results state will appear once content is passed in. */
+  noResultsState?: HistoryEmptyStateProps;
 }
 
 export const ChatbotConversationHistoryNav: React.FunctionComponent<ChatbotConversationHistoryNavProps> = ({
@@ -141,6 +145,8 @@ export const ChatbotConversationHistoryNav: React.FunctionComponent<ChatbotConve
   isLoading,
   loadingState,
   errorState,
+  emptyState,
+  noResultsState,
   ...props
 }: ChatbotConversationHistoryNavProps) => {
   const drawerRef = React.useRef<HTMLDivElement>(null);
@@ -209,6 +215,14 @@ export const ChatbotConversationHistoryNav: React.FunctionComponent<ChatbotConve
   const renderMenuContent = () => {
     if (errorState) {
       return <HistoryEmptyState {...errorState} />;
+    }
+
+    if (emptyState) {
+      return <HistoryEmptyState {...emptyState} />;
+    }
+
+    if (noResultsState) {
+      return <HistoryEmptyState {...noResultsState} />;
     }
     return (
       <Menu isPlain onSelect={onSelectActiveItem} activeItemId={activeItemId} {...menuProps}>

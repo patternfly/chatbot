@@ -5,6 +5,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ChatbotDisplayMode } from '../Chatbot/Chatbot';
 import ChatbotConversationHistoryNav, { Conversation } from './ChatbotConversationHistoryNav';
 import { EmptyStateStatus, Spinner } from '@patternfly/react-core';
+import { OutlinedCommentsIcon, SearchIcon } from '@patternfly/react-icons';
 
 const ERROR = {
   bodyText: (
@@ -19,6 +20,18 @@ const ERROR = {
   titleText: 'Could not load chat history',
   status: EmptyStateStatus.danger,
   onClick: () => alert('Clicked Reload')
+};
+
+const NO_RESULTS = {
+  bodyText: 'Adjust your search query and try again. Check your spelling or try a more general term.',
+  titleText: 'No results found',
+  icon: SearchIcon
+};
+
+const EMPTY_STATE = {
+  bodyText: 'Access timely assistance by starting a conversation with an AI model.',
+  titleText: 'Start a new chat',
+  icon: OutlinedCommentsIcon
 };
 
 const ERROR_WITHOUT_BUTTON = {
@@ -361,5 +374,45 @@ describe('ChatbotConversationHistoryNav', () => {
       />
     );
     expect(screen.getByRole('dialog', { name: /Loading/i })).toBeTruthy();
+  });
+
+  it('should accept emptyState', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        reverseButtonOrder={false}
+        handleTextInputChange={jest.fn()}
+        conversations={initialConversations}
+        emptyState={EMPTY_STATE}
+      />
+    );
+    expect(
+      screen.getByRole('dialog', {
+        name: /Start a new chat Access timely assistance by starting a conversation with an AI model./i
+      })
+    ).toBeTruthy();
+  });
+
+  it('should accept no results state', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        reverseButtonOrder={false}
+        handleTextInputChange={jest.fn()}
+        conversations={initialConversations}
+        noResultsState={NO_RESULTS}
+      />
+    );
+    expect(
+      screen.getByRole('dialog', {
+        name: /No results found Adjust your search query and try again. Check your spelling or try a more general term./i
+      })
+    ).toBeTruthy();
   });
 });
