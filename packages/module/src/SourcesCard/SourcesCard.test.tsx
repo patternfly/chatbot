@@ -235,4 +235,32 @@ describe('SourcesCard', () => {
     await userEvent.click(screen.getByRole('button', { name: /Go to previous page/i }));
     expect(spy).toHaveBeenCalledTimes(2);
   });
+
+  it('should handle showMore appropriately', async () => {
+    render(
+      <SourcesCard
+        sources={[
+          {
+            title: 'Getting started with Red Hat OpenShift',
+            link: '#',
+            body: 'Red Hat OpenShift on IBM Cloud is a managed offering to create your own cluster of compute hosts where you can deploy and manage containerized apps on IBM Cloud ...',
+            hasShowMore: true
+          },
+          {
+            title: 'Azure Red Hat OpenShift documentation',
+            link: '#',
+            body: 'Microsoft Azure Red Hat OpenShift allows you to deploy a production ready Red Hat OpenShift cluster in Azure ...'
+          },
+          {
+            title: 'OKD Documentation: Home',
+            link: '#',
+            body: 'OKD is a distribution of Kubernetes optimized for continuous application development and multi-tenant deployment. OKD also serves as the upstream code base upon ...'
+          }
+        ]}
+      />
+    );
+    expect(screen.getByRole('button', { name: /Show more/i }));
+    await userEvent.click(screen.getByRole('button', { name: /Show more/i }));
+    expect(screen.getByRole('button', { name: /Show less/i }));
+  });
 });
