@@ -20,17 +20,20 @@ export const MessageWithSourcesExample: React.FunctionComponent = () => {
             {
               title: 'Getting started with Red Hat OpenShift',
               link: '#',
-              body: 'Red Hat OpenShift on IBM Cloud is a managed offering to create your own cluster of compute hosts where you can deploy and manage containerized apps on IBM Cloud ...'
+              body: 'Red Hat OpenShift on IBM Cloud is a managed offering to create your own cluster of compute hosts where you can deploy and manage containerized apps on IBM Cloud ...',
+              isExternal: true
             },
             {
               title: 'Azure Red Hat OpenShift documentation',
               link: '#',
-              body: 'Microsoft Azure Red Hat OpenShift allows you to deploy a production ready Red Hat OpenShift cluster in Azure ...'
+              body: 'Microsoft Azure Red Hat OpenShift allows you to deploy a production ready Red Hat OpenShift cluster in Azure ...',
+              isExternal: true
             },
             {
               title: 'OKD Documentation: Home',
               link: '#',
-              body: 'OKD is a distribution of Kubernetes optimized for continuous application development and multi-tenant deployment. OKD also serves as the upstream code base upon ...'
+              body: 'OKD is a distribution of Kubernetes optimized for continuous application development and multi-tenant deployment. OKD also serves as the upstream code base upon ...',
+              isExternal: true
             }
           ],
           onSetPage
@@ -46,12 +49,14 @@ export const MessageWithSourcesExample: React.FunctionComponent = () => {
             {
               title: 'Getting started with Red Hat OpenShift AI and other products',
               link: '#',
-              body: 'Red Hat OpenShift on IBM Cloud is a managed offering to create your own cluster of compute hosts where you can deploy and manage containerized apps on IBM Cloud ...'
+              body: 'Red Hat OpenShift on IBM Cloud is a managed offering to create your own cluster of compute hosts where you can deploy and manage containerized apps on IBM Cloud ...',
+              isExternal: true
             },
             {
               title: 'Azure Red Hat OpenShift documentation | Red Hat',
               link: '#',
-              body: 'Microsoft Azure Red Hat OpenShift allows you to deploy a production ready Red Hat OpenShift cluster in Azure ...'
+              body: 'Microsoft Azure Red Hat OpenShift allows you to deploy a production ready Red Hat OpenShift cluster in Azure ...',
+              isExternal: true
             }
           ],
           onSetPage
@@ -67,7 +72,8 @@ export const MessageWithSourcesExample: React.FunctionComponent = () => {
             {
               title: 'Getting started with Red Hat OpenShift',
               link: '#',
-              body: 'Red Hat OpenShift on IBM Cloud is a managed offering to create your own cluster of compute hosts where you can deploy and manage containerized apps on IBM Cloud ...'
+              body: 'Red Hat OpenShift on IBM Cloud is a managed offering to create your own cluster of compute hosts where you can deploy and manage containerized apps on IBM Cloud ...',
+              isExternal: true
             }
           ],
           onSetPage
@@ -80,14 +86,16 @@ export const MessageWithSourcesExample: React.FunctionComponent = () => {
         content="Example with sources that include a title and link"
         sources={{
           sources: [
-            { title: 'Getting started with Red Hat OpenShift', link: '#' },
+            { title: 'Getting started with Red Hat OpenShift', link: '#', isExternal: true },
             {
               title: 'Azure Red Hat OpenShift documentation',
-              link: '#'
+              link: '#',
+              isExternal: true
             },
             {
               title: 'OKD Documentation: Home',
-              link: '#'
+              link: '#',
+              isExternal: true
             }
           ],
           onSetPage
