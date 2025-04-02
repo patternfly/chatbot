@@ -34,7 +34,7 @@ export const UserMessageExample: React.FunctionComponent = () => {
       case 'image':
         return image;
       default:
-        return;
+        return '';
     }
   };
   /* eslint-enable indent */
@@ -176,92 +176,128 @@ _Italic text, formatted with single underscores_
         <FormGroup role="radiogroup" isInline fieldId="user-message-type" label="Message content type">
           <Radio
             isChecked={variant === 'code'}
-            onChange={() => setVariant('code')}
+            onChange={() => {
+              setVariant('code');
+              setIsEditable(true);
+            }}
             name="user-message-type"
             label="Code"
             id="user-code"
           />
           <Radio
             isChecked={variant === 'inlineCode'}
-            onChange={() => setVariant('inlineCode')}
+            onChange={() => {
+              setVariant('inlineCode');
+              setIsEditable(true);
+            }}
             name="user-message-type"
             label="Inline code"
             id="user-inline-code"
           />
           <Radio
             isChecked={variant === 'heading'}
-            onChange={() => setVariant('heading')}
+            onChange={() => {
+              setVariant('heading');
+              setIsEditable(true);
+            }}
             name="user-message-type"
             label="Heading"
             id="user-heading"
           />
           <Radio
             isChecked={variant === 'blockQuotes'}
-            onChange={() => setVariant('blockQuotes')}
+            onChange={() => {
+              setVariant('blockQuotes');
+              setIsEditable(true);
+            }}
             name="user-message-type"
             label="Block quote"
             id="user-block-quotes"
           />
           <Radio
             isChecked={variant === 'emphasis'}
-            onChange={() => setVariant('emphasis')}
+            onChange={() => {
+              setVariant('emphasis');
+              setIsEditable(true);
+            }}
             name="user-message-type"
             label="Emphasis"
             id="user-emphasis"
           />
           <Radio
             isChecked={variant === 'link'}
-            onChange={() => setVariant('link')}
+            onChange={() => {
+              setVariant('link');
+              setIsEditable(true);
+            }}
             name="user-message-type"
             label="Link"
             id="user-link"
           />
           <Radio
             isChecked={variant === 'unorderedList'}
-            onChange={() => setVariant('unorderedList')}
+            onChange={() => {
+              setVariant('unorderedList');
+              setIsEditable(true);
+            }}
             name="user-message-type"
             label="Unordered list"
             id="user-unordered-list"
           />
           <Radio
             isChecked={variant === 'orderedList'}
-            onChange={() => setVariant('orderedList')}
+            onChange={() => {
+              setVariant('orderedList');
+              setIsEditable(true);
+            }}
             name="user-message-type"
             label="Ordered list"
             id="user-ordered-list"
           />
           <Radio
             isChecked={variant === 'moreComplexList'}
-            onChange={() => setVariant('moreComplexList')}
+            onChange={() => {
+              setVariant('moreComplexList');
+              setIsEditable(true);
+            }}
             name="user-message-type"
             label="More complex list"
             id="user-more-complex-list"
           />
           <Radio
             isChecked={variant === 'table'}
-            onChange={() => setVariant('table')}
+            onChange={() => {
+              setVariant('table');
+              setIsEditable(true);
+            }}
             name="user-message-type"
             label="Table"
             id="user-table"
           />
           <Radio
             isChecked={variant === 'image'}
-            onChange={() => setVariant('image')}
+            onChange={() => {
+              setVariant('image');
+              setIsEditable(true);
+            }}
             name="user-message-type"
             label="Image"
             id="user-image"
           />
           <Radio
             isChecked={variant === 'error'}
-            onChange={() => setVariant('error')}
-            name="user-message-error"
+            onChange={() => {
+              setVariant('error');
+              setIsEditable(true);
+            }}
+            name="user-message-type"
             label="Error"
             id="user-error"
           />
           <Radio
             isChecked={variant === 'editable'}
             onChange={() => setVariant('editable')}
-            name="user-message-edit"
+            name="user-message-type"
             label="Editable"
             id="user-edit"
           />
@@ -275,7 +311,7 @@ _Italic text, formatted with single underscores_
         tableProps={
           variant === 'table' ? { 'aria-label': 'App information and user roles for user messages' } : undefined
         }
-        isEditable={variant === 'editable' && isEditable}
+        isEditable={variant === 'editable' ? isEditable : false}
         error={variant === 'error' ? error : undefined}
         onEditUpdate={() => setIsEditable(false)}
         onEditCancel={() => setIsEditable(false)}

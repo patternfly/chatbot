@@ -200,6 +200,11 @@ export const MessageBase: React.FunctionComponent<MessageProps> = ({
   ...props
 }: MessageProps) => {
   const [messageText, setMessageText] = React.useState(content);
+
+  React.useEffect(() => {
+    setMessageText(content);
+  }, [content]);
+
   const { beforeMainContent, afterMainContent, endContent } = extraContent || {};
   let rehypePlugins: PluggableList = [rehypeUnwrapImages];
   if (openLinkInNewTab) {
