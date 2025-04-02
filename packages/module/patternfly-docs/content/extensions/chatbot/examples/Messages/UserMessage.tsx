@@ -6,6 +6,7 @@ import { AlertActionLink, Form, FormGroup, Radio } from '@patternfly/react-core'
 
 export const UserMessageExample: React.FunctionComponent = () => {
   const [variant, setVariant] = React.useState('code');
+  const [isEditable, setIsEditable] = React.useState(true);
 
   /* eslint-disable indent */
   const renderContent = () => {
@@ -257,6 +258,13 @@ _Italic text, formatted with single underscores_
             label="Error"
             id="user-error"
           />
+          <Radio
+            isChecked={variant === 'editable'}
+            onChange={() => setVariant('editable')}
+            name="user-message-edit"
+            label="Editable"
+            id="user-edit"
+          />
         </FormGroup>
       </Form>
       <Message
@@ -267,7 +275,10 @@ _Italic text, formatted with single underscores_
         tableProps={
           variant === 'table' ? { 'aria-label': 'App information and user roles for user messages' } : undefined
         }
+        isEditable={variant === 'editable' && isEditable}
         error={variant === 'error' ? error : undefined}
+        onEditUpdate={() => setIsEditable(false)}
+        onEditCancel={() => setIsEditable(false)}
       />
     </>
   );
