@@ -58,3 +58,23 @@
     }
   }
 }
+
+// ============================================================================
+// Information density styles
+// ============================================================================
+.pf-chatbot--small {
+  // Need to inline shorter text
+  .pf-chatbot__message-text {
+    .pf-v6-c-button.pf-m-link {
+      font-size: var(--pf-t--global--font--size--sm);
+    }
+
+    .pf-v6-c-content,
+    .pf-v6-c-content--small,
+    .pf-v6-c-content--blockquote,
+    p,
+    a {
+      --pf-v6-c-content--FontSize: var(--pf-t--global--font--size--sm);
+    }
+  }
+}
