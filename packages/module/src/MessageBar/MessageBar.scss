@@ -94,3 +94,12 @@
     }
   }
 }
+
+// ============================================================================
+// Information density styles
+// ============================================================================
+.pf-chatbot--small {
+  .pf-chatbot__message-textarea {
+    font-size: var(--pf-t--global--font--size--sm) !important;
+  }
+}

@@ -3,7 +3,7 @@ import React from 'react';
 import { Bullseye, Brand, DropdownList, DropdownItem, DropdownGroup, SkipToContent } from '@patternfly/react-core';
 
 import ChatbotToggle from '@patternfly/chatbot/dist/dynamic/ChatbotToggle';
-import Chatbot, { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
+import Chatbot, { ChatbotDisplayMode, InformationDensity } from '@patternfly/chatbot/dist/dynamic/Chatbot';
 import ChatbotContent from '@patternfly/chatbot/dist/dynamic/ChatbotContent';
 import ChatbotWelcomePrompt from '@patternfly/chatbot/dist/dynamic/ChatbotWelcomePrompt';
 import ChatbotFooter, { ChatbotFootnote } from '@patternfly/chatbot/dist/dynamic/ChatbotFooter';
@@ -356,7 +356,7 @@ export const ChatbotDemo: React.FunctionComponent = () => {
         id="chatbot-toggle"
         ref={toggleRef}
       />
-      <Chatbot isVisible={chatbotVisible} displayMode={displayMode} ref={chatbotRef}>
+      <Chatbot informationDensity="small" isVisible={chatbotVisible} displayMode={displayMode} ref={chatbotRef}>
         <ChatbotConversationHistoryNav
           displayMode={displayMode}
           onDrawerToggle={() => {
