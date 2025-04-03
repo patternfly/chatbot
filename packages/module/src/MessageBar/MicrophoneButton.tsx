@@ -24,6 +24,7 @@ export interface MicrophoneButtonProps extends ButtonProps {
   tooltipContent?: { active?: string; inactive?: string };
   /** Locale code for language speech recognition is conducted in. This should be in the format 'en-US', a.k.a. the ISO 639-1 code, a dash, and the ISO_3166-1 code. */
   language?: string;
+  isCompact?: boolean;
 }
 
 export const MicrophoneButton: React.FunctionComponent<MicrophoneButtonProps> = ({
@@ -34,6 +35,7 @@ export const MicrophoneButton: React.FunctionComponent<MicrophoneButtonProps> = 
   tooltipProps,
   tooltipContent = { active: 'Stop listening', inactive: 'Use microphone' },
   language = 'en-US',
+  isCompact,
   ...props
 }: MicrophoneButtonProps) => {
   // Microphone
@@ -106,10 +108,11 @@ export const MicrophoneButton: React.FunctionComponent<MicrophoneButtonProps> = 
         aria-label={props['aria-label'] || 'Microphone button'}
         onClick={isListening ? stopListening : startListening}
         icon={
-          <Icon iconSize="xl" isInline>
+          <Icon iconSize={isCompact ? 'lg' : 'xl'} isInline>
             <MicrophoneIcon />
           </Icon>
         }
+        size={isCompact ? 'sm' : undefined}
         {...props}
       />
     </Tooltip>

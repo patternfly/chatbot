@@ -59,7 +59,6 @@ import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import { getTrackingProviders } from "@patternfly/chatbot/dist/dynamic/tracking";
 
-
 ### Basic ChatBot
 
 This demo displays a basic ChatBot, which includes:
@@ -84,6 +83,14 @@ This demo displays a basic ChatBot, which includes:
 7. A "Skip to chatbot" button that allows you to skip to the chatbot content via the [PatternFly skip to content component](/patternfly-ai/chatbot/ui#skip-to-content). To display this button you must tab into the main window.
 
 ```js file="./Chatbot.tsx" isFullscreen
+
+```
+
+### Compact ChatBot
+
+This demo displays a basic compact ChatBot
+
+```js file="./ChatbotCompact.tsx" isFullscreen
 
 ```
 

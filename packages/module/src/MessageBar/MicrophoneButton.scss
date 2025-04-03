@@ -46,3 +46,15 @@
     box-shadow: 0 0 0 16px rgba(0, 102, 204, 0);
   }
 }
+
+// ============================================================================
+// Information density styles
+// ============================================================================
+.pf-chatbot--small {
+  .pf-v6-c-button.pf-chatbot__button--microphone {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: var(--pf-t--global--spacer--sm);
+    align-items: center;
+  }
+}

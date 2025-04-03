@@ -8,7 +8,6 @@
   gap: var(--pf-t--global--spacer--lg);
 
   .pf-v6-c-content--h1 {
-    --pf-v6-c-content--h1--FontSize: var(--pf-t--global--font--size--3xl); // larger than any of our semantic tokens
     --pf-v6-c-content--h1--FontWeight: var(--pf-t--global--font--weight--400);
     --pf-v6-c-content--h1--MarginBlockEnd: 0;
   }
@@ -31,6 +30,15 @@
     flex: 1;
     overflow: visible;
     height: 100%;
+  }
+}
+
+.pf-chatbot__welcome-compact {
+  gap: var(--pf-t--global--spacer--md);
+  padding-block-end: var(--pf-t--global--spacer--md);
+
+  .pf-chatbot__prompt-suggestions {
+    gap: var(--pf-t--global--spacer--md);
   }
 }
 

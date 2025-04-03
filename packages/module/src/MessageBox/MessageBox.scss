@@ -45,3 +45,9 @@
     }
   }
 }
+
+.pf-chatbot--small {
+  .pf-chatbot__messagebox {
+    padding: var(--pf-t--global--spacer--md);
+  }
+}
