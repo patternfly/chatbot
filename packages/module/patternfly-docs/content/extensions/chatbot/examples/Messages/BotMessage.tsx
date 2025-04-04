@@ -276,7 +276,7 @@ _Italic text, formatted with single underscores_
           <Radio
             isChecked={variant === 'error'}
             onChange={() => setVariant('error')}
-            name="bot-message-error"
+            name="bot-message-type"
             label="Error"
             id="error"
           />
