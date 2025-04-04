@@ -16,7 +16,7 @@
   box-shadow: var(--pf-t--global--box-shadow--sm);
 }
 
-.pf-chatbot__sources-card-body {
+.pf-chatbot__sources-card-body-text {
   display: block;
   display: -webkit-box;
   height: 2.8125rem;
@@ -25,11 +25,6 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: var(--pf-t--global--spacer--md);
-}
-
-.pf-chatbot__sources-card-no-footer {
-  margin-bottom: var(--pf-t--global--spacer--lg);
 }
 
 .pf-chatbot__sources-card-footer-container {
