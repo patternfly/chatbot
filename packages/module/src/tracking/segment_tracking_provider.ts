@@ -5,13 +5,14 @@ import { InitProps, TrackingSpi } from './tracking_spi';
 
 export class SegmentTrackingProvider implements TrackingSpi, TrackingApi {
   private analytics: AnalyticsBrowser | undefined;
-  getKey(): string {
-    return 'segmentKey';
-  }
+  private verbose = false;
 
   initialize(props: InitProps): void {
-    // eslint-disable-next-line no-console
-    console.log('SegmentProvider initialize');
+    this.verbose = props.verbose;
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('SegmentProvider initialize');
+    }
     const segmentKey = props.segmentKey as string;
 
     // We need to create an object here, as ts lint is unhappy otherwise
@@ -32,17 +33,21 @@ export class SegmentTrackingProvider implements TrackingSpi, TrackingApi {
     );
   }
 
-  identify(userID: string): void {
-    // eslint-disable-next-line no-console
-    console.log('SegmentProvider userID: ' + userID);
+  identify(userID: string, userProperties: TrackingEventProperties = {}): void {
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('SegmentProvider userID: ' + userID);
+    }
     if (this.analytics) {
-      this.analytics.identify(userID);
+      this.analytics.identify(userID, userProperties);
     }
   }
 
   trackPageView(url: string | undefined): void {
-    // eslint-disable-next-line no-console
-    console.log('SegmentProvider url', url);
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('SegmentProvider url ', url);
+    }
     if (this.analytics) {
       if (url) {
         this.analytics.page(url);
@@ -53,8 +58,10 @@ export class SegmentTrackingProvider implements TrackingSpi, TrackingApi {
   }
 
   trackSingleItem(item: string, properties?: TrackingEventProperties): void {
-    // eslint-disable-next-line no-console
-    console.log('SegmentProvider: trackSingleItem' + item, properties);
+    if (this.verbose) {
+      // eslint-disable-next-line no-console
+      console.log('SegmentProvider: trackSingleItem ' + item, properties);
+    }
     if (this.analytics) {
       this.analytics.track(item, { properties });
     }

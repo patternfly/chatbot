@@ -98,17 +98,18 @@ export default MessageLoading;
 const date = new Date();
 
 const initProps: InitProps = {
+  verbose: false,
   segmentKey: 'TODO-key', // TODO add your key here
   posthogKey: 'TODO-key',
   umamiKey: 'TODO-key',
-  umamiHostUrl: 'http://localhost:3000', // TODO where is your JS provider?
+  umamiHostUrl: 'http://localhost:3000', // TODO where is your Umami installation?
   console: true,
   something: 'test'
 };
 
 const tracking = getTrackingProviders(initProps);
-tracking.identify('user-123'); // TODO get real user id
-tracking.trackPageView(window.document.documentURI);
+tracking.identify('user-123', { superUser: true }); // TODO get real user id + properties
+tracking.trackPageView(window.location.href);
 
 const actionEventName = 'MessageAction';
 const initialMessages: MessageProps[] = [

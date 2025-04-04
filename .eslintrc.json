@@ -62,7 +62,7 @@
     "dot-notation": "error",
     "eqeqeq": ["error", "smart"],
     "guard-for-in": "error",
-    "indent": ["error", 2],
+    "indent": ["error", 2, {"SwitchCase":  1}],
     "max-classes-per-file": ["error", 1],
     "no-nested-ternary": "error",
     "no-bitwise": "error",

@@ -1,4 +1,4 @@
-import { InitProps, TrackingSpi } from './tracking_spi';
+import { InitProps, Providers, TrackingSpi } from './tracking_spi';
 import { TrackingApi } from './tracking_api';
 import TrackingProviderProxy from './trackingProviderProxy';
 import { ConsoleTrackingProvider } from './console_tracking_provider';
@@ -8,26 +8,59 @@ import { UmamiTrackingProvider } from './umami_tracking_provider';
 
 export const getTrackingProviders = (initProps: InitProps): TrackingApi => {
   const providers: TrackingSpi[] = [];
-  providers.push(new SegmentTrackingProvider());
-  providers.push(new PosthogTrackingProvider());
-  providers.push(new UmamiTrackingProvider());
 
-  // TODO dynamically find and register providers
+  if (initProps.activeProviders) {
+    let tmpProps: string[] = initProps.activeProviders;
+
+    // Theoretically we get an array of provider names, but it could also be a CSV string...
+    if (!Array.isArray(initProps.activeProviders)) {
+      const tmpString = initProps.activeProviders as string;
+      if (tmpString && tmpString.indexOf(',') !== -1) {
+        tmpProps = tmpString.split(',');
+      } else {
+        tmpProps = [tmpString];
+      }
+    }
+
+    tmpProps.forEach((provider) => {
+      switch (Providers[provider]) {
+        case Providers.Segment:
+          providers.push(new SegmentTrackingProvider());
+          break;
+        case Providers.Umami:
+          providers.push(new UmamiTrackingProvider());
+          break;
+        case Providers.Posthog:
+          providers.push(new PosthogTrackingProvider());
+          break;
+        case Providers.Console:
+          providers.push(new ConsoleTrackingProvider());
+          break;
+        case Providers.None: // Do nothing, just a placeholder
+          break;
+        default:
+          if (providers.length > 1) {
+            if (initProps.verbose) {
+              // eslint-disable-next-line no-console
+              console.error("Unknown provider '" + provider);
+            }
+          }
+          break;
+      }
+    });
+  }
 
   // Initialize them
-  const enabledProviders: TrackingSpi[] = [];
   for (const provider of providers) {
-    const key = provider.getKey();
-    if (Object.keys(initProps).indexOf(key) > -1) {
+    try {
       provider.initialize(initProps);
-      enabledProviders.push(provider);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
     }
   }
-  // Add the console provider
-  const consoleTrackingProvider = new ConsoleTrackingProvider();
-  enabledProviders.push(consoleTrackingProvider); // TODO noop- provider?
 
-  return new TrackingProviderProxy(enabledProviders);
+  return new TrackingProviderProxy(providers);
 };
 
 export default getTrackingProviders;
