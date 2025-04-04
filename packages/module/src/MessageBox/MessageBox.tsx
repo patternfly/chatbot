@@ -46,7 +46,7 @@ const MessageBoxBase: React.FunctionComponent<MessageBoxProps> = ({
       setAtTop(scrollTop === 0);
       setAtBottom(Math.round(scrollTop) + Math.round(clientHeight) >= Math.round(scrollHeight) - 1); // rounding means it could be within a pixel of the bottom
     }
-  }, []);
+  }, [messageBoxRef]);
 
   const checkOverflow = React.useCallback(() => {
     const element = messageBoxRef.current;
@@ -54,21 +54,21 @@ const MessageBoxBase: React.FunctionComponent<MessageBoxProps> = ({
       const { scrollHeight, clientHeight } = element;
       setIsOverflowing(scrollHeight >= clientHeight);
     }
-  }, []);
+  }, [messageBoxRef]);
 
   const scrollToTop = React.useCallback(() => {
     const element = messageBoxRef.current;
     if (element) {
       element.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }, []);
+  }, [messageBoxRef]);
 
   const scrollToBottom = React.useCallback(() => {
     const element = messageBoxRef.current;
     if (element) {
       element.scrollTo({ top: element.scrollHeight, behavior: 'smooth' });
     }
-  }, []);
+  }, [messageBoxRef]);
 
   // Detect scroll position
   React.useEffect(() => {
@@ -85,7 +85,7 @@ const MessageBoxBase: React.FunctionComponent<MessageBoxProps> = ({
         element.removeEventListener('scroll', handleScroll);
       };
     }
-  }, [checkOverflow, handleScroll]);
+  }, [checkOverflow, handleScroll, messageBoxRef]);
 
   return (
     <>

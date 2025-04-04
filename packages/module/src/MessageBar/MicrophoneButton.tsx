@@ -81,7 +81,7 @@ export const MicrophoneButton: React.FunctionComponent<MicrophoneButtonProps> = 
 
       setSpeechRecognition(recognition);
     }
-  }, [onSpeechRecognition]);
+  }, [onSpeechRecognition, language, onIsListeningChange]);
 
   if (!speechRecognition) {
     return null;
