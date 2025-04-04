@@ -1,8 +1,12 @@
 import { TrackingApi, TrackingEventProperties } from './tracking_api';
 
-export interface InitProps {
-  [key: string]: string | number | boolean;
+interface BaseProps {
+  verbose: boolean;
 }
+
+export type InitProps = {
+  [key: string]: string | number | boolean;
+} & BaseProps;
 
 export interface TrackingSpi extends TrackingApi {
   // Return a key in InitProps to check if the provided should be enabled

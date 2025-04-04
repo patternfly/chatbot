@@ -40,6 +40,7 @@ Note that user code only interacts with:
 
 ```nolive
 const initProps: InitProps = {
+  verbose: false,
   segmentKey: 'TODO-key', // TODO add your key here
 //  segmentCdn: 'https://my.org/cdn',  // Set up segment cdn (optional)
 //  segmentIntegrations: { // Provide Segment integrations (optional)
@@ -56,6 +57,8 @@ const initProps: InitProps = {
   console: 'true' // Console provider
 };
 ```
+
+Note, that there is also a key `verbose` that allows you to enable debugging output on web-browser console. By default, this is set to `false`.
 
 1. Once this is done, you can create an instance of the `trackingAPI` and start sending events.
 
