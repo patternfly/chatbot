@@ -16,6 +16,7 @@ import {
   pluralize,
   Truncate
 } from '@patternfly/react-core';
+import { ExternalLinkSquareAltIcon } from '@patternfly/react-icons';
 
 export interface SourcesCardProps extends CardProps {
   /** Additional classes for the pagination navigation container. */
@@ -27,7 +28,7 @@ export interface SourcesCardProps extends CardProps {
   /** Accessible label for the pagination component. */
   paginationAriaLabel?: string;
   /** Content rendered inside the paginated card */
-  sources: { title?: string; link: string; body?: React.ReactNode | string }[];
+  sources: { title?: string; link: string; body?: React.ReactNode | string; isExternal?: boolean }[];
   /** Label for the English word "source" */
   sourceWord?: string;
   /** Plural for sourceWord */
@@ -78,7 +79,18 @@ const SourcesCard: React.FunctionComponent<SourcesCardProps> = ({
       <span>{pluralize(sources.length, sourceWord, sourceWordPlural)}</span>
       <Card className="pf-chatbot__sources-card" {...props}>
         <CardTitle className="pf-chatbot__sources-card-title">
-          <a href={sources[page - 1].link}>{renderTitle(sources[page - 1].title)}</a>
+          <Button
+            component="a"
+            variant={ButtonVariant.link}
+            href={sources[page - 1].link}
+            icon={sources[page - 1].isExternal ? <ExternalLinkSquareAltIcon /> : undefined}
+            iconPosition="end"
+            isInline
+            rel={sources[page - 1].isExternal ? 'noreferrer' : undefined}
+            target={sources[page - 1].isExternal ? '_blank' : undefined}
+          >
+            {renderTitle(sources[page - 1].title)}
+          </Button>
         </CardTitle>
         {sources[page - 1].body && (
           <CardBody
