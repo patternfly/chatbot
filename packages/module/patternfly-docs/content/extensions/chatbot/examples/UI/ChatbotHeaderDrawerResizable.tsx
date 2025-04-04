@@ -4,6 +4,7 @@ import ChatbotConversationHistoryNav, {
   Conversation
 } from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
 import { Checkbox } from '@patternfly/react-core';
+import { SearchIcon } from '@patternfly/react-icons';
 
 const initialConversations: { [key: string]: Conversation[] } = {
   Today: [{ id: '1', text: 'Red Hat products and services' }],
@@ -31,15 +32,22 @@ const initialConversations: { [key: string]: Conversation[] } = {
   ]
 };
 
+const NO_RESULTS = {
+  bodyText: 'Adjust your search query and try again. Check your spelling or try a more general term.',
+  titleText: 'No results found',
+  icon: SearchIcon
+};
+
 export const ChatbotHeaderDrawerResizableDemo: React.FunctionComponent = () => {
   const [isOpen, setIsOpen] = React.useState(true);
   const [conversations, setConversations] = React.useState<Conversation[] | { [key: string]: Conversation[] }>(
     initialConversations
   );
+  const [showNoResults, setShowNoResults] = React.useState(false);
   const displayMode = ChatbotDisplayMode.embedded;
 
   const findMatchingItems = (targetValue: string) => {
-    let filteredConversations = Object.entries(initialConversations).reduce((acc, [key, items]) => {
+    const filteredConversations = Object.entries(initialConversations).reduce((acc, [key, items]) => {
       const filteredItems = items.filter((item) => item.text.toLowerCase().includes(targetValue.toLowerCase()));
       if (filteredItems.length > 0) {
         acc[key] = filteredItems;
@@ -49,7 +57,9 @@ export const ChatbotHeaderDrawerResizableDemo: React.FunctionComponent = () => {
 
     // append message if no items are found
     if (Object.keys(filteredConversations).length === 0) {
-      filteredConversations = [{ id: '13', noIcon: true, text: 'No results found' }];
+      setShowNoResults(true);
+    } else {
+      setShowNoResults(false);
     }
     return filteredConversations;
   };
@@ -88,6 +98,7 @@ export const ChatbotHeaderDrawerResizableDemo: React.FunctionComponent = () => {
         }}
         drawerContent={<div>Drawer content</div>}
         drawerPanelContentProps={{ isResizable: true, minSize: '200px' }}
+        emptyState={showNoResults ? NO_RESULTS : undefined}
       />
     </>
   );
