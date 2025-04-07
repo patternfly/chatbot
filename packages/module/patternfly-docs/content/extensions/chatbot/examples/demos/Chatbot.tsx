@@ -356,7 +356,7 @@ export const ChatbotDemo: React.FunctionComponent = () => {
         id="chatbot-toggle"
         ref={toggleRef}
       />
-      <Chatbot informationDensity="small" isVisible={chatbotVisible} displayMode={displayMode} ref={chatbotRef}>
+      <Chatbot isCompact isVisible={chatbotVisible} displayMode={displayMode} ref={chatbotRef}>
         <ChatbotConversationHistoryNav
           displayMode={displayMode}
           onDrawerToggle={() => {
@@ -391,6 +391,7 @@ export const ChatbotDemo: React.FunctionComponent = () => {
                     ref={historyRef}
                     aria-expanded={isDrawerOpen}
                     onMenuToggle={() => setIsDrawerOpen(!isDrawerOpen)}
+                    isCompact
                   />
                   <ChatbotHeaderTitle
                     displayMode={displayMode}
@@ -399,7 +400,7 @@ export const ChatbotDemo: React.FunctionComponent = () => {
                   ></ChatbotHeaderTitle>
                 </ChatbotHeaderMain>
                 <ChatbotHeaderActions>
-                  <ChatbotHeaderSelectorDropdown value={selectedModel} onSelect={onSelectModel}>
+                  <ChatbotHeaderSelectorDropdown value={selectedModel} onSelect={onSelectModel} isCompact>
                     <DropdownList>
                       <DropdownItem value="Granite 7B" key="granite">
                         Granite 7B
@@ -412,7 +413,7 @@ export const ChatbotDemo: React.FunctionComponent = () => {
                       </DropdownItem>
                     </DropdownList>
                   </ChatbotHeaderSelectorDropdown>
-                  <ChatbotHeaderOptionsDropdown onSelect={onSelectDisplayMode}>
+                  <ChatbotHeaderOptionsDropdown onSelect={onSelectDisplayMode} isCompact>
                     <DropdownGroup label="Display mode">
                       <DropdownList>
                         <DropdownItem
@@ -452,6 +453,7 @@ export const ChatbotDemo: React.FunctionComponent = () => {
                     title="Hi, ChatBot User!"
                     description="How can I help you today?"
                     prompts={welcomePrompts}
+                    isCompact
                   />
                   {/* This code block enables scrolling to the top of the last message.
                   You can instead choose to move the div with scrollToBottomRef on it below
@@ -471,7 +473,7 @@ export const ChatbotDemo: React.FunctionComponent = () => {
                   })}
                 </MessageBox>
               </ChatbotContent>
-              <ChatbotFooter>
+              <ChatbotFooter isCompact>
                 <MessageBar
                   onSendMessage={handleSend}
                   hasMicrophoneButton

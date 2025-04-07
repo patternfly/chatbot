@@ -136,3 +136,28 @@
 :where(.pf-v6-theme-dark) .show-dark .pf-m-picture {
   display: inline-flex;
 }
+
+// ============================================================================
+// Information density styles
+// ============================================================================
+.pf-chatbot--small {
+  .pf-chatbot__header {
+    gap: var(--pf-t--global--spacer--sm);
+    padding: var(--pf-t--global--spacer--sm);
+  }
+
+  .pf-chatbot__header .pf-chatbot__title img {
+    max-height: 24px;
+    vertical-align: middle;
+  }
+
+  .pf-chatbot__button--toggle-options,
+  .pf-chatbot__button--toggle-menu {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .pf-chatbot__header .pf-chatbot__actions .pf-v6-c-menu-toggle.pf-m-secondary {
+    width: initial;
+  }
+}

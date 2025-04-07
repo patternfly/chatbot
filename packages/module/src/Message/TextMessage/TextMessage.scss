@@ -76,5 +76,10 @@
     a {
       --pf-v6-c-content--FontSize: var(--pf-t--global--font--size--sm);
     }
+
+    .pf-v6-c-content--blockquote {
+      --pf-v6-c-content--blockquote--PaddingBlockStart: 0;
+      --pf-v6-c-content--blockquote--PaddingBlockEnd: 0;
+    }
   }
 }

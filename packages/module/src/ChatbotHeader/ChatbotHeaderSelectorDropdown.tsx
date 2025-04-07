@@ -15,6 +15,7 @@ export interface ChatbotHeaderSelectorDropdownProps extends Omit<DropdownProps, 
   menuToggleAriaLabel?: string;
   /** Text displayed in Tooltip wrapping the display mode dropdown */
   tooltipContent?: string;
+  isCompact?: boolean;
 }
 
 export const ChatbotHeaderSelectorDropdown: React.FunctionComponent<ChatbotHeaderSelectorDropdownProps> = ({
@@ -25,6 +26,7 @@ export const ChatbotHeaderSelectorDropdown: React.FunctionComponent<ChatbotHeade
   tooltipProps,
   tooltipContent = 'Select model',
   menuToggleAriaLabel,
+  isCompact,
   ...props
 }: ChatbotHeaderSelectorDropdownProps) => {
   const [isOptionsMenuOpen, setIsOptionsMenuOpen] = React.useState(false);
@@ -45,6 +47,7 @@ export const ChatbotHeaderSelectorDropdown: React.FunctionComponent<ChatbotHeade
         ref={toggleRef}
         isExpanded={isOptionsMenuOpen}
         onClick={() => setIsOptionsMenuOpen(!isOptionsMenuOpen)}
+        size={isCompact ? 'sm' : undefined}
       >
         {value}
       </MenuToggle>

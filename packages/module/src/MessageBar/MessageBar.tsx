@@ -72,6 +72,7 @@ export interface MessageBarProps extends TextAreaProps {
   onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>, value: string | number) => void;
   /** Display mode of chatbot, if you want to message bar to resize when the display mode changes */
   displayMode?: ChatbotDisplayMode;
+  isCompact?: boolean;
 }
 
 export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
@@ -89,6 +90,7 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
   onChange,
   displayMode,
   value,
+  isCompact = false,
   ...props
 }: MessageBarProps) => {
   // Text Input
@@ -313,7 +315,7 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
 
   const messageBarContents = (
     <>
-      <div className="pf-chatbot__message-bar-input">
+      <div className={`pf-chatbot__message-bar-input ${isCompact ? 'pf-chatbot__message-bar-compact' : ''}`}>
         <TextArea
           className="pf-chatbot__message-textarea"
           value={message}
