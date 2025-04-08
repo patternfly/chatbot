@@ -59,7 +59,7 @@ const initProps: InitProps = {
 };
 ```
 
-Note, that there is also a key `verbose` that allows you to enable debugging output on web-browser console. By default, this is set to `false`.
+- **Note:** To enable output debugging via the web-browser console, set the `verbose` key to `true`. By default, this is set to `false`.
 
 1. Once this is done, you can create an instance of the `trackingAPI` and start sending events.
 
