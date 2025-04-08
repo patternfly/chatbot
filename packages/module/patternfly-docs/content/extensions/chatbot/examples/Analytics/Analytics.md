@@ -101,8 +101,7 @@ When using the providers, you might need to add additional dependencies to your 
   "posthog-js": "^1.194.4"
 ```
 
-This depends on your local setup. If you pull in
-the chatbot codebase as dependency into your project, you are already set. 
+Depending on your local setup, this might not be necessary. For example, if you pull the ChatBot codebase as a dependency into your project, you don't need to add it as an additional dependency in your package.json.
 
 ##### Adding providers
 
