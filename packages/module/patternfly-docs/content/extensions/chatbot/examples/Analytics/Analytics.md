@@ -36,7 +36,7 @@ Note that user code only interacts with:
 
 ### Setup
 
-1. Before you can use the `trackingAPI`, you must first supply the API keys of the respective providers. Providers are enabled by adding them to the `activeProviders` property:
+1. Before you can use the `trackingAPI`, you must first supply the API keys of the respective providers. To enable a provider, it must be added to the `activeProviders` property:
 
 ```nolive
 const initProps: InitProps = {
