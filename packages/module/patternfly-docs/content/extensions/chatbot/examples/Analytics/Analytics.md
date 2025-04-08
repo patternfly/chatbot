@@ -93,7 +93,7 @@ Possible values are:
 
 If you know upfront that you only want to use 1 of the supported providers, you can modify `getTrackingProviders()` and remove all other providers in the providers array.
 
-When using the providers you may need to add additional dependencies to your package.json file:
+When using the providers, you might need to add additional dependencies to your package.json file:
 
 ```nolive
 "dependencies": {
