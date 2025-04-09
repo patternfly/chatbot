@@ -40,5 +40,15 @@ export const MessageWithQuickResponsesExample: React.FunctionComponent = () => (
         { id: '5', content: 'Something else', onClick: () => alert('Clicked id 5') }
       ]}
     />
+    <Message
+      name="Bot"
+      role="bot"
+      avatar={patternflyAvatar}
+      content="Did you clear your cache?"
+      quickResponses={[
+        { id: '1', content: 'Yes', isDisabled: true },
+        { id: '2', content: 'No', onClick: () => alert('Clicked no') }
+      ]}
+    />
   </>
 );

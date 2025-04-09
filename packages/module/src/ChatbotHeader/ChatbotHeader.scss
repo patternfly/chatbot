@@ -50,6 +50,7 @@
     align-items: center;
     .pf-v6-c-menu-toggle.pf-m-secondary {
       width: 160px;
+      --pf-v6-c-menu-toggle--BackgroundColor: var(--pf-t--global--background--color--control--default);
     }
   }
 }

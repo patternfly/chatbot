@@ -142,6 +142,8 @@ To add quick actions, pass `quickResponses` to `<Message>`. This can be overridd
 
 If you are using Retrieval-Augmented Generation, you may want to display sources in a message. Passing `sources` to `<Message>` allows you to paginate between the sources you provide.
 
+If a source will open outside of the ChatBot window, add an external link icon via `isExternal`.
+
 The API for a source requires a link at minimum, but we strongly recommend providing a more descriptive title and body description so users have enough context. The title is limited to 1 line and the body is limited to 2 lines.
 
 ```js file="./MessageWithSources.tsx"

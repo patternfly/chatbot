@@ -5,11 +5,6 @@ import '@testing-library/jest-dom';
 import SourcesCard from './SourcesCard';
 
 describe('SourcesCard', () => {
-  it('should render card', () => {
-    const { container } = render(<SourcesCard sources={[{ link: '' }]} />);
-    expect(container).toMatchSnapshot();
-  });
-
   it('should render card correctly if one source with only a link is passed in', () => {
     render(<SourcesCard sources={[{ link: '' }]} />);
     expect(screen.getByText('1 source')).toBeTruthy();

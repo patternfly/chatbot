@@ -10,13 +10,13 @@ import "./images.css"
 
 ## Elements 
 
-<div class="ws-docs-content-img" >
+<div class="ws-docs-content-img">
 ![Main elements of a ChatBot.](./img/chatbot-elements.svg)
 </div>
 
 1. **Container:** The window that contains the entire ChatBot experience and all of its components.
 1. **Header:** A persistent region at the top of the ChatBot window that contains navigation, branding, and actions.
-1. **Navigation:** A menu that contains navigational options, including access to the conversation history.
+1. **History menu:** A menu that contains a conversation history of previous chats.
 1. **Options menu:** A menu that contains settings that are relevant to your product. This typically includes display options (more details in the [ChatBot variations section](#variations)) and other general settings (more details in the [ChatBot settings and preferences section](#chatbot-settings-and-preferences)).
 1. **Messages:** Elements of the conversation between a ChatBot and user. More details can be found in the [message guidelines](#messages).
 1. **Attachments:** Details about files that a user has uploaded to the ChatBot.
@@ -37,7 +37,23 @@ import "./images.css"
 1. **Timestamp:** The relative or absolute time that a message was sent.
 1. **Label:** Labels ChatBot messages as "AI."
 1. **Quick responses:** Programmable, clickable actions that allow users to quickly answer questions from the ChatBot.
-1. **Response actions:** Actions that allow users to interact with a bot message. these typically include providing feedback, copying, sharing, or reading aloud, but [custom message actions](/patternfly-ai/chatbot/messages#custom-message-actions) are also supported.
+1. **Message actions:** Actions that allow users to interact with a bot message. These typically include providing feedback, copying, sharing, or reading aloud, but [custom message actions](/patternfly-ai/chatbot/messages#custom-message-actions) are also supported. More details for the feedback actions can be found in the [message feedback](#message-feedback) section.
+
+#### Welcome message
+
+At the start of a new chat, you should welcome your users to the ChatBot with a greeting.
+
+If you have user details from their account information, you can personalize this greeting with their username or name. If you don't have this information, or if you'd prefer to not use their personal details, you should instead introduce the ChatBot: 
+
+<div class="ws-docs-content-img">
+![Welcome messages.](./img/welcome-message.svg)
+</div>
+
+To help users get started quickly, it can also be helpful to include welcome prompts. When selected, these prompts will become the user's first message to the ChatBot, which the bot will immediately begin to reply to. To avoid overloading your users, present no more than 3 prompts at a time.
+
+<div class="ws-docs-content-img">
+![Welcome message with prompts.](./img/welcome-elements.svg)
+</div>
 
 #### Source tiles
 
@@ -57,6 +73,53 @@ A ChatBot can share a link to a [quick start](/extensions/quick-starts) that wil
 ![Bot message that links a quick start tile.](./img/chatbot-quickstarts-tile.svg)
 </div>
 
+Selecting the quick start title, or the "Start" link can be configured to launch the quick start in a new window, as an interactive bot conversation within the ChatBot window, or as a separate tab within the ChatBot drawer (as shown in this [quick start/ChatBot concept demo](https://quickstart-chatbot-demo.surge.sh/?quickstart=install-app-and-associate-pipeline)).
+
+### Message actions 
+
+To allow users to interact with bot messages, utilize message actions. Refer to [the message actions React example](/patternfly-ai/chatbot/messages#message-actions) for an interactive visual.
+
+The following actions can be used for some of the most common interactions:
+
+<div class="ws-docs-content-img">
+![Default message response actions.](./img/message-responses.svg)
+</div>
+
+1. **Feedback (good response):** Applies a positive rating to the message.
+1. **Feedback (bad response):** Applies a negative rating to the message.
+1. **Copy:** Copies the message content to the clipboard.
+1. **Listen:** Reads the message content out loud.
+
+You can also use [custom message actions](/patternfly-ai/chatbot/messages#custom-message-actions) as needed for your particular use case. When using custom actions, be sure to add a tooltip that describes the effect that the action will have. For more information, view [our tooltips guidelines](/ux-writing/tooltips). 
+
+#### Message feedback
+
+A commonly used message response action is rating, which allows users to give feedback on the quality or helpfulness of a bot message. These actions include a thumbs-up icon, for a positive rating, and a thumbs-down icon, for a negative one:
+
+<div class="ws-docs-content-img">
+![A pointer clicking on an action button for a bot message.](./img/message-feedback.svg)
+</div>
+
+When users select either of these icons, you should present them with either:
+
+1. A thank-you card that confirms a user's response was received. Even if you don't use a feedback form, you should still display the thank-you card, so that users can be confident their rating went through.
+<br />
+<br />
+    <div class="ws-docs-content-img" style="width:75%">
+    ![A card displayed beneath a bot message which communicates that feedback was successfully received.](./img/thank-you-card.svg)
+    </div>
+1. A feedback form that collects more details.
+<br />
+<br />
+    <div class="ws-docs-content-img" style="width:75%">
+    ![A form beneath a bot message asking for more details about a user's feedback.](./img/feedback-form.svg)
+    </div>
+
+    1. **Close button (optional):** Closes the feedback form. The original feedback response should still be collected.
+    1. **Quick responses:** Options for users to provide more context around their rating. Customize these to make the most sense for your product. You can present positive and negative options based on the response type originally selected.
+    1. **Text area (optional):** Allows users to provide additional written detail if they'd like.
+    1. **Submit button:** Submits the feedback form and triggers the   thank-you card.
+
 ### Message bar
 
 To message the ChatBot, users can type directly into the message bar in the footer or click any included actions.
@@ -69,10 +132,10 @@ To message the ChatBot, users can type directly into the message bar in the foot
 1. **Use microphone button:** Supports speech recognition to allow users to use voice input. This feature is currently only available in Chrome and Safari.
 1. **Send button:** Allows users to send a typed message. This button should be disabled until a user has input text.
 
-When a user chooses to use speech input via the microphone button, the button will display an animation to indicate that the ChatBot is listening to the user (as shown in [this speech recognition example](/patternfly-ai/chatbot/ui#message-bar-with-speech-recognition-and-file-attachment)).
+When a user chooses to use speech input via the microphone button, the button will display a pulsing animation to indicate that the ChatBot is listening to the user (as shown in [this speech recognition example](/patternfly-ai/chatbot/ui#message-bar-with-speech-recognition-and-file-attachment)).
 
 <div class="ws-docs-content-img">
-![Active listening button in the message bar.](./img/listening.svg)
+![Animation phases of the listening button in the message bar.](./img/listening-pulse.svg)
 </div>
 
 When a bot is responding (or "streaming") to the user, a stop button will be displayed as the only action in the message bar. Selecting this button will halt the bot's message where it's at.
@@ -131,7 +194,20 @@ Do not use a ChatBot when:
 
 ### Accessing a ChatBot
 
-Users can enter a conversation with a ChatBot by clicking on the toggle. Once the ChatBot window opens, the toggle will change to display an "angle down" icon to indicate that clicking the toggle again will minimize the ChatBot. Users can select the toggle at any point in their journey to open and close the ChatBot as needed.
+The ChatBot toggle is the access point for users&mdash;place it in either of the following UI locations: 
+- **Floating toggle:** Consistently located in the bottom-right corner of the screen, this persistent button overlays other page content. Use if a masthead toggle would overcomplicate a masthead that already has many utilities.
+- **Masthead toggle:** A button that's integrated as a masthead utility. Use this location if a floating toggle would obscure important content.
+
+To help users further identify the toggle, add a "Launch ChatBot" tooltip. You can swap "ChatBot" in the tooltip for your bot's unique name.
+
+<div class="ws-docs-content-img">
+![Tooltips for ChatBot toggle.](./img/toggle-tooltips.svg)
+</div>
+
+Whichever method you choose, it is critical to be consistent with the toggle location and refer to the following the additional guidelines for each. 
+
+#### Floating toggle
+When users click the toggle, the ChatBot window opens and the toggle will change to display an "angle down" icon to indicate that clicking the toggle again will minimize the ChatBot. Users can select the toggle at any point in their journey to open and close the ChatBot as needed.
 
 <div class="ws-docs-content-img">
 ![2 toggles with open and closed icons.](./img/chatbot-toggle.svg)
@@ -149,14 +225,62 @@ If necessary for brand consistency, you can customize the toggle shape and icon.
 ![Different toggle shapes and icons.](./img/toggle-customizations.svg)
 </div>
 
-### Using the navigation menu
+#### Masthead toggle 
 
-The ChatBot navigation menu primarily contains a users' conversation history with the ChatBot. Clicking the menu icon opens a side drawer in the ChatBot window.
+When the ChatBot toggle is a masthead utility, use the fa-comments icon:
 
-By clicking into the navigation menu, users can search through previous conversations and perform additional actions, such as sharing a conversation with others.
+<div class="ws-docs-content-img">
+![ChatBot toggle in a masthead.](./img/masthead-toggle.svg)
+</div>
+
+The exception to this is if you have a specific icon that aligns with your product or ChatBot branding.
+
+When there is an unread message from the ChatBot, a notification count should be displayed, and the badge should be styled as unread.
+
+<div class="ws-docs-content-img">
+![ChatBot toggle in a masthead with a notification count.](./img/masthead-toggle-notification.svg)
+</div>
+
+### Launching a ChatBot from page content
+
+If a UI element within the page content is an AI/ChatBot-supported feature, the ChatBot should be launched when users select the clearly-identified action. These kinds of actions should display your ChatBot's logo beside a label that clearly communicates the intention of the AI action.
+
+<div class="ws-docs-content-img">
+![Menu item for an AI action that launches a ChatBot.](./img/ai-action-inpage.svg)
+</div>
+
+When a ChatBot is launches via an AI-supported action, the action should be sent as a user message once the ChatBot opens.  
+
+<div class="ws-docs-content-img">
+![User message in ChatBot for an AI action command.](./img/ai-action-message.svg)
+</div>
+
+### Starting a new conversation 
+
+Each time a user begins a new conversation, display a [welcome message, with prompts](#welcome-message) that help them learn what the ChatBot can help with.
+
+As much as possible, the suggested prompts should consider the user’s location in the service or application, or the situation their project is undergoing. 
+
+### Using the conversation history menu
+
+The ChatBot history menu contains a log of a users' previous chats. Clicking the menu icon opens a side drawer in the ChatBot window.
+
+By clicking into the history menu, users can search through previous conversations and perform additional actions, such as sharing a conversation with others.
 
 <div class="ws-docs-content-img">
 ![Conversation history with an options menu opened on a previous conversation.](./img/conversation-history.svg)
+</div>
+
+When the conversation history is still loading, display skeleton items:
+
+<div class="ws-docs-content-img">
+![Chat history items loading.](./img/loading-state.svg)
+</div>
+
+If there's an error loading the conversation history, display an error screen with steps for resolving the error:
+
+<div class="ws-docs-content-img">
+![Error state in chat history.](./img/error-state.svg)
 </div>
 
 ### ChatBot settings and preferences
@@ -222,27 +346,43 @@ There are a few display modes that users can choose when interacting with a Chat
 ![ChatBot in overlay mode.](./img/overlay.svg)
 </div>
 
-2. **Docked:** Anchors the ChatBot to the side of the page content. When docked, the ChatBot window is persistent, and cannot be toggled.
+2. **Docked:** Anchors the ChatBot to the side of the page, on top of the page content. 
 
 <div class="ws-docs-content-img">
 ![ChatBot in docked mode.](./img/docked.svg)
 </div>
 
-3. **Full screen:** Fills the screen with the ChatBot window.
-
-<div class="ws-docs-content-img">
-![ChatBot in full-screen mode.](./img/fullscreen.svg)
-</div>
-
-4. **Embedded:** Places the ChatBot within a product as its own page. An embedded ChatBot could be displayed in the product's navigation menu.
+3. **Embedded:** Places the ChatBot within a product as its own page. An embedded ChatBot could be displayed in the product's navigation menu.
 
 <div class="ws-docs-content-img">
 ![ChatBot embedded in a product.](./img/embedded.svg)
 </div>
 
+4. **Full screen:** Fills the screen with the ChatBot window.
+
+<div class="ws-docs-content-img">
+![ChatBot in full-screen mode.](./img/fullscreen.svg)
+</div>
+
+5. **Inline drawer**: A ChatBot that can fit and perform within a drawer. This drawer can look different for each product, but will often be placed to the side of the page, inline with the page content.
+
+<div class="ws-docs-content-img">
+![ChatBot in drawer mode.](./img/drawer.svg)
+</div>
+
+### Layouts
+
+ChatBot supports a side-by-side [comparison layout](/patternfly-ai/chatbot/overview/demo#comparing-chatbots), which allows users to compare 2 chats at once. This can be helpful to let users understand how different models respond to the same prompt.
+
+<div class="ws-docs-content-img">
+![2 ChatBots in comparison mode.](./img/comparison.svg)
+</div>
+
 ## Placement
 
 Your users will expect your ChatBot to be in a reliable, permanent location. Overlay displays are placed in the bottom right of the screen by default. If you're using a full screen or embedded ChatBot, stick to a consistent access location, like a button in the masthead or an item in the navigation menu.
+
+Refer to the additional guidelines for [accessing a ChatBot](#accessing-a-chatbot).
 
 ## Content considerations
 

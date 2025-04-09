@@ -73,10 +73,26 @@
     --pf-v6-c-form-control--PaddingBlockStart: 0;
     --pf-v6-c-form-control--PaddingBlockEnd: 0;
     --pf-v6-c-form-control--BorderRadius: 0;
+    font-family: var(--pf-t--global--font--family--body);
   }
   textarea:focus-visible {
     outline: none;
   }
+}
+
+.pf-chatbot__message-textarea.pf-v6-c-form-control.pf-m-textarea:has(textarea) {
+  --pf-v6-c-form-control--PaddingBlockStart: 0;
+  --pf-v6-c-form-control--PaddingBlockEnd: 0;
+  --pf-v6-c-form-control--PaddingInlineStart: 1rem;
+  --pf-v6-c-form-control--PaddingInlineEnd: 1rem;
+  --pf-v6-c-form-control__utilities--PaddingInlineEnd: 0;
+}
+
+.pf-chatbot__message-textarea.pf-v6-c-form-control.pf-m-textarea {
+  --pf-v6-c-form-control--textarea--PaddingBlockStart--offset: 0;
+  --pf-v6-c-form-control--textarea--PaddingBlockEnd--offset: 0;
+  --pf-v6-c-form-control--textarea--PaddingInlineStart--offset: 0;
+  --pf-v6-c-form-control--textarea--PaddingInlineEnd--offset: 0;
 }
 
 @media screen and (max-width: 359px) {
