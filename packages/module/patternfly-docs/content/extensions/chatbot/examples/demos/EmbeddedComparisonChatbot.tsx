@@ -103,7 +103,7 @@ export const CompareChild = ({ name, input, hasNewInput, setIsSendButtonDisabled
     if (input) {
       handleSend(input);
     }
-  }, [hasNewInput, input, handleSend]);
+  }, [hasNewInput, input]);
 
   // Auto-scrolls to the latest message
   React.useEffect(() => {

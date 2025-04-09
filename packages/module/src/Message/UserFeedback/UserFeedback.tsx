@@ -81,7 +81,7 @@ const UserFeedback: React.FunctionComponent<UserFeedbackProps> = ({
     if (focusOnLoad) {
       divRef.current?.focus();
     }
-  });
+  }, []);
 
   return (
     /* card does not have ref forwarding; hence wrapper div */
