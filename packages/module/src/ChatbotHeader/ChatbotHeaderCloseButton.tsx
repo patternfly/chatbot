@@ -16,6 +16,7 @@ export interface ChatbotHeaderCloseButtonProps {
   innerRef?: React.Ref<HTMLButtonElement>;
   /** Content used in tooltip */
   tooltipContent?: string;
+  isCompact?: boolean;
 }
 
 const ChatbotHeaderCloseButtonBase: React.FunctionComponent<ChatbotHeaderCloseButtonProps> = ({
@@ -24,7 +25,8 @@ const ChatbotHeaderCloseButtonBase: React.FunctionComponent<ChatbotHeaderCloseBu
   tooltipProps,
   menuAriaLabel = 'Close',
   innerRef,
-  tooltipContent = 'Close'
+  tooltipContent = 'Close',
+  isCompact = false
 }: ChatbotHeaderCloseButtonProps) => (
   <div className={`pf-chatbot__menu ${className}`}>
     <Tooltip
@@ -41,10 +43,11 @@ const ChatbotHeaderCloseButtonBase: React.FunctionComponent<ChatbotHeaderCloseBu
         aria-label={menuAriaLabel}
         ref={innerRef}
         icon={
-          <Icon size="xl" isInline>
+          <Icon size={isCompact ? 'lg' : 'xl'} isInline>
             <CloseIcon />
           </Icon>
         }
+        size={isCompact ? 'sm' : undefined}
       />
     </Tooltip>
   </div>

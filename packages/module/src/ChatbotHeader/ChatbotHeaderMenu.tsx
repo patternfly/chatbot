@@ -16,6 +16,7 @@ export interface ChatbotHeaderMenuProps {
   innerRef?: React.Ref<HTMLButtonElement>;
   /** Content used in tooltip */
   tooltipContent?: string;
+  isCompact?: boolean;
 }
 
 const ChatbotHeaderMenuBase: React.FunctionComponent<ChatbotHeaderMenuProps> = ({
@@ -24,7 +25,8 @@ const ChatbotHeaderMenuBase: React.FunctionComponent<ChatbotHeaderMenuProps> = (
   tooltipProps,
   menuAriaLabel = 'Toggle menu',
   innerRef,
-  tooltipContent = 'Menu'
+  tooltipContent = 'Menu',
+  isCompact
 }: ChatbotHeaderMenuProps) => (
   <div className={`pf-chatbot__menu ${className}`}>
     <Tooltip
@@ -41,10 +43,11 @@ const ChatbotHeaderMenuBase: React.FunctionComponent<ChatbotHeaderMenuProps> = (
         aria-label={menuAriaLabel}
         ref={innerRef}
         icon={
-          <Icon size="xl" isInline>
+          <Icon size={isCompact ? 'lg' : 'xl'} isInline>
             <BarsIcon />
           </Icon>
         }
+        size={isCompact ? 'sm' : undefined}
       />
     </Tooltip>
   </div>

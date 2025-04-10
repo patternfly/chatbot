@@ -110,3 +110,17 @@
     }
   }
 }
+
+// ============================================================================
+// Information density styles
+// ============================================================================
+.pf-chatbot__message-bar-compact {
+  .pf-chatbot__message-textarea {
+    font-size: var(--pf-t--global--font--size--sm) !important;
+  }
+
+  .pf-chatbot__message-bar-input {
+    padding-block-start: 0;
+    padding-block-end: 0;
+  }
+}
