@@ -108,7 +108,7 @@ Depending on your local setup, this might not be necessary. For example, if you 
 To add another analytics provider, you need to implement 2 interfaces, `TrackingSpi` and `trackingApi`.
 
 1. It is easiest to start by copying the `ConsoleTrackingProvider`
-1. The first thing you should do is to add it to the `Providers` enum in `tracking_spi.ts`
+1. Add an entry for your new provider to the `Providers` enum in `tracking_spi.ts`
 1. Once you are happy enough with the implementation, add it to the array of providers in `getTrackingProviders()`
 
 ### Page flow tracking
