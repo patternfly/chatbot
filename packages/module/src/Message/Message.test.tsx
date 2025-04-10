@@ -815,4 +815,52 @@ describe('Message', () => {
     expect(screen.getByRole('heading', { name: /Could not load chat/i })).toBeTruthy();
     expect(screen.queryByText('Test')).toBeFalsy();
   });
+  it('should handle isEditable when there is message content', () => {
+    render(<Message avatar="./img" role="user" name="User" isEditable content="Test" />);
+    expect(screen.getByRole('textbox')).toBeTruthy();
+    expect(screen.getByRole('textbox')).toHaveValue('Test');
+    expect(screen.getByRole('button', { name: /Update/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Cancel/i })).toBeTruthy();
+  });
+  it('should handle isEditable when there is no message content', () => {
+    render(<Message avatar="./img" role="user" name="User" isEditable />);
+    expect(screen.getByRole('textbox')).toBeTruthy();
+    expect(screen.getByRole('textbox')).toHaveValue('');
+    expect(screen.getByRole('textbox')).toHaveAttribute('placeholder', 'Edit prompt message...');
+    expect(screen.getByRole('button', { name: /Update/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Cancel/i })).toBeTruthy();
+  });
+  it('should be able to change edit placeholder', () => {
+    render(<Message avatar="./img" role="user" name="User" isEditable editPlaceholder="I am a placeholder" />);
+    expect(screen.getByRole('textbox')).toBeTruthy();
+    expect(screen.getByRole('textbox')).toHaveValue('');
+    expect(screen.getByRole('textbox')).toHaveAttribute('placeholder', 'I am a placeholder');
+  });
+  it('should be able to change updateWord', () => {
+    render(<Message avatar="./img" role="user" name="User" isEditable updateWord="Submit" />);
+    expect(screen.getByRole('button', { name: /Submit/i })).toBeTruthy();
+  });
+  it('should be able to change cancelWord', () => {
+    render(<Message avatar="./img" role="user" name="User" isEditable cancelWord="Don't submit" />);
+    expect(screen.getByRole('button', { name: /Don't submit/i })).toBeTruthy();
+  });
+  it('should be able to add onEditUpdate', async () => {
+    const spy = jest.fn();
+    render(<Message avatar="./img" role="user" name="User" isEditable onEditUpdate={spy} />);
+    await userEvent.click(screen.getByRole('button', { name: /Update/i }));
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+  it('should be able to add onEditCancel', async () => {
+    const spy = jest.fn();
+    render(<Message avatar="./img" role="user" name="User" isEditable onEditCancel={spy} />);
+    await userEvent.click(screen.getByRole('button', { name: /Cancel/i }));
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+  it('should be able to add  editFormProps', () => {
+    const { container } = render(
+      <Message avatar="./img" role="user" name="User" isEditable editFormProps={{ className: 'test' }} />
+    );
+    const form = container.querySelector('form');
+    expect(form).toHaveClass('test');
+  });
 });

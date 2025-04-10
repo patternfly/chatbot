@@ -12,6 +12,7 @@ import {
   AvatarProps,
   ButtonProps,
   ContentVariants,
+  FormProps,
   Label,
   LabelGroupProps,
   Timestamp,
@@ -45,6 +46,7 @@ import rehypeSanitize from 'rehype-sanitize';
 import { PluggableList } from 'react-markdown/lib';
 import LinkMessage from './LinkMessage/LinkMessage';
 import ErrorMessage from './ErrorMessage/ErrorMessage';
+import MessageInput from './MessageInput';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -148,6 +150,20 @@ export interface MessageProps extends Omit<React.HTMLProps<HTMLDivElement>, 'rol
   error?: AlertProps;
   /** Props for links */
   linkProps?: ButtonProps;
+  /** Whether message is in edit mode */
+  isEditable?: boolean;
+  /** Placeholder for edit input */
+  editPlaceholder?: string;
+  /** Label for the English word "Update" used in edit mode. */
+  updateWord?: string;
+  /** Label for the English word "Cancel" used in edit mode. */
+  cancelWord?: string;
+  /** Callback function for when edit mode update button is clicked */
+  onEditUpdate?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  /** Callback functionf or when edit cancel update button is clicked */
+  onEditCancel?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  /** Props for edit form */
+  editFormProps?: FormProps;
 }
 
 export const MessageBase: React.FunctionComponent<MessageProps> = ({
@@ -178,8 +194,21 @@ export const MessageBase: React.FunctionComponent<MessageProps> = ({
   additionalRehypePlugins = [],
   linkProps,
   error,
+  isEditable,
+  editPlaceholder = 'Edit prompt message...',
+  updateWord = 'Update',
+  cancelWord = 'Cancel',
+  onEditUpdate,
+  onEditCancel,
+  editFormProps,
   ...props
 }: MessageProps) => {
+  const [messageText, setMessageText] = React.useState(content);
+
+  React.useEffect(() => {
+    setMessageText(content);
+  }, [content]);
+
   const { beforeMainContent, afterMainContent, endContent } = extraContent || {};
   let rehypePlugins: PluggableList = [rehypeUnwrapImages];
   if (openLinkInNewTab) {
@@ -197,6 +226,82 @@ export const MessageBase: React.FunctionComponent<MessageProps> = ({
   // Keep timestamps consistent between Timestamp component and aria-label
   const date = new Date();
   const dateString = timestamp ?? `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+
+  const renderMessage = () => {
+    if (isLoading) {
+      return <MessageLoading loadingWord={loadingWord} />;
+    }
+    if (isEditable) {
+      return (
+        <>
+          {beforeMainContent && <>{beforeMainContent}</>}
+          <MessageInput
+            content={content}
+            editPlaceholder={editPlaceholder}
+            updateWord={updateWord}
+            cancelWord={cancelWord}
+            onEditUpdate={(event, text) => {
+              onEditUpdate && onEditUpdate(event);
+              setMessageText(text);
+            }}
+            onEditCancel={onEditCancel}
+            {...editFormProps}
+          />
+        </>
+      );
+    }
+    return (
+      <>
+        {beforeMainContent && <>{beforeMainContent}</>}
+        {error ? (
+          <ErrorMessage {...error} />
+        ) : (
+          <Markdown
+            components={{
+              p: (props) => <TextMessage component={ContentVariants.p} {...props} />,
+              code: ({ children, ...props }) => (
+                <CodeBlockMessage {...props} {...codeBlockProps}>
+                  {children}
+                </CodeBlockMessage>
+              ),
+              h1: (props) => <TextMessage component={ContentVariants.h1} {...props} />,
+              h2: (props) => <TextMessage component={ContentVariants.h2} {...props} />,
+              h3: (props) => <TextMessage component={ContentVariants.h3} {...props} />,
+              h4: (props) => <TextMessage component={ContentVariants.h4} {...props} />,
+              h5: (props) => <TextMessage component={ContentVariants.h5} {...props} />,
+              h6: (props) => <TextMessage component={ContentVariants.h6} {...props} />,
+              blockquote: (props) => <TextMessage component={ContentVariants.blockquote} {...props} />,
+              ul: (props) => <UnorderedListMessage {...props} />,
+              ol: (props) => <OrderedListMessage {...props} />,
+              li: (props) => <ListItemMessage {...props} />,
+              table: (props) => <TableMessage {...props} {...tableProps} />,
+              tbody: (props) => <TbodyMessage {...props} />,
+              thead: (props) => <TheadMessage {...props} />,
+              tr: (props) => <TrMessage {...props} />,
+              td: (props) => {
+                // Conflicts with Td type
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const { width, ...rest } = props;
+                return <TdMessage {...rest} />;
+              },
+              th: (props) => <ThMessage {...props} />,
+              img: (props) => <ImageMessage {...props} />,
+              a: (props) => (
+                <LinkMessage href={props.href} rel={props.rel} target={props.target} {...linkProps}>
+                  {props.children}
+                </LinkMessage>
+              )
+            }}
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={rehypePlugins}
+          >
+            {messageText}
+          </Markdown>
+        )}
+      </>
+    );
+  };
+
   return (
     <section
       aria-label={`Message from ${role} - ${dateString}`}
@@ -229,59 +334,8 @@ export const MessageBase: React.FunctionComponent<MessageProps> = ({
         </div>
         <div className="pf-chatbot__message-response">
           <div className="pf-chatbot__message-and-actions">
-            {isLoading ? (
-              <MessageLoading loadingWord={loadingWord} />
-            ) : (
-              <>
-                {beforeMainContent && <>{beforeMainContent}</>}
-                {error ? (
-                  <ErrorMessage {...error} />
-                ) : (
-                  <Markdown
-                    components={{
-                      p: (props) => <TextMessage component={ContentVariants.p} {...props} />,
-                      code: ({ children, ...props }) => (
-                        <CodeBlockMessage {...props} {...codeBlockProps}>
-                          {children}
-                        </CodeBlockMessage>
-                      ),
-                      h1: (props) => <TextMessage component={ContentVariants.h1} {...props} />,
-                      h2: (props) => <TextMessage component={ContentVariants.h2} {...props} />,
-                      h3: (props) => <TextMessage component={ContentVariants.h3} {...props} />,
-                      h4: (props) => <TextMessage component={ContentVariants.h4} {...props} />,
-                      h5: (props) => <TextMessage component={ContentVariants.h5} {...props} />,
-                      h6: (props) => <TextMessage component={ContentVariants.h6} {...props} />,
-                      blockquote: (props) => <TextMessage component={ContentVariants.blockquote} {...props} />,
-                      ul: (props) => <UnorderedListMessage {...props} />,
-                      ol: (props) => <OrderedListMessage {...props} />,
-                      li: (props) => <ListItemMessage {...props} />,
-                      table: (props) => <TableMessage {...props} {...tableProps} />,
-                      tbody: (props) => <TbodyMessage {...props} />,
-                      thead: (props) => <TheadMessage {...props} />,
-                      tr: (props) => <TrMessage {...props} />,
-                      td: (props) => {
-                        // Conflicts with Td type
-                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                        const { width, ...rest } = props;
-                        return <TdMessage {...rest} />;
-                      },
-                      th: (props) => <ThMessage {...props} />,
-                      img: (props) => <ImageMessage {...props} />,
-                      a: (props) => (
-                        <LinkMessage href={props.href} rel={props.rel} target={props.target} {...linkProps}>
-                          {props.children}
-                        </LinkMessage>
-                      )
-                    }}
-                    remarkPlugins={[remarkGfm]}
-                    rehypePlugins={rehypePlugins}
-                  >
-                    {content}
-                  </Markdown>
-                )}
-                {afterMainContent && <>{afterMainContent}</>}
-              </>
-            )}
+            {renderMessage()}
+            {afterMainContent && <>{afterMainContent}</>}
             {!isLoading && sources && <SourcesCard {...sources} />}
             {quickStarts && quickStarts.quickStart && (
               <QuickStartTile

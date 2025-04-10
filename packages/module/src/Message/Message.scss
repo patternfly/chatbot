@@ -97,6 +97,10 @@
   flex-wrap: wrap;
 }
 
+.pf-chatbot__message-edit-buttons {
+  --pf-v6-c-form__group--m-action--MarginBlockStart: 0;
+}
+
 @import './MessageLoading';
 @import './CodeBlockMessage/CodeBlockMessage';
 @import './TextMessage/TextMessage';
