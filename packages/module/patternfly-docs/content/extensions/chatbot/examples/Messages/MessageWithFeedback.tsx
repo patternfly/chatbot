@@ -40,6 +40,26 @@ export const MessageWithFeedbackExample: React.FunctionComponent = () => {
             focusOnLoad: false
           }}
         />
+        <Message
+          name="Bot"
+          role="bot"
+          avatar={patternflyAvatar}
+          content="This is a compact message with the feedback card:"
+          userFeedbackForm={{
+            quickResponses: [
+              { id: '1', content: 'Helpful information' },
+              { id: '2', content: 'Easy to understand' },
+              { id: '3', content: 'Resolved my issue' }
+            ],
+            onSubmit: (quickResponse, additionalFeedback) =>
+              alert(`Selected ${quickResponse} and received the additional feedback: ${additionalFeedback}`),
+            hasTextArea,
+            // eslint-disable-next-line no-console
+            onClose: () => console.log('closed feedback form'),
+            focusOnLoad: false
+          }}
+          isCompact
+        />
       </Stack>
       <Stack hasGutter>
         <FormGroup role="radiogroup" isInline fieldId="feedback-thank-you" label="Variant">
@@ -64,6 +84,19 @@ export const MessageWithFeedbackExample: React.FunctionComponent = () => {
             onClose: hasCloseButton ? () => console.log('closed completion message') : undefined,
             focusOnLoad: false
           }}
+        />
+        <Message
+          name="Bot"
+          role="bot"
+          avatar={patternflyAvatar}
+          content="This is a compact thank-you message, which is displayed once the feedback card is submitted:"
+          // eslint-disable-next-line no-console
+          userFeedbackComplete={{
+            // eslint-disable-next-line no-console
+            onClose: hasCloseButton ? () => console.log('closed completion message') : undefined,
+            focusOnLoad: false
+          }}
+          isCompact
         />
       </Stack>
     </>

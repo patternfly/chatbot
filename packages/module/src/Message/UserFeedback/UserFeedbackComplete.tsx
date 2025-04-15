@@ -63,6 +63,7 @@ const UserFeedbackComplete: React.FunctionComponent<UserFeedbackCompleteProps> =
   isLiveRegion,
   id,
   focusOnLoad = true,
+  isCompact,
   ...props
 }: UserFeedbackCompleteProps) => {
   const [timedOut, setTimedOut] = React.useState(false);
@@ -143,8 +144,15 @@ const UserFeedbackComplete: React.FunctionComponent<UserFeedbackCompleteProps> =
       aria-label={title}
       {...ouiaProps}
     >
-      <Card className={`pf-chatbot__feedback-card ${className ? className : ''}`} {...props}>
+      <Card
+        isCompact={isCompact}
+        className={`pf-chatbot__feedback-card pf-chatbot__feedback-card-complete${className ? ` ${className}` : ''}`}
+        {...props}
+      >
         <CardHeader
+          className={
+            onClose ? 'pf-chatbot__feedback-card-complete-header' : 'pf-chatbot__feedback-card-complete-empty-header'
+          }
           actions={
             /* eslint-disable indent */
             onClose
@@ -200,7 +208,7 @@ const UserFeedbackComplete: React.FunctionComponent<UserFeedbackCompleteProps> =
           </div>
           <div className="pf-chatbot__feedback-complete-text">
             <CardTitle className="pf-chatbot__feedback-complete-title">{title}</CardTitle>
-            <CardBody className={`pf-chatbot__feedback-complete-body`}>{body}</CardBody>
+            <CardBody className={`pf-chatbot__feedback-complete-card-body`}>{body}</CardBody>
           </div>
         </div>
       </Card>

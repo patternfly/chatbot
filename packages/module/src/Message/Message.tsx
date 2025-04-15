@@ -164,6 +164,8 @@ export interface MessageProps extends Omit<React.HTMLProps<HTMLDivElement>, 'rol
   onEditCancel?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   /** Props for edit form */
   editFormProps?: FormProps;
+  /** Sets message to compact styling. */
+  isCompact?: boolean;
 }
 
 export const MessageBase: React.FunctionComponent<MessageProps> = ({
@@ -201,6 +203,7 @@ export const MessageBase: React.FunctionComponent<MessageProps> = ({
   onEditUpdate,
   onEditCancel,
   editFormProps,
+  isCompact,
   ...props
 }: MessageProps) => {
   const [messageText, setMessageText] = React.useState(content);
@@ -349,12 +352,15 @@ export const MessageBase: React.FunctionComponent<MessageProps> = ({
               />
             )}
             {!isLoading && actions && <ResponseActions actions={actions} />}
-            {userFeedbackForm && <UserFeedback {...userFeedbackForm} timestamp={dateString} />}
-            {userFeedbackComplete && <UserFeedbackComplete {...userFeedbackComplete} timestamp={dateString} />}
+            {userFeedbackForm && <UserFeedback {...userFeedbackForm} timestamp={dateString} isCompact={isCompact} />}
+            {userFeedbackComplete && (
+              <UserFeedbackComplete {...userFeedbackComplete} timestamp={dateString} isCompact={isCompact} />
+            )}
             {!isLoading && quickResponses && (
               <QuickResponse
                 quickResponses={quickResponses}
                 quickResponseContainerProps={quickResponseContainerProps}
+                isCompact={isCompact}
               />
             )}
           </div>

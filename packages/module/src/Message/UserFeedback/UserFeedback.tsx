@@ -71,6 +71,7 @@ const UserFeedback: React.FunctionComponent<UserFeedbackProps> = ({
   id,
   headingLevel: HeadingLevel = 'h1',
   focusOnLoad = true,
+  isCompact,
   ...props
 }: UserFeedbackProps) => {
   const [selectedResponse, setSelectedResponse] = React.useState<string>();
@@ -86,7 +87,7 @@ const UserFeedback: React.FunctionComponent<UserFeedbackProps> = ({
   return (
     /* card does not have ref forwarding; hence wrapper div */
     <div ref={divRef} id={id} tabIndex={0} aria-label={title}>
-      <Card className={`pf-chatbot__feedback-card ${className ? className : ''}`} {...props}>
+      <Card isCompact={isCompact} className={`pf-chatbot__feedback-card ${className ? className : ''}`} {...props}>
         <CardHeader
           actions={{
             actions: <CloseButton onClose={onClose} ariaLabel={closeButtonAriaLabel} />
@@ -95,12 +96,15 @@ const UserFeedback: React.FunctionComponent<UserFeedbackProps> = ({
           <HeadingLevel className="pf-chatbot__feedback-card-title">{title}</HeadingLevel>
         </CardHeader>
         <CardBody>
-          <Form className="pf-chatbot__feedback-card-form">
+          <Form
+            className={`pf-chatbot__feedback-card-form ${isCompact ? 'pf-chatbot__feedback-card-form--compact' : ''}`}
+          >
             {quickResponses && (
               <QuickResponse
                 quickResponses={quickResponses}
                 quickResponseContainerProps={quickResponseContainerProps}
                 onSelect={(id) => setSelectedResponse(id)}
+                isCompact={isCompact}
               />
             )}
             {hasTextArea && (
