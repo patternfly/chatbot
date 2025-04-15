@@ -49,6 +49,8 @@ export interface QuickStartTileProps {
   prerequisiteWordPlural?: string;
   /** Aria-label for the quick start description button */
   quickStartButtonAriaLabel?: string;
+  /** Sets the tile to compact styling */
+  isCompact?: boolean;
 }
 
 const QuickStartTile: React.FC<QuickStartTileProps> = ({
@@ -61,7 +63,8 @@ const QuickStartTile: React.FC<QuickStartTileProps> = ({
   prerequisiteWord,
   prerequisiteWordPlural,
   quickStartButtonAriaLabel,
-  action
+  action,
+  isCompact
 }) => {
   const {
     metadata: { name: id },
@@ -105,6 +108,7 @@ const QuickStartTile: React.FC<QuickStartTileProps> = ({
       id={`${id}-chatbot-qs-tile`}
       style={{ height: '100%' }}
       data-testid={`chatbot-qs-card-${camelize(displayName)}`}
+      isCompact={isCompact}
     >
       <CardHeader
         {...(action && {

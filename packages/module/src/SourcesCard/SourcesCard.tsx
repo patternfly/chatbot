@@ -71,6 +71,7 @@ const SourcesCard: React.FunctionComponent<SourcesCardProps> = ({
   onSetPage,
   showMoreWords = 'show more',
   showLessWords = 'show less',
+  isCompact,
   ...props
 }: SourcesCardProps) => {
   const [page, setPage] = React.useState(1);
@@ -95,7 +96,7 @@ const SourcesCard: React.FunctionComponent<SourcesCardProps> = ({
   return (
     <div className="pf-chatbot__source">
       <span>{pluralize(sources.length, sourceWord, sourceWordPlural)}</span>
-      <Card className="pf-chatbot__sources-card" {...props}>
+      <Card isCompact={isCompact} className="pf-chatbot__sources-card" {...props}>
         <CardTitle className="pf-chatbot__sources-card-title">
           <Button
             component="a"

@@ -74,3 +74,11 @@
     }
   }
 }
+
+.pf-v6-c-card.pf-m-compact.pf-chatbot__sources-card {
+  .pf-v6-c-card__footer.pf-chatbot__sources-card-footer-container {
+    border-top: var(--pf-t--global--border--width--regular) solid var(--pf-t--global--border--color--default);
+    padding: var(--pf-t--global--spacer--xs) var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--xs)
+      var(--pf-t--global--spacer--xs) !important;
+  }
+}

@@ -27,5 +27,16 @@ export const MessageWithQuickStartExample: React.FunctionComponent = () => (
         onSelectQuickStart: (id) => alert(id)
       }}
     />
+    <Message
+      name="Bot"
+      role="bot"
+      avatar={patternflyAvatar}
+      content="This quick start tile is compact"
+      quickStarts={{
+        quickStart: monitorSampleAppQuickStart,
+        onSelectQuickStart: (id) => alert(id)
+      }}
+      isCompact
+    />
   </>
 );

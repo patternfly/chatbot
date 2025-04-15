@@ -150,6 +150,27 @@ export const MessageWithSourcesExample: React.FunctionComponent = () => {
           onSetPage
         }}
       />
+      <Message
+        name="Bot"
+        role="bot"
+        avatar={patternflyAvatar}
+        content="This example displays a compact sources card"
+        sources={{
+          sources: [
+            {
+              link: '#'
+            },
+            {
+              link: '#'
+            },
+            {
+              link: '#'
+            }
+          ],
+          onSetPage
+        }}
+        isCompact
+      />
     </>
   );
 };
