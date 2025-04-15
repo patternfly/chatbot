@@ -15,12 +15,15 @@ export interface QuickResponseProps {
   quickResponseContainerProps?: Omit<LabelGroupProps, 'ref'>;
   /** Callback when a response is clicked; used in feedback cards */
   onSelect?: (id: string) => void;
+  /** Sets the quick responses to compact styling */
+  isCompact?: boolean;
 }
 
 export const QuickResponse: React.FunctionComponent<QuickResponseProps> = ({
   quickResponses,
   quickResponseContainerProps = { numLabels: 5 },
-  onSelect
+  onSelect,
+  isCompact
 }: QuickResponseProps) => {
   const [selectedQuickResponse, setSelectedQuickResponse] = React.useState<string>();
 
@@ -42,6 +45,7 @@ export const QuickResponse: React.FunctionComponent<QuickResponseProps> = ({
           key={id}
           onClick={() => handleQuickResponseClick(id, onClick)}
           className={`${id === selectedQuickResponse ? 'pf-chatbot__message-quick-response--selected' : ''} ${className ? className : ''}`}
+          isCompact={isCompact}
           {...props}
         >
           {content}
