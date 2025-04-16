@@ -5,10 +5,20 @@ export interface SettingsFormProps {
   className?: string;
   /** Array of fields to display in the settings layout */
   fields?: { id: string; label: string; field: React.ReactElement }[];
+  /** Sets form to compact styling. */
+  isCompact?: boolean;
 }
 
-export const SettingsForm: React.FunctionComponent<SettingsFormProps> = ({ className, fields = [], ...props }) => (
-  <div className={`pf-chatbot__settings-form-container ${className}`} {...props}>
+export const SettingsForm: React.FunctionComponent<SettingsFormProps> = ({
+  className,
+  fields = [],
+  isCompact,
+  ...props
+}) => (
+  <div
+    className={`pf-chatbot__settings-form-container ${isCompact ? 'pf-chatbot__settings-form-container--compact' : ''} ${className ? ` ${className}` : ''}`}
+    {...props}
+  >
     <form className="pf-chatbot__settings-form">
       {fields.map((field) => (
         <div className="pf-chatbot__settings-form-row" key={field.label}>

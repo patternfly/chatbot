@@ -137,3 +137,11 @@
 :where(.pf-v6-theme-dark) .show-dark .pf-m-picture {
   display: inline-flex;
 }
+
+// ============================================================================
+// Information density styles
+// ============================================================================
+.pf-chatbot__close-button--compact {
+  width: 2rem;
+  height: 2rem;
+}

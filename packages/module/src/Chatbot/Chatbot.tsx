@@ -17,6 +17,8 @@ export interface ChatbotProps {
   innerRef?: React.Ref<HTMLDivElement>;
   /** Custom aria label applied to focusable container */
   ariaLabel?: string;
+  /** Density of information within the ChatBot */
+  isCompact?: boolean;
 }
 
 export enum ChatbotDisplayMode {
@@ -34,6 +36,7 @@ const ChatbotBase: React.FunctionComponent<ChatbotProps> = ({
   className,
   innerRef,
   ariaLabel,
+  isCompact,
   ...props
 }: ChatbotProps) => {
   // Configure animations
@@ -44,7 +47,7 @@ const ChatbotBase: React.FunctionComponent<ChatbotProps> = ({
 
   return (
     <motion.div
-      className={`pf-chatbot pf-chatbot--${displayMode} ${!isVisible ? 'pf-chatbot--hidden' : ''} ${className ?? ''}`}
+      className={`pf-chatbot pf-chatbot--${displayMode} ${!isVisible ? 'pf-chatbot--hidden' : ''}  ${isCompact ? 'pf-chatbot--small' : ''} ${className ?? ''}`}
       variants={motionChatbot}
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}

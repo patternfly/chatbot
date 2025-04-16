@@ -14,7 +14,7 @@ export const ChatbotHeader: React.FunctionComponent<ChatbotHeaderProps> = ({
   children
 }: ChatbotHeaderProps) => (
   <div className="pf-chatbot__header-container">
-    <div className={`pf-chatbot__header ${className ?? ''}`}>{children}</div>
+    <div className={`pf-chatbot__header${className ? ` ${className}` : ''}`}>{children}</div>
     <Divider className="pf-chatbot__header__divider" />
   </div>
 );
