@@ -40,6 +40,8 @@ export interface CodeModalProps {
   title: string;
   /** Display mode for the Chatbot parent; this influences the styles applied */
   displayMode?: ChatbotDisplayMode;
+  /** Sets modal to compact styling. */
+  isCompact?: boolean;
 }
 
 export const CodeModal: React.FunctionComponent<CodeModalProps> = ({
@@ -57,6 +59,7 @@ export const CodeModal: React.FunctionComponent<CodeModalProps> = ({
   secondaryActionBtn,
   title,
   displayMode = ChatbotDisplayMode.default,
+  isCompact,
   ...props
 }: CodeModalProps) => {
   const [newCode, setNewCode] = React.useState(code);
@@ -94,8 +97,9 @@ export const CodeModal: React.FunctionComponent<CodeModalProps> = ({
       ouiaId="CodeModal"
       aria-labelledby="code-modal-title"
       aria-describedby="code-modal"
-      className={`pf-chatbot__code-modal pf-chatbot__code-modal--${displayMode}`}
+      className={`pf-chatbot__code-modal ${isCompact ? 'pf-chatbot__code-modal-compact' : ''} pf-chatbot__code-modal--${displayMode}`}
       displayMode={displayMode}
+      isCompact={isCompact}
     >
       <ModalHeader title={title} labelId="code-modal-title" />
       <ModalBody id="code-modal-body">
@@ -103,7 +107,7 @@ export const CodeModal: React.FunctionComponent<CodeModalProps> = ({
           <StackItem className="pf-chatbot__code-modal-file-details">
             <FileDetails fileName={fileName} />
           </StackItem>
-          <StackItem className="pf-chatbot__code-modal-body">
+          <StackItem className="pf-chatbot__code-modal-editor">
             <CodeEditor
               isDarkTheme
               isLineNumbersVisible={isLineNumbersVisible}

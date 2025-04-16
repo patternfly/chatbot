@@ -14,10 +14,7 @@
   .pf-v6-c-modal-box__title {
     --pf-v6-c-modal-box__title--FontSize: var(--pf-t--global--font--size--heading--h3);
   }
-  .pf-v6-c-button.pf-m-primary.pf-m-block,
-  .pf-v6-c-button.pf-m-link.pf-m-block {
-    --pf-v6-c-button--FontWeight: var(--pf-t--global--font--weight--body--bold);
-  }
+
   .pf-v6-c-modal-box__footer {
     padding-block-start: var(--pf-t--global--spacer--xl);
     padding-block-end: var(--pf-t--global--spacer--xl);
@@ -90,4 +87,15 @@
 // ============================================================================
 .pf-v6-c-backdrop.pf-chatbot__backdrop {
   position: absolute;
+}
+
+.pf-chatbot__chatbot-modal-compact {
+  .pf-v6-c-modal-box__header {
+    padding-block-end: 0;
+  }
+
+  .pf-v6-c-modal-box__footer {
+    padding-block-start: var(--pf-t--global--spacer--lg);
+    padding-block-end: var(--pf-t--global--spacer--lg);
+  }
 }
