@@ -33,6 +33,8 @@ export interface TermsOfUseProps extends ModalProps {
   innerRef?: React.Ref<HTMLDivElement>;
   /** OuiaID applied to modal */
   ouiaId?: string;
+  /** Sets modal to compact styling. */
+  isCompact?: boolean;
 }
 
 export const TermsOfUseBase: React.FunctionComponent<TermsOfUseProps> = ({
@@ -50,6 +52,7 @@ export const TermsOfUseBase: React.FunctionComponent<TermsOfUseProps> = ({
   children,
   innerRef,
   ouiaId = 'TermsOfUse',
+  isCompact,
   ...props
 }: TermsOfUseProps) => {
   const handlePrimaryAction = (_event: React.MouseEvent | MouseEvent | KeyboardEvent) => {
@@ -67,19 +70,21 @@ export const TermsOfUseBase: React.FunctionComponent<TermsOfUseProps> = ({
       ouiaId={ouiaId}
       aria-labelledby="terms-of-use-title"
       aria-describedby="terms-of-use-modal"
-      className={`pf-chatbot__terms-of-use-modal pf-chatbot__terms-of-use-modal--${displayMode} ${className ? className : ''}`}
+      className={`pf-chatbot__terms-of-use-modal pf-chatbot__terms-of-use-modal--${displayMode} ${isCompact ? 'pf-chatbot__terms-of-use--compact' : ''} ${className ? className : ''}`}
       displayMode={displayMode}
       {...props}
     >
       {/* This is a workaround since the PatternFly modal doesn't have ref forwarding */}
       <section className={`pf-chatbot__terms-of-use--section`} aria-label={title} tabIndex={-1} ref={innerRef}>
-        <ModalHeader>
+        <ModalHeader className="pf-chatbot__terms-of-use--modal-header">
           <div className="pf-chatbot__terms-of-use--header">
-            {image && altText && <img src={image} className="pf-chatbot__terms-of-use--image" alt={altText} />}
+            {!isCompact && image && altText && (
+              <img src={image} className="pf-chatbot__terms-of-use--image" alt={altText} />
+            )}
             <h1 className="pf-chatbot__terms-of-use--title">{title}</h1>
           </div>
         </ModalHeader>
-        <ModalBody>
+        <ModalBody className="pf-chatbot__terms-of-use--modal-body">
           <Content>{children}</Content>
         </ModalBody>
         <ModalFooter className="pf-chatbot__terms-of-use--footer">
