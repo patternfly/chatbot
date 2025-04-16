@@ -398,6 +398,7 @@ This example also includes an example of how to use [skip to content](/patternfl
 
 ### Compact terms of use
 
+To apply compact styling to the terms of use modal, pass `isCompact` to `<TermsOfUse>`. This will remove the header image and adjust the spacing of text, so that there is less white space in the modal.
 ```js file="./TermsOfUseCompact.tsx" isFullscreen
 
 ```
