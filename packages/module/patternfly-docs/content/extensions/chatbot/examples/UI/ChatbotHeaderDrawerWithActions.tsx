@@ -51,6 +51,7 @@ const conversations: { [key: string]: Conversation[] } = {
 
 export const ChatbotHeaderTitleDemo: React.FunctionComponent = () => {
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(true);
+  const [isCompact, setIsCompact] = React.useState(false);
   const displayMode = ChatbotDisplayMode.embedded;
 
   return (
@@ -62,6 +63,13 @@ export const ChatbotHeaderTitleDemo: React.FunctionComponent = () => {
         id="drawer-actions-visible"
         name="drawer-actions-visible"
       ></Checkbox>
+      <Checkbox
+        label="Show compact version"
+        isChecked={isCompact}
+        onChange={() => setIsCompact(!isCompact)}
+        id="drawer-actions-compact"
+        name="drawer-actions-compact"
+      ></Checkbox>
       <ChatbotConversationHistoryNav
         displayMode={displayMode}
         onDrawerToggle={() => setIsDrawerOpen(!isDrawerOpen)}
@@ -69,6 +77,7 @@ export const ChatbotHeaderTitleDemo: React.FunctionComponent = () => {
         setIsDrawerOpen={setIsDrawerOpen}
         conversations={conversations}
         drawerContent={<div>Drawer content</div>}
+        isCompact={isCompact}
       />
     </>
   );

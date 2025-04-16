@@ -62,6 +62,7 @@ const EMPTY_STATE = {
 export const ChatbotHeaderTitleDemo: React.FunctionComponent = () => {
   const [isOpen, setIsOpen] = React.useState(true);
   const [isButtonOrderReversed, setIsButtonOrderReversed] = React.useState(false);
+  const [isCompact, setIsCompact] = React.useState(false);
   const [conversations, setConversations] = React.useState<Conversation[] | { [key: string]: Conversation[] }>(
     initialConversations
   );
@@ -136,6 +137,13 @@ export const ChatbotHeaderTitleDemo: React.FunctionComponent = () => {
         id="drawer-has-no-results"
         name="drawer-has-no-results"
       ></Checkbox>
+      <Checkbox
+        label="Show compact version"
+        isChecked={isCompact}
+        onChange={() => setIsCompact(!isCompact)}
+        id="drawer-compact"
+        name="drawer-compact"
+      ></Checkbox>
       <ChatbotConversationHistoryNav
         displayMode={displayMode}
         onDrawerToggle={() => setIsOpen(!isOpen)}
@@ -162,6 +170,7 @@ export const ChatbotHeaderTitleDemo: React.FunctionComponent = () => {
         errorState={hasError ? ERROR : undefined}
         emptyState={isEmpty ? EMPTY_STATE : undefined}
         noResultsState={hasNoResults ? NO_RESULTS : undefined}
+        isCompact={isCompact}
       />
     </>
   );

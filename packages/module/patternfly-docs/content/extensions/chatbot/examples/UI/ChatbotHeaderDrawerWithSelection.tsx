@@ -25,6 +25,7 @@ const menuItems = [
 export const ChatbotHeaderDrawerWithSelection: React.FunctionComponent = () => {
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(true);
   const [currentSelection, setCurrentSelection] = React.useState('2');
+  const [isCompact, setIsCompact] = React.useState(false);
   const displayMode = ChatbotDisplayMode.embedded;
 
   const conversations: { [key: string]: Conversation[] } = {
@@ -60,8 +61,15 @@ export const ChatbotHeaderDrawerWithSelection: React.FunctionComponent = () => {
         label="Display drawer"
         isChecked={isDrawerOpen}
         onChange={() => setIsDrawerOpen(!isDrawerOpen)}
-        id="drawer-actions-visible"
-        name="drawer-actions-visible"
+        id="drawer-selected-visible"
+        name="drawer-selected-visible"
+      ></Checkbox>
+      <Checkbox
+        label="Show compact version"
+        isChecked={isCompact}
+        onChange={() => setIsCompact(!isCompact)}
+        id="drawer-selected-compact"
+        name="drawer-selected-compact"
       ></Checkbox>
       <ChatbotConversationHistoryNav
         displayMode={displayMode}
@@ -72,6 +80,7 @@ export const ChatbotHeaderDrawerWithSelection: React.FunctionComponent = () => {
         drawerContent={<div>Drawer content</div>}
         activeItemId={currentSelection}
         onSelectActiveItem={(_e, id) => setCurrentSelection(id as string)}
+        isCompact={isCompact}
       />
     </>
   );

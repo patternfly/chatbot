@@ -205,3 +205,34 @@
   gap: var(--pf-t--global--spacer--sm);
   align-self: stretch;
 }
+
+.pf-chatbot__history.pf-chatbot__history-compact {
+  .pf-chatbot__input {
+    padding-inline-start: var(--pf-t--global--spacer--lg);
+    padding-inline-end: var(--pf-t--global--spacer--lg);
+  }
+
+  .pf-v6-c-drawer__main {
+    .pf-v6-c-drawer__panel {
+      --pf-v6-c-drawer__panel--PaddingBlockStart: var(--pf-t--global--spacer--sm);
+      --pf-v6-c-drawer__panel--PaddingBlockEnd: var(--pf-t--global--spacer--sm);
+      --pf-v6-c-drawer__head--PaddingInlineStart: var(--pf-t--global--spacer--md);
+      --pf-v6-c-drawer__head--PaddingInlineEnd: var(--pf-t--global--spacer--md);
+      --pf-v6-c-drawer__panel--RowGap: var(--pf-t--global--spacer--md);
+    }
+
+    .pf-v6-c-drawer__body {
+      --pf-v6-c-drawer__panel__body--PaddingInlineStart: var(--pf-t--global--spacer--md);
+      --pf-v6-c-drawer__panel__body--PaddingInlineEnd: var(--pf-t--global--spacer--md);
+    }
+  }
+
+  .pf-chatbot__menu-item {
+    font-size: var(--pf-t--global--font--size--body--md);
+  }
+
+  .pf-v6-c-drawer__head {
+    --pf-v6-c-drawer__head--PaddingInlineStart: var(--pf-t--global--spacer--lg);
+    --pf-v6-c-drawer__head--PaddingInlineEnd: var(--pf-t--global--spacer--lg);
+  }
+}

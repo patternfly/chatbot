@@ -116,6 +116,8 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   emptyState?: HistoryEmptyStateProps;
   /** Content to show in no results state. No results state will appear once content is passed in. */
   noResultsState?: HistoryEmptyStateProps;
+  /** Sets drawer to compact styling. */
+  isCompact?: boolean;
 }
 
 export const ChatbotConversationHistoryNav: React.FunctionComponent<ChatbotConversationHistoryNavProps> = ({
@@ -147,6 +149,7 @@ export const ChatbotConversationHistoryNav: React.FunctionComponent<ChatbotConve
   errorState,
   emptyState,
   noResultsState,
+  isCompact,
   ...props
 }: ChatbotConversationHistoryNavProps) => {
   const drawerRef = React.useRef<HTMLDivElement>(null);
@@ -287,7 +290,7 @@ export const ChatbotConversationHistoryNav: React.FunctionComponent<ChatbotConve
 
   return (
     <Drawer
-      className="pf-chatbot__history"
+      className={`pf-chatbot__history ${isCompact ? 'pf-chatbot__history-compact' : ''}`}
       isExpanded={isDrawerOpen}
       onExpand={onExpand}
       position="start"
