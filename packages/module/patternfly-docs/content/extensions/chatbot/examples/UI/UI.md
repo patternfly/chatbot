@@ -396,6 +396,13 @@ This example also includes an example of how to use [skip to content](/patternfl
 
 ```
 
+### Compact terms of use
+
+To apply compact styling to the terms of use modal, pass `isCompact` to `<TermsOfUse>`. This will remove the header image and adjust the spacing of text, so that there is less white space in the modal.
+```js file="./TermsOfUseCompact.tsx" isFullscreen
+
+```
+
 ### Settings
 
 To contain user preference controls and other ChatBot setting options, you can create a separate settings page that can accept any number of buttons, dropdown menus, toggles, labels, and so on. This settings page will render all components appropriately within all 4 display modes.

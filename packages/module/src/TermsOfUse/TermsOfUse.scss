@@ -64,3 +64,23 @@
     font-size: var(--pf-t--global--font--size--heading--2xl);
   }
 }
+
+.pf-chatbot__terms-of-use--compact {
+  .pf-chatbot__terms-of-use--header {
+    gap: var(--pf-t--global--spacer--md);
+    align-items: flex-start;
+    margin-block-start: var(--pf-t--global--spacer--lg);
+  }
+
+  .pf-chatbot__terms-of-use--modal-header {
+    --pf-v6-c-modal-box__header--PaddingBlockStart: var(--pf-t--global--spacer--md);
+    --pf-v6-c-modal-box__header--PaddingBlockEnd: var(--pf-t--global--spacer--md);
+    --pf-v6-c-modal-box__header--PaddingInlineStart: var(--pf-t--global--spacer--md);
+    --pf-v6-c-modal-box__header--PaddingInlineEnd: var(--pf-t--global--spacer--md);
+  }
+
+  .pf-chatbot__terms-of-use--modal-body {
+    --pf-v6-c-modal-box__body--PaddingInlineStart: var(--pf-t--global--spacer--md);
+    --pf-v6-c-modal-box__body--PaddingInlineEnd: var(--pf-t--global--spacer--md);
+  }
+}
