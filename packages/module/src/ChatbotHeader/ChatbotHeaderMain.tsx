@@ -10,6 +10,8 @@ export interface ChatbotHeaderMainProps {
 export const ChatbotHeaderMain: React.FunctionComponent<ChatbotHeaderMainProps> = ({
   className,
   children
-}: ChatbotHeaderMainProps) => <div className={`pf-chatbot__header-main ${className}`}>{children}</div>;
+}: ChatbotHeaderMainProps) => (
+  <div className={`pf-chatbot__header-main${className ? ` ${className}` : ''}`}>{children}</div>
+);
 
 export default ChatbotHeaderMain;

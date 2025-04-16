@@ -406,6 +406,13 @@ In this demo, you can toggle the settings page by clicking the "Settings" button
 
 ```
 
+### Compact settings
+
+To make the settings menu compact, with less spacing between the menu contents, pass `isCompact` to the `<SettingsForm>`.
+```js file="./CompactSettings.tsx" isFullscreen
+
+```
+
 ## Modals
 
 ### Modal
