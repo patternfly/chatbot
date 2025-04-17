@@ -20,6 +20,7 @@ export interface ChatbotHeaderOptionsDropdownProps extends Omit<DropdownProps, '
   tooltipProps?: TooltipProps;
   /** Aria label for menu toggle */
   menuToggleAriaLabel?: string;
+  isCompact?: boolean;
 }
 
 export const ChatbotHeaderOptionsDropdown: React.FunctionComponent<ChatbotHeaderOptionsDropdownProps> = ({
@@ -28,6 +29,7 @@ export const ChatbotHeaderOptionsDropdown: React.FunctionComponent<ChatbotHeader
   onSelect,
   tooltipProps,
   menuToggleAriaLabel = 'Chatbot options',
+  isCompact,
   ...props
 }: ChatbotHeaderOptionsDropdownProps) => {
   const [isOptionsMenuOpen, setIsOptionsMenuOpen] = React.useState(false);
@@ -47,12 +49,13 @@ export const ChatbotHeaderOptionsDropdown: React.FunctionComponent<ChatbotHeader
         aria-label={menuToggleAriaLabel}
         ref={toggleRef}
         icon={
-          <Icon iconSize="xl" isInline>
+          <Icon size={isCompact ? 'lg' : 'xl'} isInline>
             <EllipsisIcon />
           </Icon>
         }
         isExpanded={isOptionsMenuOpen}
         onClick={() => setIsOptionsMenuOpen(!isOptionsMenuOpen)}
+        size={isCompact ? 'sm' : undefined}
       />
     </Tooltip>
   );

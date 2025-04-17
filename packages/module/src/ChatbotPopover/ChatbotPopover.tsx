@@ -7,7 +7,7 @@ import React from 'react';
 import { Popover, PopoverProps } from '@patternfly/react-core';
 
 export const ChatbotPopover: React.FunctionComponent<PopoverProps> = ({ children, className, ...props }) => (
-  <Popover className={`pf-chatbot__popover ${className ?? ''}`} showClose={false} {...props}>
+  <Popover className={`pf-chatbot__popover  ${className ?? ''}`} showClose={false} {...props}>
     {children}
   </Popover>
 );

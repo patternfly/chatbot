@@ -25,6 +25,7 @@ export interface AttachButtonProps extends ButtonProps {
   tooltipContent?: string;
   /** Test id applied to input */
   inputTestId?: string;
+  isCompact?: boolean;
 }
 
 const AttachButtonBase: React.FunctionComponent<AttachButtonProps> = ({
@@ -36,6 +37,7 @@ const AttachButtonBase: React.FunctionComponent<AttachButtonProps> = ({
   innerRef,
   tooltipContent = 'Attach',
   inputTestId,
+  isCompact,
   ...props
 }: AttachButtonProps) => {
   const { open, getInputProps } = useDropzone({
@@ -67,10 +69,11 @@ const AttachButtonBase: React.FunctionComponent<AttachButtonProps> = ({
           isDisabled={isDisabled}
           onClick={onClick ?? open}
           icon={
-            <Icon iconSize="xl" isInline>
+            <Icon iconSize={isCompact ? 'lg' : 'xl'} isInline>
               <PaperclipIcon />
             </Icon>
           }
+          size={isCompact ? 'sm' : undefined}
           {...props}
         />
       </Tooltip>

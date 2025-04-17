@@ -72,6 +72,7 @@ export interface MessageBarProps extends TextAreaProps {
   onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>, value: string | number) => void;
   /** Display mode of chatbot, if you want to message bar to resize when the display mode changes */
   displayMode?: ChatbotDisplayMode;
+  isCompact?: boolean;
 }
 
 export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
@@ -89,6 +90,7 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
   onChange,
   displayMode,
   value,
+  isCompact = false,
   ...props
 }: MessageBarProps) => {
   // Text Input
@@ -99,11 +101,13 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const attachButtonRef = React.useRef<HTMLButtonElement>(null);
 
+  const topMargin = '1rem';
+
   const setInitialLineHeight = (field: HTMLTextAreaElement) => {
     field.style.setProperty('line-height', '1rem');
     const parent = field.parentElement;
     if (parent) {
-      parent.style.setProperty('margin-top', `1rem`);
+      parent.style.setProperty('margin-top', topMargin);
       parent.style.setProperty('margin-bottom', `0rem`);
       parent.style.setProperty('height', 'inherit');
 
@@ -129,8 +133,8 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
       parent.style.setProperty('height', `${height}px`);
 
       if (height > 32 || window.innerWidth <= 507) {
-        parent.style.setProperty('margin-bottom', `1rem`);
-        parent.style.setProperty('margin-top', `1rem`);
+        parent.style.setProperty('margin-bottom', topMargin);
+        parent.style.setProperty('margin-top', topMargin);
       }
     }
   };
@@ -154,8 +158,8 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
   const handleNewLine = (field: HTMLTextAreaElement) => {
     const parent = field.parentElement;
     if (parent) {
-      parent.style.setProperty('margin-bottom', `1rem`);
-      parent.style.setProperty('margin-top', `1rem`);
+      parent.style.setProperty('margin-bottom', topMargin);
+      parent.style.setProperty('margin-top', topMargin);
     }
   };
 
@@ -268,6 +272,7 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
         <StopButton
           onClick={handleStopButton}
           tooltipContent={buttonProps?.stop?.tooltipContent}
+          isCompact={isCompact}
           {...buttonProps?.stop?.props}
         />
       );
@@ -280,6 +285,7 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
             onClick={handleAttachMenuToggle}
             isDisabled={isListeningMessage}
             tooltipContent={buttonProps?.attach?.tooltipContent}
+            isCompact={isCompact}
             {...buttonProps?.attach?.props}
           />
         )}
@@ -289,6 +295,7 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
             isDisabled={isListeningMessage}
             tooltipContent={buttonProps?.attach?.tooltipContent}
             inputTestId={buttonProps?.attach?.inputTestId}
+            isCompact={isCompact}
             {...buttonProps?.attach?.props}
           />
         )}
@@ -299,6 +306,7 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
             onSpeechRecognition={handleSpeechRecognition}
             tooltipContent={buttonProps?.microphone?.tooltipContent}
             language={buttonProps?.microphone?.language}
+            isCompact={isCompact}
             {...buttonProps?.microphone?.props}
           />
         )}
@@ -308,6 +316,7 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
             onClick={() => handleSend(message)}
             isDisabled={isSendButtonDisabled}
             tooltipContent={buttonProps?.send?.tooltipContent}
+            isCompact={isCompact}
             {...buttonProps?.send?.props}
           />
         )}
@@ -317,7 +326,7 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
 
   const messageBarContents = (
     <>
-      <div className="pf-chatbot__message-bar-input">
+      <div className={`pf-chatbot__message-bar-input ${isCompact ? 'pf-chatbot__message-bar-compact' : ''}`}>
         <TextArea
           className="pf-chatbot__message-textarea"
           value={message}

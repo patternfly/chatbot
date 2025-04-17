@@ -2,14 +2,19 @@
 // Chatbot Popover
 // ============================================================================
 .pf-chatbot__popover {
-  .pf-v6-c-popover__arrow { display: none; }
+  .pf-v6-c-popover__arrow {
+    display: none;
+  }
 
   // Footnote popover
   &--footnote.pf-chatbot__popover {
-
     // Contents
-    img { border-radius: var(--pf-t--global--border--radius--small); }
-    .pf-v6-c-content--h3 { font-weight: var(--pf-t--global--font--weight--body--bold); }
+    img {
+      border-radius: var(--pf-t--global--border--radius--small);
+    }
+    .pf-v6-c-content--h3 {
+      font-weight: var(--pf-t--global--font--weight--body--bold);
+    }
     .pf-v6-c-content--p {
       font-size: var(--pf-t--global--font--size--body--lg);
     }
@@ -23,5 +28,4 @@
       font-size: var(--pf-t--global--font--size--body--lg);
     }
   }
-
 }

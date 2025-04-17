@@ -34,3 +34,15 @@
     }
   }
 }
+
+// ============================================================================
+// Information density styles
+// ============================================================================
+.pf-chatbot--small {
+  .pf-v6-c-button.pf-chatbot__button--attach {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: var(--pf-t--global--spacer--sm);
+    align-items: center;
+  }
+}

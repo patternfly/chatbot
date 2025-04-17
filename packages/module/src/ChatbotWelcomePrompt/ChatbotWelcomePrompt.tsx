@@ -16,6 +16,7 @@ export interface ChatbotWelcomePromptProps extends React.HTMLProps<HTMLDivElemen
   className?: string;
   /** Custom test id for the WelcomePrompt component */
   testId?: string;
+  isCompact?: boolean;
 }
 
 export interface WelcomePrompt {
@@ -33,9 +34,14 @@ export const ChatbotWelcomePrompt: React.FunctionComponent<ChatbotWelcomePromptP
   prompts,
   className,
   testId,
+  isCompact = false,
   ...props
 }: ChatbotWelcomePromptProps) => (
-  <div data-testid={testId} className={`pf-chatbot--layout--welcome ${className ?? ''}`} {...props}>
+  <div
+    data-testid={testId}
+    className={`pf-chatbot--layout--welcome ${isCompact ? 'pf-chatbot__welcome-compact' : ''} ${className ?? ''}`}
+    {...props}
+  >
     <Content component={ContentVariants.h1}>
       <span className="pf-chatbot__hello">{title}</span>
       <br />
@@ -45,7 +51,12 @@ export const ChatbotWelcomePrompt: React.FunctionComponent<ChatbotWelcomePromptP
     {prompts && (
       <div className="pf-chatbot__prompt-suggestions">
         {prompts?.map((prompt, index) => (
-          <Card key={`welcome-prompt-${index}`} className="pf-chatbot__prompt-suggestion" isClickable>
+          <Card
+            key={`welcome-prompt-${index}`}
+            className="pf-chatbot__prompt-suggestion"
+            isClickable
+            isCompact={isCompact}
+          >
             <CardHeader
               selectableActions={{
                 onClickAction: prompt.onClick,

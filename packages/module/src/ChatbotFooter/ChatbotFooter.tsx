@@ -17,14 +17,16 @@ export interface ChatbotFooterProps extends React.HTMLProps<HTMLDivElement> {
   children?: React.ReactNode;
   /** Custom classname for the Footer component */
   className?: string;
+  isCompact?: boolean;
 }
 
 export const ChatbotFooter: React.FunctionComponent<ChatbotFooterProps> = ({
   children,
   className,
+  isCompact,
   ...props
 }: ChatbotFooterProps) => (
-  <div className={`pf-chatbot__footer ${className ?? ''}`} {...props}>
+  <div className={`pf-chatbot__footer ${isCompact ? 'pf-chatbot__footer-compact' : ''} ${className ?? ''}`} {...props}>
     <Divider />
     <div className="pf-chatbot__footer-container">{children}</div>
   </div>

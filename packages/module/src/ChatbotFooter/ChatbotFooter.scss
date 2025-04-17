@@ -57,3 +57,8 @@
     padding: var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--lg);
   }
 }
+
+.pf-chatbot__footer-compact .pf-chatbot__footer-container {
+  padding: 0 var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--sm);
+  row-gap: var(--pf-t--global--spacer--sm);
+}
