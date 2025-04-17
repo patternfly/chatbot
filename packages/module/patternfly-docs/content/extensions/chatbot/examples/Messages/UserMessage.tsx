@@ -2,11 +2,20 @@ import React from 'react';
 
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import userAvatar from './user_avatar.svg';
-import { AlertActionLink, Form, FormGroup, Radio } from '@patternfly/react-core';
+import {
+  AlertActionLink,
+  MenuToggle,
+  MenuToggleElement,
+  Select,
+  SelectList,
+  SelectOption
+} from '@patternfly/react-core';
 
 export const UserMessageExample: React.FunctionComponent = () => {
   const [variant, setVariant] = React.useState('code');
   const [isEditable, setIsEditable] = React.useState(true);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState<string>('Message content type');
 
   /* eslint-disable indent */
   const renderContent = () => {
@@ -156,6 +165,32 @@ _Italic text, formatted with single underscores_
     )
   };
 
+  const onSelect = (_event: React.MouseEvent<Element, MouseEvent> | undefined, value: string | number | undefined) => {
+    setVariant(value);
+    setSelected(value as string);
+    setIsOpen(false);
+  };
+
+  const onToggleClick = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const toggle = (toggleRef: React.Ref<MenuToggleElement>) => (
+    <MenuToggle
+      className="pf-v6-u-mb-md"
+      ref={toggleRef}
+      onClick={onToggleClick}
+      isExpanded={isOpen}
+      style={
+        {
+          width: '200px'
+        } as React.CSSProperties
+      }
+    >
+      {selected}
+    </MenuToggle>
+  );
+
   return (
     <>
       <Message
@@ -172,137 +207,31 @@ _Italic text, formatted with single underscores_
         avatar={userAvatar}
         avatarProps={{ isBordered: true }}
       />
-      <Form>
-        <FormGroup role="radiogroup" isInline fieldId="user-message-type" label="Message content type">
-          <Radio
-            isChecked={variant === 'code'}
-            onChange={() => {
-              setVariant('code');
-              setIsEditable(true);
-            }}
-            name="user-message-type"
-            label="Code"
-            id="user-code"
-          />
-          <Radio
-            isChecked={variant === 'inlineCode'}
-            onChange={() => {
-              setVariant('inlineCode');
-              setIsEditable(true);
-            }}
-            name="user-message-type"
-            label="Inline code"
-            id="user-inline-code"
-          />
-          <Radio
-            isChecked={variant === 'heading'}
-            onChange={() => {
-              setVariant('heading');
-              setIsEditable(true);
-            }}
-            name="user-message-type"
-            label="Heading"
-            id="user-heading"
-          />
-          <Radio
-            isChecked={variant === 'blockQuotes'}
-            onChange={() => {
-              setVariant('blockQuotes');
-              setIsEditable(true);
-            }}
-            name="user-message-type"
-            label="Block quote"
-            id="user-block-quotes"
-          />
-          <Radio
-            isChecked={variant === 'emphasis'}
-            onChange={() => {
-              setVariant('emphasis');
-              setIsEditable(true);
-            }}
-            name="user-message-type"
-            label="Emphasis"
-            id="user-emphasis"
-          />
-          <Radio
-            isChecked={variant === 'link'}
-            onChange={() => {
-              setVariant('link');
-              setIsEditable(true);
-            }}
-            name="user-message-type"
-            label="Link"
-            id="user-link"
-          />
-          <Radio
-            isChecked={variant === 'unorderedList'}
-            onChange={() => {
-              setVariant('unorderedList');
-              setIsEditable(true);
-            }}
-            name="user-message-type"
-            label="Unordered list"
-            id="user-unordered-list"
-          />
-          <Radio
-            isChecked={variant === 'orderedList'}
-            onChange={() => {
-              setVariant('orderedList');
-              setIsEditable(true);
-            }}
-            name="user-message-type"
-            label="Ordered list"
-            id="user-ordered-list"
-          />
-          <Radio
-            isChecked={variant === 'moreComplexList'}
-            onChange={() => {
-              setVariant('moreComplexList');
-              setIsEditable(true);
-            }}
-            name="user-message-type"
-            label="More complex list"
-            id="user-more-complex-list"
-          />
-          <Radio
-            isChecked={variant === 'table'}
-            onChange={() => {
-              setVariant('table');
-              setIsEditable(true);
-            }}
-            name="user-message-type"
-            label="Table"
-            id="user-table"
-          />
-          <Radio
-            isChecked={variant === 'image'}
-            onChange={() => {
-              setVariant('image');
-              setIsEditable(true);
-            }}
-            name="user-message-type"
-            label="Image"
-            id="user-image"
-          />
-          <Radio
-            isChecked={variant === 'error'}
-            onChange={() => {
-              setVariant('error');
-              setIsEditable(true);
-            }}
-            name="user-message-type"
-            label="Error"
-            id="user-error"
-          />
-          <Radio
-            isChecked={variant === 'editable'}
-            onChange={() => setVariant('editable')}
-            name="user-message-type"
-            label="Editable"
-            id="user-edit"
-          />
-        </FormGroup>
-      </Form>
+      <Select
+        id="single-select"
+        isOpen={isOpen}
+        selected={selected}
+        onSelect={onSelect}
+        onOpenChange={(isOpen) => setIsOpen(isOpen)}
+        toggle={toggle}
+        shouldFocusToggleOnSelect
+      >
+        <SelectList>
+          <SelectOption value="code">Code</SelectOption>
+          <SelectOption value="inlineCode">Inline code</SelectOption>
+          <SelectOption value="heading">Heading</SelectOption>
+          <SelectOption value="blockQuotes">Block quotes</SelectOption>
+          <SelectOption value="emphasis">Emphasis</SelectOption>
+          <SelectOption value="link">Link</SelectOption>
+          <SelectOption value="unorderedList">Unordered list</SelectOption>
+          <SelectOption value="orderedList">Ordered list</SelectOption>
+          <SelectOption value="moreComplexList">More complex list</SelectOption>
+          <SelectOption value="table">Table</SelectOption>
+          <SelectOption value="image">Image</SelectOption>
+          <SelectOption value="error">Error</SelectOption>
+          <SelectOption value="editable">Editable</SelectOption>
+        </SelectList>
+      </Select>
       <Message
         name="User"
         role="user"

@@ -1,44 +1,57 @@
 import React from 'react';
 import FileDetailsLabel from '@patternfly/chatbot/dist/dynamic/FileDetailsLabel';
-import { Radio } from '@patternfly/react-core/dist/dynamic/Radio';
-import { FormGroup } from '@patternfly/react-core/dist/dynamic/FormGroup';
 import { Stack } from '@patternfly/react-core/dist/dynamic/Stack';
+import { MenuToggle, MenuToggleElement, Select, SelectList, SelectOption } from '@patternfly/react-core';
 
 export const FileDetailsLabelExample: React.FunctionComponent = () => {
   const [variant, setVariant] = React.useState('plain');
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState<string>('Variant');
+
+  const onSelect = (_event: React.MouseEvent<Element, MouseEvent> | undefined, value: string | number | undefined) => {
+    setVariant(value);
+    setSelected(value as string);
+    setIsOpen(false);
+  };
+
+  const onToggleClick = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const toggle = (toggleRef: React.Ref<MenuToggleElement>) => (
+    <MenuToggle
+      className="pf-v6-u-mb-md"
+      ref={toggleRef}
+      onClick={onToggleClick}
+      isExpanded={isOpen}
+      style={
+        {
+          width: '200px'
+        } as React.CSSProperties
+      }
+    >
+      {selected}
+    </MenuToggle>
+  );
 
   return (
     <Stack hasGutter>
-      <FormGroup role="radiogroup" isInline fieldId="basic-form-radio-group" label="Variant">
-        <Radio
-          isChecked={variant === 'plain'}
-          onChange={() => setVariant('plain')}
-          name="basic-inline-radio"
-          label="Plain"
-          id="plain"
-        />
-        <Radio
-          isChecked={variant === 'closeable'}
-          onChange={() => setVariant('closeable')}
-          name="basic-inline-radio"
-          label="Closeable"
-          id="closeable"
-        />
-        <Radio
-          isChecked={variant === 'clickable'}
-          onChange={() => setVariant('clickable')}
-          name="basic-inline-radio"
-          label="Clickable"
-          id="clickable"
-        />
-        <Radio
-          isChecked={variant === 'loading'}
-          onChange={() => setVariant('loading')}
-          name="basic-inline-radio"
-          label="Loading"
-          id="loading"
-        />
-      </FormGroup>
+      <Select
+        id="single-select"
+        isOpen={isOpen}
+        selected={selected}
+        onSelect={onSelect}
+        onOpenChange={(isOpen) => setIsOpen(isOpen)}
+        toggle={toggle}
+        shouldFocusToggleOnSelect
+      >
+        <SelectList>
+          <SelectOption value="plain">Plain</SelectOption>
+          <SelectOption value="closeable">Closeable</SelectOption>
+          <SelectOption value="clickable">Clickable</SelectOption>
+          <SelectOption value="loading">Loading</SelectOption>
+        </SelectList>
+      </Select>
       <div className="pf-chatbot__file-details-example">
         <FileDetailsLabel
           fileName="auth-operator.yml"

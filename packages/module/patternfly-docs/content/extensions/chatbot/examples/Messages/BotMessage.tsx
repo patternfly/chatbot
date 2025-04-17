@@ -14,7 +14,7 @@ import {
 export const BotMessageExample: React.FunctionComponent = () => {
   const [variant, setVariant] = React.useState<string>('code');
   const [isOpen, setIsOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState<string>('Select a value');
+  const [selected, setSelected] = React.useState<string>('Message content type');
 
   /* eslint-disable indent */
   const renderContent = () => {
@@ -176,6 +176,7 @@ _Italic text, formatted with single underscores_
 
   const toggle = (toggleRef: React.Ref<MenuToggleElement>) => (
     <MenuToggle
+      className="pf-v6-u-mb-md"
       ref={toggleRef}
       onClick={onToggleClick}
       isExpanded={isOpen}
@@ -242,7 +243,7 @@ _Italic text, formatted with single underscores_
           <SelectOption value="heading">Heading</SelectOption>
           <SelectOption value="blockQuotes">Block quotes</SelectOption>
           <SelectOption value="emphasis">Emphasis</SelectOption>
-          <SelectOption value="link">link</SelectOption>
+          <SelectOption value="link">Link</SelectOption>
           <SelectOption value="unorderedList">Unordered list</SelectOption>
           <SelectOption value="orderedList">Ordered list</SelectOption>
           <SelectOption value="moreComplexList">More complex list</SelectOption>
