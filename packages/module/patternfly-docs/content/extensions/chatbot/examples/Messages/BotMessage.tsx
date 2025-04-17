@@ -2,10 +2,19 @@ import React from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import patternflyAvatar from './patternfly_avatar.jpg';
 import squareImg from './PF-social-color-square.svg';
-import { AlertActionLink, Form, FormGroup, Radio } from '@patternfly/react-core';
+import {
+  AlertActionLink,
+  MenuToggle,
+  MenuToggleElement,
+  Select,
+  SelectList,
+  SelectOption
+} from '@patternfly/react-core';
 
 export const BotMessageExample: React.FunctionComponent = () => {
-  const [variant, setVariant] = React.useState('code');
+  const [variant, setVariant] = React.useState<string>('code');
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState<string>('Select a value');
 
   /* eslint-disable indent */
   const renderContent = () => {
@@ -155,6 +164,31 @@ _Italic text, formatted with single underscores_
     )
   };
 
+  const onSelect = (_event: React.MouseEvent<Element, MouseEvent> | undefined, value: string | number | undefined) => {
+    setVariant(value);
+    setSelected(value as string);
+    setIsOpen(false);
+  };
+
+  const onToggleClick = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const toggle = (toggleRef: React.Ref<MenuToggleElement>) => (
+    <MenuToggle
+      ref={toggleRef}
+      onClick={onToggleClick}
+      isExpanded={isOpen}
+      style={
+        {
+          width: '200px'
+        } as React.CSSProperties
+      }
+    >
+      {selected}
+    </MenuToggle>
+  );
+
   return (
     <>
       <Message
@@ -193,95 +227,30 @@ _Italic text, formatted with single underscores_
         timestamp="1 hour ago"
       />
       <Message name="Bot" role="bot" avatar={patternflyAvatar} content="Example content" isLoading />
-
-      <Form>
-        <FormGroup role="radiogroup" isInline fieldId="bot-message-type" label="Message content type">
-          <Radio
-            isChecked={variant === 'code'}
-            onChange={() => setVariant('code')}
-            name="bot-message-type"
-            label="Code"
-            id="code"
-          />
-          <Radio
-            isChecked={variant === 'inlineCode'}
-            onChange={() => setVariant('inlineCode')}
-            name="bot-message-type"
-            label="Inline code"
-            id="inline-code"
-          />
-          <Radio
-            isChecked={variant === 'heading'}
-            onChange={() => setVariant('heading')}
-            name="bot-message-type"
-            label="Heading"
-            id="heading"
-          />
-          <Radio
-            isChecked={variant === 'blockQuotes'}
-            onChange={() => setVariant('blockQuotes')}
-            name="bot-message-type"
-            label="Block quote"
-            id="block-quotes"
-          />
-          <Radio
-            isChecked={variant === 'emphasis'}
-            onChange={() => setVariant('emphasis')}
-            name="bot-message-type"
-            label="Emphasis"
-            id="emphasis"
-          />
-          <Radio
-            isChecked={variant === 'link'}
-            onChange={() => setVariant('link')}
-            name="bot-message-type"
-            label="Link"
-            id="link"
-          />
-          <Radio
-            isChecked={variant === 'unorderedList'}
-            onChange={() => setVariant('unorderedList')}
-            name="bot-message-type"
-            label="Unordered list"
-            id="unordered-list"
-          />
-          <Radio
-            isChecked={variant === 'orderedList'}
-            onChange={() => setVariant('orderedList')}
-            name="bot-message-type"
-            label="Ordered list"
-            id="ordered-list"
-          />
-          <Radio
-            isChecked={variant === 'moreComplexList'}
-            onChange={() => setVariant('moreComplexList')}
-            name="bot-message-type"
-            label="More complex list"
-            id="more-complex-list"
-          />
-          <Radio
-            isChecked={variant === 'table'}
-            onChange={() => setVariant('table')}
-            name="bot-message-type"
-            label="Table"
-            id="table"
-          />
-          <Radio
-            isChecked={variant === 'image'}
-            onChange={() => setVariant('image')}
-            name="bot-message-type"
-            label="Image"
-            id="image"
-          />
-          <Radio
-            isChecked={variant === 'error'}
-            onChange={() => setVariant('error')}
-            name="bot-message-type"
-            label="Error"
-            id="error"
-          />
-        </FormGroup>
-      </Form>
+      <Select
+        id="single-select"
+        isOpen={isOpen}
+        selected={selected}
+        onSelect={onSelect}
+        onOpenChange={(isOpen) => setIsOpen(isOpen)}
+        toggle={toggle}
+        shouldFocusToggleOnSelect
+      >
+        <SelectList>
+          <SelectOption value="code">Code</SelectOption>
+          <SelectOption value="inlineCode">Inline code</SelectOption>
+          <SelectOption value="heading">Heading</SelectOption>
+          <SelectOption value="blockQuotes">Block quotes</SelectOption>
+          <SelectOption value="emphasis">Emphasis</SelectOption>
+          <SelectOption value="link">link</SelectOption>
+          <SelectOption value="unorderedList">Unordered list</SelectOption>
+          <SelectOption value="orderedList">Ordered list</SelectOption>
+          <SelectOption value="moreComplexList">More complex list</SelectOption>
+          <SelectOption value="table">Table</SelectOption>
+          <SelectOption value="image">Image</SelectOption>
+          <SelectOption value="error">Error</SelectOption>
+        </SelectList>
+      </Select>
       <Message
         name="Bot"
         role="bot"
