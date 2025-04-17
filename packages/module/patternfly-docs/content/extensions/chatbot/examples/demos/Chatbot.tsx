@@ -34,6 +34,7 @@ import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import { getTrackingProviders } from '@patternfly/chatbot/dist/dynamic/tracking';
 import { InitProps } from '@patternfly/chatbot/dist/dynamic/tracking';
+import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
 
 const footnoteProps = {

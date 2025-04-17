@@ -1,6 +1,7 @@
 import React from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
+import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
 
 export const MessageWithFeedbackExample: React.FunctionComponent = () => {

@@ -40,6 +40,7 @@ import PFHorizontalLogoReverse from '../UI/PF-HorizontalLogo-Reverse.svg';
 import { BarsIcon } from '@patternfly/react-icons';
 import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
+import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
 
 const footnoteProps = {
