@@ -12,9 +12,9 @@ import {
 } from '@patternfly/react-core';
 
 export const UserMessageExample: React.FunctionComponent = () => {
-  const [variant, setVariant] = React.useState('code');
-  const [isEditable, setIsEditable] = React.useState(true);
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [variant, setVariant] = React.useState<string>('code');
+  const [isEditable, setIsEditable] = React.useState<boolean>(true);
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [selected, setSelected] = React.useState<string>('Message content type');
 
   /* eslint-disable indent */

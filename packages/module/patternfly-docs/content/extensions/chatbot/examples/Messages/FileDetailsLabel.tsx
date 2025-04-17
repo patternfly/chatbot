@@ -1,11 +1,10 @@
 import React from 'react';
 import FileDetailsLabel from '@patternfly/chatbot/dist/dynamic/FileDetailsLabel';
-import { Stack } from '@patternfly/react-core/dist/dynamic/Stack';
-import { MenuToggle, MenuToggleElement, Select, SelectList, SelectOption } from '@patternfly/react-core';
+import { Stack, MenuToggle, MenuToggleElement, Select, SelectList, SelectOption } from '@patternfly/react-core';
 
 export const FileDetailsLabelExample: React.FunctionComponent = () => {
-  const [variant, setVariant] = React.useState('plain');
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [variant, setVariant] = React.useState<string>('plain');
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [selected, setSelected] = React.useState<string>('Variant');
 
   const onSelect = (_event: React.MouseEvent<Element, MouseEvent> | undefined, value: string | number | undefined) => {
