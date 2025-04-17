@@ -42,6 +42,7 @@ import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import { BarsIcon } from '@patternfly/react-icons';
 import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
+import '@patternfly/chatbot/dist/css/main.css';
 
 const footnoteProps = {
   label: 'ChatBot uses AI. Check for mistakes.',
