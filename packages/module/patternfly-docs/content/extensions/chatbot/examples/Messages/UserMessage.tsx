@@ -22,19 +22,19 @@ export const UserMessageExample: React.FunctionComponent = () => {
     switch (variant) {
       case 'Code':
         return code;
-      case 'Inline Code':
+      case 'Inline code':
         return inlineCode;
       case 'Heading':
         return heading;
       case 'Emphasis':
         return emphasis;
-      case 'Block Quotes':
+      case 'Block quotes':
         return blockQuotes;
-      case 'Ordered List':
+      case 'Ordered list':
         return orderedList;
-      case 'Unordered List':
+      case 'Unordered list':
         return unorderedList;
-      case 'More Complex List':
+      case 'More complex list':
         return moreComplexList;
       case 'Link':
         return link;
@@ -218,14 +218,14 @@ _Italic text, formatted with single underscores_
       >
         <SelectList>
           <SelectOption value="Code">Code</SelectOption>
-          <SelectOption value="Inline Code">Inline code</SelectOption>
+          <SelectOption value="Inline code">Inline code</SelectOption>
           <SelectOption value="Heading">Heading</SelectOption>
-          <SelectOption value="Block Quotes">Block quotes</SelectOption>
+          <SelectOption value="Block quotes">Block quotes</SelectOption>
           <SelectOption value="Emphasis">Emphasis</SelectOption>
           <SelectOption value="Link">Link</SelectOption>
-          <SelectOption value="Unordered List">Unordered list</SelectOption>
-          <SelectOption value="Ordered List">Ordered list</SelectOption>
-          <SelectOption value="More Complex List">More complex list</SelectOption>
+          <SelectOption value="Unordered list">Unordered list</SelectOption>
+          <SelectOption value="Ordered list">Ordered list</SelectOption>
+          <SelectOption value="More complex list">More complex list</SelectOption>
           <SelectOption value="Table">Table</SelectOption>
           <SelectOption value="Image">Image</SelectOption>
           <SelectOption value="Error">Error</SelectOption>
