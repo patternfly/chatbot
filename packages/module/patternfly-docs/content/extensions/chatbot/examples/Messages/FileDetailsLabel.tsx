@@ -19,7 +19,6 @@ export const FileDetailsLabelExample: React.FunctionComponent = () => {
 
   const toggle = (toggleRef: React.Ref<MenuToggleElement>) => (
     <MenuToggle
-      className="pf-v6-u-mb-md"
       ref={toggleRef}
       onClick={onToggleClick}
       isExpanded={isOpen}
@@ -45,20 +44,20 @@ export const FileDetailsLabelExample: React.FunctionComponent = () => {
         shouldFocusToggleOnSelect
       >
         <SelectList>
-          <SelectOption value="plain">Plain</SelectOption>
-          <SelectOption value="closeable">Closeable</SelectOption>
-          <SelectOption value="clickable">Clickable</SelectOption>
-          <SelectOption value="loading">Loading</SelectOption>
+          <SelectOption value="Plain">Plain</SelectOption>
+          <SelectOption value="Closeable">Closeable</SelectOption>
+          <SelectOption value="Clickable">Clickable</SelectOption>
+          <SelectOption value="Loading">Loading</SelectOption>
         </SelectList>
       </Select>
       <div className="pf-chatbot__file-details-example">
         <FileDetailsLabel
           fileName="auth-operator.yml"
           // eslint-disable-next-line no-console
-          {...(variant === 'closeable' && { onClose: () => console.log('clicked close button!') })}
+          {...(variant === 'Closeable' && { onClose: () => console.log('clicked close button!') })}
           // eslint-disable-next-line no-console
-          {...(variant === 'clickable' && { onClick: () => console.log('clicked entire button!') })}
-          {...(variant === 'loading' && { isLoading: true })}
+          {...(variant === 'Clickable' && { onClick: () => console.log('clicked entire button!') })}
+          {...(variant === 'Loading' && { isLoading: true })}
         />
       </div>
     </Stack>

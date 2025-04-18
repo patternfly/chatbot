@@ -12,7 +12,7 @@ import {
 } from '@patternfly/react-core';
 
 export const UserMessageExample: React.FunctionComponent = () => {
-  const [variant, setVariant] = React.useState<string>('code');
+  const [variant, setVariant] = React.useState<string>('Code');
   const [isEditable, setIsEditable] = React.useState<boolean>(true);
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [selected, setSelected] = React.useState<string>('Message content type');
@@ -20,27 +20,27 @@ export const UserMessageExample: React.FunctionComponent = () => {
   /* eslint-disable indent */
   const renderContent = () => {
     switch (variant) {
-      case 'code':
+      case 'Code':
         return code;
-      case 'inlineCode':
+      case 'Inline Code':
         return inlineCode;
-      case 'heading':
+      case 'Heading':
         return heading;
-      case 'emphasis':
+      case 'Emphasis':
         return emphasis;
-      case 'blockQuotes':
+      case 'Block Quotes':
         return blockQuotes;
-      case 'orderedList':
+      case 'Ordered List':
         return orderedList;
-      case 'unorderedList':
+      case 'Unordered List':
         return unorderedList;
-      case 'moreComplexList':
+      case 'More Complex List':
         return moreComplexList;
-      case 'link':
+      case 'Link':
         return link;
-      case 'table':
+      case 'Table':
         return table;
-      case 'image':
+      case 'Image':
         return image;
       default:
         return '';
@@ -217,19 +217,19 @@ _Italic text, formatted with single underscores_
         shouldFocusToggleOnSelect
       >
         <SelectList>
-          <SelectOption value="code">Code</SelectOption>
-          <SelectOption value="inlineCode">Inline code</SelectOption>
-          <SelectOption value="heading">Heading</SelectOption>
-          <SelectOption value="blockQuotes">Block quotes</SelectOption>
-          <SelectOption value="emphasis">Emphasis</SelectOption>
-          <SelectOption value="link">Link</SelectOption>
-          <SelectOption value="unorderedList">Unordered list</SelectOption>
-          <SelectOption value="orderedList">Ordered list</SelectOption>
-          <SelectOption value="moreComplexList">More complex list</SelectOption>
-          <SelectOption value="table">Table</SelectOption>
-          <SelectOption value="image">Image</SelectOption>
-          <SelectOption value="error">Error</SelectOption>
-          <SelectOption value="editable">Editable</SelectOption>
+          <SelectOption value="Code">Code</SelectOption>
+          <SelectOption value="Inline Code">Inline code</SelectOption>
+          <SelectOption value="Heading">Heading</SelectOption>
+          <SelectOption value="Block Quotes">Block quotes</SelectOption>
+          <SelectOption value="Emphasis">Emphasis</SelectOption>
+          <SelectOption value="Link">Link</SelectOption>
+          <SelectOption value="Unordered List">Unordered list</SelectOption>
+          <SelectOption value="Ordered List">Ordered list</SelectOption>
+          <SelectOption value="More Complex List">More complex list</SelectOption>
+          <SelectOption value="Table">Table</SelectOption>
+          <SelectOption value="Image">Image</SelectOption>
+          <SelectOption value="Error">Error</SelectOption>
+          <SelectOption value="Editable">Editable</SelectOption>
         </SelectList>
       </Select>
       <Message
@@ -238,10 +238,10 @@ _Italic text, formatted with single underscores_
         content={renderContent()}
         avatar={userAvatar}
         tableProps={
-          variant === 'table' ? { 'aria-label': 'App information and user roles for user messages' } : undefined
+          variant === 'Table' ? { 'aria-label': 'App information and user roles for user messages' } : undefined
         }
-        isEditable={variant === 'editable' ? isEditable : false}
-        error={variant === 'error' ? error : undefined}
+        isEditable={variant === 'Editable' ? isEditable : false}
+        error={variant === 'Error' ? error : undefined}
         onEditUpdate={() => setIsEditable(false)}
         onEditCancel={() => setIsEditable(false)}
       />
