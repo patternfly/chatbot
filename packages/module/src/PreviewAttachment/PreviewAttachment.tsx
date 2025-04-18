@@ -22,6 +22,8 @@ export interface PreviewAttachmentProps {
   title?: string;
   /** Display mode for the Chatbot parent; this influences the styles applied */
   displayMode?: ChatbotDisplayMode;
+  /** Sets modal to compact styling. */
+  isCompact?: boolean;
 }
 
 export const PreviewAttachment: React.FunctionComponent<PreviewAttachmentProps> = ({
@@ -32,7 +34,8 @@ export const PreviewAttachment: React.FunctionComponent<PreviewAttachmentProps> 
   onDismiss = undefined,
   onEdit,
   title = 'Preview attachment',
-  displayMode = ChatbotDisplayMode.default
+  displayMode = ChatbotDisplayMode.default,
+  isCompact
 }: PreviewAttachmentProps) => {
   const handleEdit = (_event: React.MouseEvent | MouseEvent | KeyboardEvent) => {
     handleModalToggle(_event);
@@ -60,6 +63,7 @@ export const PreviewAttachment: React.FunctionComponent<PreviewAttachmentProps> 
       title={title}
       isReadOnly
       displayMode={displayMode}
+      isCompact={isCompact}
     />
   );
 };

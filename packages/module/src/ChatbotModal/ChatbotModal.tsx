@@ -10,7 +10,10 @@ import { ChatbotDisplayMode } from '../Chatbot';
 export interface ChatbotModalProps extends Omit<ModalProps, 'ref'> {
   /** Display mode for the Chatbot parent; this influences the styles applied */
   displayMode?: ChatbotDisplayMode;
+  /** Additional className applied to modal */
   className?: string;
+  /** Sets modal to compact styling. */
+  isCompact?: boolean;
 }
 
 export const ChatbotModal: React.FunctionComponent<ChatbotModalProps> = ({
@@ -18,6 +21,7 @@ export const ChatbotModal: React.FunctionComponent<ChatbotModalProps> = ({
   displayMode = ChatbotDisplayMode.default,
   className,
   isOpen,
+  isCompact,
   ...props
 }: ChatbotModalProps) => {
   const modal = (
@@ -26,7 +30,7 @@ export const ChatbotModal: React.FunctionComponent<ChatbotModalProps> = ({
       ouiaId="ChatbotModal"
       aria-labelledby="chatbot-modal-title"
       aria-describedby="chatbot-modal"
-      className={`pf-chatbot__chatbot-modal pf-chatbot__chatbot-modal--${displayMode} ${className}`}
+      className={`pf-chatbot__chatbot-modal pf-chatbot__chatbot-modal--${displayMode} ${isCompact ? 'pf-chatbot__chatbot-modal-compact' : ''} ${className}`}
       backdropClassName="pf-chatbot__chatbot-modal-backdrop"
       {...props}
     >

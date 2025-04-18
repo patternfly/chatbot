@@ -946,7 +946,7 @@ export const FileDetails = ({
 }: PropsWithChildren<FileDetailsProps>) => {
   const language = extensionToLanguage[path.extname(fileName).slice(1)]?.toUpperCase();
   return (
-    <Flex className={`pf-chatbot__file-details ${className}`} gap={{ default: 'gapSm' }}>
+    <Flex className={`pf-chatbot__file-details ${className ? className : ''}`} gap={{ default: 'gapSm' }}>
       <Flex
         className="pf-chatbot__code-icon"
         justifyContent={{ default: 'justifyContentCenter' }}

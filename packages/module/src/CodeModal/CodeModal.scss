@@ -61,8 +61,10 @@
   .pf-v6-c-code-editor__header-main {
     display: none;
   }
-  .pf-chatbot__code-modal-file-details {
-    padding-inline-start: var(--pf-t--global--spacer--md);
+  .pf-v6-c-modal-box__close {
+    .pf-v6-c-button.pf-m-plain {
+      --pf-v6-c-button__icon--Color: var(--pf-t--global--icon--color--subtle);
+    }
   }
 }
 
@@ -78,10 +80,16 @@
   }
 }
 
-.pf-chatbot__code-modal-body {
+.pf-chatbot__code-modal-editor {
   flex: 1;
 }
 
 .pf-chatbot__code-modal--fullscreen {
   height: inherit !important; // override shared modal so code editor works in full screen
+}
+
+.pf-chatbot__code-modal.pf-chatbot__code-modal-compact {
+  .pf-chatbot__code-modal-body {
+    gap: var(--pf-t--global--spacer--md);
+  }
 }

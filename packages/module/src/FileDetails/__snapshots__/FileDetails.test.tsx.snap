@@ -3,7 +3,7 @@
 exports[`FileDetails should render file details 1`] = `
 <div>
   <div
-    class="pf-v6-l-flex pf-m-gap-sm pf-chatbot__file-details undefined"
+    class="pf-v6-l-flex pf-m-gap-sm pf-chatbot__file-details "
   >
     <div
       class="pf-v6-l-flex pf-m-align-items-center pf-m-align-self-center pf-m-justify-content-center pf-chatbot__code-icon"
