@@ -96,6 +96,12 @@ describe('Message bar', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(expect.any(Object), 'A');
   });
+  it('can use specified placeholder text', async () => {
+    render(<MessageBar onSendMessage={jest.fn} placeholder="test placeholder" />);
+    const input = screen.getByRole('textbox', { name: /test placeholder/i });
+    await userEvent.type(input, 'Hello world');
+    expect(input).toHaveTextContent('Hello world');
+  });
 
   // Send button
   // --------------------------------------------------------------------------
@@ -303,6 +309,13 @@ describe('Message bar', () => {
     expect(screen.getByRole('tooltip', { name: 'Currently listening' })).toBeTruthy();
     await userEvent.click(screen.getByRole('button', { name: 'Microphone button' }));
     expect(screen.getByRole('tooltip', { name: 'Not currently listening' })).toBeTruthy();
+  });
+  it('can customize the listening placeholder', async () => {
+    mockSpeechRecognition();
+    render(<MessageBar onSendMessage={jest.fn} hasMicrophoneButton listeningText="I am listening" />);
+    await userEvent.click(screen.getByRole('button', { name: 'Microphone button' }));
+    const input = screen.getByRole('textbox', { name: /I am listening/i });
+    expect(input).toBeTruthy();
   });
   it('can handle buttonProps props appropriately for microphone', async () => {
     mockSpeechRecognition();

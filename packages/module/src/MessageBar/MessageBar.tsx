@@ -37,10 +37,14 @@ export interface MessageBarProps extends TextAreaProps {
   className?: string;
   /** Flag to always to show the send button. By default send button is shown when there is a message in the input field */
   alwayShowSendButton?: boolean;
+  /** Placeholder for message input */
+  placeholder?: string;
   /** Flag to disable/enable the Attach button  */
   hasAttachButton?: boolean;
   /** Flag to enable the Microphone button  */
   hasMicrophoneButton?: boolean;
+  /** Placeholder text when listening */
+  listeningText?: string;
   /** Flag to enable the Stop button, used for streaming content */
   hasStopButton?: boolean;
   /** Callback function for when stop button is clicked */
@@ -78,8 +82,10 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
   onSendMessage,
   className,
   alwayShowSendButton,
+  placeholder = 'Send a message...',
   hasAttachButton = true,
   hasMicrophoneButton,
+  listeningText = 'Listening',
   handleAttach,
   attachMenuProps,
   isSendButtonDisabled,
@@ -322,8 +328,8 @@ export const MessageBar: React.FunctionComponent<MessageBarProps> = ({
           className="pf-chatbot__message-textarea"
           value={message}
           onChange={handleChange}
-          aria-label={isListeningMessage ? 'Listening' : 'Send a message...'}
-          placeholder={isListeningMessage ? 'Listening' : 'Send a message...'}
+          aria-label={isListeningMessage ? listeningText : placeholder}
+          placeholder={isListeningMessage ? listeningText : placeholder}
           ref={textareaRef}
           onKeyDown={handleKeyDown}
           {...props}
