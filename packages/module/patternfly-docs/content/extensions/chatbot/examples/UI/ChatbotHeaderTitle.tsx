@@ -1,43 +1,68 @@
 import React from 'react';
-import { FormGroup, Radio } from '@patternfly/react-core';
 import { ChatbotHeaderTitle } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
 import { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
+import { MenuToggle, MenuToggleElement, Select, SelectList, SelectOption } from '@patternfly/react-core';
 
 export const ChatbotHeaderTitleDemo: React.FunctionComponent = () => {
   const [displayMode, setDisplayMode] = React.useState(ChatbotDisplayMode.default);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState<string>('Display Mode');
+
+  const onSelect = (_event: React.MouseEvent<Element, MouseEvent> | undefined, value: string | number | undefined) => {
+    setSelected(value as string);
+    setIsOpen(false);
+    if (value === 'Default') {
+      setDisplayMode(ChatbotDisplayMode.default);
+    }
+    if (value === 'Embedded') {
+      setDisplayMode(ChatbotDisplayMode.embedded);
+    }
+    if (value === 'Docked') {
+      setDisplayMode(ChatbotDisplayMode.docked);
+    }
+    if (value === 'Full screen') {
+      setDisplayMode(ChatbotDisplayMode.fullscreen);
+    }
+  };
+
+  const onToggleClick = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const toggle = (toggleRef: React.Ref<MenuToggleElement>) => (
+    <MenuToggle
+      className="pf-v6-u-mb-md"
+      ref={toggleRef}
+      onClick={onToggleClick}
+      isExpanded={isOpen}
+      style={
+        {
+          width: '200px'
+        } as React.CSSProperties
+      }
+    >
+      {selected}
+    </MenuToggle>
+  );
 
   return (
     <>
-      <FormGroup role="radiogroup" isInline fieldId="header-title-variants-form-radio-group" label="Display mode">
-        <Radio
-          isChecked={displayMode === ChatbotDisplayMode.default}
-          onChange={() => setDisplayMode(ChatbotDisplayMode.default)}
-          name="basic-inline-radio"
-          label="Default"
-          id="default"
-        />
-        <Radio
-          isChecked={displayMode === ChatbotDisplayMode.embedded}
-          onChange={() => setDisplayMode(ChatbotDisplayMode.embedded)}
-          name="basic-inline-radio"
-          label="Embedded"
-          id="embedded"
-        />
-        <Radio
-          isChecked={displayMode === ChatbotDisplayMode.docked}
-          onChange={() => setDisplayMode(ChatbotDisplayMode.docked)}
-          name="basic-inline-radio"
-          label="Docked"
-          id="docked"
-        />
-        <Radio
-          isChecked={displayMode === ChatbotDisplayMode.fullscreen}
-          onChange={() => setDisplayMode(ChatbotDisplayMode.fullscreen)}
-          name="basic-inline-radio"
-          label="Full screen"
-          id="full-screen"
-        />
-      </FormGroup>
+      <Select
+        id="single-select"
+        isOpen={isOpen}
+        selected={selected}
+        onSelect={onSelect}
+        onOpenChange={(isOpen) => setIsOpen(isOpen)}
+        toggle={toggle}
+        shouldFocusToggleOnSelect
+      >
+        <SelectList>
+          <SelectOption value="Default">Default</SelectOption>
+          <SelectOption value="Embedded">Embedded</SelectOption>
+          <SelectOption value="Docked">Docked</SelectOption>
+          <SelectOption value="Full screen">Full screen</SelectOption>
+        </SelectList>
+      </Select>
       <ChatbotHeaderTitle
         displayMode={displayMode}
         showOnEmbedded="Embedded"

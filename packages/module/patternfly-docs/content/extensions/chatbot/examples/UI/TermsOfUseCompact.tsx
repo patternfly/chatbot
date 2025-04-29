@@ -1,5 +1,13 @@
 import React from 'react';
-import { Button, FormGroup, Radio, SkipToContent } from '@patternfly/react-core';
+import {
+  Button,
+  SkipToContent,
+  MenuToggle,
+  MenuToggleElement,
+  Select,
+  SelectList,
+  SelectOption
+} from '@patternfly/react-core';
 import TermsOfUse from '@patternfly/chatbot/dist/dynamic/TermsOfUse';
 import Chatbot, { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
 
@@ -8,6 +16,8 @@ export const TermsOfUseCompactExample: React.FunctionComponent = () => {
   const [displayMode, setDisplayMode] = React.useState(ChatbotDisplayMode.default);
   const chatbotRef = React.useRef<HTMLDivElement>(null);
   const termsRef = React.useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState<string>('Display Mode');
 
   const handleSkipToContent = (e) => {
     e.preventDefault();
@@ -32,6 +42,42 @@ export const TermsOfUseCompactExample: React.FunctionComponent = () => {
     // eslint-disable-next-line no-console
     console.log('Clicked secondary action');
   };
+
+  const onSelect = (_event: React.MouseEvent<Element, MouseEvent> | undefined, value: string | number | undefined) => {
+    setSelected(value as string);
+    setIsOpen(false);
+    if (value === 'Default') {
+      setDisplayMode(ChatbotDisplayMode.default);
+    }
+    if (value === 'Docked') {
+      setDisplayMode(ChatbotDisplayMode.docked);
+    }
+    if (value === 'Fullscreen') {
+      setDisplayMode(ChatbotDisplayMode.fullscreen);
+    }
+    if (value === 'Embedded') {
+      setDisplayMode(ChatbotDisplayMode.embedded);
+    }
+  };
+
+  const onToggleClick = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const toggle = (toggleRef: React.Ref<MenuToggleElement>) => (
+    <MenuToggle
+      ref={toggleRef}
+      onClick={onToggleClick}
+      isExpanded={isOpen}
+      style={
+        {
+          width: '200px'
+        } as React.CSSProperties
+      }
+    >
+      {selected}
+    </MenuToggle>
+  );
 
   const introduction = (
     <>
@@ -87,36 +133,22 @@ export const TermsOfUseCompactExample: React.FunctionComponent = () => {
           boxShadow: 'var(--pf-t--global--box-shadow--lg)'
         }}
       >
-        <FormGroup role="radiogroup" isInline fieldId="basic-form-radio-group" label="Display mode">
-          <Radio
-            isChecked={displayMode === ChatbotDisplayMode.default}
-            onChange={() => setDisplayMode(ChatbotDisplayMode.default)}
-            name="basic-inline-radio"
-            label="Default"
-            id="default"
-          />
-          <Radio
-            isChecked={displayMode === ChatbotDisplayMode.docked}
-            onChange={() => setDisplayMode(ChatbotDisplayMode.docked)}
-            name="basic-inline-radio"
-            label="Docked"
-            id="docked"
-          />
-          <Radio
-            isChecked={displayMode === ChatbotDisplayMode.fullscreen}
-            onChange={() => setDisplayMode(ChatbotDisplayMode.fullscreen)}
-            name="basic-inline-radio"
-            label="Fullscreen"
-            id="fullscreen"
-          />
-          <Radio
-            isChecked={displayMode === ChatbotDisplayMode.embedded}
-            onChange={() => setDisplayMode(ChatbotDisplayMode.embedded)}
-            name="basic-inline-radio"
-            label="Embedded"
-            id="embedded"
-          />
-        </FormGroup>
+        <Select
+          id="single-select"
+          isOpen={isOpen}
+          selected={selected}
+          onSelect={onSelect}
+          onOpenChange={(isOpen) => setIsOpen(isOpen)}
+          toggle={toggle}
+          shouldFocusToggleOnSelect
+        >
+          <SelectList>
+            <SelectOption value="Default">Default</SelectOption>
+            <SelectOption value="Docked">Docked</SelectOption>
+            <SelectOption value="Fullscreen">Fullscreen</SelectOption>
+            <SelectOption value="Embedded">Embedded</SelectOption>
+          </SelectList>
+        </Select>
         <Button onClick={handleModalToggle}>Launch modal</Button>
       </div>
       <Chatbot ref={chatbotRef} displayMode={displayMode} isVisible></Chatbot>
