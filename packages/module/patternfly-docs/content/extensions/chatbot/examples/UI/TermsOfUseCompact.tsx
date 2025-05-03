@@ -135,23 +135,23 @@ export const TermsOfUseCompactExample: React.FunctionComponent = () => {
         }}
       >
         <Stack hasGutter>
-        <Select
-          id="single-select"
-          isOpen={isOpen}
-          selected={selected}
-          onSelect={onSelect}
-          onOpenChange={(isOpen) => setIsOpen(isOpen)}
-          toggle={toggle}
-          shouldFocusToggleOnSelect
-        >
-          <SelectList>
-            <SelectOption value="Default">Default</SelectOption>
-            <SelectOption value="Docked">Docked</SelectOption>
-            <SelectOption value="Fullscreen">Fullscreen</SelectOption>
-            <SelectOption value="Embedded">Embedded</SelectOption>
-          </SelectList>
-        </Select>
-        <Button onClick={handleModalToggle}>Launch modal</Button>
+          <Select
+            id="single-select"
+            isOpen={isOpen}
+            selected={selected}
+            onSelect={onSelect}
+            onOpenChange={(isOpen) => setIsOpen(isOpen)}
+            toggle={toggle}
+            shouldFocusToggleOnSelect
+          >
+            <SelectList>
+              <SelectOption value="Default">Default</SelectOption>
+              <SelectOption value="Docked">Docked</SelectOption>
+              <SelectOption value="Fullscreen">Fullscreen</SelectOption>
+              <SelectOption value="Embedded">Embedded</SelectOption>
+            </SelectList>
+          </Select>
+          <Button onClick={handleModalToggle}>Launch modal</Button>
         </Stack>
       </div>
       <Chatbot ref={chatbotRef} displayMode={displayMode} isVisible></Chatbot>

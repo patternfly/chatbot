@@ -137,31 +137,31 @@ export const TermsOfUseExample: React.FunctionComponent = () => {
         }}
       >
         <Stack hasGutter>
-        <Select
-          id="single-select"
-          isOpen={isOpen}
-          selected={selected}
-          onSelect={onSelect}
-          onOpenChange={(isOpen) => setIsOpen(isOpen)}
-          toggle={toggle}
-          shouldFocusToggleOnSelect
-        >
-          <SelectList>
-            <SelectOption value="Default">Default</SelectOption>
-            <SelectOption value="Docked">Docked</SelectOption>
-            <SelectOption value="Fullscreen">Fullscreen</SelectOption>
-            <SelectOption value="Embedded">Embedded</SelectOption>
-          </SelectList>
-        </Select>
-        <Checkbox
-          isChecked={hasImage}
-          aria-label="Toggle whether terms and conditions has a header image"
-          id="toggle-header-image"
-          name="toggle-header-image"
-          label="Has image in header"
-          onChange={(_event, checked) => setHasImage(checked)}
-        ></Checkbox>
-        <Button onClick={handleModalToggle}>Launch modal</Button>
+          <Select
+            id="single-select"
+            isOpen={isOpen}
+            selected={selected}
+            onSelect={onSelect}
+            onOpenChange={(isOpen) => setIsOpen(isOpen)}
+            toggle={toggle}
+            shouldFocusToggleOnSelect
+          >
+            <SelectList>
+              <SelectOption value="Default">Default</SelectOption>
+              <SelectOption value="Docked">Docked</SelectOption>
+              <SelectOption value="Fullscreen">Fullscreen</SelectOption>
+              <SelectOption value="Embedded">Embedded</SelectOption>
+            </SelectList>
+          </Select>
+          <Checkbox
+            isChecked={hasImage}
+            aria-label="Toggle whether terms and conditions has a header image"
+            id="toggle-header-image"
+            name="toggle-header-image"
+            label="Has image in header"
+            onChange={(_event, checked) => setHasImage(checked)}
+          ></Checkbox>
+          <Button onClick={handleModalToggle}>Launch modal</Button>
         </Stack>
       </div>
       <Chatbot ref={chatbotRef} displayMode={displayMode} isVisible></Chatbot>
