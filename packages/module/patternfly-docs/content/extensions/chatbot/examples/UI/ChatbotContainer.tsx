@@ -8,7 +8,7 @@ export const ChatbotContainerDemo: React.FunctionComponent = () => {
   const [displayMode, setDisplayMode] = React.useState(ChatbotDisplayMode.default);
   const [isVisible, setIsVisible] = React.useState(true);
   const [isOpen, setIsOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState<string>('Display Mode');
+  const [selected, setSelected] = React.useState<string>('Select display mode');
 
   const onSelect = (_event: React.MouseEvent<Element, MouseEvent> | undefined, value: string | number | undefined) => {
     setSelected(value as string);

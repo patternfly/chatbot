@@ -6,7 +6,7 @@ import { MenuToggle, MenuToggleElement, Select, SelectList, SelectOption } from 
 export const ChatbotHeaderTitleDemo: React.FunctionComponent = () => {
   const [displayMode, setDisplayMode] = React.useState(ChatbotDisplayMode.default);
   const [isOpen, setIsOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState<string>('Display Mode');
+  const [selected, setSelected] = React.useState<string>('Select display mode');
 
   const onSelect = (_event: React.MouseEvent<Element, MouseEvent> | undefined, value: string | number | undefined) => {
     setSelected(value as string);

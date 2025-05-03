@@ -8,7 +8,8 @@ import {
   MenuToggleElement,
   Select,
   SelectList,
-  SelectOption
+  SelectOption,
+  Stack
 } from '@patternfly/react-core';
 import { ChatbotModal } from '@patternfly/chatbot/dist/dynamic/ChatbotModal';
 import Chatbot, { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
@@ -17,7 +18,7 @@ export const ChatbotModalExample: React.FunctionComponent = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [displayMode, setDisplayMode] = React.useState(ChatbotDisplayMode.default);
   const [isOpen, setIsOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState<string>('Display Mode');
+  const [selected, setSelected] = React.useState<string>('Select display mode');
 
   const handleModalToggle = (_event: React.MouseEvent | MouseEvent | KeyboardEvent) => {
     setIsModalOpen(!isModalOpen);
@@ -69,6 +70,7 @@ export const ChatbotModalExample: React.FunctionComponent = () => {
           boxShadow: 'var(--pf-t--global--box-shadow--lg)'
         }}
       >
+        <Stack hasGutter>
         <Select
           id="single-select"
           isOpen={isOpen}
@@ -86,6 +88,7 @@ export const ChatbotModalExample: React.FunctionComponent = () => {
           </SelectList>
         </Select>
         <Button onClick={handleModalToggle}>Launch modal</Button>
+        </Stack>
       </div>
       <Chatbot displayMode={displayMode} isVisible></Chatbot>
       <ChatbotModal

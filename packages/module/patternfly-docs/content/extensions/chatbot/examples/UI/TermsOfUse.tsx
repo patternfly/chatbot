@@ -7,7 +7,8 @@ import {
   MenuToggleElement,
   Select,
   SelectList,
-  SelectOption
+  SelectOption,
+  Stack
 } from '@patternfly/react-core';
 import TermsOfUse from '@patternfly/chatbot/dist/dynamic/TermsOfUse';
 import Chatbot, { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
@@ -20,7 +21,7 @@ export const TermsOfUseExample: React.FunctionComponent = () => {
   const chatbotRef = React.useRef<HTMLDivElement>(null);
   const termsRef = React.useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState<string>('Display Mode');
+  const [selected, setSelected] = React.useState<string>('Select display mode');
 
   const handleSkipToContent = (e) => {
     e.preventDefault();
@@ -135,6 +136,7 @@ export const TermsOfUseExample: React.FunctionComponent = () => {
           boxShadow: 'var(--pf-t--global--box-shadow--lg)'
         }}
       >
+        <Stack hasGutter>
         <Select
           id="single-select"
           isOpen={isOpen}
@@ -160,6 +162,7 @@ export const TermsOfUseExample: React.FunctionComponent = () => {
           onChange={(_event, checked) => setHasImage(checked)}
         ></Checkbox>
         <Button onClick={handleModalToggle}>Launch modal</Button>
+        </Stack>
       </div>
       <Chatbot ref={chatbotRef} displayMode={displayMode} isVisible></Chatbot>
       <TermsOfUse
