@@ -190,7 +190,6 @@ export const ChatbotScrollingDemo: React.FunctionComponent = () => {
     initialConversations
   );
   const [announcement, setAnnouncement] = React.useState<string>();
-  const scrollToBottomRef = React.useRef<HTMLDivElement>(null);
   const toggleRef = React.useRef<HTMLButtonElement>(null);
   const chatbotRef = React.useRef<HTMLDivElement>(null);
   const historyRef = React.useRef<HTMLButtonElement>(null);
@@ -341,7 +340,7 @@ export const ChatbotScrollingDemo: React.FunctionComponent = () => {
       }, 50);
 
       // Scrolls to the bottom of the message box and resumes auto-scrolling
-      messageBoxRef.current?.scrollToBottom(true);
+      messageBoxRef.current?.scrollToBottom({ resumeSmartScroll: true });
       // make announcement to assistive devices that new message has loaded
       setAnnouncement(`Message from Bot: API response goes here`);
       tracking.trackSingleItem('BotResponded', { undefined });
@@ -526,7 +525,6 @@ export const ChatbotScrollingDemo: React.FunctionComponent = () => {
                     if (index === messages.length - 1) {
                       return (
                         <>
-                          <div ref={scrollToBottomRef}></div>
                           <Message key={message.id} {...message} />
                         </>
                       );

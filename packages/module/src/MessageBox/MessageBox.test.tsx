@@ -243,7 +243,7 @@ describe('MessageBox', () => {
     expect(ref.current?.isSmartScrollActive()).toBe(false);
 
     act(() => {
-      ref.current?.scrollToBottom(); // resumes auto scroll and scrolls to bottom.
+      ref.current?.scrollToBottom({ resumeSmartScroll: true, behavior: 'auto' }); // resumes auto scroll and scrolls to bottom.
     });
 
     expect(ref.current?.isSmartScrollActive()).toBe(true);

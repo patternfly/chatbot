@@ -40,9 +40,9 @@ export interface MessageBoxProps extends HTMLProps<HTMLDivElement> {
 
 export interface MessageBoxHandle extends HTMLDivElement {
   /** Scrolls to the top of the message box */
-  scrollToTop: () => void;
+  scrollToTop: (options?: ScrollOptions) => void;
   /** Scrolls to the bottom of the message box */
-  scrollToBottom: (resumeSmartScroll?: boolean) => void;
+  scrollToBottom: (options?: { resumeSmartScroll?: boolean } & ScrollOptions) => void;
   /** Returns whether the smart scroll feature is currently active */
   isSmartScrollActive: () => boolean;
 }
@@ -153,36 +153,43 @@ export const MessageBox = forwardRef(
      * Scrolls to the top of the message box.
      *
      */
-    const scrollToTop = useCallback(() => {
-      const element = messageBoxRef.current;
+    const scrollToTop = useCallback(
+      (options?: ScrollOptions) => {
+        const { behavior = 'smooth' } = options || {};
 
-      if (!element || scrollQueued.current) {
-        return;
-      }
+        const element = messageBoxRef.current;
 
-      scrollQueued.current = true;
-      pauseAutoScroll();
+        if (!element || scrollQueued.current) {
+          return;
+        }
 
-      if (animationFrame.current) {
-        cancelAnimationFrame(animationFrame.current);
-        animationFrame.current = null;
-      }
+        scrollQueued.current = true;
+        pauseAutoScroll();
 
-      animationFrame.current = requestAnimationFrame(() => {
-        element.scrollTo({ top: 0, behavior: 'smooth' });
-        scrollQueued.current = false;
-      });
-      onScrollToTopClick && onScrollToTopClick();
-    }, [messageBoxRef]);
+        if (animationFrame.current) {
+          cancelAnimationFrame(animationFrame.current);
+          animationFrame.current = null;
+        }
+
+        animationFrame.current = requestAnimationFrame(() => {
+          element.scrollTo({ top: 0, behavior });
+          scrollQueued.current = false;
+        });
+        onScrollToTopClick && onScrollToTopClick();
+      },
+      [messageBoxRef]
+    );
 
     /**
      * Scrolls to the bottom of the message box.
      *
-     * @param resumeSmartScroll - If true, resumes smart scroll behavior;
-     *                            if false or omitted, scrolls without resuming auto-scroll.
+     * @param options.resumeSmartScroll - If true, resumes smart scroll behavior;
+     *                                    if false or omitted, scrolls without resuming auto-scroll.
+     * @param options.scrollOptions - Additional scroll options. behavior can be 'smooth' or 'auto'.
      */
     const scrollToBottom = useCallback(
-      (resumeSmartScroll = false) => {
+      (options?: { resumeSmartScroll?: boolean } & ScrollOptions) => {
+        const { behavior = 'smooth', resumeSmartScroll = false } = options || {};
         resumeSmartScroll && resumeAutoScroll();
 
         const element = messageBoxRef.current;
@@ -197,7 +204,7 @@ export const MessageBox = forwardRef(
         }
 
         animationFrame.current = requestAnimationFrame(() => {
-          element.scrollTo({ top: element.scrollHeight, behavior: 'smooth' });
+          element.scrollTo({ top: element.scrollHeight, behavior });
           resumeAutoScroll();
           scrollQueued.current = false;
         });
@@ -311,7 +318,11 @@ export const MessageBox = forwardRef(
             {announcement}
           </div>
         </div>
-        <JumpButton position="bottom" isHidden={isOverflowing && atBottom} onClick={() => scrollToBottom(true)} />
+        <JumpButton
+          position="bottom"
+          isHidden={isOverflowing && atBottom}
+          onClick={() => scrollToBottom({ resumeSmartScroll: true })}
+        />
       </>
     );
   }

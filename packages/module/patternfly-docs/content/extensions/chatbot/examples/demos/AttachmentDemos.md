@@ -77,7 +77,7 @@ When enabled:
 - Scroll position is automatically managed based on user interaction.
 - Scrolling is _not_ forced to the bottom on new messages unless explicitly triggered via the `scrollToBottom()` method.
 - If the user scrolls up or interacts with UI controls like "Back to top" or "Back to bottom", the component pauses auto-scroll to respect user intent.
-- Auto-scroll resumes only when the user scrolls back down manually or programmatically via the `scrollToBottom(true)` method.
+- Auto-scroll resumes only when the user scrolls back down manually or programmatically via the `scrollToBottom({resumeSmartScroll: true})` method.
 
 #### Imperative Methods via `ref`
 
