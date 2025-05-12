@@ -28,6 +28,8 @@ export interface ChatbotHeaderSelectorDropdownProps extends Omit<DropdownProps, 
   isCompact?: boolean;
   /** Additional props passed to toggle */
   toggleProps?: MenuToggleProps;
+  /** Custom width for the dropdown */
+  dropdownWidth?: string;
 }
 
 export const ChatbotHeaderSelectorDropdown: FunctionComponent<ChatbotHeaderSelectorDropdownProps> = ({
