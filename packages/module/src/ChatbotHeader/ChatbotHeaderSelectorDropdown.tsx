@@ -65,6 +65,9 @@ export const ChatbotHeaderSelectorDropdown: FunctionComponent<ChatbotHeaderSelec
         size={isCompact ? 'sm' : undefined}
         className={`${isCompact ? 'pf-m-compact' : ''}`}
         {...toggleProps}
+        style={{
+          width: dropdownWidth
+        }}
       >
         {value}
       </MenuToggle>
