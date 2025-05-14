@@ -28,6 +28,8 @@ export interface MessageBoxProps extends HTMLProps<HTMLDivElement> {
   children: ReactNode;
   /** Custom classname for the MessageBox component */
   className?: string;
+  /** @deprecated innerRef has been deprecated. Use ref instead. Ref applied to message box  */
+  innerRef?: React.Ref<HTMLDivElement>;
   /** Modifier that controls how content in MessageBox is positioned within the container */
   position?: 'top' | 'bottom';
   /** Click handler for additional logic for when scroll to top jump button is clicked */
