@@ -66,27 +66,25 @@ It is also important to announce when new content appears onscreen for accessibi
 
 ### Message auto-scrolling
 
-This demo displays automatic scrolling to the bottom of the MessageBox:
+This demo shows auto-scrolling functionality, which automatically scrolls to the bottom of the active chat.
 
-1. [`<MessageBox>`](/patternfly-ai/chatbot/ui#message-box) component provides an optional smart scroll behavior via the `enableSmartScroll` prop.
-
-#### `enableSmartScroll` (optional)
+To enable auto-scroll behavior pass the `enableSmartScroll` prop to the [`<MessageBox>`](/patternfly-ai/chatbot/ui#message-box) component.
 
 When enabled:
 
 - Scroll position is automatically managed based on user interaction.
-- Scrolling is _not_ forced to the bottom on new messages unless explicitly triggered via the `scrollToBottom()` method.
+- Scrolling is _not_ forced to the bottom when new messages arrive, unless explicitly triggered via the `scrollToBottom()` method.
 - If the user scrolls up or interacts with UI controls like "Back to top" or "Back to bottom", the component pauses auto-scroll to respect user intent.
 - Auto-scroll resumes only when the user scrolls back down manually or programmatically via the `scrollToBottom({resumeSmartScroll: true})` method.
 
-#### Imperative Methods via `ref`
+#### Imperative methods via `ref`
 
-When using `ref`, the component exposes the following methods:
+When using `ref`, the `<MessageBox>` component exposes the following methods:
 
-- `scrollToBottom()` – Scrolls to the bottom of the message container.
-- `scrollToTop()` – Scrolls to the top of the message container.
-- `isSmartScrollActive()` – Returns `true` if smart auto-scroll is currently active.
-- Native `HTMLDivElement` methods like `scrollTo()` are also available.
+- `scrollToBottom()`: Scrolls to the bottom of the message container.
+- `scrollToTop()`: Scrolls to the top of the message container.
+- `isSmartScrollActive()`: Returns `true` if smart auto-scroll is currently active.
+- Native `HTMLDivElement` methods like `scrollTo()`.
 
 This demo includes broader ChatBot features, including:
 
