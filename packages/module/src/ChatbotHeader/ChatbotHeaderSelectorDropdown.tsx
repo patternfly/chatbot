@@ -42,6 +42,7 @@ export const ChatbotHeaderSelectorDropdown: FunctionComponent<ChatbotHeaderSelec
   menuToggleAriaLabel,
   isCompact,
   toggleProps,
+  dropdownWidth,
   ...props
 }: ChatbotHeaderSelectorDropdownProps) => {
   const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false);
