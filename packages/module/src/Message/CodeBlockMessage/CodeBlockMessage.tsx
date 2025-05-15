@@ -5,24 +5,80 @@ import { useState, useRef, useId, useCallback, useEffect } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { obsidian } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 // Import PatternFly components
-import { CodeBlock, CodeBlockAction, CodeBlockCode, Button, Tooltip } from '@patternfly/react-core';
+import {
+  CodeBlock,
+  CodeBlockAction,
+  CodeBlockCode,
+  Button,
+  Tooltip,
+  ExpandableSection,
+  ExpandableSectionToggle,
+  ExpandableSectionProps,
+  ExpandableSectionToggleProps
+} from '@patternfly/react-core';
 
 import { CheckIcon } from '@patternfly/react-icons/dist/esm/icons/check-icon';
 import { CopyIcon } from '@patternfly/react-icons/dist/esm/icons/copy-icon';
-import { ExtraProps } from 'react-markdown';
+
+export interface CodeBlockProps {
+  children?: React.ReactNode;
+  className?: string;
+  'aria-label'?: string;
+  isExpandable?: boolean;
+  maxLength?: number;
+  expandableSectionProps?: Omit<ExpandableSectionProps, 'ref'>;
+  expandableSectionToggleProps?: ExpandableSectionToggleProps;
+}
 
 const CodeBlockMessage = ({
   children,
   className,
   'aria-label': ariaLabel,
+  isExpandable = false,
+  maxLength = 10,
+  expandableSectionProps,
+  expandableSectionToggleProps,
   ...props
-}: Omit<JSX.IntrinsicElements['code'], 'ref'> & ExtraProps) => {
+}: CodeBlockProps) => {
   const [copied, setCopied] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [initialWidth, setInitialWidth] = useState<number | null>(null);
 
-  const buttonRef = useRef(undefined);
+  const buttonRef = useRef();
   const tooltipID = useId();
+  const toggleId = useId();
+  const contentId = useId();
+  const codeBlockRef = useRef<HTMLDivElement>(null);
+
+  // Keeps the width the same - this can vary when content is expandable
+  useEffect(() => {
+    if (codeBlockRef.current) {
+      let ancestor = codeBlockRef.current.parentNode;
+      if (ancestor) {
+        ancestor = ancestor.parentNode;
+        if (ancestor) {
+          ancestor = ancestor.parentNode;
+          if (ancestor && ancestor instanceof HTMLElement) {
+            setInitialWidth(ancestor.offsetWidth);
+          }
+        }
+      }
+    }
+  }, []);
+
+  let code;
+  let expandedCode;
+
+  if (isExpandable && maxLength && children) {
+    code = String(children).substring(0, maxLength);
+    expandedCode = String(children).substring(maxLength);
+  }
 
   const language = /language-(\w+)/.exec(className || '')?.[1];
+
+  const onToggle = (isExpanded) => {
+    setIsExpanded(isExpanded);
+  };
 
   // Handle clicking copy button
   const handleCopy = useCallback((event, text) => {
@@ -68,18 +124,46 @@ const CodeBlockMessage = ({
     </>
   );
 
+  const expandableSyntax = String(isExpanded ? children : code).replace(/\n$/, '');
+  const codeBlockStyle = initialWidth !== null ? { width: `${initialWidth}px` } : {};
+
   return (
-    <div className="pf-chatbot__message-code-block">
+    <div className="pf-chatbot__message-code-block" ref={codeBlockRef} style={codeBlockStyle}>
       <CodeBlock actions={actions}>
         <CodeBlockCode>
           {language ? (
             <SyntaxHighlighter {...props} language={language} style={obsidian} PreTag="div" CodeTag="div" wrapLongLines>
-              {String(children).replace(/\n$/, '')}
+              {isExpandable ? expandableSyntax : String(children).replace(/\n$/, '')}
             </SyntaxHighlighter>
           ) : (
-            <>{children}</>
+            <>
+              {isExpandable ? code : children}
+              {isExpandable && (
+                <ExpandableSection
+                  isExpanded={isExpanded}
+                  isDetached
+                  toggleId={toggleId}
+                  contentId={contentId}
+                  {...expandableSectionProps}
+                >
+                  {expandedCode}
+                </ExpandableSection>
+              )}
+            </>
           )}
         </CodeBlockCode>
+        {isExpandable && (
+          <ExpandableSectionToggle
+            isExpanded={isExpanded}
+            onToggle={onToggle}
+            direction="up"
+            toggleId={toggleId}
+            contentId={contentId}
+            {...expandableSectionToggleProps}
+          >
+            {isExpanded ? 'Show Less' : 'Show More'}
+          </ExpandableSectionToggle>
+        )}
       </CodeBlock>
     </div>
   );

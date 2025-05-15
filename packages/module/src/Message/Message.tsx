@@ -11,6 +11,8 @@ import {
   AvatarProps,
   ButtonProps,
   ContentVariants,
+  ExpandableSectionProps,
+  ExpandableSectionToggleProps,
   FormProps,
   Label,
   LabelGroupProps,
@@ -109,6 +111,10 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   codeBlockProps?: {
     'aria-label'?: string;
     className?: string;
+    isExpandable?: boolean;
+    maxLength?: number;
+    expandableSectionProps?: Omit<ExpandableSectionProps, 'ref'>;
+    expandableSectionToggleProps?: ExpandableSectionToggleProps;
   };
   /** Props for quick responses */
   quickResponses?: QuickResponse[];
