@@ -28,6 +28,8 @@ export interface ChatbotHeaderSelectorDropdownProps extends Omit<DropdownProps, 
   isCompact?: boolean;
   /** Additional props passed to toggle */
   toggleProps?: MenuToggleProps;
+  /** Custom width for the dropdown */
+  dropdownWidth?: string;
 }
 
 export const ChatbotHeaderSelectorDropdown: FunctionComponent<ChatbotHeaderSelectorDropdownProps> = ({
@@ -40,6 +42,7 @@ export const ChatbotHeaderSelectorDropdown: FunctionComponent<ChatbotHeaderSelec
   menuToggleAriaLabel,
   isCompact,
   toggleProps,
+  dropdownWidth,
   ...props
 }: ChatbotHeaderSelectorDropdownProps) => {
   const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false);
@@ -63,6 +66,9 @@ export const ChatbotHeaderSelectorDropdown: FunctionComponent<ChatbotHeaderSelec
         size={isCompact ? 'sm' : undefined}
         className={`${isCompact ? 'pf-m-compact' : ''}`}
         {...toggleProps}
+        style={{
+          width: dropdownWidth
+        }}
       >
         {value}
       </MenuToggle>
