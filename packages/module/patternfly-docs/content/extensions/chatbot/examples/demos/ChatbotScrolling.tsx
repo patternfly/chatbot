@@ -204,6 +204,7 @@ export const ChatbotScrollingDemo: React.FunctionComponent = () => {
       cancelAnimationFrame(rafId);
       scrollQueued.current = false;
     };
+    // To scroll to the top of latest message just once, Use messages.length as a dependency instead of messages.
   }, [messages, messageBoxRef]);
 
   const onSelectModel = (
