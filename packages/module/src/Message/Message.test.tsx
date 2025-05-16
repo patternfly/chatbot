@@ -142,6 +142,8 @@ const EMPTY_TABLE = `
 
 const IMAGE = `![Multi-colored wavy lines on a black background](https://cdn.dribbble.com/userupload/10651749/file/original-8a07b8e39d9e8bf002358c66fce1223e.gif)`;
 
+const INLINE_IMAGE = `inline text ![Multi-colored wavy lines on a black background](https://cdn.dribbble.com/userupload/10651749/file/original-8a07b8e39d9e8bf002358c66fce1223e.gif)`;
+
 const ERROR = {
   title: 'Could not load chat',
   children: 'Wait a few minutes and check your network settings. If the issue persists: ',
@@ -786,6 +788,13 @@ describe('Message', () => {
   it('should handle image correctly', () => {
     render(<Message avatar="./img" role="user" name="User" content={IMAGE} />);
     expect(screen.getByRole('img', { name: /Multi-colored wavy lines on a black background/i })).toBeTruthy();
+  });
+  it('inline image parent should have class pf-chatbot__message-and-actions', () => {
+    render(<Message avatar="./img" role="user" name="User" content={INLINE_IMAGE} />);
+    expect(screen.getByRole('img', { name: /Multi-colored wavy lines on a black background/i })).toBeTruthy();
+    expect(
+      screen.getByRole('img', { name: /Multi-colored wavy lines on a black background/i }).parentElement
+    ).toHaveClass('pf-chatbot__message-and-actions');
   });
   it('should handle external links correctly', () => {
     render(<Message avatar="./img" role="user" name="User" content={`[PatternFly](https://www.patternfly.org/)`} />);

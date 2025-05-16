@@ -45,7 +45,8 @@
     "rehype-unwrap-images": "^1.0.0",
     "rehype-external-links": "^3.0.0",
     "rehype-sanitize": "^6.0.0",
-    "path-browserify": "^1.0.1"
+    "path-browserify": "^1.0.1",
+    "unist-util-visit": "^5.0.0"
   },
   "peerDependencies": {
     "react": "^17 || ^18 || ^19",

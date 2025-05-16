@@ -46,6 +46,7 @@ import { PluggableList } from 'react-markdown/lib';
 import LinkMessage from './LinkMessage/LinkMessage';
 import ErrorMessage from './ErrorMessage/ErrorMessage';
 import MessageInput from './MessageInput';
+import { rehypeMoveImagesOutOfParagraphs } from './Plugins/rehypeMoveImagesOutOfParagraphs';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -212,7 +213,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   }, [content]);
 
   const { beforeMainContent, afterMainContent, endContent } = extraContent || {};
-  let rehypePlugins: PluggableList = [rehypeUnwrapImages];
+  let rehypePlugins: PluggableList = [rehypeUnwrapImages, rehypeMoveImagesOutOfParagraphs];
   if (openLinkInNewTab) {
     rehypePlugins = rehypePlugins.concat([[rehypeExternalLinks, { target: '_blank' }, rehypeSanitize]]);
   }
