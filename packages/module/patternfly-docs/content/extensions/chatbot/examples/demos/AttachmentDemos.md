@@ -45,6 +45,8 @@ import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import { FunctionComponent, useState, useRef, isValidElement, cloneElement, Children, ReactNode, MouseEvent } from 'react';
+import { getTrackingProviders } from "@patternfly/chatbot/dist/dynamic/tracking";
+import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
 
 ## Demos
 
@@ -59,6 +61,40 @@ It also demonstrates how to handle focus appropriately for accessibility. The ca
 It is also important to announce when new content appears onscreen for accessibility purposes. `isLiveRegion` is set to true by default on `<Message>` so it will make appropriate announcements for you when the feedback card appears.
 
 ```js file="./Feedback.tsx"
+
+```
+
+### Message auto-scrolling
+
+This demo shows auto-scrolling functionality, which automatically scrolls to the bottom of the active chat.
+
+To enable auto-scroll behavior pass the `enableSmartScroll` prop to the [`<MessageBox>`](/patternfly-ai/chatbot/ui#message-box) component.
+
+When enabled:
+
+- Scroll position is automatically managed based on user interaction.
+- Scrolling is _not_ forced to the bottom when new messages arrive, unless explicitly triggered via the `scrollToBottom()` method.
+- If the user scrolls up or interacts with UI controls like "Back to top" or "Back to bottom", the component pauses auto-scroll to respect user intent.
+- Auto-scroll resumes only when the user scrolls back down manually or programmatically via the `scrollToBottom({resumeSmartScroll: true})` method.
+
+#### Imperative methods via `ref`
+
+When using `ref`, the `<MessageBox>` component exposes the following methods:
+
+- `scrollToBottom()`: Scrolls to the bottom of the message container.
+- `scrollToTop()`: Scrolls to the top of the message container.
+- `isSmartScrollActive()`: Returns `true` if smart auto-scroll is currently active.
+- Native `HTMLDivElement` methods like `scrollTo()`.
+
+This demo includes broader ChatBot features, including:
+
+1. A [`<ChatbotToggle>`](/patternfly-ai/chatbot/ui#toggle) that controls the [`<Chatbot>`](/patternfly-ai/chatbot/ui#container) container.
+2. A `<ChatbotContent>` and [`<MessageBox>`](/patternfly-ai/chatbot/ui#content-and-message-box) with:
+   - A `<ChatbotWelcomePrompt>`
+   - An initial user message and initial bot message
+3. A [`<ChatbotFooter>`](/patternfly-ai/chatbot/ui#footer) with a [`<ChatbotFootnote>`](/patternfly-ai/chatbot/ui#footnote-with-popover) and a `<MessageBar>`
+
+```js file="./ChatbotScrolling.tsx" isFullscreen
 
 ```
 
