@@ -261,6 +261,16 @@ Each time a user begins a new conversation, display a [welcome message, with pro
 
 As much as possible, the suggested prompts should consider the user’s location in the service or application, or the situation their project is undergoing. 
 
+### Executing user requests
+
+Instead of automatically initiating what sounds like a request from a user, the ChatBot should ask users to confirm or deny their intent. This differentiates moments where users are simply asking about feasibility, rather than actually making a request.
+
+This can be done using the [quick response](/patternfly-ai/chatbot/messages#messages-with-quick-responses) buttons:
+
+<div class="ws-docs-content-img">
+![Confirmation options from a bot in response to a user's request.](./img/quick-response-confirmation.svg)
+</div>
+
 ### Using the conversation history menu
 
 The ChatBot history menu contains a log of a users' previous chats. Clicking the menu icon opens a side drawer in the ChatBot window.
