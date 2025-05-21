@@ -80,3 +80,10 @@
   background-color: var(--pf-t--global--background--color--tertiary--default);
   font-size: var(--pf-t--global--font--size--body--default);
 }
+
+.pf-chatbot__message-code-toggle {
+  .pf-v6-c-button.pf-m-link {
+    --pf-v6-c-button--m-link--Color: var(--pf-t--global--color--nonstatus--blue--default);
+    --pf-v6-c-button--hover--Color: var(--pf-t--global--color--nonstatus--blue--hover);
+  }
+}

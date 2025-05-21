@@ -15,11 +15,13 @@ export const BotMessageExample: FunctionComponent = () => {
   const [variant, setVariant] = useState<string>('Code');
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<string>('Message content type');
+  const [isExpandable, setIsExpanded] = useState(false);
 
   /* eslint-disable indent */
   const renderContent = () => {
     switch (variant) {
       case 'Code':
+      case 'Expandable code':
         return code;
       case 'Heading':
         return heading;
@@ -166,6 +168,11 @@ _Italic text, formatted with single underscores_
     setVariant(value);
     setSelected(value as string);
     setIsOpen(false);
+    if (value === 'Expandable code') {
+      setIsExpanded(true);
+    } else {
+      setIsExpanded(false);
+    }
   };
 
   const onToggleClick = () => {
@@ -237,6 +244,7 @@ _Italic text, formatted with single underscores_
       >
         <SelectList>
           <SelectOption value="Code">Code</SelectOption>
+          <SelectOption value="Expandable code">Expandable code</SelectOption>
           <SelectOption value="Inline code">Inline code</SelectOption>
           <SelectOption value="Heading">Heading</SelectOption>
           <SelectOption value="Block quotes">Block quotes</SelectOption>
@@ -259,6 +267,7 @@ _Italic text, formatted with single underscores_
           variant === 'Table' ? { 'aria-label': 'App information and user roles for bot messages' } : undefined
         }
         error={variant === 'Error' ? error : undefined}
+        codeBlockProps={{ isExpandable }}
       />
     </>
   );

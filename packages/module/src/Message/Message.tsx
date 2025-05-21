@@ -11,6 +11,8 @@ import {
   AvatarProps,
   ButtonProps,
   ContentVariants,
+  ExpandableSectionProps,
+  ExpandableSectionToggleProps,
   FormProps,
   Label,
   LabelGroupProps,
@@ -107,9 +109,24 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   botWord?: string;
   /** Label for the English "Loading message," displayed to screenreaders when loading a message */
   loadingWord?: string;
+  /** Props for code blocks */
   codeBlockProps?: {
+    /** Aria label applied to code block */
     'aria-label'?: string;
+    /** Class name applied to code block */
     className?: string;
+    /** Whether code block is expandable */
+    isExpandable?: boolean;
+    /** Length of text initially shown in expandable code block; defaults to 10 characters */
+    maxLength?: number;
+    /** Additional props passed to expandable section if isExpandable is applied */
+    expandableSectionProps?: Omit<ExpandableSectionProps, 'ref'>;
+    /** Additional props passed to expandable toggle if isExpandable is applied */
+    expandableSectionToggleProps?: ExpandableSectionToggleProps;
+    /** Link text applied to expandable toggle when expanded */
+    expandedText?: string;
+    /** Link text applied to expandable toggle when collapsed */
+    collapsedText?: string;
   };
   /** Props for quick responses */
   quickResponses?: QuickResponse[];

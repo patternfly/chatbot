@@ -15,11 +15,13 @@ export const UserMessageExample: FunctionComponent = () => {
   const [isEditable, setIsEditable] = useState<boolean>(true);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<string>('Message content type');
+  const [isExpandable, setIsExpanded] = useState(false);
 
   /* eslint-disable indent */
   const renderContent = () => {
     switch (variant) {
       case 'Code':
+      case 'Expandable code':
         return code;
       case 'Inline code':
         return inlineCode;
@@ -166,6 +168,11 @@ _Italic text, formatted with single underscores_
     setVariant(value);
     setSelected(value as string);
     setIsOpen(false);
+    if (value === 'Expandable code') {
+      setIsExpanded(true);
+    } else {
+      setIsExpanded(false);
+    }
   };
 
   const onToggleClick = () => {
@@ -215,6 +222,7 @@ _Italic text, formatted with single underscores_
       >
         <SelectList>
           <SelectOption value="Code">Code</SelectOption>
+          <SelectOption value="Expandable code">Expandable code</SelectOption>
           <SelectOption value="Inline code">Inline code</SelectOption>
           <SelectOption value="Heading">Heading</SelectOption>
           <SelectOption value="Block quotes">Block quotes</SelectOption>
@@ -241,6 +249,7 @@ _Italic text, formatted with single underscores_
         error={variant === 'Error' ? error : undefined}
         onEditUpdate={() => setIsEditable(false)}
         onEditCancel={() => setIsEditable(false)}
+        codeBlockProps={{ isExpandable }}
       />
     </>
   );
