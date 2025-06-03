@@ -53,4 +53,11 @@ describe('Attach button', () => {
     render(<AttachButton isCompact data-testid="button" />);
     expect(screen.getByTestId('button')).toHaveClass('pf-m-compact');
   });
+
+  it('should set correct accept attribute on file input', async () => {
+    render(<AttachButton inputTestId="input" allowedFileTypes={{ 'text/plain': ['.txt'] }} />);
+    await userEvent.click(screen.getByRole('button', { name: 'Attach' }));
+    const input = screen.getByTestId('input') as HTMLInputElement;
+    expect(input).toHaveAttribute('accept', 'text/plain,.txt');
+  });
 });

@@ -7,7 +7,7 @@ import { forwardRef } from 'react';
 
 // Import PatternFly components
 import { Button, ButtonProps, DropEvent, Icon, Tooltip, TooltipProps } from '@patternfly/react-core';
-import { useDropzone } from 'react-dropzone';
+import { Accept, useDropzone } from 'react-dropzone';
 import { PaperclipIcon } from '@patternfly/react-icons/dist/esm/icons/paperclip-icon';
 
 export interface AttachButtonProps extends ButtonProps {
@@ -15,6 +15,13 @@ export interface AttachButtonProps extends ButtonProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   /** Callback function for AttachButton when an attachment is made */
   onAttachAccepted?: (data: File[], event: DropEvent) => void;
+  /** Specifies the file types that the attachment upload component should accept.
+   *  Files that don't match the accepted types will be disabled in the file picker.
+   *  @example
+   *  allowedFileTypes: { 'application/json': ['.json'], 'text/plain': ['.txt'] }
+   *
+   *  **/
+  allowedFileTypes?: Accept;
   /** Class name for AttachButton */
   className?: string;
   /** Props to control if the AttachButton should be disabled */
@@ -40,11 +47,13 @@ const AttachButtonBase: FunctionComponent<AttachButtonProps> = ({
   tooltipContent = 'Attach',
   inputTestId,
   isCompact,
+  allowedFileTypes,
   ...props
 }: AttachButtonProps) => {
   const { open, getInputProps } = useDropzone({
     multiple: true,
-    onDropAccepted: onAttachAccepted
+    onDropAccepted: onAttachAccepted,
+    accept: allowedFileTypes
   });
 
   return (
