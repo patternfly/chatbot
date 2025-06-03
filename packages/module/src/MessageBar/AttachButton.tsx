@@ -19,8 +19,7 @@ export interface AttachButtonProps extends ButtonProps {
    *  Files that don't match the accepted types will be disabled in the file picker.
    *  For example,
    *  allowedFileTypes: { 'application/json': ['.json'], 'text/plain': ['.txt'] }
-   *
-   *  **/
+   **/
   allowedFileTypes?: Accept;
   /** Class name for AttachButton */
   className?: string;

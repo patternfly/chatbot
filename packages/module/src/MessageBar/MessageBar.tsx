@@ -83,7 +83,7 @@ export interface MessageBarProps extends TextAreaProps {
    *  Files that don't match the accepted types will be disabled in the file picker.
    *  For example,
    *   allowedFileTypes: { 'application/json': ['.json'], 'text/plain': ['.txt'] }
-   *  **/
+   **/
   allowedFileTypes?: Accept;
 }
 
