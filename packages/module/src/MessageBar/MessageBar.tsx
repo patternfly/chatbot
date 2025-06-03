@@ -79,11 +79,10 @@ export interface MessageBarProps extends TextAreaProps {
   /** Display mode of chatbot, if you want to message bar to resize when the display mode changes */
   displayMode?: ChatbotDisplayMode;
   isCompact?: boolean;
-  /** Specifies the file types that the attachment upload component should accept.
+  /** Specifies the file types accepted by the attachment upload component.
    *  Files that don't match the accepted types will be disabled in the file picker.
-   *  @example
-   *  allowedFileTypes: { 'application/json': ['.json'], 'text/plain': ['.txt'] }
-   *
+   *  For example,
+   *   allowedFileTypes: { 'application/json': ['.json'], 'text/plain': ['.txt'] }
    *  **/
   allowedFileTypes?: Accept;
 }

@@ -15,9 +15,9 @@ export interface AttachButtonProps extends ButtonProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   /** Callback function for AttachButton when an attachment is made */
   onAttachAccepted?: (data: File[], event: DropEvent) => void;
-  /** Specifies the file types that the attachment upload component should accept.
+  /** Specifies the file types accepted by the attachment upload component.
    *  Files that don't match the accepted types will be disabled in the file picker.
-   *  @example
+   *  For example,
    *  allowedFileTypes: { 'application/json': ['.json'], 'text/plain': ['.txt'] }
    *
    *  **/
