@@ -218,7 +218,16 @@ export const BasicDemo: FunctionComponent = () => {
             </ChatbotHeaderOptionsDropdown>
           </ChatbotHeaderActions>
         </ChatbotHeader>
-        <FileDropZone onFileDrop={handleFileDrop} displayMode={displayMode}>
+        <FileDropZone
+          onFileDrop={handleFileDrop}
+          displayMode={displayMode}
+          infoText="Allowed file types are .json, .txt and .yaml and maximum file size is 25 MB."
+          allowedFileTypes={{
+            'text/plain': ['.txt'],
+            'application/json': ['.json'],
+            'application/yaml': ['.yaml', '.yml']
+          }}
+        >
           <ChatbotContent>
             <MessageBox>
               {showAlert && (

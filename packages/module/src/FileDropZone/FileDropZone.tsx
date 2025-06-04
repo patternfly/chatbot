@@ -3,6 +3,7 @@ import type { FunctionComponent } from 'react';
 import { useState } from 'react';
 import { ChatbotDisplayMode } from '../Chatbot';
 import { UploadIcon } from '@patternfly/react-icons';
+import { Accept } from 'react-dropzone/.';
 
 export interface FileDropZoneProps {
   /** Content displayed when the drop zone is not currently in use */
@@ -13,6 +14,12 @@ export interface FileDropZoneProps {
   infoText?: string;
   /** When files are dropped or uploaded this callback will be called with all accepted files */
   onFileDrop: (event: DropEvent, data: File[]) => void;
+  /** Specifies the file types accepted by the attachment upload component.
+   *  Files that don't match the accepted types will be disabled in the file picker.
+   *  For example,
+   *   allowedFileTypes: { 'application/json': ['.json'], 'text/plain': ['.txt'] }
+   **/
+  allowedFileTypes?: Accept;
   /** Display mode for the Chatbot parent; this influences the styles applied */
   displayMode?: ChatbotDisplayMode;
 }
@@ -22,6 +29,7 @@ const FileDropZone: FunctionComponent<FileDropZoneProps> = ({
   className,
   infoText = 'Maximum file size is 25 MB',
   onFileDrop,
+  allowedFileTypes,
   displayMode = ChatbotDisplayMode.default,
   ...props
 }: FileDropZoneProps) => {
@@ -41,6 +49,7 @@ const FileDropZone: FunctionComponent<FileDropZoneProps> = ({
   return (
     <MultipleFileUpload
       dropzoneProps={{
+        accept: allowedFileTypes,
         onDrop: () => setShowDropZone(false),
         ...props
       }}
