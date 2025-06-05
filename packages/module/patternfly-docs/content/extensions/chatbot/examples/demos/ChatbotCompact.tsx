@@ -117,7 +117,7 @@ const initialMessages: MessageProps[] = [
       // eslint-disable-next-line no-console
       copy: { onClick: () => console.log('Copy') },
       // eslint-disable-next-line no-console
-      share: { onClick: () => console.log('Share') },
+      download: { onClick: () => console.log('Download') },
       // eslint-disable-next-line no-console
       listen: { onClick: () => console.log('Listen') }
     }
@@ -256,7 +256,7 @@ export const ChatbotDemo: FunctionComponent = () => {
           // eslint-disable-next-line no-console
           copy: { onClick: () => console.log('Copy') },
           // eslint-disable-next-line no-console
-          share: { onClick: () => console.log('Share') },
+          download: { onClick: () => console.log('Download') },
           // eslint-disable-next-line no-console
           listen: { onClick: () => console.log('Listen') }
         }

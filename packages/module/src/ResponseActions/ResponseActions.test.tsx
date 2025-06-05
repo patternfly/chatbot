@@ -45,6 +45,7 @@ const ALL_ACTIONS_DATA_TEST = [
   { type: 'negative', label: 'Bad response', dataTestId: 'negative' },
   { type: 'copy', label: 'Copy', dataTestId: 'copy' },
   { type: 'share', label: 'Share', dataTestId: 'share' },
+  { type: 'download', label: 'Download', dataTestId: 'download' },
   { type: 'listen', label: 'Listen', dataTestId: 'listen' }
 ];
 
@@ -60,6 +61,7 @@ describe('ResponseActions', () => {
           negative: { onClick: jest.fn() },
           copy: { onClick: jest.fn() },
           share: { onClick: jest.fn() },
+          download: { onClick: jest.fn() },
           listen: { onClick: jest.fn() }
         }}
       />
@@ -68,8 +70,9 @@ describe('ResponseActions', () => {
     const badBtn = screen.getByRole('button', { name: 'Bad response' });
     const copyBtn = screen.getByRole('button', { name: 'Copy' });
     const shareBtn = screen.getByRole('button', { name: 'Share' });
+    const downloadBtn = screen.getByRole('button', { name: 'Download' });
     const listenBtn = screen.getByRole('button', { name: 'Listen' });
-    const buttons = [goodBtn, badBtn, copyBtn, shareBtn, listenBtn];
+    const buttons = [goodBtn, badBtn, copyBtn, shareBtn, downloadBtn, listenBtn];
     buttons.forEach((button) => {
       expect(button).toBeTruthy();
     });
@@ -166,6 +169,7 @@ describe('ResponseActions', () => {
       { type: 'negative', ariaLabel: 'Thumbs down' },
       { type: 'copy', ariaLabel: 'Copy the message' },
       { type: 'share', ariaLabel: 'Share it with friends' },
+      { type: 'download', ariaLabel: 'Download your cool message' },
       { type: 'listen', ariaLabel: 'Listen up' }
     ];
     actions.forEach(({ type, ariaLabel }) => {

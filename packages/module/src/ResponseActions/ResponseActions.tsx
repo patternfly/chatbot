@@ -5,7 +5,8 @@ import {
   VolumeUpIcon,
   OutlinedThumbsUpIcon,
   OutlinedThumbsDownIcon,
-  OutlinedCopyIcon
+  OutlinedCopyIcon,
+  DownloadIcon
 } from '@patternfly/react-icons';
 import ResponseActionButton from './ResponseActionButton';
 import { ButtonProps, TooltipProps } from '@patternfly/react-core';
@@ -47,13 +48,14 @@ export interface ResponseActionProps {
     negative?: ActionProps;
     copy?: ActionProps;
     share?: ActionProps;
+    download?: ActionProps;
     listen?: ActionProps;
   };
 }
 
 export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ actions }) => {
   const [activeButton, setActiveButton] = useState<string>();
-  const { positive, negative, copy, share, listen, ...additionalActions } = actions;
+  const { positive, negative, copy, share, download, listen, ...additionalActions } = actions;
   const responseActions = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -150,6 +152,24 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ action
           ref={share.ref}
           aria-expanded={share['aria-expanded']}
           aria-controls={share['aria-controls']}
+        ></ResponseActionButton>
+      )}
+      {download && (
+        <ResponseActionButton
+          {...download}
+          ariaLabel={download.ariaLabel ?? 'Download'}
+          clickedAriaLabel={download.ariaLabel ?? 'Downloaded'}
+          onClick={(e) => handleClick(e, 'download', download.onClick)}
+          className={download.className}
+          isDisabled={download.isDisabled}
+          tooltipContent={download.tooltipContent ?? 'Download'}
+          clickedTooltipContent={download.clickedTooltipContent ?? 'Downloaded'}
+          tooltipProps={download.tooltipProps}
+          icon={<DownloadIcon />}
+          isClicked={activeButton === 'download'}
+          ref={download.ref}
+          aria-expanded={download['aria-expanded']}
+          aria-controls={download['aria-controls']}
         ></ResponseActionButton>
       )}
       {listen && (

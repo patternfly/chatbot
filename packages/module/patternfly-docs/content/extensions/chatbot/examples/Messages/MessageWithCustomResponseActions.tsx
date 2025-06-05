@@ -3,7 +3,6 @@ import { FunctionComponent } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import patternflyAvatar from './patternfly_avatar.jpg';
 import InfoCircleIcon from '@patternfly/react-icons/dist/esm/icons/info-circle-icon';
-import DownloadIcon from '@patternfly/react-icons/dist/esm/icons/download-icon';
 import RedoIcon from '@patternfly/react-icons/dist/esm/icons/redo-icon';
 
 export const CustomActionExample: FunctionComponent = () => (
@@ -21,15 +20,6 @@ export const CustomActionExample: FunctionComponent = () => (
         tooltipContent: 'Regenerate',
         clickedTooltipContent: 'Regenerated',
         icon: <RedoIcon />
-      },
-      download: {
-        ariaLabel: 'Download',
-        clickedAriaLabel: 'Downloaded',
-        // eslint-disable-next-line no-console
-        onClick: () => console.log('Clicked download'),
-        tooltipContent: 'Download',
-        clickedTooltipContent: 'Downloaded',
-        icon: <DownloadIcon />
       },
       info: {
         ariaLabel: 'Info',
