@@ -1,6 +1,6 @@
 import type { ChangeEvent, FunctionComponent, KeyboardEvent as ReactKeyboardEvent, Ref } from 'react';
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
-import { Accept } from 'react-dropzone/.';
+import { Accept, DropzoneOptions, FileError, FileRejection } from 'react-dropzone/.';
 import { ButtonProps, DropEvent, TextArea, TextAreaProps, TooltipProps } from '@patternfly/react-core';
 
 // Import Chatbot components
@@ -53,6 +53,28 @@ export interface MessageBarProps extends Omit<TextAreaProps, 'innerRef'> {
   handleStopButton?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   /** Callback function for when attach button is used to upload a file */
   handleAttach?: (data: File[], event: DropEvent) => void;
+  /** Specifies the file types accepted by the attachment upload component.
+   *  Files that don't match the accepted types will be disabled in the file picker.
+   *  For example,
+   *   allowedFileTypes: { 'application/json': ['.json'], 'text/plain': ['.txt'] }
+   **/
+  allowedFileTypes?: Accept;
+  /** Minimum file size allowed */
+  minSize?: number;
+  /** Max file size allowed */
+  maxSize?: number;
+  /** Max number of files allowed */
+  maxFiles?: number;
+  /** Whether attachments are disabled */
+  isAttachmentDisabled?: boolean;
+  /** Callback when file(s) are attached */
+  onAttach?: <T extends File>(acceptedFiles: T[], fileRejections: FileRejection[], event: DropEvent) => void;
+  /** Callback function for AttachButton when an attachment fails */
+  onAttachRejected?: (fileRejections: FileRejection[], event: DropEvent) => void;
+  /** Validator for files; see https://react-dropzone.js.org/#!/Custom%20validation for more information */
+  validator?: <T extends File>(file: T) => FileError | readonly FileError[] | null;
+  /** Additional props passed to react-dropzone */
+  dropzoneProps?: DropzoneOptions;
   /** Props to enable a menu that opens when the Attach button is clicked, instead of the attachment window */
   attachMenuProps?: MessageBarWithAttachMenuProps;
   /** Flag to provide manual control over whether send button is disabled */
@@ -80,12 +102,6 @@ export interface MessageBarProps extends Omit<TextAreaProps, 'innerRef'> {
   displayMode?: ChatbotDisplayMode;
   /** Whether message bar is compact */
   isCompact?: boolean;
-  /** Specifies the file types accepted by the attachment upload component.
-   *  Files that don't match the accepted types will be disabled in the file picker.
-   *  For example,
-   *   allowedFileTypes: { 'application/json': ['.json'], 'text/plain': ['.txt'] }
-   **/
-  allowedFileTypes?: Accept;
   /** Ref applied to message bar textarea, for use with focus or other custom behaviors  */
   innerRef?: React.Ref<HTMLTextAreaElement>;
 }
@@ -109,6 +125,14 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
   value,
   isCompact = false,
   allowedFileTypes,
+  minSize,
+  maxSize,
+  maxFiles,
+  isAttachmentDisabled,
+  onAttach,
+  onAttachRejected,
+  validator,
+  dropzoneProps,
   innerRef,
   ...props
 }: MessageBarProps) => {
@@ -309,6 +333,14 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
             isCompact={isCompact}
             tooltipProps={buttonProps?.attach?.tooltipProps}
             allowedFileTypes={allowedFileTypes}
+            minSize={minSize}
+            maxSize={maxSize}
+            maxFiles={maxFiles}
+            isAttachmentDisabled={isAttachmentDisabled}
+            onAttach={onAttach}
+            onAttachRejected={onAttachRejected}
+            validator={validator}
+            dropzoneProps={dropzoneProps}
             {...buttonProps?.attach?.props}
           />
         )}
@@ -321,6 +353,14 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
             isCompact={isCompact}
             tooltipProps={buttonProps?.attach?.tooltipProps}
             allowedFileTypes={allowedFileTypes}
+            minSize={minSize}
+            maxSize={maxSize}
+            maxFiles={maxFiles}
+            isAttachmentDisabled={isAttachmentDisabled}
+            onAttach={onAttach}
+            onAttachRejected={onAttachRejected}
+            validator={validator}
+            dropzoneProps={dropzoneProps}
             {...buttonProps?.attach?.props}
           />
         )}
