@@ -7,8 +7,8 @@ import { Checkbox, DropdownItem, DropdownList } from '@patternfly/react-core';
 
 const menuItems = [
   <DropdownList key="list-1">
-    <DropdownItem value="Share" id="Share">
-      Share
+    <DropdownItem value="Download" id="Download">
+      Download
     </DropdownItem>
     <DropdownItem value="Rename" id="Rename">
       Rename

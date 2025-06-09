@@ -428,6 +428,8 @@ describe('Message', () => {
           // eslint-disable-next-line no-console
           share: { onClick: () => console.log('Share') },
           // eslint-disable-next-line no-console
+          download: { onClick: () => console.log('Download') },
+          // eslint-disable-next-line no-console
           listen: { onClick: () => console.log('Listen') }
         }}
       />
@@ -453,6 +455,8 @@ describe('Message', () => {
           copy: { onClick: () => console.log('Copy') },
           // eslint-disable-next-line no-console
           share: { onClick: () => console.log('Share') },
+          // eslint-disable-next-line no-console
+          download: { onClick: () => console.log('Download') },
           // eslint-disable-next-line no-console
           listen: { onClick: () => console.log('Listen') }
         }}

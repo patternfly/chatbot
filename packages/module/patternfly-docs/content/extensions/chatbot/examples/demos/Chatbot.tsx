@@ -132,7 +132,7 @@ const initialMessages: MessageProps[] = [
       positive: { onClick: () => tracking.trackSingleItem(actionEventName, { response: 'Good response' }) },
       negative: { onClick: () => tracking.trackSingleItem(actionEventName, { response: 'Bad response' }) },
       copy: { onClick: () => tracking.trackSingleItem(actionEventName, { response: 'Copy' }) },
-      share: { onClick: () => tracking.trackSingleItem(actionEventName, { response: 'Share' }) },
+      download: { onClick: () => tracking.trackSingleItem(actionEventName, { response: 'Download' }) },
       listen: { onClick: () => tracking.trackSingleItem(actionEventName, { response: 'Listen' }) }
     }
   }
@@ -269,7 +269,7 @@ export const ChatbotDemo: FunctionComponent = () => {
           positive: { onClick: () => tracking.trackSingleItem(actionEvent2, { response: 'Good response' }) },
           negative: { onClick: () => tracking.trackSingleItem(actionEvent2, { response: 'Bad response' }) },
           copy: { onClick: () => tracking.trackSingleItem(actionEvent2, { response: 'Copy' }) },
-          share: { onClick: () => tracking.trackSingleItem(actionEvent2, { response: 'Share' }) },
+          download: { onClick: () => tracking.trackSingleItem(actionEvent2, { response: 'Download' }) },
           listen: { onClick: () => tracking.trackSingleItem(actionEvent2, { response: 'Listen' }) }
         }
       });
