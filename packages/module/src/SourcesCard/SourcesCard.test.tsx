@@ -242,4 +242,18 @@ describe('SourcesCard', () => {
     );
     expect(screen.getByRole('region')).toHaveAttribute('class', 'pf-v6-c-expandable-section__content');
   });
+
+  it('should call onClick appropriately', async () => {
+    const spy = jest.fn();
+    render(<SourcesCard sources={[{ title: 'How to make an apple pie', link: '', onClick: spy }]} />);
+    await userEvent.click(screen.getByRole('link', { name: /How to make an apple pie/i }));
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should apply titleProps appropriately', () => {
+    render(
+      <SourcesCard sources={[{ title: 'How to make an apple pie', link: '', titleProps: { className: 'test' } }]} />
+    );
+    expect(screen.getByRole('link', { name: /How to make an apple pie/i })).toHaveClass('test');
+  });
 });

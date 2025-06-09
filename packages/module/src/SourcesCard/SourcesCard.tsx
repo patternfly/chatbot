@@ -6,6 +6,7 @@ import { useState } from 'react';
 // Import PatternFly components
 import {
   Button,
+  ButtonProps,
   ButtonVariant,
   Card,
   CardBody,
@@ -31,11 +32,20 @@ export interface SourcesCardProps extends CardProps {
   paginationAriaLabel?: string;
   /** Content rendered inside the paginated card */
   sources: {
+    /** Title of sources card */
     title?: string;
+    /** Link to source */
     link: string;
+    /** Body of sources card */
     body?: React.ReactNode | string;
+    /** Whether link is external */
     isExternal?: boolean;
+    /** Whether sources card is expandable */
     hasShowMore?: boolean;
+    /** onClick event applied to the title of the Sources card */
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
+    /** Any additional props applied to the title of the Sources card  */
+    titleProps?: ButtonProps;
   }[];
   /** Label for the English word "source" */
   sourceWord?: string;
@@ -107,6 +117,8 @@ const SourcesCard: FunctionComponent<SourcesCardProps> = ({
             isInline
             rel={sources[page - 1].isExternal ? 'noreferrer' : undefined}
             target={sources[page - 1].isExternal ? '_blank' : undefined}
+            onClick={sources[page - 1].onClick ?? undefined}
+            {...sources[page - 1].titleProps}
           >
             {renderTitle(sources[page - 1].title)}
           </Button>
