@@ -55,6 +55,30 @@ export interface ResponseActionProps {
 
 export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ actions }) => {
   const [activeButton, setActiveButton] = useState<string>();
+  useEffect(() => {
+    // Define the order of precedence for checking initial `isClicked`
+    const actionPrecedence = ['positive', 'negative', 'copy', 'share', 'download', 'listen'];
+    let initialActive: string | undefined;
+
+    // Check predefined actions first based on precedence
+    for (const actionName of actionPrecedence) {
+      const actionProp = actions[actionName as keyof typeof actions];
+      if (actionProp?.isClicked) {
+        initialActive = actionName;
+        break;
+      }
+    }
+    // If no predefined action was initially clicked, check additionalActions
+    if (!initialActive) {
+      const clickedActionName = Object.keys(additionalActions).find(
+        (actionName) => !actionPrecedence.includes(actionName) && additionalActions[actionName]?.isClicked
+      );
+      initialActive = clickedActionName;
+    }
+
+    setActiveButton(initialActive);
+  }, [actions]);
+
   const { positive, negative, copy, share, download, listen, ...additionalActions } = actions;
   const responseActions = useRef<HTMLDivElement>(null);
 
