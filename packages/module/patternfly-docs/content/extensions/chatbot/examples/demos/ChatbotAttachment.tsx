@@ -138,8 +138,15 @@ export const BasicDemo: FunctionComponent = () => {
         }, 1000);
       })
       .catch((error: DOMException) => {
+        setShowAlert(true);
         setError(`Failed to read file: ${error.message}`);
       });
+  };
+
+  const handleAttachRejected = () => {
+    setFile(undefined);
+    setShowAlert(true);
+    setError('This demo only supports file extensions .txt, .json, .yaml, and .yaml. Please try a different file.');
   };
 
   const handleFileDrop = (event: DropEvent, data: File[]) => {
@@ -227,6 +234,7 @@ export const BasicDemo: FunctionComponent = () => {
             'application/json': ['.json'],
             'application/yaml': ['.yaml', '.yml']
           }}
+          onAttachRejected={handleAttachRejected}
         >
           <ChatbotContent>
             <MessageBox>
@@ -254,7 +262,17 @@ export const BasicDemo: FunctionComponent = () => {
                 <FileDetailsLabel fileName={file.name} isLoading={isLoadingFile} onClose={onClose} />
               </div>
             )}
-            <MessageBar onSendMessage={handleSend} hasAttachButton handleAttach={handleAttach} />
+            <MessageBar
+              onSendMessage={handleSend}
+              hasAttachButton
+              handleAttach={handleAttach}
+              allowedFileTypes={{
+                'text/plain': ['.txt'],
+                'application/json': ['.json'],
+                'application/yaml': ['.yaml', '.yml']
+              }}
+              onAttachRejected={handleAttachRejected}
+            />
             <ChatbotFootnote label="ChatBot uses AI. Check for mistakes." />
           </ChatbotFooter>
         </FileDropZone>

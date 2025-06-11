@@ -7,7 +7,7 @@ import { forwardRef } from 'react';
 
 // Import PatternFly components
 import { Button, ButtonProps, DropEvent, Icon, Tooltip, TooltipProps } from '@patternfly/react-core';
-import { Accept, useDropzone } from 'react-dropzone';
+import { Accept, DropzoneOptions, FileError, FileRejection, useDropzone } from 'react-dropzone';
 import { PaperclipIcon } from '@patternfly/react-icons/dist/esm/icons/paperclip-icon';
 
 export interface AttachButtonProps extends ButtonProps {
@@ -33,7 +33,24 @@ export interface AttachButtonProps extends ButtonProps {
   tooltipContent?: string;
   /** Test id applied to input */
   inputTestId?: string;
+  /** Whether button is compact */
   isCompact?: boolean;
+  /** Minimum file size allowed */
+  minSize?: number;
+  /** Max file size allowed */
+  maxSize?: number;
+  /** Max number of files allowed */
+  maxFiles?: number;
+  /** Whether attachments are disabled */
+  isAttachmentDisabled?: boolean;
+  /** Callback when file(s) are attached */
+  onAttach?: <T extends File>(acceptedFiles: T[], fileRejections: FileRejection[], event: DropEvent) => void;
+  /** Callback function for AttachButton when an attachment fails */
+  onAttachRejected?: (fileRejections: FileRejection[], event: DropEvent) => void;
+  /** Validator for files; see https://react-dropzone.js.org/#!/Custom%20validation for more information */
+  validator?: <T extends File>(file: T) => FileError | readonly FileError[] | null;
+  /** Additional props passed to react-dropzone */
+  dropzoneProps?: DropzoneOptions;
 }
 
 const AttachButtonBase: FunctionComponent<AttachButtonProps> = ({
@@ -47,12 +64,28 @@ const AttachButtonBase: FunctionComponent<AttachButtonProps> = ({
   inputTestId,
   isCompact,
   allowedFileTypes,
+  minSize,
+  maxSize,
+  maxFiles,
+  isAttachmentDisabled,
+  onAttach,
+  onAttachRejected,
+  validator,
+  dropzoneProps,
   ...props
 }: AttachButtonProps) => {
   const { open, getInputProps } = useDropzone({
     multiple: true,
     onDropAccepted: onAttachAccepted,
-    accept: allowedFileTypes
+    accept: allowedFileTypes,
+    minSize,
+    maxSize,
+    maxFiles,
+    disabled: isAttachmentDisabled,
+    onDrop: onAttach,
+    onDropRejected: onAttachRejected,
+    validator,
+    ...dropzoneProps
   });
 
   return (

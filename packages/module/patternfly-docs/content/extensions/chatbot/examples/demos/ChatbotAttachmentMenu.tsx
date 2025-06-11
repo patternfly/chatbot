@@ -127,6 +127,7 @@ export const AttachmentMenuDemo: FunctionComponent = () => {
   // Attachments
   // --------------------------------------------------------------------------
   const handleFileDrop = (event: DropEvent, data: File[]) => {
+    setIsOpen(false);
     setFile(data[0]);
     setIsLoadingFile(true);
     setTimeout(() => {

@@ -3,7 +3,7 @@ import type { FunctionComponent } from 'react';
 import { useState } from 'react';
 import { ChatbotDisplayMode } from '../Chatbot';
 import { UploadIcon } from '@patternfly/react-icons';
-import { Accept } from 'react-dropzone/.';
+import { Accept, FileError, FileRejection } from 'react-dropzone/.';
 
 export interface FileDropZoneProps {
   /** Content displayed when the drop zone is not currently in use */
@@ -22,6 +22,20 @@ export interface FileDropZoneProps {
   allowedFileTypes?: Accept;
   /** Display mode for the Chatbot parent; this influences the styles applied */
   displayMode?: ChatbotDisplayMode;
+  /** Minimum file size allowed */
+  minSize?: number;
+  /** Max file size allowed */
+  maxSize?: number;
+  /** Max number of files allowed */
+  maxFiles?: number;
+  /** Whether attachments are disabled */
+  isAttachmentDisabled?: boolean;
+  /** Callback when file(s) are attached */
+  onAttach?: <T extends File>(acceptedFiles: T[], fileRejections: FileRejection[], event: DropEvent) => void;
+  /** Callback function for AttachButton when an attachment fails */
+  onAttachRejected?: (fileRejections: FileRejection[], event: DropEvent) => void;
+  /** Validator for files; see https://react-dropzone.js.org/#!/Custom%20validation for more information */
+  validator?: <T extends File>(file: T) => FileError | readonly FileError[] | null;
 }
 
 const FileDropZone: FunctionComponent<FileDropZoneProps> = ({
@@ -30,6 +44,13 @@ const FileDropZone: FunctionComponent<FileDropZoneProps> = ({
   infoText = 'Maximum file size is 25 MB',
   onFileDrop,
   allowedFileTypes,
+  minSize,
+  maxSize,
+  maxFiles,
+  isAttachmentDisabled,
+  onAttach,
+  onAttachRejected,
+  validator,
   displayMode = ChatbotDisplayMode.default,
   ...props
 }: FileDropZoneProps) => {
@@ -50,7 +71,16 @@ const FileDropZone: FunctionComponent<FileDropZoneProps> = ({
     <MultipleFileUpload
       dropzoneProps={{
         accept: allowedFileTypes,
-        onDrop: () => setShowDropZone(false),
+        onDrop: (acceptedFiles, fileRejections: FileRejection[], event: DropEvent) => {
+          setShowDropZone(false);
+          onAttach && onAttach(acceptedFiles, fileRejections, event);
+        },
+        minSize,
+        maxSize,
+        maxFiles,
+        disabled: isAttachmentDisabled,
+        onDropRejected: onAttachRejected,
+        validator,
         ...props
       }}
       onDragEnter={() => setShowDropZone(true)}

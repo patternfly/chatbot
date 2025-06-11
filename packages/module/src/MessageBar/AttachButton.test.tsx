@@ -98,4 +98,79 @@ describe('Attach button', () => {
 
     expect(onAttachAccepted).not.toHaveBeenCalled();
   });
+
+  it('should respect minSize restriction', async () => {
+    const onAttachRejected = jest.fn();
+    render(<AttachButton inputTestId="input" minSize={1000} onAttachRejected={onAttachRejected} />);
+
+    const file = new File(['Test'], 'example.txt', { type: 'text/plain' });
+    const input = screen.getByTestId('input');
+
+    await userEvent.upload(input, file);
+
+    expect(onAttachRejected).toHaveBeenCalled();
+  });
+
+  it('should respect maxSize restriction', async () => {
+    const onAttachRejected = jest.fn();
+    render(<AttachButton inputTestId="input" maxSize={100} onAttachRejected={onAttachRejected} />);
+
+    const largeContent = 'x'.repeat(200);
+    const file = new File([largeContent], 'example.txt', { type: 'text/plain' });
+    const input = screen.getByTestId('input');
+
+    await userEvent.upload(input, file);
+
+    expect(onAttachRejected).toHaveBeenCalled();
+  });
+
+  it('should respect maxFiles restriction', async () => {
+    const onAttachRejected = jest.fn();
+    render(<AttachButton inputTestId="input" maxFiles={1} onAttachRejected={onAttachRejected} />);
+
+    const files = [
+      new File(['Test1'], 'example1.txt', { type: 'text/plain' }),
+      new File(['Test2'], 'example2.txt', { type: 'text/plain' })
+    ];
+
+    const input = screen.getByTestId('input');
+    await userEvent.upload(input, files);
+
+    expect(onAttachRejected).toHaveBeenCalled();
+  });
+
+  it('should be disabled when isAttachmentDisabled is true', async () => {
+    const onFileDrop = jest.fn();
+    render(<AttachButton inputTestId="input" isAttachmentDisabled={true} />);
+
+    const file = new File(['Test'], 'example.text', { type: 'text/plain' });
+    const input = screen.getByTestId('input');
+    await userEvent.upload(input, file);
+
+    expect(onFileDrop).not.toHaveBeenCalled();
+  });
+
+  it('should call onAttach when files are attached', async () => {
+    const onAttach = jest.fn();
+    render(<AttachButton inputTestId="input" onAttach={onAttach} />);
+
+    const file = new File(['Test'], 'example.txt', { type: 'text/plain' });
+    const input = screen.getByTestId('input');
+
+    await userEvent.upload(input, file);
+
+    expect(onAttach).toHaveBeenCalled();
+  });
+  it('should use custom validator when provided', async () => {
+    const validator = jest.fn().mockReturnValue({ message: 'Custom error' });
+    const onAttachRejected = jest.fn();
+    render(<AttachButton inputTestId="input" validator={validator} onAttachRejected={onAttachRejected} />);
+
+    const file = new File(['Test'], 'example.txt', { type: 'text/plain' });
+    const input = screen.getByTestId('input');
+    await userEvent.upload(input, file);
+
+    expect(validator).toHaveBeenCalledWith(file);
+    expect(onAttachRejected).toHaveBeenCalled();
+  });
 });
