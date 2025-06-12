@@ -55,6 +55,7 @@ export interface ResponseActionProps {
 
 export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ actions }) => {
   const [activeButton, setActiveButton] = useState<string>();
+  const [clickStatePersisted, setClickStatePersisted] = useState<boolean>(false);
   useEffect(() => {
     // Define the order of precedence for checking initial `isClicked`
     const actionPrecedence = ['positive', 'negative', 'copy', 'share', 'download', 'listen'];
@@ -75,7 +76,10 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ action
       );
       initialActive = clickedActionName;
     }
-
+    if (initialActive) {
+      // Click state is explicitly controlled by consumer.
+      setClickStatePersisted(true);
+    }
     setActiveButton(initialActive);
   }, [actions]);
 
@@ -84,7 +88,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ action
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (responseActions.current && !responseActions.current.contains(e.target)) {
+      if (responseActions.current && !responseActions.current.contains(e.target) && !clickStatePersisted) {
         setActiveButton(undefined);
       }
     };
@@ -93,13 +97,14 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ action
     return () => {
       window.removeEventListener('click', handleClickOutside);
     };
-  }, []);
+  }, [clickStatePersisted]);
 
   const handleClick = (
     e: MouseEvent | MouseEvent<Element, MouseEvent> | KeyboardEvent,
     id: string,
     onClick?: (event: MouseEvent | MouseEvent<Element, MouseEvent> | KeyboardEvent) => void
   ) => {
+    setClickStatePersisted(false);
     setActiveButton(id);
     onClick && onClick(e);
   };

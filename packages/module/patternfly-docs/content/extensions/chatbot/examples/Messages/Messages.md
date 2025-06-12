@@ -79,6 +79,27 @@ You can add actions to a message, to allow users to interact with the message co
 
 ```
 
+### Message actions click state
+
+The `isClicked` boolean property within each action's configuration object allows you to define which button should be initially highlighted or active when the `<ResponseActions>` component first renders.
+
+- Initial Activation:
+  - You can set `isClicked: true` for any action within your actions configuration to make that button appear active by default.
+  - The `<ResponseActions>` component is designed to ensure that only one button can be visually active at any given time.
+  - If you Unintentionally set `isClicked: true` for multiple buttons in your actions config, the component will apply a predefined internal precedence order to resolve the conflict. The button encountered first in this order will be activated, and others will be ignored for initial activation. The default precedence is: positive, negative, copy, share, listen, followed by any other custom actions (in object key order).
+- Runtime Interaction Overrides:
+
+  - Once the component has rendered, user interactions (button clicks) will take precedence over the initial isClicked prop.
+  - Clicking a button will activate it (and deactivate any other active button).
+
+- The `isDisabled` boolean property within each action's configuration object allows you to control whether a button is interactive or not.
+
+**Note:** The logic for the actions is not built into the component and must be implemented by the consuming application.
+
+```js file="./MessageWithClickedResponseActions.tsx"
+
+```
+
 ### Custom message actions
 
 Beyond the standard message actions (good response, bad response, copy, share, or listen), you can add custom actions to a bot message by passing an `actions` object to the `<Message>` component. This object can contain the following customizations:
@@ -86,6 +107,7 @@ Beyond the standard message actions (good response, bad response, copy, share, o
 - `ariaLabel`
 - `onClick`
 - `className`
+- `isClicked`
 - `isDisabled`
 - `tooltipContent`
 - `tooltipContent`

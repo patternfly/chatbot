@@ -15,6 +15,7 @@ export const CustomActionExample: FunctionComponent = () => (
       regenerate: {
         ariaLabel: 'Regenerate',
         clickedAriaLabel: 'Regenerated',
+        isClicked: true,
         // eslint-disable-next-line no-console
         onClick: () => console.log('Clicked regenerate'),
         tooltipContent: 'Regenerate',
