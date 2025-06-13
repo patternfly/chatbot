@@ -3,16 +3,13 @@
 // ============================================================================
 
 .pf-chatbot__message-and-actions {
+  width: 100%;
+
   blockquote {
     .pf-chatbot__message-text {
       display: inline-block;
     }
   }
-}
-
-// make it full width when there's a table, so the table can grow as needed
-.pf-chatbot__message-and-actions:has(.pf-chatbot__message-table) {
-  width: 100%;
 }
 
 // Need to inline shorter text
