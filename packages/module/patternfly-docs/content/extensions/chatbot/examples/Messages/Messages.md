@@ -31,6 +31,7 @@ sortValue: 3
 ---
 
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
+import { rehypeCodeBlockToggle } from '@patternfly/chatbot/dist/esm/Message/Plugins/rehypeCodeBlockToggle';
 import SourcesCard from '@patternfly/chatbot/dist/dynamic/SourcesCard';
 import { RobotIcon } from '@patternfly/react-icons/dist/esm/icons/robot-icon';
 import InfoCircleIcon from '@patternfly/react-icons/dist/esm/icons/info-circle-icon';

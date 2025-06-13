@@ -176,6 +176,8 @@ class ExpandableSectionForSyntaxHighlighter extends Component<ExpandableSectionP
       contentId,
       toggleId,
       variant,
+      // eslint-disable-next-line
+      truncateMaxLines,
       ...props
     } = this.props;
 

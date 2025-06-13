@@ -9,6 +9,7 @@ import {
   SelectList,
   SelectOption
 } from '@patternfly/react-core';
+import { rehypeCodeBlockToggle } from '@patternfly/chatbot/dist/esm/Message/Plugins/rehypeCodeBlockToggle';
 
 export const UserMessageExample: FunctionComponent = () => {
   const [variant, setVariant] = useState<string>('Code');
@@ -250,6 +251,10 @@ _Italic text, formatted with single underscores_
         onEditUpdate={() => setIsEditable(false)}
         onEditCancel={() => setIsEditable(false)}
         codeBlockProps={{ isExpandable, expandableSectionProps: { truncateMaxLines: isExpandable ? 1 : undefined } }}
+        // In this example, custom plugin will override any custom expandedText or collapsedText attributes provided
+        // The purpose of this plugin is to provide unique link names for the code blocks
+        // Because they are in the same message, this requires a custom plugin to parse the syntax tree
+        additionalRehypePlugins={[rehypeCodeBlockToggle]}
       />
     </>
   );
