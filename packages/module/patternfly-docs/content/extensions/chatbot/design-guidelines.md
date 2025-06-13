@@ -340,6 +340,36 @@ If a message attachment fails, an error message should share the reason for fail
 ![Error alert for failed attachment.](./img/attachment-error.svg)
 </div>
 
+### Downloading chat transcripts
+
+You can enable users to download chat transcripts, for their personal records or to share with others. When users choose to download a transcript, you can choose how you want to configure the behavior in your ChatBot. 
+
+For guidance, refer to our download transcripts demo, which opens a Markdown file for a conversation within a new tab. 
+
+Choose the download action location that best works for your ChatBot:
+
+#### Download via conversation history drawer
+
+If your ChatBot uses a conversation history drawer, you can provide a download option in the [actions menu linked to a previous conversation](/patternfly-ai/chatbot/ui#drawer-with-conversation-actions).
+
+<div class="ws-docs-content-img">
+![Expanded menu for previous chat in the history window, which shows a download option.](./img/download-chat-history.svg)
+</div>
+
+#### Download message response action
+
+To allow users to download individual bot messages, the message actions can include a download option.
+
+<div class="ws-docs-content-img">
+![Download action for a message from a bot.](./img/download-message-action.svg)
+</div>
+
+#### Download action in message bar
+
+
+#### Download control in header
+
+
 ## Variations
 
 ### Display modes
