@@ -79,6 +79,22 @@ You can add actions to a message, to allow users to interact with the message co
 
 ```
 
+### Message actions clicked state
+
+You can apply a clicked state to message actions, to convey that the action has previously been selected.
+
+To define which message response action should show a clicked state when the `<ResponseActions>` component first renders, use the `isClicked` boolean property within each action's configuration object.
+
+To make an action button appear active by default, set `isClicked: true`. Only 1 action can be visually active at any given time.
+
+If you unintentionally set `isClicked: true` for multiple buttons, the component will apply a predefined internal precedence order to resolve the conflict. The button encountered first in this order will be displayed as clicked, while other buttons will sustain their default appearance. The default precedence of button actions is: "positive", "negative", "copy", "share", "listen", followed by any other custom actions (in object key order).
+
+Once the component has rendered, user interactions will take precedence over the initial `isClicked` prop. Clicking a button will activate it and deactivate any other active button. The `isDisabled` prop for each action button specifies if a button is interactive or not.
+
+```js file="./MessageWithClickedResponseActions.tsx"
+
+```
+
 ### Custom message actions
 
 Beyond the standard message actions (good response, bad response, copy, share, or listen), you can add custom actions to a bot message by passing an `actions` object to the `<Message>` component. This object can contain the following customizations:
@@ -86,6 +102,7 @@ Beyond the standard message actions (good response, bad response, copy, share, o
 - `ariaLabel`
 - `onClick`
 - `className`
+- `isClicked`
 - `isDisabled`
 - `tooltipContent`
 - `tooltipContent`

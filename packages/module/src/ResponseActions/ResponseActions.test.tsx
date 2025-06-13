@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ResponseActions from './ResponseActions';
+import ResponseActions, { ActionProps } from './ResponseActions';
 import userEvent from '@testing-library/user-event';
 import { DownloadIcon, InfoCircleIcon, RedoIcon } from '@patternfly/react-icons';
 import Message from '../Message';
@@ -129,6 +129,103 @@ describe('ResponseActions', () => {
     expect(goodBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
     expect(badBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
   });
+
+  it('should handle isClicked prop within group of buttons correctly', async () => {
+    render(
+      <ResponseActions
+        actions={
+          {
+            positive: { 'data-testid': 'positive-btn', onClick: jest.fn(), isClicked: true },
+            negative: { 'data-testid': 'negative-btn', onClick: jest.fn() }
+          } as Record<string, ActionProps>
+        }
+      />
+    );
+
+    expect(screen.getByTestId('positive-btn')).toHaveClass('pf-chatbot__button--response-action-clicked');
+    expect(screen.getByTestId('negative-btn')).not.toHaveClass('pf-chatbot__button--response-action-clicked');
+  });
+
+  it('should set "listen" button as active if its `isClicked` is true', async () => {
+    render(
+      <ResponseActions
+        actions={
+          {
+            positive: { 'data-testid': 'positive-btn', onClick: jest.fn(), isClicked: false },
+            negative: { 'data-testid': 'negative-btn', onClick: jest.fn(), isClicked: false },
+            listen: { 'data-testid': 'listen-btn', onClick: jest.fn(), isClicked: true }
+          } as Record<string, ActionProps>
+        }
+      />
+    );
+    expect(screen.getByTestId('listen-btn')).toHaveClass('pf-chatbot__button--response-action-clicked');
+
+    expect(screen.getByTestId('positive-btn')).not.toHaveClass('pf-chatbot__button--response-action-clicked');
+    expect(screen.getByTestId('negative-btn')).not.toHaveClass('pf-chatbot__button--response-action-clicked');
+  });
+
+  it('should prioritize "positive" when both "positive" and "negative" are set to clicked', async () => {
+    render(
+      <ResponseActions
+        actions={
+          {
+            positive: { 'data-testid': 'positive-btn', onClick: jest.fn(), isClicked: true },
+            negative: { 'data-testid': 'negative-btn', onClick: jest.fn(), isClicked: true }
+          } as Record<string, ActionProps>
+        }
+      />
+    );
+    // Positive button should take precendence
+    expect(screen.getByTestId('positive-btn')).toHaveClass('pf-chatbot__button--response-action-clicked');
+    expect(screen.getByTestId('negative-btn')).not.toHaveClass('pf-chatbot__button--response-action-clicked');
+  });
+
+  it('should set an additional action button as active if it is initially clicked and no predefined are clicked', async () => {
+    const [additionalActions] = CUSTOM_ACTIONS;
+    const customActions = {
+      positive: { 'data-testid': 'positive', onClick: jest.fn(), isClicked: false },
+      negative: { 'data-testid': 'negative', onClick: jest.fn(), isClicked: false },
+      ...Object.keys(additionalActions).reduce((acc, actionKey) => {
+        acc[actionKey] = {
+          ...additionalActions[actionKey],
+          'data-testid': actionKey,
+          isClicked: actionKey === 'regenerate'
+        };
+        return acc;
+      }, {})
+    };
+    render(<ResponseActions actions={customActions} />);
+
+    Object.keys(customActions).forEach((actionKey) => {
+      if (actionKey === 'regenerate') {
+        expect(screen.getByTestId(actionKey)).toHaveClass('pf-chatbot__button--response-action-clicked');
+      } else {
+        // Other actions should not have clicked class
+        expect(screen.getByTestId(actionKey)).not.toHaveClass('pf-chatbot__button--response-action-clicked');
+      }
+    });
+  });
+
+  it('should activate the clicked button and deactivate any previously active button', async () => {
+    const actions = {
+      positive: { 'data-testid': 'positive', onClick: jest.fn(), isClicked: false },
+      negative: { 'data-testid': 'negative', onClick: jest.fn(), isClicked: true }
+    };
+    render(<ResponseActions actions={actions} />);
+
+    const negativeBtn = screen.getByTestId('negative');
+    const positiveBtn = screen.getByTestId('positive');
+    // negative button is initially clicked
+    expect(negativeBtn).toHaveClass('pf-chatbot__button--response-action-clicked');
+    expect(positiveBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
+
+    await userEvent.click(positiveBtn);
+
+    // positive button should now have the clicked class
+    expect(positiveBtn).toHaveClass('pf-chatbot__button--response-action-clicked');
+    expect(negativeBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
+  });
+
   it('should render buttons correctly', () => {
     ALL_ACTIONS.forEach(({ type, label }) => {
       render(<ResponseActions actions={{ [type]: { onClick: jest.fn() } }} />);

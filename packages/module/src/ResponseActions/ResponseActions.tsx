@@ -55,12 +55,40 @@ export interface ResponseActionProps {
 
 export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ actions }) => {
   const [activeButton, setActiveButton] = useState<string>();
+  const [clickStatePersisted, setClickStatePersisted] = useState<boolean>(false);
+  useEffect(() => {
+    // Define the order of precedence for checking initial `isClicked`
+    const actionPrecedence = ['positive', 'negative', 'copy', 'share', 'download', 'listen'];
+    let initialActive: string | undefined;
+
+    // Check predefined actions first based on precedence
+    for (const actionName of actionPrecedence) {
+      const actionProp = actions[actionName as keyof typeof actions];
+      if (actionProp?.isClicked) {
+        initialActive = actionName;
+        break;
+      }
+    }
+    // If no predefined action was initially clicked, check additionalActions
+    if (!initialActive) {
+      const clickedActionName = Object.keys(additionalActions).find(
+        (actionName) => !actionPrecedence.includes(actionName) && additionalActions[actionName]?.isClicked
+      );
+      initialActive = clickedActionName;
+    }
+    if (initialActive) {
+      // Click state is explicitly controlled by consumer.
+      setClickStatePersisted(true);
+    }
+    setActiveButton(initialActive);
+  }, [actions]);
+
   const { positive, negative, copy, share, download, listen, ...additionalActions } = actions;
   const responseActions = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (responseActions.current && !responseActions.current.contains(e.target)) {
+      if (responseActions.current && !responseActions.current.contains(e.target) && !clickStatePersisted) {
         setActiveButton(undefined);
       }
     };
@@ -69,13 +97,14 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ action
     return () => {
       window.removeEventListener('click', handleClickOutside);
     };
-  }, []);
+  }, [clickStatePersisted]);
 
   const handleClick = (
     e: MouseEvent | MouseEvent<Element, MouseEvent> | KeyboardEvent,
     id: string,
     onClick?: (event: MouseEvent | MouseEvent<Element, MouseEvent> | KeyboardEvent) => void
   ) => {
+    setClickStatePersisted(false);
     setActiveButton(id);
     onClick && onClick(e);
   };
