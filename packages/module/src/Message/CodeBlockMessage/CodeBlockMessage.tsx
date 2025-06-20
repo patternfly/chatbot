@@ -41,6 +41,9 @@ export interface CodeBlockMessageProps {
   collapsedText?: string;
 }
 
+const DEFAULT_EXPANDED_TEXT = 'Show less';
+const DEFAULT_COLLAPSED_TEXT = 'Show more';
+
 const CodeBlockMessage = ({
   children,
   className,
@@ -48,8 +51,8 @@ const CodeBlockMessage = ({
   isExpandable = false,
   expandableSectionProps,
   expandableSectionToggleProps,
-  expandedText = 'Show less',
-  collapsedText = 'Show more',
+  expandedText = DEFAULT_EXPANDED_TEXT,
+  collapsedText = DEFAULT_COLLAPSED_TEXT,
   ...props
 }: CodeBlockMessageProps) => {
   const [copied, setCopied] = useState(false);
@@ -62,6 +65,24 @@ const CodeBlockMessage = ({
   const codeBlockRef = useRef<HTMLDivElement>(null);
 
   const language = /language-(\w+)/.exec(className || '')?.[1];
+
+  // Get custom toggle text from data attributes if available - for use with rehype plugins
+  const customExpandedText = props['data-expanded-text'];
+  const customCollapsedText = props['data-collapsed-text'];
+
+  const finalExpandedText = customExpandedText || expandedText;
+  const finalCollapsedText = customCollapsedText || collapsedText;
+
+  if (
+    (customExpandedText && expandedText !== DEFAULT_EXPANDED_TEXT) ||
+    (customCollapsedText && collapsedText !== DEFAULT_COLLAPSED_TEXT)
+  ) {
+    // eslint-disable-next-line no-console
+    console.error(
+      'Message:',
+      'Custom rehype plugins that rely on data-expanded-text or data-collapsed-text will override expandedText and collapsedText props if both are passed in.'
+    );
+  }
 
   const onToggle = (isExpanded) => {
     setIsExpanded(isExpanded);
@@ -164,7 +185,7 @@ const CodeBlockMessage = ({
             className="pf-chatbot__message-code-toggle"
             {...expandableSectionToggleProps}
           >
-            {isExpanded ? expandedText : collapsedText}
+            {isExpanded ? finalExpandedText : finalCollapsedText}
           </ExpandableSectionToggle>
         )}
       </CodeBlock>
