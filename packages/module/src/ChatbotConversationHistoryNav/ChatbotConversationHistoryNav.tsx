@@ -273,7 +273,12 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
             )}
           </DrawerActions>
         </DrawerHead>
-        <Title headingLevel="h3" style={{ paddingBottom: 8 }}>
+        <Title
+          headingLevel="h3"
+          style={{
+            paddingLeft: 'var(--pf-t--global--spacer--lg)'
+          }}
+        >
           <Icon size="lg">
             <OutlinedClockIcon />
           </Icon>
