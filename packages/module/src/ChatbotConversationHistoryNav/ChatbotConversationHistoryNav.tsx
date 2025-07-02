@@ -273,19 +273,22 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
             )}
           </DrawerActions>
         </DrawerHead>
-        <Title
-          headingLevel="h3"
+        <div
           style={{
-            paddingLeft: 'var(--pf-t--global--spacer--lg)'
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 'var(--pf-t--global--spacer--sm)'
           }}
         >
-          <Icon size="lg">
-            <OutlinedClockIcon />
-          </Icon>
-          {'  '}
-          {title || 'Chat History'}
-        </Title>
-        {isLoading ? <LoadingState {...loadingState} /> : renderDrawerContent()}
+          <Title headingLevel="h3">
+            <Icon size="lg">
+              <OutlinedClockIcon />
+            </Icon>
+            {'  '}
+            {title || 'Chat History'}
+          </Title>
+          {isLoading ? <LoadingState {...loadingState} /> : renderDrawerContent()}
+        </div>
       </>
     );
     return (
