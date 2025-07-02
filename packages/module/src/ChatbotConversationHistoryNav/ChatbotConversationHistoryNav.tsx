@@ -276,9 +276,9 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
         <Title headingLevel="h3" style={{ paddingBottom: 8 }}>
           <Icon size="lg">
             <OutlinedClockIcon />
-          </Icon>{' '}
+          </Icon>
           {'  '}
-          {title}
+          {title || 'Chat History'}
         </Title>
         {isLoading ? <LoadingState {...loadingState} /> : renderDrawerContent()}
       </>
