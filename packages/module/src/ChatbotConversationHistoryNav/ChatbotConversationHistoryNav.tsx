@@ -243,15 +243,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
 
   const renderDrawerContent = () => (
     <>
-      {handleTextInputChange && (
-        <div className="pf-chatbot__input">
-          <SearchInput
-            aria-label={searchInputAriaLabel}
-            onChange={(_event, value) => handleTextInputChange(value)}
-            placeholder={searchInputPlaceholder}
-          />
-        </div>
-      )}
+      <DrawerPanelBody {...drawerPanelBodyProps}>{renderMenuContent()}</DrawerPanelBody>
     </>
   );
 
@@ -272,15 +264,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
             )}
           </DrawerActions>
         </DrawerHead>
-        <div
-          style={{
-            paddingInlineStart: 'var(--pf-t--global--spacer--lg)',
-            scrollPaddingInlineEnd: 'var(--pf-t--global--spacer--lg)',
-            display: 'flex',
-            flexDirection: 'column',
-            rowGap: 'var(--pf-t--global--spacer--sm)'
-          }}
-        >
+        <div className="pf-chatbot__input">
           <Title headingLevel="h3">
             <Icon size="lg">
               <OutlinedClockIcon />
@@ -288,9 +272,21 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
             {'  '}
             {title || 'Chat History'}
           </Title>
-          {isLoading ? <LoadingState {...loadingState} /> : renderDrawerContent()}
+          {isLoading ? (
+            <LoadingState {...loadingState} />
+          ) : (
+            <>
+              {handleTextInputChange && (
+                <SearchInput
+                  aria-label={searchInputAriaLabel}
+                  onChange={(_event, value) => handleTextInputChange(value)}
+                  placeholder={searchInputPlaceholder}
+                />
+              )}
+            </>
+          )}
         </div>
-        <DrawerPanelBody {...drawerPanelBodyProps}>{renderMenuContent()}</DrawerPanelBody>
+        {isLoading ? <LoadingState {...loadingState} /> : renderDrawerContent()}
       </>
     );
     return (

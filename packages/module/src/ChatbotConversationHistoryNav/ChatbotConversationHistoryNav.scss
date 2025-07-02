@@ -9,6 +9,11 @@
   // Drawer input
   // ----------------------------------------------------------------------------
   .pf-chatbot__input {
+    padding-inline-start: var(--pf-t--global--spacer--lg);
+    padding-inline-end: var(--pf-t--global--spacer--lg);
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--pf-t--global--spacer--sm);
   }
 
   // Drawer menu
