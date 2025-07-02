@@ -252,7 +252,6 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
           />
         </div>
       )}
-      <DrawerPanelBody {...drawerPanelBodyProps}>{renderMenuContent()}</DrawerPanelBody>
     </>
   );
 
@@ -275,6 +274,8 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
         </DrawerHead>
         <div
           style={{
+            paddingInlineStart: 'var(--pf-t--global--spacer--lg)',
+            scrollPaddingInlineEnd: 'var(--pf-t--global--spacer--lg)',
             display: 'flex',
             flexDirection: 'column',
             rowGap: 'var(--pf-t--global--spacer--sm)'
@@ -289,6 +290,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
           </Title>
           {isLoading ? <LoadingState {...loadingState} /> : renderDrawerContent()}
         </div>
+        <DrawerPanelBody {...drawerPanelBodyProps}>{renderMenuContent()}</DrawerPanelBody>
       </>
     );
     return (
