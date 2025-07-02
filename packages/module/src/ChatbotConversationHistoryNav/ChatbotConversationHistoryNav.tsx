@@ -32,7 +32,8 @@ import {
   DrawerActionsProps,
   DrawerCloseButtonProps,
   DrawerPanelBodyProps,
-  SkeletonProps
+  SkeletonProps,
+  Title
 } from '@patternfly/react-core';
 
 import { OutlinedCommentAltIcon } from '@patternfly/react-icons';
@@ -120,6 +121,8 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   noResultsState?: HistoryEmptyStateProps;
   /** Sets drawer to compact styling. */
   isCompact?: boolean;
+  /** Display title  */
+  title?: string;
 }
 
 export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversationHistoryNavProps> = ({
@@ -152,6 +155,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   emptyState,
   noResultsState,
   isCompact,
+  title,
   ...props
 }: ChatbotConversationHistoryNavProps) => {
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -268,6 +272,9 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
             )}
           </DrawerActions>
         </DrawerHead>
+        <Title headingLevel="h3" style={{ paddingBottom: 8 }}>
+          {title}
+        </Title>
         {isLoading ? <LoadingState {...loadingState} /> : renderDrawerContent()}
       </>
     );
