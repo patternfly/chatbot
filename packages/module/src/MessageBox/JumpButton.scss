@@ -14,7 +14,7 @@
   border-radius: var(--pf-t--global--border--radius--pill) !important;
   --pf-v6-c-button--MinWidth: 2rem !important;
   background-color: var(--pf-t--global--background--color--primary--default) !important;
-  border: 1px solid var(--pf-t--chatbot--border) !important;
+  border: 1px solid var(--pf-t--global--border--color--default) !important;
   box-shadow: var(--pf-t--global--box-shadow--sm);
   color: var(--pf-t--global--icon--color--subtle) !important;
   transform: translate3d(-50%, 0, 0) !important;
