@@ -156,7 +156,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   emptyState,
   noResultsState,
   isCompact,
-  title,
+  title = 'Chat History',
   ...props
 }: ChatbotConversationHistoryNavProps) => {
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -264,26 +264,21 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
             )}
           </DrawerActions>
         </DrawerHead>
-        <div className="pf-chatbot__input">
+        <div className="pf-chatbot__title-container">
           <Title headingLevel="h3">
-            <Icon size="lg">
+            <Icon size="lg" className="pf-chatbot__title-icon">
               <OutlinedClockIcon />
             </Icon>
-            {'  '}
-            {title || 'Chat History'}
+            {title}
           </Title>
-          {isLoading ? (
-            <LoadingState {...loadingState} />
-          ) : (
-            <>
-              {handleTextInputChange && (
-                <SearchInput
-                  aria-label={searchInputAriaLabel}
-                  onChange={(_event, value) => handleTextInputChange(value)}
-                  placeholder={searchInputPlaceholder}
-                />
-              )}
-            </>
+          {!isLoading && handleTextInputChange && (
+            <div className=".pf-chatbot__input">
+              <SearchInput
+                aria-label={searchInputAriaLabel}
+                onChange={(_event, value) => handleTextInputChange(value)}
+                placeholder={searchInputPlaceholder}
+              />
+            </div>
           )}
         </div>
         {isLoading ? <LoadingState {...loadingState} /> : renderDrawerContent()}

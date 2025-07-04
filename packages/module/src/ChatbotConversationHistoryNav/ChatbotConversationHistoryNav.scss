@@ -11,11 +11,21 @@
   .pf-chatbot__input {
     padding-inline-start: var(--pf-t--global--spacer--lg);
     padding-inline-end: var(--pf-t--global--spacer--lg);
+  }
+  // Drawer title
+  // ----------------------------------------------------------------------------
+  .pf-chatbot__title-container {
+    padding-inline-start: var(--pf-t--global--spacer--lg);
+    padding-inline-end: var(--pf-t--global--spacer--lg);
     display: flex;
     flex-direction: column;
     row-gap: var(--pf-t--global--spacer--sm);
   }
-
+  // Drawer title icon
+  // ----------------------------------------------------------------------------
+  .pf-chatbot__title-icon {
+    margin-right: var(--pf-t--global--spacer--sm);
+  }
   // Drawer menu
   // ----------------------------------------------------------------------------
   .pf-v6-c-menu {
