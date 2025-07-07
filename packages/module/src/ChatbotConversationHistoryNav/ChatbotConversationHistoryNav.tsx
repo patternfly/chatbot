@@ -272,7 +272,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
             {title}
           </Title>
           {!isLoading && handleTextInputChange && (
-            <div className=".pf-chatbot__input">
+            <div className="pf-chatbot__input">
               <SearchInput
                 aria-label={searchInputAriaLabel}
                 onChange={(_event, value) => handleTextInputChange(value)}
