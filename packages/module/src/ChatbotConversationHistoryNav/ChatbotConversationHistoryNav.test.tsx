@@ -433,4 +433,45 @@ describe('ChatbotConversationHistoryNav', () => {
     );
     expect(screen.getByTestId('drawer')).toHaveClass('pf-m-compact');
   });
+
+  it('should display the default title', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+      />
+    );
+    expect(screen.getByText('Chat History')).toBeInTheDocument();
+  });
+
+  it('should display the custom title', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        title="PatternFly History"
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+      />
+    );
+    expect(screen.getByText('PatternFly History')).toBeInTheDocument();
+  });
+
+  it('should display the clock icon', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        data-testid="clock-icon"
+      />
+    );
+    expect(screen.getByTestId('clock-icon')).toBeInTheDocument();
+  });
 });
