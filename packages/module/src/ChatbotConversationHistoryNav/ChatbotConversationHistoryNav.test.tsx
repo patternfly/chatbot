@@ -462,16 +462,16 @@ describe('ChatbotConversationHistoryNav', () => {
   });
 
   it('should display the clock icon', () => {
-    render(
-      <ChatbotConversationHistoryNav
-        onDrawerToggle={onDrawerToggle}
-        isDrawerOpen={true}
-        displayMode={ChatbotDisplayMode.fullscreen}
-        setIsDrawerOpen={jest.fn()}
-        conversations={initialConversations}
-        data-testid="clock-icon"
-      />
-    );
-    expect(screen.getByTestId('clock-icon')).toBeInTheDocument();
+  const { container } = render(
+    <ChatbotConversationHistoryNav
+      onDrawerToggle={onDrawerToggle}
+      isDrawerOpen={true}
+      displayMode={ChatbotDisplayMode.fullscreen}
+      setIsDrawerOpen={jest.fn()}
+      conversations={initialConversations}
+    />
+  );
+  const iconElement = container.querySelector('.pf-chatbot__title-icon');
+  expect(iconElement).toBeInTheDocument();
   });
 });
