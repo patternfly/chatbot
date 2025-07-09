@@ -62,6 +62,7 @@ const EMPTY_STATE = {
 export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [isButtonOrderReversed, setIsButtonOrderReversed] = useState(false);
+  const [isNewChatButtonDisabled, setIsNewChatButtonDisabled] = useState(false);
   const [isCompact, setIsCompact] = useState(false);
   const [conversations, setConversations] = useState<Conversation[] | { [key: string]: Conversation[] }>(
     initialConversations
@@ -110,6 +111,13 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
         name="drawer-actions-visible"
       ></Checkbox>
       <Checkbox
+        label="Disable new chat button"
+        isChecked={isNewChatButtonDisabled}
+        onChange={() => setIsNewChatButtonDisabled(!isNewChatButtonDisabled)}
+        id="drawer-actions-disabled"
+        name="drawer-actions-disabled"
+      ></Checkbox>
+      <Checkbox
         label="Show loading state"
         isChecked={isLoading}
         onChange={() => setIsLoading(!isLoading)}
@@ -152,6 +160,7 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
         // eslint-disable-next-line no-console
         onSelectActiveItem={(e, selectedItem) => console.log(`Selected history item with id ${selectedItem}`)}
         conversations={conversations}
+        newChatButtonDisabled={isNewChatButtonDisabled}
         onNewChat={() => {
           setIsOpen(!isOpen);
         }}
