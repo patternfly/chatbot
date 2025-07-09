@@ -1,0 +1,59 @@
+// ============================================================================
+// Chatbot Main - Message Divider
+// ============================================================================
+.pf-chatbot__message-divider {
+  padding: 12px 0;
+}
+
+.pf-chatbot__message-divider-content {
+  display: flex;
+  height: 24px;
+  padding: 0px var(--pf-t--global--spacer--md);
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--pf-t--global--border--radius--pill);
+  background: var(--pf-t--global--background--color--secondary--default);
+}
+
+.pf-chatbot__message-divider-text {
+  color: var(--pf-t--global--text--color--regular);
+  text-align: center;
+  font-size: var(--pf-t--global--font--size--body--sm);
+  font-style: normal;
+  font-weight: var(--pf-t--global--font--weight--body--bold);
+}
+
+// Date variant
+.pf-chatbot__message-divider--date {
+  position: relative;
+  margin: 12px 0;
+
+  // PF Divider styles
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: var(--pf-t--global--border--width--divider--default);
+  align-items: stretch;
+  align-self: stretch;
+  justify-content: center;
+  border: 0; 
+
+  &::before {
+    flex-basis: 100%;
+    content: "";
+    background-color: var(--pf-t--global--border--color--default);
+  }
+  // end PF Divider styles
+
+  .pf-chatbot__message-divider-content {
+    position: absolute;
+    top: -12px;
+    border: 1px solid var(--pf-t--global--border--color--default);
+  }
+}
+
+// Announcement variant
+.pf-chatbot__message-divider--announcement .pf-chatbot__message-divider-content {
+  width: 100%;
+}

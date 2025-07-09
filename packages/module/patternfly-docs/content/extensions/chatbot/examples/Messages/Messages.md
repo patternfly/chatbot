@@ -31,6 +31,7 @@ sortValue: 3
 ---
 
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
+import MessageDivider from '@patternfly/chatbot/dist/dynamic/MessageDivider';
 import { rehypeCodeBlockToggle } from '@patternfly/chatbot/dist/esm/Message/Plugins/rehypeCodeBlockToggle';
 import SourcesCard from '@patternfly/chatbot/dist/dynamic/SourcesCard';
 import { RobotIcon } from '@patternfly/react-icons/dist/esm/icons/robot-icon';
@@ -63,6 +64,14 @@ By default, a date and timestamp is displayed with each message. We recommend us
 You can further customize the avatar by applying an additional class or passing [PatternFly avatar props](/components/avatar) to the `<Message>` component via `avatarProps`.
 
 ```js file="./BotMessage.tsx"
+
+```
+
+### Message dividers
+
+You can add dividers between messages, to provide more information to users in the chat such as to inform when the date changes, or to inform that an agent has joined the chat.
+
+```js file="./MessageWithDividers.tsx"
 
 ```
 
