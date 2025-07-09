@@ -1,4 +1,4 @@
-import { CSSProperties, useState, Fragment, FunctionComponent, MouseEvent, Ref } from 'react';
+import { FunctionComponent } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import patternflyAvatar from './patternfly_avatar.jpg';
 import MessageDivider from '@patternfly/chatbot/dist/dynamic/MessageDivider';
