@@ -44,7 +44,8 @@ ChatbotHeaderMenu,
 ChatbotHeaderTitle,
 ChatbotHeaderActions,
 ChatbotHeaderSelectorDropdown,
-ChatbotHeaderOptionsDropdown
+ChatbotHeaderOptionsDropdown,
+ChatbotHeaderCloseButton
 } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
 
 import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
@@ -126,6 +127,22 @@ This demo displays a ChatBot in a static, inline drawer. This demo includes:
 **Note:** The inline drawer ChatBot is built to fit and perform within a drawer, but the implementation of the drawer is up to you. This drawer can look different for each product, but will often be placed to the side of the page, inline with the page content.
 
 ```js file="./ChatbotInDrawer.tsx" isFullscreen
+
+```
+
+### Display mode ChatBot
+
+This demo showcases how the ChatBot can be rendered in different display modes to suit various application layouts. It demonstrates how to dynamically change the page structure in response to the user's selection. This demo includes:
+
+1. The ability to switch between Overlay, Docked, and Fullscreen modes using the [`<ChatbotHeaderOptionsDropdown>`](/patternfly-ai/chatbot/ui#header-options) in the header.
+2. A conditional page layout that renders the ChatBot:
+    - As a floating window on top of the page content (Overlay mode).
+    - Inside a PatternFly `<Drawer>` as a side panel for a docked experience.
+    - As a top-level component that covers the entire screen (Fullscreen mode).
+3. Logic to show or hide the `<ChatbotToggle>` button, which is only present in the default Overlay mode.
+4. A [basic ChatBot](#basic-chatbot) with a header, welcome prompt, and message bar to populate the different layouts.
+
+```js file="./ChatbotDisplayMode.tsx" isFullscreen
 
 ```
 
