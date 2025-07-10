@@ -104,6 +104,23 @@ describe('ChatbotConversationHistoryNav', () => {
     expect(screen.getByTestId('chatbot-nav-drawer-actions')).toHaveClass('pf-v6-c-drawer__actions--reversed');
   });
 
+  it('should disable new chat button', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        reverseButtonOrder
+        conversations={initialConversations}
+        newChatButtonProps={{ isDisabled: true }}
+        onNewChat={jest.fn()}
+      />
+    );
+
+    expect(screen.getByRole('button', { name: 'New chat' })).toBeDisabled();
+  });
+
   it('should not apply the reversed class when reverseButtonOrder is false', () => {
     render(
       <ChatbotConversationHistoryNav

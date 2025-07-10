@@ -160,7 +160,7 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
         // eslint-disable-next-line no-console
         onSelectActiveItem={(e, selectedItem) => console.log(`Selected history item with id ${selectedItem}`)}
         conversations={conversations}
-        newChatButtonDisabled={isNewChatButtonDisabled}
+        newChatButtonProps={{ isDisabled: isNewChatButtonDisabled }}
         onNewChat={() => {
           setIsOpen(!isOpen);
         }}
