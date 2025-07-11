@@ -2,6 +2,18 @@
 // Chatbot Header - Menu
 // ============================================================================
 .pf-chatbot__history {
+  // hide from view but not assistive technologies
+  // https://css-tricks.com/inclusively-hidden/
+  .pf-chatbot__filter-announcement {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
   .pf-chatbot__drawer-backdrop {
     position: absolute;
     border-radius: var(--pf-t--global--border--radius--medium);

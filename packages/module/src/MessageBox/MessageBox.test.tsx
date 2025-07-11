@@ -61,7 +61,7 @@ describe('MessageBox', () => {
     });
 
     await waitFor(() => {
-      userEvent.click(screen.getByRole('button', { name: /Jump bottom/i }));
+      userEvent.click(screen.getByRole('button', { name: /Back to bottom/i }));
       expect(spy).toHaveBeenCalled();
     });
   });
@@ -85,7 +85,7 @@ describe('MessageBox', () => {
       region.dispatchEvent(new Event('scroll'));
     });
     await waitFor(() => {
-      userEvent.click(screen.getByRole('button', { name: /Jump top/i }));
+      userEvent.click(screen.getByRole('button', { name: /Back to top/i }));
       expect(spy).toHaveBeenCalled();
     });
   });
