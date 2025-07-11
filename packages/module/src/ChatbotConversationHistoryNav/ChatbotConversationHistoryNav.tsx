@@ -141,6 +141,8 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   navTitleIcon?: React.ReactNode;
   /** Title header level */
   navTitleProps?: Partial<TitleProps>;
+  /** Announcement text to be read by screen readers when search results change */
+  announcement?: string;
 }
 
 export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversationHistoryNavProps> = ({
@@ -157,7 +159,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   onNewChat,
   newChatButtonProps,
   searchInputPlaceholder = 'Search previous conversations...',
-  searchInputAriaLabel = 'Filter menu items',
+  searchInputAriaLabel = 'Search previous conversations...',
   searchInputProps,
   handleTextInputChange,
   displayMode,
@@ -179,6 +181,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   title = 'Chat history',
   navTitleProps,
   navTitleIcon = <OutlinedClockIcon />,
+  announcement,
   ...props
 }: ChatbotConversationHistoryNavProps) => {
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -322,6 +325,11 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
         defaultSize="384px"
         {...drawerPanelContentProps}
       >
+        {announcement && (
+          <div className="pf-chatbot__filter-announcement" aria-live="polite">
+            {announcement}
+          </div>
+        )}
         {drawer}
       </DrawerPanelContent>
     );

@@ -71,6 +71,7 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
   const [hasError, setHasError] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
   const [hasNoResults, setHasNoResults] = useState(false);
+  const [announcement, setAnnouncement] = useState('');
   const displayMode = ChatbotDisplayMode.embedded;
 
   const findMatchingItems = (targetValue: string) => {
@@ -168,12 +169,21 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
         handleTextInputChange={(value: string) => {
           if (value === '') {
             setConversations(initialConversations);
+            setAnnouncement('');
+          } else {
+            // this is where you would perform search on the items in the drawer
+            // and update the state
+            const newConversations: { [key: string]: Conversation[] } = findMatchingItems(value);
+            const totalCount = Object.values(newConversations).flat().length;
+            const newAnnouncement =
+              totalCount === 1
+                ? `${totalCount} conversation matches "${value}"`
+                : `${totalCount} conversations match "${value}"`;
+            setAnnouncement(newAnnouncement);
+            setConversations(newConversations);
           }
-          // this is where you would perform search on the items in the drawer
-          // and update the state
-          const newConversations: { [key: string]: Conversation[] } = findMatchingItems(value);
-          setConversations(newConversations);
         }}
+        announcement={announcement}
         drawerContent={<div>Drawer content</div>}
         isLoading={isLoading}
         errorState={hasError ? ERROR : undefined}
