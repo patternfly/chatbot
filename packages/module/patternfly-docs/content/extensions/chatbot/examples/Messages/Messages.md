@@ -69,7 +69,9 @@ You can further customize the avatar by applying an additional class or passing 
 
 ### Message dividers
 
-You can add dividers between messages, to provide more information to users in the chat such as to inform when the date changes, or to inform that an agent has joined the chat.
+To provide users with important contextual updates, you can add dividers between messages.
+
+For example, you can use the default divider to announce that an agent has joined the chat, or you can pass `variant="date"` to a divider and display a "timestamp" for more significant gaps in the conversation.
 
 ```js file="./MessageWithDividers.tsx"
 
