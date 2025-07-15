@@ -2,8 +2,6 @@
 // Chatbot Main - Message - Content - Code Block
 // ============================================================================
 import { useState, useRef, useId, useCallback, useEffect } from 'react';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { obsidian } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 // Import PatternFly components
 import {
   CodeBlock,
@@ -20,7 +18,6 @@ import {
 
 import { CheckIcon } from '@patternfly/react-icons/dist/esm/icons/check-icon';
 import { CopyIcon } from '@patternfly/react-icons/dist/esm/icons/copy-icon';
-import { ExpandableSectionForSyntaxHighlighter } from './ExpandableSectionForSyntaxHighlighter';
 
 export interface CodeBlockMessageProps {
   /** Content rendered in code block */
@@ -137,30 +134,7 @@ const CodeBlockMessage = ({
       <CodeBlock actions={actions}>
         <CodeBlockCode>
           <>
-            {language ? (
-              // SyntaxHighlighter doesn't work with ExpandableSection because it targets the direct child
-              // Forked for now and adjusted to match what we need
-              <ExpandableSectionForSyntaxHighlighter
-                variant={ExpandableSectionVariant.truncate}
-                isExpanded={isExpanded}
-                isDetached
-                toggleId={toggleId}
-                contentId={contentId}
-                language={language}
-                {...expandableSectionProps}
-              >
-                <SyntaxHighlighter
-                  {...props}
-                  language={language}
-                  style={obsidian}
-                  PreTag="div"
-                  CodeTag="div"
-                  wrapLongLines
-                >
-                  {String(children).replace(/\n$/, '')}
-                </SyntaxHighlighter>
-              </ExpandableSectionForSyntaxHighlighter>
-            ) : (
+            {isExpandable ? (
               <ExpandableSection
                 variant={ExpandableSectionVariant.truncate}
                 isExpanded={isExpanded}
@@ -171,6 +145,8 @@ const CodeBlockMessage = ({
               >
                 {children}
               </ExpandableSection>
+            ) : (
+              children
             )}
           </>
         </CodeBlockCode>
