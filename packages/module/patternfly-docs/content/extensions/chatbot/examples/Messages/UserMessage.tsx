@@ -1,4 +1,4 @@
-import { Fragment, useState, CSSProperties, FunctionComponent, MouseEvent } from 'react';
+import { Fragment, useState, useRef, useEffect, CSSProperties, FunctionComponent, MouseEvent } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import userAvatar from './user_avatar.svg';
 import {
@@ -12,11 +12,22 @@ import {
 import { rehypeCodeBlockToggle } from '@patternfly/chatbot/dist/esm/Message/Plugins/rehypeCodeBlockToggle';
 
 export const UserMessageExample: FunctionComponent = () => {
+  const messageInputRef = useRef<HTMLTextAreaElement>(null);
   const [variant, setVariant] = useState<string>('Code');
-  const [isEditable, setIsEditable] = useState<boolean>(true);
+  const [isEditable, setIsEditable] = useState<boolean>(false);
+  const [isSelectedEditable, setIsSelectedEditable] = useState<boolean>(true);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<string>('Message content type');
   const [isExpandable, setIsExpanded] = useState(false);
+
+  useEffect(() => {
+    if (isEditable && messageInputRef?.current) {
+      messageInputRef.current.focus();
+      const messageLength = messageInputRef.current.value.length;
+      // Mimic the behavior of the textarea when the user clicks on a label to place the cursor at the end of the input value
+      messageInputRef.current.setSelectionRange(messageLength, messageLength);
+    }
+  }, [isEditable]);
 
   /* eslint-disable indent */
   const renderContent = () => {
@@ -212,6 +223,17 @@ _Italic text, formatted with single underscores_
         avatar={userAvatar}
         avatarProps={{ isBordered: true }}
       />
+      <Message
+        name="User"
+        role="user"
+        isEditable={isEditable}
+        onEditUpdate={() => setIsEditable(false)}
+        onEditCancel={() => setIsEditable(false)}
+        actions={{ edit: { onClick: () => setIsEditable(true) } }}
+        content="This is a user message with an edit action."
+        avatar={userAvatar}
+        inputRef={messageInputRef}
+      />
       <Select
         id="single-select"
         isOpen={isOpen}
@@ -246,10 +268,10 @@ _Italic text, formatted with single underscores_
         tableProps={
           variant === 'Table' ? { 'aria-label': 'App information and user roles for user messages' } : undefined
         }
-        isEditable={variant === 'Editable' ? isEditable : false}
+        isEditable={variant === 'Editable' ? isSelectedEditable : false}
         error={variant === 'Error' ? error : undefined}
-        onEditUpdate={() => setIsEditable(false)}
-        onEditCancel={() => setIsEditable(false)}
+        onEditUpdate={() => setIsSelectedEditable(false)}
+        onEditCancel={() => setIsSelectedEditable(false)}
         codeBlockProps={{ isExpandable, expandableSectionProps: { truncateMaxLines: isExpandable ? 1 : undefined } }}
         // In this example, custom plugin will override any custom expandedText or collapsedText attributes provided
         // The purpose of this plugin is to provide unique link names for the code blocks

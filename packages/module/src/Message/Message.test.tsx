@@ -12,6 +12,7 @@ const ALL_ACTIONS = [
   { label: /Good response/i },
   { label: /Bad response/i },
   { label: /Copy/i },
+  { label: /Edit/i },
   { label: /Share/i },
   { label: /Listen/i }
 ];
@@ -426,6 +427,8 @@ describe('Message', () => {
           // eslint-disable-next-line no-console
           copy: { onClick: () => console.log('Copy') },
           // eslint-disable-next-line no-console
+          edit: { onClick: () => console.log('Edit') },
+          // eslint-disable-next-line no-console
           share: { onClick: () => console.log('Share') },
           // eslint-disable-next-line no-console
           download: { onClick: () => console.log('Download') },
@@ -453,6 +456,8 @@ describe('Message', () => {
           negative: { onClick: () => console.log('Bad response') },
           // eslint-disable-next-line no-console
           copy: { onClick: () => console.log('Copy') },
+          // eslint-disable-next-line no-console
+          edit: { onClick: () => console.log('Edit') },
           // eslint-disable-next-line no-console
           share: { onClick: () => console.log('Share') },
           // eslint-disable-next-line no-console
