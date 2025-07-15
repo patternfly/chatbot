@@ -11,7 +11,7 @@ export const MessageWithDividersExample: FunctionComponent = () => (
       avatar={patternflyAvatar}
       content={`This is a text-based message from a bot named "Bot."`}
     />
-    <MessageDivider variant="date" content="1 hour ago" />
+    <MessageDivider variant="inset" content="1 hour ago" />
     <Message
       name="Bot"
       role="bot"
@@ -19,6 +19,6 @@ export const MessageWithDividersExample: FunctionComponent = () => (
       content={`This is a text-based message from "Bot," with an updated timestamp.`}
       timestamp="1 hour ago"
     />
-    <MessageDivider variant="announcement" content="Agent joined the chat" />
+    <MessageDivider variant="fullWidth" content="Agent joined the chat" />
   </>
 );

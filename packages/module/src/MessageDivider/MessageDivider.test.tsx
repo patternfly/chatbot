@@ -11,13 +11,13 @@ describe('MessageDivider', () => {
     expect(screen.getByText(new Date().toLocaleDateString())).toBeInTheDocument();
     expect(screen.getByTestId('message-divider').children[0]).toHaveClass('pf-chatbot__message-divider--date');
   });
-  it('should render date variant correctly', () => {
-    render(<MessageDivider variant="date" content="test" data-testid="message-divider" />);
+  it('should render inset variant correctly', () => {
+    render(<MessageDivider variant="inset" content="test" data-testid="message-divider" />);
     expect(screen.getByText('test')).toBeInTheDocument();
     expect(screen.getByTestId('message-divider').children[0]).toHaveClass('pf-chatbot__message-divider--date');
   });
-  it('should render announcement variant correctly', () => {
-    render(<MessageDivider variant="announcement" content="test" data-testid="message-divider" />);
+  it('should render fullWidth variant correctly', () => {
+    render(<MessageDivider variant="fullWidth" content="test" data-testid="message-divider" />);
     expect(screen.getByText('test')).toBeInTheDocument();
     expect(screen.getByTestId('message-divider')).toHaveClass('pf-chatbot__message-divider--announcement');
   });

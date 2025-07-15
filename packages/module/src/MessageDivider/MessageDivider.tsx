@@ -5,20 +5,20 @@ import type { FunctionComponent } from 'react';
 
 export interface MessageDividerProps {
   /** Variant of the divider */
-  variant?: 'date' | 'announcement';
+  variant?: 'inset' | 'fullWidth';
   /** Content of the message divider */
   content?: string;
 }
 
 const MessageDivider: FunctionComponent<MessageDividerProps> = ({
-  variant = 'date',
+  variant = 'inset',
   content = new Date().toLocaleDateString(),
   ...props
 }: MessageDividerProps) => {
-  if (variant === 'date') {
+  if (variant === 'inset') {
     return (
       <div className="pf-chatbot__message-divider" {...props}>
-        <div className="pf-chatbot__message-divider--date">
+        <div className="pf-chatbot__message-divider--inset">
           <div className="pf-chatbot__message-divider-content">
             <div className="pf-chatbot__message-divider-text">{content}</div>
           </div>
@@ -28,7 +28,7 @@ const MessageDivider: FunctionComponent<MessageDividerProps> = ({
   }
 
   return (
-    <div className="pf-chatbot__message-divider pf-chatbot__message-divider--announcement" {...props}>
+    <div className="pf-chatbot__message-divider pf-chatbot__message-divider--full-width" {...props}>
       <div className="pf-chatbot__message-divider-content">
         <div className="pf-chatbot__message-divider-text">{content}</div>
       </div>
