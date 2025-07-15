@@ -18,8 +18,7 @@ import {
   DrawerContent,
   DrawerContentBody,
   DrawerPanelContent,
-  DropdownGroup,
-  DrawerActions
+  DropdownGroup
 } from '@patternfly/react-core';
 
 import ChatbotToggle from '@patternfly/chatbot/dist/dynamic/ChatbotToggle';
@@ -147,6 +146,8 @@ export const ChatbotDisplayModeDemo: FunctionComponent = () => {
   const drawerRef = useRef<HTMLDivElement>();
   const [chatbotVisible, setChatbotVisible] = useState<boolean>(true);
   const toggleRef = useRef<HTMLButtonElement>(null);
+  const chatbotRef = useRef<HTMLDivElement>(null);
+  const [shouldFocusOptions, setShouldFocusOptions] = useState(false);
 
   const [displayMode, setDisplayMode] = useState<ChatbotDisplayMode>(ChatbotDisplayMode.default);
 
@@ -162,6 +163,23 @@ export const ChatbotDisplayModeDemo: FunctionComponent = () => {
     }
   }, [messages]);
 
+  // Focus options dropdown after display mode changes
+  useEffect(() => {
+    if (shouldFocusOptions) {
+      // Use a more reliable timeout to ensure DOM has updated
+      const timeoutId = setTimeout(() => {
+        // Find the options dropdown button via CSS selector since ref forwarding isn't supported
+        const optionsButton = document.querySelector('.pf-chatbot__button--toggle-options');
+        if (optionsButton instanceof HTMLElement) {
+          optionsButton.focus();
+        }
+        setShouldFocusOptions(false);
+      }, 100);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [displayMode, shouldFocusOptions]);
+
   const onSelectModel = (_event: MouseEvent<Element, MouseEvent> | undefined, value: string | number | undefined) => {
     setSelectedModel(value as string);
   };
@@ -171,6 +189,8 @@ export const ChatbotDisplayModeDemo: FunctionComponent = () => {
     value: string | number | undefined
   ) => {
     setDisplayMode(value as ChatbotDisplayMode);
+    // Flag to focus options dropdown after render
+    setShouldFocusOptions(true);
   };
 
   const generateId = () => {
@@ -283,11 +303,31 @@ export const ChatbotDisplayModeDemo: FunctionComponent = () => {
     </PageSidebar>
   );
 
-  const skipToChatbot = (event: MouseEvent) => {
-    event.preventDefault();
-    if (historyRef.current) {
-      historyRef.current.focus();
+  const skipToChatbot = (e: MouseEvent) => {
+    e.preventDefault();
+    /* eslint-disable indent */
+    switch (displayMode) {
+      case ChatbotDisplayMode.default:
+        if (!chatbotVisible && toggleRef.current) {
+          toggleRef.current.focus();
+        }
+        if (chatbotVisible && chatbotRef.current) {
+          chatbotRef.current.focus();
+        }
+        break;
+
+      case ChatbotDisplayMode.docked:
+        if (chatbotRef.current) {
+          chatbotRef.current.focus();
+        }
+        break;
+      default:
+        if (historyRef.current) {
+          historyRef.current.focus();
+        }
+        break;
     }
+    /* eslint-enable indent */
   };
 
   const skipToContent = (
@@ -302,7 +342,7 @@ export const ChatbotDisplayModeDemo: FunctionComponent = () => {
   };
 
   const chatbotComponent = (
-    <Chatbot isVisible={chatbotVisible} displayMode={displayMode}>
+    <Chatbot isVisible={chatbotVisible} displayMode={displayMode} ref={chatbotRef}>
       <ChatbotConversationHistoryNav
         displayMode={displayMode}
         onDrawerToggle={() => {
@@ -364,7 +404,7 @@ export const ChatbotDisplayModeDemo: FunctionComponent = () => {
                         icon={<OpenDrawerRightIcon aria-hidden />}
                         isSelected={displayMode === ChatbotDisplayMode.drawer}
                       >
-                        <span>Dock to window</span>
+                        <span>Drawer</span>
                       </DropdownItem>
                       <DropdownItem
                         value={ChatbotDisplayMode.fullscreen}
@@ -425,14 +465,7 @@ export const ChatbotDisplayModeDemo: FunctionComponent = () => {
       />
     ) : null;
 
-  const panelContent = (
-    <DrawerPanelContent>
-      {chatbotComponent}
-      <DrawerActions>
-        <ChatbotHeaderCloseButton onClick={() => setIsDrawerOpen(false)} />
-      </DrawerActions>
-    </DrawerPanelContent>
-  );
+  const panelContent = <DrawerPanelContent>{chatbotComponent}</DrawerPanelContent>;
 
   const pageContent = (
     <Page skipToContent={skipToContent} masthead={masthead} sidebar={sidebar} isContentFilled>
