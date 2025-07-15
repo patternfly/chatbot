@@ -315,12 +315,7 @@ export const ChatbotDisplayModeDemo: FunctionComponent = () => {
           chatbotRef.current.focus();
         }
         break;
-
-      case ChatbotDisplayMode.docked:
-        if (chatbotRef.current) {
-          chatbotRef.current.focus();
-        }
-        break;
+        
       default:
         if (historyRef.current) {
           historyRef.current.focus();
