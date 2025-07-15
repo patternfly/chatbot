@@ -19,6 +19,6 @@ describe('MessageDivider', () => {
   it('should render fullWidth variant correctly', () => {
     render(<MessageDivider variant="fullWidth" content="test" data-testid="message-divider" />);
     expect(screen.getByText('test')).toBeInTheDocument();
-    expect(screen.getByTestId('message-divider')).toHaveClass('pf-m-block');
+    expect(screen.getByTestId('message-divider')).not.toHaveClass('pf-m-divider');
   });
 });
