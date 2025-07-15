@@ -315,7 +315,6 @@ export const ChatbotDisplayModeDemo: FunctionComponent = () => {
           chatbotRef.current.focus();
         }
         break;
-        
       default:
         if (historyRef.current) {
           historyRef.current.focus();
