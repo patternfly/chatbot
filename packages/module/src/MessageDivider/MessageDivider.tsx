@@ -2,6 +2,7 @@
 // Chatbot Main - Message Divider
 // ============================================================================
 import type { FunctionComponent } from 'react';
+import { Divider, Label } from '@patternfly/react-core';
 
 export interface MessageDividerProps {
   /** Variant of the divider */
@@ -17,21 +18,16 @@ const MessageDivider: FunctionComponent<MessageDividerProps> = ({
 }: MessageDividerProps) => {
   if (variant === 'inset') {
     return (
-      <div className="pf-chatbot__message-divider" {...props}>
-        <div className="pf-chatbot__message-divider--inset">
-          <div className="pf-chatbot__message-divider-content">
-            <div className="pf-chatbot__message-divider-text">{content}</div>
-          </div>
-        </div>
+      <div className="pf-chatbot__message-divider pf-m-divider pf-m-wrap" {...props}>
+        <Divider />
+        <Label variant="outline">{content}</Label>
       </div>
     );
   }
 
   return (
-    <div className="pf-chatbot__message-divider pf-chatbot__message-divider--full-width" {...props}>
-      <div className="pf-chatbot__message-divider-content">
-        <div className="pf-chatbot__message-divider-text">{content}</div>
-      </div>
+    <div className="pf-chatbot__message-divider pf-m-block pf-m-wrap" {...props}>
+      <Label>{content}</Label>
     </div>
   );
 };

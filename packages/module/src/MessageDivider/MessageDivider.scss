@@ -2,52 +2,44 @@
 // Chatbot Main - Message Divider
 // ============================================================================
 .pf-chatbot__message-divider {
+  display: grid;
   padding-block-end: var(--pf-t--global--spacer--xl);
-}
 
-.pf-chatbot__message-divider-content {
-  display: flex;
-  min-height: 24px;
-  height: 100%;
-  padding: 0px var(--pf-t--global--spacer--md);
-  justify-content: center;
-  align-items: center;
-  gap: var(--pf-t--global--spacer--sm);
-  border-radius: var(--pf-t--global--border--radius--pill);
-  background-color: var(--pf-t--global--background--color--tertiary--default);
-}
-
-.pf-chatbot__message-divider-text {
-  color: var(--pf-t--global--text--color--regular);
-  text-align: center;
-  font-size: var(--pf-t--global--font--size--body--sm);
-  font-style: normal;
-  font-weight: var(--pf-t--global--font--weight--body--bold);
-}
-
-// Inset variant
-.pf-chatbot__message-divider--inset {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  position: relative;
-
-  &::before, &::after  {
-    content: "";
-    flex-grow: 1;
-    height: var(--pf-t--global--border--width--divider--default);
-    background-color: var(--pf-t--global--border--color--default);
+  .pf-v6-c-divider,
+  .pf-v6-c-label {
+    grid-row: 1 / 1;
+    grid-column: 1 / 1;
   }
 
-  .pf-chatbot__message-divider-content {
-    background-color: var(--pf-t--global--background--color--secondary--default);
-    border: 1px solid  var(--pf-t--global--border--color--default);
-    max-width: 75%
+  .pf-v6-c-label {
+    --pf-v6-c-label--BackgroundColor: var(--pf-t--global--background--color--tertiary--default); 
+    --pf-v6-c-label--BorderColor: var(--pf-t--global--border--color--default); 
+    --pf-v6-c-label--PaddingInlineStart: var(--pf-t--global--spacer--action--horizontal--compact); 
+    --pf-v6-c-label--PaddingInlineEnd: var(--pf-t--global--spacer--action--horizontal--compact);
+    
+    .pf-v6-c-label__text {
+      font-weight: var(--pf-t--global--font--weight--body--bold);
+      text-align: center;
+    }  
   }
-}
 
-// Full width variant
-.pf-chatbot__message-divider--full-width .pf-chatbot__message-divider-content {
-  width: 100%;
+  &.pf-m-divider {    
+    .pf-v6-c-label {
+      --pf-v6-c-label--BackgroundColor: var(--pf-t--global--background--color--secondary--default); 
+      --pf-v6-c-label--MaxWidth: 75%;
+
+      justify-self: center;
+    }
+    
+    .pf-v6-c-divider {
+      align-self: center;
+    }
+  }
+  
+  &.pf-m-wrap {
+    .pf-v6-c-label,
+    .pf-v6-c-label__text {
+      white-space: normal;
+    }
+  }
 }
