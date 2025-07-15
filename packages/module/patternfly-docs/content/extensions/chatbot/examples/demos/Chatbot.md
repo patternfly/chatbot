@@ -134,7 +134,7 @@ This demo displays a ChatBot in a static, inline drawer. This demo includes:
 
 This demo showcases how the ChatBot can be rendered in different display modes to suit various application layouts. It demonstrates how to dynamically change the page structure in response to the user's selection. This demo includes:
 
-1. The ability to switch between overlay, docked, and fullscreen modes using the [`<ChatbotHeaderOptionsDropdown>`](/patternfly-ai/chatbot/ui#header-options) in the header.
+1. The ability to switch between overlay, drawer, and fullscreen modes using the [`<ChatbotHeaderOptionsDropdown>`](/patternfly-ai/chatbot/ui#header-options) in the header.
 2. A conditional page layout that renders the ChatBot for each display mode option:
     - **Overlay:** As a floating window on top of the page content.
     - **Drawer:** Inside an inline PatternFly `<Drawer>` as a side panel.
