@@ -179,7 +179,7 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   onEditUpdate?: (event: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => void;
   /** Callback functionf or when edit cancel update button is clicked */
   onEditCancel?: (event: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  /** Ref applied to editbale message input */
+  /** Ref applied to editable message input */
   inputRef?: Ref<HTMLTextAreaElement>;
   /** Props for edit form */
   editFormProps?: FormProps;
