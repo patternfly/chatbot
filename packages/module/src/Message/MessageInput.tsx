@@ -16,7 +16,7 @@ export interface MessageInputProps extends FormProps {
   onEditUpdate?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: string) => void;
   /** Callback functionf or when edit cancel update button is clicked */
   onEditCancel?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  /** Ref applied to editbale message input */
+  /** Ref applied to editable message input */
   inputRef?: Ref<HTMLTextAreaElement>;
   /** Message text */
   content?: string;
