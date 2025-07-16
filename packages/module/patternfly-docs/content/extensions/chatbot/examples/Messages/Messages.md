@@ -184,6 +184,8 @@ The quick start tile displayed below the message is based on the tile included i
 
 Messages from users have a different background color to differentiate them from bot messages. You can also display a custom avatar that is uploaded by the user. You can further customize the avatar by applying an additional class or passing [PatternFly avatar props](/components/avatar) to the `<Message>` component via `avatarProps`.
 
+User messages can also be made editable by passing an "edit" object to the `actions` property. Note that when editing is enabled focus should be placed on the text area, and when editing is completed or canceled the focus should be moved back to the edit button.
+
 ```js file="./UserMessage.tsx"
 
 ```

@@ -1,4 +1,4 @@
-import { Fragment, useState, useRef, useEffect, CSSProperties, FunctionComponent, MouseEvent } from 'react';
+import { Fragment, useState, useRef, useEffect, CSSProperties, FunctionComponent, MouseEvent, Ref } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import userAvatar from './user_avatar.svg';
 import {
@@ -13,9 +13,9 @@ import { rehypeCodeBlockToggle } from '@patternfly/chatbot/dist/esm/Message/Plug
 
 export const UserMessageExample: FunctionComponent = () => {
   const messageInputRef = useRef<HTMLTextAreaElement>(null);
-  const [variant, setVariant] = useState<string>('Code');
+  const editButtonRef = useRef<HTMLButtonElement>(null);
+  const [variant, setVariant] = useState<string | number | undefined>('Code');
   const [isEditable, setIsEditable] = useState<boolean>(false);
-  const [isSelectedEditable, setIsSelectedEditable] = useState<boolean>(true);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<string>('Message content type');
   const [isExpandable, setIsExpanded] = useState(false);
@@ -191,6 +191,13 @@ _Italic text, formatted with single underscores_
     setIsOpen(!isOpen);
   };
 
+  const onUpdateOrCancelEdit = () => {
+    setIsEditable(false);
+    if (editButtonRef?.current) {
+      editButtonRef.current.focus();
+    }
+  };
+
   const toggle = (toggleRef: Ref<MenuToggleElement>) => (
     <MenuToggle
       className="pf-v6-u-mb-md"
@@ -227,9 +234,9 @@ _Italic text, formatted with single underscores_
         name="User"
         role="user"
         isEditable={isEditable}
-        onEditUpdate={() => setIsEditable(false)}
-        onEditCancel={() => setIsEditable(false)}
-        actions={{ edit: { onClick: () => setIsEditable(true) } }}
+        onEditUpdate={onUpdateOrCancelEdit}
+        onEditCancel={onUpdateOrCancelEdit}
+        actions={{ edit: { onClick: () => setIsEditable(true), innerRef: editButtonRef } }}
         content="This is a user message with an edit action."
         avatar={userAvatar}
         inputRef={messageInputRef}
@@ -257,7 +264,6 @@ _Italic text, formatted with single underscores_
           <SelectOption value="Table">Table</SelectOption>
           <SelectOption value="Image">Image</SelectOption>
           <SelectOption value="Error">Error</SelectOption>
-          <SelectOption value="Editable">Editable</SelectOption>
         </SelectList>
       </Select>
       <Message
@@ -268,10 +274,7 @@ _Italic text, formatted with single underscores_
         tableProps={
           variant === 'Table' ? { 'aria-label': 'App information and user roles for user messages' } : undefined
         }
-        isEditable={variant === 'Editable' ? isSelectedEditable : false}
         error={variant === 'Error' ? error : undefined}
-        onEditUpdate={() => setIsSelectedEditable(false)}
-        onEditCancel={() => setIsSelectedEditable(false)}
         codeBlockProps={{ isExpandable, expandableSectionProps: { truncateMaxLines: isExpandable ? 1 : undefined } }}
         // In this example, custom plugin will override any custom expandedText or collapsedText attributes provided
         // The purpose of this plugin is to provide unique link names for the code blocks

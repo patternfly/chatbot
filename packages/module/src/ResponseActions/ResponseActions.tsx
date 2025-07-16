@@ -7,7 +7,7 @@ import {
   OutlinedThumbsDownIcon,
   OutlinedCopyIcon,
   DownloadIcon,
-  EditIcon
+  PencilAltIcon
 } from '@patternfly/react-icons';
 import ResponseActionButton from './ResponseActionButton';
 import { ButtonProps, TooltipProps } from '@patternfly/react-core';
@@ -178,7 +178,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ action
           tooltipContent={edit.tooltipContent ?? 'Edit '}
           clickedTooltipContent={edit.clickedTooltipContent ?? 'Editing'}
           tooltipProps={edit.tooltipProps}
-          icon={<EditIcon />}
+          icon={<PencilAltIcon />}
           isClicked={activeButton === 'edit'}
           ref={edit.ref}
           aria-expanded={edit['aria-expanded']}
