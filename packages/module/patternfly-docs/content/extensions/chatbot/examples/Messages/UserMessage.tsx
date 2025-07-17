@@ -15,10 +15,12 @@ export const UserMessageExample: FunctionComponent = () => {
   const messageInputRef = useRef<HTMLTextAreaElement>(null);
   const editButtonRef = useRef<HTMLButtonElement>(null);
   const [variant, setVariant] = useState<string | number | undefined>('Code');
-  const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<string>('Message content type');
   const [isExpandable, setIsExpanded] = useState(false);
+
+  const [isEditable, setIsEditable] = useState<boolean>(false);
+  const prevIsEditable = useRef<boolean>(false);
 
   useEffect(() => {
     if (isEditable && messageInputRef?.current) {
@@ -26,6 +28,13 @@ export const UserMessageExample: FunctionComponent = () => {
       const messageLength = messageInputRef.current.value.length;
       // Mimic the behavior of the textarea when the user clicks on a label to place the cursor at the end of the input value
       messageInputRef.current.setSelectionRange(messageLength, messageLength);
+    }
+
+    // We only want to re-focus the edit action button if the user has previously clicked on it,
+    // and prevent it from receiving focus on page load
+    if (prevIsEditable.current && !isEditable && editButtonRef?.current) {
+      editButtonRef.current.focus();
+      prevIsEditable.current = false;
     }
   }, [isEditable]);
 
@@ -192,10 +201,8 @@ _Italic text, formatted with single underscores_
   };
 
   const onUpdateOrCancelEdit = () => {
+    prevIsEditable.current = isEditable;
     setIsEditable(false);
-    if (editButtonRef?.current) {
-      editButtonRef.current.focus();
-    }
   };
 
   const toggle = (toggleRef: Ref<MenuToggleElement>) => (

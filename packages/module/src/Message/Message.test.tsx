@@ -472,6 +472,36 @@ describe('Message', () => {
       expect(screen.queryByRole('button', { name: label })).toBeFalsy();
     });
   });
+  it('should not show actions if isEditable is true', async () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        isEditable
+        actions={{
+          // eslint-disable-next-line no-console
+          positive: { onClick: () => console.log('Good response') },
+          // eslint-disable-next-line no-console
+          negative: { onClick: () => console.log('Bad response') },
+          // eslint-disable-next-line no-console
+          copy: { onClick: () => console.log('Copy') },
+          // eslint-disable-next-line no-console
+          edit: { onClick: () => console.log('Edit') },
+          // eslint-disable-next-line no-console
+          share: { onClick: () => console.log('Share') },
+          // eslint-disable-next-line no-console
+          download: { onClick: () => console.log('Download') },
+          // eslint-disable-next-line no-console
+          listen: { onClick: () => console.log('Listen') }
+        }}
+      />
+    );
+    ALL_ACTIONS.forEach(({ label }) => {
+      expect(screen.queryByRole('button', { name: label })).toBeFalsy();
+    });
+  });
   it('should render unordered lists correctly', () => {
     render(<Message avatar="./img" role="user" name="User" content={UNORDERED_LIST} />);
     expect(screen.getByText('Here is an unordered list:')).toBeTruthy();

@@ -373,7 +373,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
                 isCompact={isCompact}
               />
             )}
-            {!isLoading && actions && <ResponseActions actions={actions} />}
+            {!isLoading && !isEditable && actions && <ResponseActions actions={actions} />}
             {userFeedbackForm && <UserFeedback {...userFeedbackForm} timestamp={dateString} isCompact={isCompact} />}
             {userFeedbackComplete && (
               <UserFeedbackComplete {...userFeedbackComplete} timestamp={dateString} isCompact={isCompact} />
