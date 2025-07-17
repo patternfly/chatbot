@@ -12,7 +12,6 @@ import {
   ButtonProps,
   ContentVariants,
   ExpandableSectionProps,
-  ExpandableSectionToggleProps,
   FormProps,
   Label,
   LabelGroupProps,
@@ -49,6 +48,7 @@ import LinkMessage from './LinkMessage/LinkMessage';
 import ErrorMessage from './ErrorMessage/ErrorMessage';
 import MessageInput from './MessageInput';
 import { rehypeMoveImagesOutOfParagraphs } from './Plugins/rehypeMoveImagesOutOfParagraphs';
+import { CodeEditorProps } from '@patternfly/react-code-editor';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -111,18 +111,14 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   loadingWord?: string;
   /** Props for code blocks */
   codeBlockProps?: {
-    /** Aria label applied to code blocks */
-    'aria-label'?: string;
-    /** Class name applied to code blocks */
+    /** Class name applied to code block */
     className?: string;
-    /** Whether code blocks are expandable */
+    /** Whether code block is expandable */
     isExpandable?: boolean;
-    /** Length of text initially shown in expandable code blocks; defaults to 10 characters */
-    maxLength?: number;
     /** Additional props passed to expandable section if isExpandable is applied */
     expandableSectionProps?: Omit<ExpandableSectionProps, 'ref'>;
-    /** Additional props passed to expandable toggle if isExpandable is applied */
-    expandableSectionToggleProps?: ExpandableSectionToggleProps;
+    /** Additional props passed to code editor */
+    codeEditorProps?: Omit<CodeEditorProps, 'ref'>;
     /** Link text applied to expandable toggle when expanded */
     expandedText?: string;
     /** Link text applied to expandable toggle when collapsed */

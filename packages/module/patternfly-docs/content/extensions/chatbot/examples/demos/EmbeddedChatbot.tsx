@@ -85,7 +85,7 @@ spec:
 
 Here is some JavaScript code:
 
-~~~js
+~~~javascript
 const MessageLoading = () => (
   <div className="pf-chatbot__message-loading">
     <span className="pf-chatbot__message-loading-dots">

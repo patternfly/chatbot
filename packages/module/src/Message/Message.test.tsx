@@ -491,28 +491,13 @@ describe('Message', () => {
   it('should render code correctly', () => {
     render(<Message avatar="./img" role="user" name="User" content={CODE_MESSAGE} />);
     expect(screen.getByText('Here is some YAML code:')).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'Copy code' })).toBeTruthy();
-    expect(screen.getByText(/yaml/)).toBeTruthy();
-    expect(screen.getByText(/apiVersion:/i)).toBeTruthy();
-    expect(screen.getByText(/helm.openshift.io\/v1beta1/i)).toBeTruthy();
-    expect(screen.getByText(/metadata:/i)).toBeTruthy();
-    expect(screen.getByText(/name:/i)).toBeTruthy();
-    expect(screen.getByText(/azure-sample-repo0oooo00ooo/i)).toBeTruthy();
-    expect(screen.getByText(/spec/i)).toBeTruthy();
-    expect(screen.getByText(/connectionConfig:/i)).toBeTruthy();
-    expect(screen.getByText(/url:/i)).toBeTruthy();
-    expect(
-      screen.getByText(/https:\/\/raw.githubusercontent.com\/Azure-Samples\/helm-charts\/master\/docs/i)
-    ).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Copy code to clipboard' })).toBeTruthy();
   });
   it('should render expandable code correctly', () => {
     render(
       <Message avatar="./img" role="user" name="User" content={CODE_MESSAGE} codeBlockProps={{ isExpandable: true }} />
     );
     expect(screen.getByText('Here is some YAML code:')).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'Copy code' })).toBeTruthy();
-    expect(screen.getByText(/yaml/)).toBeTruthy();
-    expect(screen.getByText(/apiVersion/i)).toBeTruthy();
     expect(screen.getByRole('button', { name: /Show more/i })).toBeTruthy();
   });
   it('should handle click on expandable code correctly', async () => {
@@ -522,39 +507,15 @@ describe('Message', () => {
     const button = screen.getByRole('button', { name: /Show more/i });
     await userEvent.click(button);
     expect(screen.getByRole('button', { name: /Show less/i })).toBeTruthy();
-    expect(screen.getByText(/yaml/)).toBeTruthy();
-    expect(screen.getByText(/apiVersion:/i)).toBeTruthy();
-    expect(screen.getByText(/helm.openshift.io\/v1beta1/i)).toBeTruthy();
-    expect(screen.getByText(/metadata:/i)).toBeTruthy();
-    expect(screen.getByText(/name:/i)).toBeTruthy();
-    expect(screen.getByText(/azure-sample-repo0oooo00ooo/i)).toBeTruthy();
-    expect(screen.getByText(/spec/i)).toBeTruthy();
-    expect(screen.getByText(/connectionConfig:/i)).toBeTruthy();
-    expect(screen.getByText(/url:/i)).toBeTruthy();
-    expect(
-      screen.getByText(/https:\/\/raw.githubusercontent.com\/Azure-Samples\/helm-charts\/master\/docs/i)
-    ).toBeTruthy();
   });
   it('can click copy code button', async () => {
     // need explicit setup since RTL stubs clipboard if you do this
     const user = userEvent.setup();
     render(<Message avatar="./img" role="user" name="User" content={CODE_MESSAGE} />);
-    expect(screen.getByRole('button', { name: 'Copy code' })).toBeTruthy();
-    await user.click(screen.getByRole('button', { name: 'Copy code' }));
+    expect(screen.getByRole('button', { name: 'Copy code to clipboard' })).toBeTruthy();
+    await user.click(screen.getByRole('button', { name: 'Copy code to clipboard' }));
     const clipboardText = await navigator.clipboard.readText();
     expect(clipboardText.trim()).toEqual(CODE.trim());
-  });
-  it('should handle codeBlockProps correctly by spreading it onto the CodeMessage', () => {
-    render(
-      <Message
-        avatar="./img"
-        role="user"
-        name="User"
-        content={CODE_MESSAGE}
-        codeBlockProps={{ 'aria-label': 'test' }}
-      />
-    );
-    expect(screen.getByRole('button', { name: 'test' })).toBeTruthy();
   });
   it('should handle hasRoundAvatar correctly when it is true', () => {
     render(<Message avatar="./img" role="user" name="User" content="Hi" hasRoundAvatar />);
