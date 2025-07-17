@@ -135,6 +135,10 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   isCompact?: boolean;
   /** Display title  */
   title?: string;
+  /** Icon displayed in title */
+  icon?: React.ReactNode;
+  /** Heading header level */
+  headingHeaderLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }
 
 export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversationHistoryNavProps> = ({
@@ -171,6 +175,8 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   noResultsState,
   isCompact,
   title = 'Chat history',
+  headingHeaderLevel = 'h2',
+  icon = <OutlinedClockIcon />,
   ...props
 }: ChatbotConversationHistoryNavProps) => {
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -283,13 +289,15 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
             )}
           </DrawerActions>
         </DrawerHead>
-        <div className="pf-chatbot__title-container">
-          <Title headingLevel="h3">
+        <div className="pf-chatbot__heading-container">
+          <div className="pf-chatbot__title-container">
             <Icon size="lg" className="pf-chatbot__title-icon">
-              <OutlinedClockIcon />
+              {icon}
             </Icon>
-            {title}
-          </Title>
+            <Title className="pf-chatbot__title" headingLevel={headingHeaderLevel}>
+              {title}
+            </Title>
+          </div>
           {!isLoading && handleTextInputChange && (
             <div className="pf-chatbot__input">
               <SearchInput
