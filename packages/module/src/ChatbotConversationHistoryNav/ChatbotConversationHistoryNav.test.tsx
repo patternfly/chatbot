@@ -444,13 +444,13 @@ describe('ChatbotConversationHistoryNav', () => {
         conversations={initialConversations}
       />
     );
-    expect(screen.getByText('Chat History')).toBeInTheDocument();
+    expect(screen.getByText('Chat history')).toBeInTheDocument();
   });
 
   it('should display the custom title', () => {
     render(
       <ChatbotConversationHistoryNav
-        title="PatternFly History"
+        title="PatternFly history"
         onDrawerToggle={onDrawerToggle}
         isDrawerOpen={true}
         displayMode={ChatbotDisplayMode.fullscreen}
@@ -458,7 +458,7 @@ describe('ChatbotConversationHistoryNav', () => {
         conversations={initialConversations}
       />
     );
-    expect(screen.getByText('PatternFly History')).toBeInTheDocument();
+    expect(screen.getByText('PatternFly history')).toBeInTheDocument();
   });
 
   it('should display the clock icon', () => {
