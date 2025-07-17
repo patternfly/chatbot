@@ -6,8 +6,8 @@ import type { Ref, FunctionComponent } from 'react';
 import { forwardRef } from 'react';
 
 // Import PatternFly components
-import { Button, ButtonProps, DropEvent, Icon, Tooltip, TooltipProps } from '@patternfly/react-core';
-import { Accept, DropzoneOptions, FileError, FileRejection, useDropzone } from 'react-dropzone';
+import { Button, ButtonProps, Icon, Tooltip, TooltipProps } from '@patternfly/react-core';
+import { Accept, DropEvent, DropzoneOptions, FileError, FileRejection, useDropzone } from 'react-dropzone';
 import { PaperclipIcon } from '@patternfly/react-icons/dist/esm/icons/paperclip-icon';
 
 export interface AttachButtonProps extends ButtonProps {

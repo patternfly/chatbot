@@ -1,7 +1,7 @@
 import type { ChangeEvent, FunctionComponent, KeyboardEvent as ReactKeyboardEvent, Ref } from 'react';
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
-import { Accept, DropzoneOptions, FileError, FileRejection } from 'react-dropzone/.';
-import { ButtonProps, DropEvent, TextArea, TextAreaProps, TooltipProps } from '@patternfly/react-core';
+import { Accept, DropEvent, DropzoneOptions, FileError, FileRejection } from 'react-dropzone';
+import { ButtonProps, TextArea, TextAreaProps, TooltipProps } from '@patternfly/react-core';
 
 // Import Chatbot components
 import SendButton from './SendButton';

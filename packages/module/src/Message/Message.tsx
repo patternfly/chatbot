@@ -44,7 +44,7 @@ import ImageMessage from './ImageMessage/ImageMessage';
 import rehypeUnwrapImages from 'rehype-unwrap-images';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeSanitize from 'rehype-sanitize';
-import { PluggableList } from 'react-markdown/lib';
+import { PluggableList } from 'unified';
 import LinkMessage from './LinkMessage/LinkMessage';
 import ErrorMessage from './ErrorMessage/ErrorMessage';
 import MessageInput from './MessageInput';
