@@ -156,7 +156,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   emptyState,
   noResultsState,
   isCompact,
-  title = 'Chat History',
+  title = 'Chat history',
   ...props
 }: ChatbotConversationHistoryNavProps) => {
   const drawerRef = useRef<HTMLDivElement>(null);
