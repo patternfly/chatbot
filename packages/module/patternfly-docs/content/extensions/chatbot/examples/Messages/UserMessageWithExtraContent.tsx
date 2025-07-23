@@ -1,6 +1,7 @@
 import { Fragment, FunctionComponent, useState, useEffect } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import userAvatar from './user_avatar.svg';
+import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import {
   Accordion,
   AccordionContent,
@@ -31,13 +32,15 @@ import {
   Icon,
   Progress,
   ProgressMeasureLocation,
+  ExpandableSection,
+  ExpandableSectionToggle,
+  Label,
+  Tab,
+  Tabs,
+  TabTitleText,
   Spinner
 } from '@patternfly/react-core';
-import ArrowCircleDownIcon from '@patternfly/react-icons/dist/esm/icons/arrow-circle-down-icon';
-import CheckCircleIcon from '@patternfly/react-icons/dist/esm/icons/check-circle-icon';
-import ArrowRightIcon from '@patternfly/react-icons/dist/esm/icons/arrow-right-icon';
-import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
-import React from 'react';
+import { ArrowCircleDownIcon, ArrowRightIcon, CheckCircleIcon, CubeIcon, CubesIcon } from '@patternfly/react-icons';
 
 const UserActionEndContent = () => {
   // eslint-disable-next-line no-console
@@ -71,51 +74,6 @@ const BeforeMainContent = () => (
   </div>
 );
 
-const downloadCard = (
-  <Card>
-    <CardHeader isToggleRightAligned>
-      <CardTitle>
-        <Flex spaceItems={{ default: 'spaceItemsSm' }}>
-          <FlexItem>
-            <Icon size="lg" status="success">
-              <CheckCircleIcon />
-            </Icon>
-          </FlexItem>
-          <FlexItem>Your discovery ISO is ready</FlexItem>
-        </Flex>
-      </CardTitle>
-    </CardHeader>
-
-    <CardBody>
-      <Flex direction={{ default: 'column' }} spaceItems={{ default: 'spaceItemsLg' }}>
-        <FlexItem>
-          <Content component={ContentVariants.p}>
-            To begin adding hosts to your bare metal cluster, you first need to boot them with the generated Discovery
-            ISO. This allows the installation program to see and manage your hardware.
-          </Content>
-        </FlexItem>
-
-        <Flex direction={{ default: 'column' }} spaceItems={{ default: 'spaceItemsSm' }}>
-          <FlexItem>
-            <Button variant={ButtonVariant.primary} icon={<ArrowCircleDownIcon />} isBlock>
-              Download Discovery ISO
-            </Button>
-          </FlexItem>
-
-          <FlexItem alignSelf={{ default: 'alignSelfCenter' }}>
-            <Content component={ContentVariants.small}>1.2 GB • Expires in 24 hours</Content>
-          </FlexItem>
-        </Flex>
-      </Flex>
-    </CardBody>
-
-    <CardFooter>
-      <Content component={ContentVariants.small}>
-        <strong>Next step:</strong> After downloading, boot your bare metal hosts from this ISO image.
-      </Content>
-    </CardFooter>
-  </Card>
-);
 interface Stage {
   id: string;
   name: string;
@@ -319,7 +277,7 @@ Setting up cluster console...`;
           </Button>
         </FlexItem>
       </Flex>
-      <Card ouiaId="BasicCard" isExpanded={isCardExpanded}>
+      <Card ouiaId="LiveProgressSummaryCard" isExpanded={isCardExpanded}>
         <CardHeader
           onExpand={onExpandCard}
           isToggleRightAligned
@@ -415,6 +373,244 @@ Setting up cluster console...`;
   );
 };
 
+const VersionSelectorCard = () => {
+  const [activeTabKey, setActiveTabKey] = useState<string | number>(0);
+  const [isCardSelected, setIsCardSelected] = useState('');
+  const [isExpanded, setIsExpanded] = useState(false);
+  const id1 = '4.20';
+  const id2 = '4.19';
+  const id3 = '4.18';
+  const id4 = '4.17';
+
+  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+    setIsCardSelected(event.currentTarget.id);
+  };
+
+  const onToggleExpandableSection = (isExpanded: boolean) => {
+    setIsExpanded(isExpanded);
+  };
+
+  const handleTabClick = (_event: any, tabIndex: string | number) => {
+    setActiveTabKey(tabIndex);
+  };
+
+  const contentId = 'detached-expandable-section-content';
+  const toggleId = 'detached-expandable-section-toggle';
+
+  const generateTabContent = (title: string, subtitle: string) => (
+    <Flex direction={{ default: 'column' }} alignItems={{ default: 'alignItemsCenter' }} gap={{ default: 'gapMd' }}>
+      <FlexItem alignSelf={{ default: 'alignSelfCenter' }} className="pf-v6-u-mt-md pf-v6-u-text-align-center">
+        <div className="pf-v6-u-font-weight-bold">{title}</div>
+        <div>{subtitle}</div>
+      </FlexItem>
+      <FlexItem alignSelf={{ default: 'alignSelfStretch' }}>
+        <Card id="4.20-card" isSelectable isSelected={isCardSelected === id1}>
+          <CardHeader
+            selectableActions={{
+              selectableActionId: id1,
+              selectableActionAriaLabelledby: '4.20-card',
+              name: 'version',
+              variant: 'single',
+              onChange,
+              isHidden: true
+            }}
+          >
+            <CardTitle>
+              <Flex spaceItems={{ default: 'spaceItemsSm' }}>
+                <FlexItem>4.20.0-ec.3</FlexItem>
+                <FlexItem>
+                  <Label isCompact color={isCardSelected === id1 ? 'blue' : undefined}>
+                    Preview
+                  </Label>
+                </FlexItem>
+              </Flex>
+            </CardTitle>
+          </CardHeader>
+          <CardBody>Developer preview • Not for production</CardBody>
+        </Card>
+      </FlexItem>
+      <FlexItem alignSelf={{ default: 'alignSelfStretch' }}>
+        <Card id="4.19-card" isSelectable isSelected={isCardSelected === id2}>
+          <CardHeader
+            selectableActions={{
+              selectableActionId: id2,
+              selectableActionAriaLabelledby: '4.19-card',
+              name: 'version',
+              variant: 'single',
+              onChange,
+              isHidden: true
+            }}
+          >
+            <CardTitle>
+              <Flex spaceItems={{ default: 'spaceItemsSm' }}>
+                <FlexItem>4.19.2</FlexItem>
+                <FlexItem>
+                  <Label isCompact color={isCardSelected === id2 ? 'blue' : undefined}>
+                    Latest
+                  </Label>
+                </FlexItem>
+              </Flex>
+            </CardTitle>
+          </CardHeader>
+          <CardBody>Newest features • 18-month support • Recommended</CardBody>
+        </Card>
+      </FlexItem>
+      <FlexItem alignSelf={{ default: 'alignSelfStretch' }}>
+        <Card id="4.18-card" isSelectable isSelected={isCardSelected === id3}>
+          <CardHeader
+            selectableActions={{
+              selectableActionId: id3,
+              selectableActionAriaLabelledby: '4.18-card',
+              name: 'version',
+              variant: 'single',
+              onChange,
+              isHidden: true
+            }}
+          >
+            <CardTitle>4.18.19</CardTitle>
+          </CardHeader>
+          <CardBody>Previous stable • Full support</CardBody>
+        </Card>
+        <ExpandableSection isExpanded={isExpanded} isDetached toggleId={toggleId} contentId={contentId}>
+          <Flex
+            direction={{ default: 'column' }}
+            alignItems={{ default: 'alignItemsCenter' }}
+            gap={{ default: 'gapMd' }}
+          >
+            <FlexItem alignSelf={{ default: 'alignSelfStretch' }}>
+              <Card className="pf-v6-u-mt-md" id="4.17-card" isSelectable isSelected={isCardSelected === id4}>
+                <CardHeader
+                  selectableActions={{
+                    selectableActionId: id4,
+                    selectableActionAriaLabelledby: '4.17-card',
+                    name: 'version',
+                    variant: 'single',
+                    onChange,
+                    isHidden: true
+                  }}
+                >
+                  <CardTitle>
+                    <Flex spaceItems={{ default: 'spaceItemsSm' }}>
+                      <FlexItem>4.17.34</FlexItem>
+                      <FlexItem>
+                        <Label isCompact color={isCardSelected === id4 ? 'blue' : undefined}>
+                          Maintenance
+                        </Label>
+                      </FlexItem>
+                    </Flex>
+                  </CardTitle>
+                </CardHeader>
+                <CardBody>Maintenance support phase</CardBody>
+              </Card>
+            </FlexItem>
+          </Flex>
+        </ExpandableSection>
+      </FlexItem>
+      <FlexItem>
+        <ExpandableSectionToggle
+          isExpanded={isExpanded}
+          onToggle={onToggleExpandableSection}
+          toggleId={toggleId}
+          contentId={contentId}
+          direction="up"
+        >
+          {isExpanded ? 'Hide older versions' : 'Show older versions'}
+        </ExpandableSectionToggle>
+      </FlexItem>
+    </Flex>
+  );
+
+  return (
+    <Card ouiaId="VersionSelectorCard">
+      <CardBody
+        style={{ '--pf-v6-c-card--child--PaddingBlockEnd': 'var(--pf-t--global--spacer--md)' } as React.CSSProperties}
+      >
+        <Tabs activeKey={activeTabKey} onSelect={handleTabClick} aria-label="Architecture" role="region" isFilled>
+          <Tab
+            eventKey={0}
+            title={
+              <TabTitleText>
+                <Flex spaceItems={{ default: 'spaceItemsXs' }}>
+                  <FlexItem>
+                    <CubeIcon />
+                  </FlexItem>
+                  <FlexItem>Single arch</FlexItem>
+                </Flex>
+              </TabTitleText>
+            }
+          >
+            {generateTabContent('x86_64 Intel/AMD only', 'Standard deployments • Most common choice')}
+          </Tab>
+          <Tab
+            eventKey={1}
+            title={
+              <TabTitleText>
+                <Flex spaceItems={{ default: 'spaceItemsXs' }}>
+                  <FlexItem>
+                    <CubesIcon />
+                  </FlexItem>
+                  <FlexItem>Multi arch</FlexItem>
+                </Flex>
+              </TabTitleText>
+            }
+          >
+            {generateTabContent('Multi arch', 'Standard deployments')}
+          </Tab>
+        </Tabs>
+      </CardBody>
+      <CardFooter>
+        <Button isBlock isDisabled={isCardSelected === ''}>
+          Continue with selections
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
+
+const DownloadCard = () => (
+  <Card>
+    <CardHeader isToggleRightAligned>
+      <CardTitle>
+        <Flex spaceItems={{ default: 'spaceItemsSm' }}>
+          <FlexItem>
+            <Icon size="lg" status="success">
+              <CheckCircleIcon />
+            </Icon>
+          </FlexItem>
+          <FlexItem>Your discovery ISO is ready</FlexItem>
+        </Flex>
+      </CardTitle>
+    </CardHeader>
+    <CardBody>
+      <Flex direction={{ default: 'column' }} spaceItems={{ default: 'spaceItemsLg' }}>
+        <FlexItem>
+          <Content component={ContentVariants.p}>
+            To begin adding hosts to your bare metal cluster, you first need to boot them with the generated Discovery
+            ISO. This allows the installation program to see and manage your hardware.
+          </Content>
+        </FlexItem>
+
+        <Flex direction={{ default: 'column' }} spaceItems={{ default: 'spaceItemsSm' }}>
+          <FlexItem>
+            <Button variant={ButtonVariant.primary} icon={<ArrowCircleDownIcon />} isBlock>
+              Download Discovery ISO
+            </Button>
+          </FlexItem>
+
+          <FlexItem alignSelf={{ default: 'alignSelfCenter' }}>
+            <Content component={ContentVariants.small}>1.2 GB • Expires in 24 hours</Content>
+          </FlexItem>
+        </Flex>
+      </Flex>
+    </CardBody>
+    <CardFooter>
+      <Content component={ContentVariants.small}>
+        <strong>Next step:</strong> After downloading, boot your bare metal hosts from this ISO image.
+      </Content>
+    </CardFooter>
+  </Card>
+);
+
 export const UserMessageWithExtraContent: FunctionComponent = () => (
   <>
     <Message
@@ -430,10 +626,10 @@ export const UserMessageWithExtraContent: FunctionComponent = () => (
       }}
     />
     <Message
-      avatar={userAvatar}
-      name="User"
-      role="user"
-      content="This is a main message."
+      avatar={patternflyAvatar}
+      name="Bot"
+      role="bot"
+      content="This is a message with a live progress summmary card."
       timestamp="1 hour ago"
       extraContent={{
         afterMainContent: <LiveProgressSummaryCard />
@@ -443,9 +639,19 @@ export const UserMessageWithExtraContent: FunctionComponent = () => (
       avatar={patternflyAvatar}
       name="Bot"
       role="bot"
+      content="This is a message with a version selector card."
+      timestamp="1 hour ago"
+      extraContent={{
+        afterMainContent: <VersionSelectorCard />
+      }}
+    />
+    <Message
+      avatar={patternflyAvatar}
+      name="Bot"
+      role="bot"
       content="All set! I've finished building the Discovery ISO. The next step is to download it and boot your hosts, which you can do using the summary card I've prepared for you:"
       extraContent={{
-        endContent: downloadCard
+        endContent: <DownloadCard />
       }}
     />
   </>
