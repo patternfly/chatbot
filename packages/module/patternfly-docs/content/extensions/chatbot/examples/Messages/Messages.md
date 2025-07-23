@@ -37,6 +37,8 @@ import SourcesCard from '@patternfly/chatbot/dist/dynamic/SourcesCard';
 import { RobotIcon } from '@patternfly/react-icons/dist/esm/icons/robot-icon';
 import InfoCircleIcon from '@patternfly/react-icons/dist/esm/icons/info-circle-icon';
 import DownloadIcon from '@patternfly/react-icons/dist/esm/icons/download-icon';
+import CubeIcon from '@patternfly/react-icons/dist/esm/icons/cube-icon';
+import CubesIcon from '@patternfly/react-icons/dist/esm/icons/cubes-icon';
 import RedoIcon from '@patternfly/react-icons/dist/esm/icons/redo-icon';
 import patternflyAvatar from './patternfly_avatar.jpg';
 import AttachmentEdit from '@patternfly/chatbot/dist/dynamic/AttachmentEdit';
