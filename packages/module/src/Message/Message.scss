@@ -48,20 +48,22 @@
 
     // Author name
     .pf-chatbot__message-name {
-      font-family: var(--pf-t--chatbot--heading--font-family);
+      font-family: var(
+        --pf-v6-c-content--heading--FontFamily,
+        redhatdisplayvf,
+        redhatdisplay,
+        helvetica,
+        arial,
+        sans-serif
+      );
       font-weight: 600;
       font-size: var(--pf-t--global--font--size--sm);
     }
 
     // Badge
     .pf-v6-c-label {
-      --pf-v6-c-label--m-outline--BorderColor: var(--pf-t--global--border--color--on-secondary);
       --pf-v6-c-label--FontSize: var(--pf-t--global--font--size--xs);
       font-weight: var(--pf-t--global--font--weight--body--bold);
-
-      .pf-v6-c-label__content {
-        --pf-v6-c-label--Color: var(--pf-t--global--border--color--on-secondary);
-      }
     }
 
     // Timestamp
