@@ -34,7 +34,9 @@ import {
   Icon,
   TextInput,
   TextInputProps,
-  MenuProps
+  MenuProps, // Remove in next breaking change
+  TitleProps,
+  ListProps
 } from '@patternfly/react-core';
 
 import { OutlinedClockIcon, OutlinedCommentAltIcon, PenToSquareIcon } from '@patternfly/react-icons';
@@ -94,6 +96,10 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   conversations: Conversation[] | { [key: string]: Conversation[] };
   /** Additional button props for new chat button. */
   newChatButtonProps?: ButtonProps;
+  /** Additional props applied to all conversation list headers */
+  titleProps?: Partial<TitleProps>;
+  /** Additional props applied to conversation list. If conversations is an object, you should pass an object of ListProps for each group. */
+  listProps?: ListProps | { [key: string]: ListProps };
   /** Text shown in blue button */
   newChatButtonText?: string;
   /** Callback function for when blue button is clicked. Omit to hide blue "new chat button" */
@@ -151,6 +157,8 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   activeItemId,
   onSelectActiveItem,
   conversations,
+  titleProps,
+  listProps,
   newChatButtonText = 'New chat',
   drawerContent,
   onNewChat,
@@ -228,7 +236,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   const buildConversations = () => {
     if (Array.isArray(conversations)) {
       return (
-        <List className="pf-chatbot__conversation-list" isPlain>
+        <List className="pf-chatbot__conversation-list" isPlain {...listProps}>
           {conversations.map((conversation) => (
             <Fragment key={conversation.id}>{getNavItem(conversation)}</Fragment>
           ))}
@@ -239,10 +247,10 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
         <div>
           {Object.keys(conversations).map((navGroup) => (
             <section key={navGroup}>
-              <Title headingLevel="h4" className="pf-chatbot__conversation-list-header">
+              <Title headingLevel="h4" className="pf-chatbot__conversation-list-header" {...titleProps}>
                 {navGroup}
               </Title>
-              <List className="pf-chatbot__conversation-list" isPlain>
+              <List className="pf-chatbot__conversation-list" isPlain {...listProps?.[navGroup]}>
                 {conversations[navGroup].map((conversation) => (
                   <Fragment key={conversation.id}>{getNavItem(conversation)}</Fragment>
                 ))}

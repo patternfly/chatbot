@@ -505,6 +505,64 @@ describe('ChatbotConversationHistoryNav', () => {
         id: 'test'
       }
     };
+
+    it('Passes titleProps to Title', () => {
+      render(
+        <ChatbotConversationHistoryNav
+          onDrawerToggle={onDrawerToggle}
+          isDrawerOpen={true}
+          displayMode={ChatbotDisplayMode.fullscreen}
+          setIsDrawerOpen={jest.fn()}
+          conversations={{ Today: [editableConversations] }}
+          titleProps={{ className: 'test' }}
+        />
+      );
+      expect(screen.getByRole('heading', { name: /Today/i })).toHaveClass('test');
+    });
+
+    it('Overrides Title heading level when titleProps.headingLevel is passed', () => {
+      render(
+        <ChatbotConversationHistoryNav
+          onDrawerToggle={onDrawerToggle}
+          isDrawerOpen={true}
+          displayMode={ChatbotDisplayMode.fullscreen}
+          setIsDrawerOpen={jest.fn()}
+          conversations={{ Today: [editableConversations] }}
+          titleProps={{ headingLevel: 'h2' }}
+        />
+      );
+      expect(screen.queryByRole('heading', { name: /Today/i, level: 4 })).not.toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: /Today/i, level: 2 })).toBeInTheDocument();
+    });
+
+    it('Passes listProps to List when conversations is an array', () => {
+      render(
+        <ChatbotConversationHistoryNav
+          onDrawerToggle={onDrawerToggle}
+          isDrawerOpen={true}
+          displayMode={ChatbotDisplayMode.fullscreen}
+          setIsDrawerOpen={jest.fn()}
+          conversations={initialConversations}
+          listProps={{ className: 'test' }}
+        />
+      );
+      expect(screen.getByRole('list')).toHaveClass('test');
+    });
+
+    it('Passes listProps to List when conversations is an object', () => {
+      render(
+        <ChatbotConversationHistoryNav
+          onDrawerToggle={onDrawerToggle}
+          isDrawerOpen={true}
+          displayMode={ChatbotDisplayMode.fullscreen}
+          setIsDrawerOpen={jest.fn()}
+          conversations={{ Today: [editableConversations] }}
+          listProps={{ Today: { className: 'test' } }}
+        />
+      );
+      expect(screen.getByRole('list')).toHaveClass('test');
+    });
+
     it('Passes listItemProps to ListItem', () => {
       render(
         <ChatbotConversationHistoryNav
