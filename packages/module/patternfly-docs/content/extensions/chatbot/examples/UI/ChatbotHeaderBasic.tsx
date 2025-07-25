@@ -17,7 +17,8 @@ import {
   ChatbotHeaderActions,
   ChatbotHeaderTitle,
   ChatbotHeaderOptionsDropdown,
-  ChatbotHeaderSelectorDropdown
+  ChatbotHeaderSelectorDropdown,
+  ChatbotHeaderNewChatButton
 } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
 import { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
 import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/outlined-window-restore-icon';
@@ -31,6 +32,7 @@ export const BasicDemo: FunctionComponent = () => {
   const [selectedModel, setSelectedModel] = useState('Granite Code 7B');
   const [showAll, setShowAll] = useState<boolean>(true);
   const [showMenu, setShowMenu] = useState<boolean>(true);
+  const [showNewChatButton, setShowNewChatButton] = useState<boolean>(true);
   const [showLogo, setShowLogo] = useState<boolean>(false);
   const [showCenteredLogo, setShowCenteredLogo] = useState<boolean>(true);
   const [showSelectorDropdown, setShowSelectorDropdown] = useState<boolean>(true);
@@ -58,9 +60,10 @@ export const BasicDemo: FunctionComponent = () => {
     <Stack hasGutter>
       <FormGroup role="radiogroup" isInline fieldId="header-variant-form-radio-group" label="Variant">
         <Checkbox
-          isChecked={showMenu && showCenteredLogo && showSelectorDropdown && showOptionsDropdown}
+          isChecked={showMenu && showNewChatButton && showCenteredLogo && showSelectorDropdown && showOptionsDropdown}
           onChange={() => {
             setShowMenu(true);
+            setShowNewChatButton(true);
             setShowCenteredLogo(true);
             setShowSelectorDropdown(true);
             setShowOptionsDropdown(true);
@@ -79,6 +82,16 @@ export const BasicDemo: FunctionComponent = () => {
           name="basic-inline-radio"
           label="With menu"
           id="menu"
+        />
+        <Checkbox
+          isChecked={showNewChatButton}
+          onChange={() => {
+            setShowNewChatButton(!showNewChatButton);
+            showAll && setShowAll(!showAll);
+          }}
+          name="basic-inline-radio"
+          label="With new chat button"
+          id="new-chat-button"
         />
         <Checkbox
           isChecked={showLogo}
@@ -124,9 +137,10 @@ export const BasicDemo: FunctionComponent = () => {
       </FormGroup>
 
       <ChatbotHeader>
-        {(showMenu || showLogo || showCenteredLogo) && (
+        {(showMenu || showNewChatButton || showLogo || showCenteredLogo) && (
           <ChatbotHeaderMain>
             {showMenu && <ChatbotHeaderMenu onMenuToggle={() => alert('Menu toggle clicked')} />}
+            {showNewChatButton && <ChatbotHeaderNewChatButton onClick={() => alert('New chat button clicked')} />}
             {(showLogo || showCenteredLogo) && (
               <ChatbotHeaderTitle>{showCenteredLogo ? <Bullseye>{title}</Bullseye> : title}</ChatbotHeaderTitle>
             )}
