@@ -8,6 +8,7 @@ import { useRef, Fragment } from 'react';
 // Import PatternFly components
 import {
   Button,
+  ButtonProps,
   Drawer,
   DrawerPanelContent,
   DrawerContent,
@@ -18,13 +19,10 @@ import {
   DrawerCloseButton,
   DrawerContentBody,
   SearchInput,
-  Menu,
-  MenuList,
-  MenuGroup,
-  MenuItem,
-  MenuContent,
-  MenuItemProps,
-  MenuProps,
+  List,
+  ListItem,
+  ListItemProps,
+  Title,
   DrawerPanelContentProps,
   DrawerContentProps,
   DrawerContentBodyProps,
@@ -33,9 +31,10 @@ import {
   DrawerCloseButtonProps,
   DrawerPanelBodyProps,
   SkeletonProps,
-  Title,
   Icon,
-  ButtonProps
+  TextInput,
+  TextInputProps,
+  MenuProps
 } from '@patternfly/react-core';
 
 import { OutlinedClockIcon, OutlinedCommentAltIcon, PenToSquareIcon } from '@patternfly/react-icons';
@@ -53,6 +52,20 @@ export interface Conversation {
   noIcon?: boolean;
   /** Conversation */
   text: string;
+  /** Flag to indicate if the conversation name is being edited. */
+  isEditing?: boolean;
+  /** Ref for the text input that renders when isEditing is true. */
+  inputRef?: React.RefObject<HTMLInputElement>;
+  /** The accessible name for the text input that renders when isEditing is true. */
+  inputAriaLabel?: string;
+  /** Additional props passed to the text input that renders when isEditing is true. */
+  inputProps?: TextInputProps;
+  /** Callback for when the conversation text input value changes during editing. */
+  onChange?: (event: React.FormEvent<HTMLInputElement>, value: string) => void;
+  /** Callback for when the conversation text input value is blurred during editing. */
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  /** Callback for when a keydown event is truggered during editing. This must include logic to submit or cancel an edit. */
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   /** Dropdown items rendered in conversation settings dropdown */
   menuItems?: React.ReactNode;
   /** Optional classname applied to conversation settings dropdown */
@@ -61,8 +74,10 @@ export interface Conversation {
   label?: string;
   /** Callback for when user selects item. */
   onSelect?: (event?: React.MouseEvent, value?: string | number) => void;
-  /** Additional props passed to conversation menu item */
-  additionalProps?: MenuItemProps;
+  /** Additional props passed to conversation button item */
+  additionalProps?: ButtonProps;
+  /** Additional props passed to conversation list item */
+  listItemProps?: Omit<ListItemProps, 'children'>;
 }
 export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   /** Function called to toggle drawer */
@@ -97,7 +112,7 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   reverseButtonOrder?: boolean;
   /** Custom test id for the drawer actions */
   drawerActionsTestId?: string;
-  /** Additional props applied to menu  */
+  /** @deprecated Additional props applied to list container  */
   menuProps?: MenuProps;
   /** Additional props applied to panel */
   drawerPanelContentProps?: DrawerPanelContentProps;
@@ -146,7 +161,6 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   displayMode,
   reverseButtonOrder = false,
   drawerActionsTestId = 'chatbot-nav-drawer-actions',
-  menuProps,
   drawerPanelContentProps,
   drawerContentProps,
   drawerContentBodyProps,
@@ -170,55 +184,72 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   };
 
   const getNavItem = (conversation: Conversation) => (
-    <MenuItem
-      className={`pf-chatbot__menu-item ${activeItemId && activeItemId === conversation.id ? 'pf-chatbot__menu-item--active' : ''}`}
-      itemId={conversation.id}
+    <ListItem
+      className={`pf-chatbot__conversation-list-item ${activeItemId && activeItemId === conversation.id ? 'pf-chatbot__conversation-list-item--active' : ''}`}
       key={conversation.id}
-      {...(conversation.noIcon ? {} : { icon: conversation.icon ?? <OutlinedCommentAltIcon /> })}
-      /* eslint-disable indent */
-      {...(conversation.menuItems
-        ? {
-            actions: (
-              <ConversationHistoryDropdown
-                menuClassName={conversation.menuClassName}
-                onSelect={conversation.onSelect}
-                menuItems={conversation.menuItems}
-                label={conversation.label}
-              />
-            )
-          }
-        : {})}
-      {...conversation.additionalProps}
+      {...conversation.listItemProps}
       /* eslint-enable indent */
     >
-      {conversation.text}
-    </MenuItem>
+      {conversation.isEditing ? (
+        <TextInput
+          aria-label={conversation.inputAriaLabel ?? `Edit conversation name for ${conversation.text}`}
+          innerRef={conversation.inputRef}
+          value={conversation.text}
+          onChange={conversation.onChange}
+          onBlur={conversation.onBlur}
+          onKeyDown={conversation.onKeyDown}
+          id={`conversation-${conversation.id}-input`}
+          {...conversation.inputProps}
+        />
+      ) : (
+        <>
+          <Button
+            className="pf-chatbot__conversation-history-item"
+            variant="link"
+            {...conversation.additionalProps}
+            {...(conversation.noIcon ? {} : { icon: conversation.icon ?? <OutlinedCommentAltIcon /> })}
+            onClick={(event) => onSelectActiveItem?.(event, conversation.id)}
+          >
+            {conversation.text}
+          </Button>
+          {conversation.menuItems && (
+            <ConversationHistoryDropdown
+              menuClassName={conversation.menuClassName}
+              onSelect={conversation.onSelect}
+              menuItems={conversation.menuItems}
+              label={conversation.label}
+            />
+          )}
+        </>
+      )}
+    </ListItem>
   );
 
-  const buildMenu = () => {
+  const buildConversations = () => {
     if (Array.isArray(conversations)) {
-      // Render for array of MenuItemObject
       return (
-        <MenuList>
+        <List className="pf-chatbot__conversation-list" isPlain>
           {conversations.map((conversation) => (
             <Fragment key={conversation.id}>{getNavItem(conversation)}</Fragment>
           ))}
-        </MenuList>
+        </List>
       );
     } else {
-      // Render for object with NavItemObject arrays as values
       return (
-        <>
+        <div>
           {Object.keys(conversations).map((navGroup) => (
-            <MenuGroup className="pf-chatbot__menu-item-header" label={navGroup} key={navGroup}>
-              <MenuList>
+            <section key={navGroup}>
+              <Title headingLevel="h4" className="pf-chatbot__conversation-list-header">
+                {navGroup}
+              </Title>
+              <List className="pf-chatbot__conversation-list" isPlain>
                 {conversations[navGroup].map((conversation) => (
                   <Fragment key={conversation.id}>{getNavItem(conversation)}</Fragment>
                 ))}
-              </MenuList>
-            </MenuGroup>
+              </List>
+            </section>
           ))}
-        </>
+        </div>
       );
     }
   };
@@ -238,11 +269,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
     if (noResultsState) {
       return <HistoryEmptyState {...noResultsState} />;
     }
-    return (
-      <Menu isPlain onSelect={onSelectActiveItem} activeItemId={activeItemId} {...menuProps}>
-        <MenuContent>{buildMenu()}</MenuContent>
-      </Menu>
-    );
+    return <>{buildConversations()}</>;
   };
 
   const renderDrawerContent = () => (

@@ -374,6 +374,14 @@ To help users track important conversations, add a "pin" option to the conversat
 
 ```
 
+### Drawer with editable conversations
+
+Sample text.
+
+```js file="./ChatbotConversationEditing.tsx"
+
+```
+
 ### Drawer with active conversation
 
 If you're showing a conversation that is already active, you can set the `activeItemId` prop on your `<ChatbotConversationHistoryNav>` to apply an active visual state.
