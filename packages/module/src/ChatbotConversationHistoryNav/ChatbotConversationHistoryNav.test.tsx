@@ -718,7 +718,6 @@ describe('ChatbotConversationHistoryNav', () => {
           conversations={[{ ...editableConversations, onKeyDown }]}
         />
       );
-      const input = screen.getByRole('textbox', { name: /Edit conversation name for ChatBot documentation/i });
       expect(onKeyDown).not.toHaveBeenCalled();
     });
 
