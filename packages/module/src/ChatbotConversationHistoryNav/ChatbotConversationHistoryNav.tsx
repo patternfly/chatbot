@@ -32,10 +32,12 @@ import {
   DrawerActionsProps,
   DrawerCloseButtonProps,
   DrawerPanelBodyProps,
-  SkeletonProps
+  SkeletonProps,
+  Title,
+  Icon
 } from '@patternfly/react-core';
 
-import { OutlinedCommentAltIcon } from '@patternfly/react-icons';
+import { OutlinedClockIcon, OutlinedCommentAltIcon } from '@patternfly/react-icons';
 import { ChatbotDisplayMode } from '../Chatbot/Chatbot';
 import ConversationHistoryDropdown from './ChatbotConversationHistoryDropdown';
 import LoadingState from './LoadingState';
@@ -120,6 +122,8 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   noResultsState?: HistoryEmptyStateProps;
   /** Sets drawer to compact styling. */
   isCompact?: boolean;
+  /** Display title  */
+  title?: string;
 }
 
 export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversationHistoryNavProps> = ({
@@ -152,6 +156,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   emptyState,
   noResultsState,
   isCompact,
+  title = 'Chat history',
   ...props
 }: ChatbotConversationHistoryNavProps) => {
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -238,15 +243,6 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
 
   const renderDrawerContent = () => (
     <>
-      {handleTextInputChange && (
-        <div className="pf-chatbot__input">
-          <SearchInput
-            aria-label={searchInputAriaLabel}
-            onChange={(_event, value) => handleTextInputChange(value)}
-            placeholder={searchInputPlaceholder}
-          />
-        </div>
-      )}
       <DrawerPanelBody {...drawerPanelBodyProps}>{renderMenuContent()}</DrawerPanelBody>
     </>
   );
@@ -268,6 +264,23 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
             )}
           </DrawerActions>
         </DrawerHead>
+        <div className="pf-chatbot__title-container">
+          <Title headingLevel="h3">
+            <Icon size="lg" className="pf-chatbot__title-icon">
+              <OutlinedClockIcon />
+            </Icon>
+            {title}
+          </Title>
+          {!isLoading && handleTextInputChange && (
+            <div className="pf-chatbot__input">
+              <SearchInput
+                aria-label={searchInputAriaLabel}
+                onChange={(_event, value) => handleTextInputChange(value)}
+                placeholder={searchInputPlaceholder}
+              />
+            </div>
+          )}
+        </div>
         {isLoading ? <LoadingState {...loadingState} /> : renderDrawerContent()}
       </>
     );
