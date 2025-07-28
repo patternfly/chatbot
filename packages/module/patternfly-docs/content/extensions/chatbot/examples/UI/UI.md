@@ -68,7 +68,7 @@ import { MessageBar } from '@patternfly/chatbot/dist/dynamic/MessageBar';
 import SourceDetailsMenuItem from '@patternfly/chatbot/dist/dynamic/SourceDetailsMenuItem';
 import { ChatbotModal } from '@patternfly/chatbot/dist/dynamic/ChatbotModal';
 import SettingsForm from '@patternfly/chatbot/dist/dynamic/Settings';
-import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, UploadIcon } from '@patternfly/react-icons';
+import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, ThumbtackIcon, UploadIcon } from '@patternfly/react-icons';
 import { useDropzone } from 'react-dropzone';
 
 import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
@@ -358,6 +358,14 @@ Both the search input field and "New chat" buttons are optional. The `reverseBut
 Actions can be added to conversations with `menuItems`. Optionally, you can also add a `className` to the menu via `menuClassName`, change the default aria-label and tooltip content via `label`, or add an `onSelect` callback for when a user selects an item.
 
 ```js file="./ChatbotHeaderDrawerWithActions.tsx"
+
+```
+
+### Pinning conversations
+
+To help users track important conversations, add a "pin" option to the conversation action menus. This action moves a conversation to a dedicated "pinned" section at the top of the history drawer for quick access. Pinned items should contain an "unpin" option, so that users can remove pinned conversations as needed.
+
+```js file="./ChatbotHeaderDrawerWithPin.tsx"
 
 ```
 
