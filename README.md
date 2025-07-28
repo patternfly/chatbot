@@ -3,7 +3,7 @@
 This PatternFly extension library provides components based on PatternFly 6 that can be used to build chatbots.
 
 ---
-  
+
 ## Install
 
 To use the chatbot extension in your project, run
