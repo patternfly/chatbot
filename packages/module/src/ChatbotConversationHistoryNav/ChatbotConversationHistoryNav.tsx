@@ -65,6 +65,8 @@ export interface Conversation {
   additionalProps?: ButtonProps;
   /** Additional props passed to conversation list item */
   listItemProps?: Omit<ListItemProps, 'children'>;
+  /** Custom dropdown ID to ensure uniqueness across demo instances */
+  dropdownId?: string;
 }
 export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   /** Function called to toggle drawer */
@@ -202,6 +204,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
             onSelect={conversation.onSelect}
             menuItems={conversation.menuItems}
             label={conversation.label}
+            id={conversation.dropdownId}
           />
         )}
       </>
