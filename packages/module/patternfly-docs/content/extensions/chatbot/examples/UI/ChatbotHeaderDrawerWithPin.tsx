@@ -97,6 +97,14 @@ export const ChatbotHeaderPinDemo: FunctionComponent = () => {
       }
       return newPinned;
     });
+
+    // Focus the conversation input after pin/unpin action
+    setTimeout(() => {
+      const dropdown = document.getElementById(`pin-demo-${conversationId}-dropdown`);
+      if (dropdown) {
+        dropdown.focus();
+      }
+    }, 100);
   };
 
   const createMenuItems = (conversationId: string) => {
@@ -136,7 +144,8 @@ export const ChatbotHeaderPinDemo: FunctionComponent = () => {
           pinnedItems.push({
             ...conv,
             menuItems: createMenuItems(conv.id),
-            icon: <ThumbtackIcon />
+            icon: <ThumbtackIcon />,
+            dropdownId: `pin-demo-${conv.id}-dropdown`
           });
         }
       });
@@ -153,7 +162,8 @@ export const ChatbotHeaderPinDemo: FunctionComponent = () => {
         .filter((conv) => !pinnedConversations.has(conv.id))
         .map((conv) => ({
           ...conv,
-          menuItems: createMenuItems(conv.id)
+          menuItems: createMenuItems(conv.id),
+          dropdownId: `pin-demo-${conv.id}-dropdown`
         }));
 
       if (unpinnedConversations.length > 0) {
