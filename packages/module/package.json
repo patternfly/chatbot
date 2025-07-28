@@ -72,7 +72,9 @@
     "victory-cursor-container": "^37.1.1",
     "victory-tooltip": "^37.1.1",
     "victory-bar": "^37.1.1",
-    "file-saver": "^2.0.5"
+    "file-saver": "^2.0.5",
+    "unified": "^11.0.5",
+    "estree-util-is-identifier-name": "^3.0.0"
   },
   "overrides": {
     "puppeteer": "^23.6.1",
