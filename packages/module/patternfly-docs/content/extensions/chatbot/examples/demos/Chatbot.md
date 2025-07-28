@@ -59,6 +59,7 @@ import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import { getTrackingProviders } from "@patternfly/chatbot/dist/dynamic/tracking";
 import { useEffect,useCallback, useRef, useState, FunctionComponent, MouseEvent } from 'react';
+import saveAs from 'file-saver';
 
 ### Basic ChatBot
 
@@ -147,5 +148,19 @@ Your code structure should look like this:
 ```
 
 ```js file="./EmbeddedComparisonChatbot.tsx" isFullscreen
+
+```
+
+### Chat transcripts
+
+This demo illustrates how you could add downloadable transcripts to your ChatBot, which outline conversation details in a Markdown file. This approach allows users to easily share information from a conversation with others. 
+
+A message transcript includes details from a single chat message. To download a sample message transcript in this demo, click the "Download" action under a bot message.
+
+A conversation transcript includes details from the entirety of a ChatBot conversation. To download a sample conversation transcript in this demo, open the chat history menu and click "Download" in the options menu for the conversation.
+
+In this example, file download is implemented with [file-saver](https://www.npmjs.com/package/file-saver).
+
+```js file="./ChatbotTranscripts.tsx" isFullscreen
 
 ```

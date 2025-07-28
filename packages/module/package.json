@@ -72,7 +72,8 @@
     "victory-create-container": "^37.1.1",
     "victory-cursor-container": "^37.1.1",
     "victory-tooltip": "^37.1.1",
-    "victory-bar": "^37.1.1"
+    "victory-bar": "^37.1.1",
+    "file-saver": "^2.0.5"
   },
   "overrides": {
     "puppeteer": "^23.6.1",
