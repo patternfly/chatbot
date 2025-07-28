@@ -1,0 +1,45 @@
+// ============================================================================
+// Chatbot Main - Message Divider
+// ============================================================================
+.pf-chatbot__message-divider {
+  display: grid;
+  padding-block-end: var(--pf-t--global--spacer--xl);
+
+  .pf-v6-c-divider,
+  .pf-v6-c-label {
+    grid-row: 1 / 1;
+    grid-column: 1 / 1;
+  }
+
+  .pf-v6-c-label {
+    --pf-v6-c-label--BackgroundColor: var(--pf-t--global--background--color--tertiary--default); 
+    --pf-v6-c-label--BorderColor: var(--pf-t--global--border--color--default); 
+    --pf-v6-c-label--PaddingInlineStart: var(--pf-t--global--spacer--action--horizontal--compact); 
+    --pf-v6-c-label--PaddingInlineEnd: var(--pf-t--global--spacer--action--horizontal--compact);
+    
+    .pf-v6-c-label__text {
+      font-weight: var(--pf-t--global--font--weight--body--bold);
+      text-align: center;
+    }  
+  }
+
+  &.pf-m-divider {    
+    .pf-v6-c-label {
+      --pf-v6-c-label--BackgroundColor: var(--pf-t--global--background--color--secondary--default); 
+      --pf-v6-c-label--MaxWidth: 75%;
+
+      justify-self: center;
+    }
+    
+    .pf-v6-c-divider {
+      align-self: center;
+    }
+  }
+  
+  &.pf-m-wrap {
+    .pf-v6-c-label,
+    .pf-v6-c-label__text {
+      white-space: normal;
+    }
+  }
+}
