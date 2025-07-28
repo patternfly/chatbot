@@ -99,7 +99,7 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   isLoading?: boolean;
   /** Array of attachments attached to a message */
   attachments?: MessageAttachment[];
-  /** Props for message actions, such as feedback (positive or negative), copy button, share, and listen */
+  /** Props for message actions, such as feedback (positive or negative), copy button, edit message, share, and listen */
   actions?: {
     [key: string]: ActionProps;
   };
@@ -179,6 +179,8 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   onEditUpdate?: (event: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => void;
   /** Callback functionf or when edit cancel update button is clicked */
   onEditCancel?: (event: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  /** Ref applied to editable message input */
+  inputRef?: Ref<HTMLTextAreaElement>;
   /** Props for edit form */
   editFormProps?: FormProps;
   /** Sets message to compact styling. */
@@ -219,6 +221,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   cancelWord = 'Cancel',
   onEditUpdate,
   onEditCancel,
+  inputRef,
   editFormProps,
   isCompact,
   ...props
@@ -256,7 +259,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
         <>
           {beforeMainContent && <>{beforeMainContent}</>}
           <MessageInput
-            content={content}
+            content={messageText}
             editPlaceholder={editPlaceholder}
             updateWord={updateWord}
             cancelWord={cancelWord}
@@ -265,6 +268,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
               setMessageText(value);
             }}
             onEditCancel={onEditCancel}
+            inputRef={inputRef}
             {...editFormProps}
           />
         </>
@@ -369,7 +373,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
                 isCompact={isCompact}
               />
             )}
-            {!isLoading && actions && <ResponseActions actions={actions} />}
+            {!isLoading && !isEditable && actions && <ResponseActions actions={actions} />}
             {userFeedbackForm && <UserFeedback {...userFeedbackForm} timestamp={dateString} isCompact={isCompact} />}
             {userFeedbackComplete && (
               <UserFeedbackComplete {...userFeedbackComplete} timestamp={dateString} isCompact={isCompact} />

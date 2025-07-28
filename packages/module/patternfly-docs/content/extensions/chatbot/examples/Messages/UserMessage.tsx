@@ -1,4 +1,4 @@
-import { Fragment, useState, CSSProperties, FunctionComponent, MouseEvent } from 'react';
+import { Fragment, useState, useRef, useEffect, CSSProperties, FunctionComponent, MouseEvent, Ref } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import userAvatar from './user_avatar.svg';
 import {
@@ -12,11 +12,31 @@ import {
 import { rehypeCodeBlockToggle } from '@patternfly/chatbot/dist/esm/Message/Plugins/rehypeCodeBlockToggle';
 
 export const UserMessageExample: FunctionComponent = () => {
-  const [variant, setVariant] = useState<string>('Code');
-  const [isEditable, setIsEditable] = useState<boolean>(true);
+  const messageInputRef = useRef<HTMLTextAreaElement>(null);
+  const editButtonRef = useRef<HTMLButtonElement>(null);
+  const [variant, setVariant] = useState<string | number | undefined>('Code');
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<string>('Message content type');
   const [isExpandable, setIsExpanded] = useState(false);
+
+  const [isEditable, setIsEditable] = useState<boolean>(false);
+  const prevIsEditable = useRef<boolean>(false);
+
+  useEffect(() => {
+    if (isEditable && messageInputRef?.current) {
+      messageInputRef.current.focus();
+      const messageLength = messageInputRef.current.value.length;
+      // Mimic the behavior of the textarea when the user clicks on a label to place the cursor at the end of the input value
+      messageInputRef.current.setSelectionRange(messageLength, messageLength);
+    }
+
+    // We only want to re-focus the edit action button if the user has previously clicked on it,
+    // and prevent it from receiving focus on page load
+    if (prevIsEditable.current && !isEditable && editButtonRef?.current) {
+      editButtonRef.current.focus();
+      prevIsEditable.current = false;
+    }
+  }, [isEditable]);
 
   /* eslint-disable indent */
   const renderContent = () => {
@@ -180,6 +200,11 @@ _Italic text, formatted with single underscores_
     setIsOpen(!isOpen);
   };
 
+  const onUpdateOrCancelEdit = () => {
+    prevIsEditable.current = isEditable;
+    setIsEditable(false);
+  };
+
   const toggle = (toggleRef: Ref<MenuToggleElement>) => (
     <MenuToggle
       className="pf-v6-u-mb-md"
@@ -212,6 +237,17 @@ _Italic text, formatted with single underscores_
         avatar={userAvatar}
         avatarProps={{ isBordered: true }}
       />
+      <Message
+        name="User"
+        role="user"
+        isEditable={isEditable}
+        onEditUpdate={onUpdateOrCancelEdit}
+        onEditCancel={onUpdateOrCancelEdit}
+        actions={{ edit: { onClick: () => setIsEditable(true), innerRef: editButtonRef } }}
+        content="This is a user message with an edit action."
+        avatar={userAvatar}
+        inputRef={messageInputRef}
+      />
       <Select
         id="single-select"
         isOpen={isOpen}
@@ -235,7 +271,6 @@ _Italic text, formatted with single underscores_
           <SelectOption value="Table">Table</SelectOption>
           <SelectOption value="Image">Image</SelectOption>
           <SelectOption value="Error">Error</SelectOption>
-          <SelectOption value="Editable">Editable</SelectOption>
         </SelectList>
       </Select>
       <Message
@@ -246,10 +281,7 @@ _Italic text, formatted with single underscores_
         tableProps={
           variant === 'Table' ? { 'aria-label': 'App information and user roles for user messages' } : undefined
         }
-        isEditable={variant === 'Editable' ? isEditable : false}
         error={variant === 'Error' ? error : undefined}
-        onEditUpdate={() => setIsEditable(false)}
-        onEditCancel={() => setIsEditable(false)}
         codeBlockProps={{ isExpandable, expandableSectionProps: { truncateMaxLines: isExpandable ? 1 : undefined } }}
         // In this example, custom plugin will override any custom expandedText or collapsedText attributes provided
         // The purpose of this plugin is to provide unique link names for the code blocks

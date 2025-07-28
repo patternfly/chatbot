@@ -49,7 +49,7 @@ import { explorePipelinesQuickStart } from './explore-pipeline-quickstart.ts';
 import { monitorSampleAppQuickStart } from '@patternfly/chatbot/src/Message/QuickStarts/monitor-sampleapp-quickstart.ts';
 import userAvatar from './user_avatar.svg';
 import squareImg from './PF-social-color-square.svg';
-import { CSSProperties, useState, Fragment, FunctionComponent, MouseEvent as ReactMouseEvent, KeyboardEvent as ReactKeyboardEvent, Ref, isValidElement, cloneElement, Children, ReactNode } from 'react';
+import { CSSProperties, useState, Fragment, FunctionComponent, MouseEvent as ReactMouseEvent, KeyboardEvent as ReactKeyboardEvent, Ref, isValidElement, cloneElement, Children, ReactNode, useRef, useEffect } from 'react';
 
 The `content` prop of the `<Message>` component is passed to a `<Markdown>` component (from [react-markdown](https://remarkjs.github.io/react-markdown/)), which is configured to translate plain text strings into PatternFly [`<Content>` components](/components/content) and code blocks into PatternFly [`<CodeBlock>` components.](/components/code-block)
 
@@ -83,6 +83,7 @@ You can add actions to a message, to allow users to interact with the message co
 
 - Feedback responses that allow users to rate a message as "good" or "bad".
 - Copy and share controls that allow users to share the message content with others.
+- An edit action to allow users to edit a message they previously sent. This should only be applied to user messages - see the [user messages example](#user-messages) for details on how to implement this action.
 - A listen action, that will read the message content out loud.
 
 **Note:** The logic for the actions is not built into the component and must be implemented by the consuming application.
@@ -193,6 +194,8 @@ The quick start tile displayed below the message is based on the tile included i
 ### User messages
 
 Messages from users have a different background color to differentiate them from bot messages. You can also display a custom avatar that is uploaded by the user. You can further customize the avatar by applying an additional class or passing [PatternFly avatar props](/components/avatar) to the `<Message>` component via `avatarProps`.
+
+User messages can also be made editable by passing an "edit" object to the `actions` property. When editing is enabled focus should be placed on the text area. When editing is completed or canceled the focus should be moved back to the edit button.
 
 ```js file="./UserMessage.tsx"
 
