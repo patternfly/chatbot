@@ -62,6 +62,8 @@ export interface Conversation {
   onSelect?: (event?: React.MouseEvent, value?: string | number) => void;
   /** Additional props passed to conversation menu item */
   additionalProps?: MenuItemProps;
+  /** Custom dropdown ID to ensure uniqueness across demo instances */
+  dropdownId?: string;
 }
 export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   /** Function called to toggle drawer */
@@ -180,6 +182,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
                 onSelect={conversation.onSelect}
                 menuItems={conversation.menuItems}
                 label={conversation.label}
+                id={conversation.dropdownId}
               />
             )
           }

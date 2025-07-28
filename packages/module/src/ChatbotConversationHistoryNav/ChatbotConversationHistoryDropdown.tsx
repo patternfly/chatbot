@@ -19,13 +19,16 @@ export interface ChatbotConversationHistoryDropdownProps extends Omit<DropdownPr
   label?: string;
   /** Callback for when user selects item. */
   onSelect?: (event?: React.MouseEvent, value?: string | number) => void;
+  /** Id applied to dropdown */
+  id?: string;
 }
 
 export const ChatbotConversationHistoryDropdown: FunctionComponent<ChatbotConversationHistoryDropdownProps> = ({
   menuItems,
   menuClassName,
   onSelect,
-  label
+  label,
+  id
 }: ChatbotConversationHistoryDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -45,6 +48,7 @@ export const ChatbotConversationHistoryDropdown: FunctionComponent<ChatbotConver
         isExpanded={isOpen}
         onClick={() => setIsOpen(!isOpen)}
         role="menuitem"
+        id={id}
       >
         <EllipsisIcon />
       </MenuToggle>
