@@ -120,6 +120,8 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   noResultsState?: HistoryEmptyStateProps;
   /** Sets drawer to compact styling. */
   isCompact?: boolean;
+  /** Announcement text to be read by screen readers when search results change */
+  announcement?: string;
 }
 
 export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversationHistoryNavProps> = ({
@@ -133,7 +135,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   drawerContent,
   onNewChat,
   searchInputPlaceholder = 'Search previous conversations...',
-  searchInputAriaLabel = 'Filter menu items',
+  searchInputAriaLabel = 'Search previous conversations...',
   handleTextInputChange,
   displayMode,
   reverseButtonOrder = false,
@@ -152,6 +154,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   emptyState,
   noResultsState,
   isCompact,
+  announcement,
   ...props
 }: ChatbotConversationHistoryNavProps) => {
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -230,7 +233,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
       return <HistoryEmptyState {...noResultsState} />;
     }
     return (
-      <Menu isPlain onSelect={onSelectActiveItem} activeItemId={activeItemId} {...menuProps}>
+      <Menu role="none" isPlain onSelect={onSelectActiveItem} activeItemId={activeItemId} {...menuProps}>
         <MenuContent>{buildMenu()}</MenuContent>
       </Menu>
     );
@@ -278,6 +281,11 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
         defaultSize="384px"
         {...drawerPanelContentProps}
       >
+        {announcement && (
+          <div className="pf-chatbot__filter-announcement" aria-live="polite">
+            {announcement}
+          </div>
+        )}
         {drawer}
       </DrawerPanelContent>
     );
