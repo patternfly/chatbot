@@ -35,7 +35,8 @@ import {
   SkeletonProps,
   Title,
   Icon,
-  ButtonProps
+  ButtonProps,
+  SearchInputProps
 } from '@patternfly/react-core';
 
 import { OutlinedClockIcon, OutlinedCommentAltIcon } from '@patternfly/react-icons';
@@ -89,6 +90,8 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   searchInputPlaceholder?: string;
   /** Aria label for search input */
   searchInputAriaLabel?: string;
+  /** Additional props passed to search input */
+  searchInputProps?: SearchInputProps;
   /** A callback for when the input value changes. Omit to hide input field */
   handleTextInputChange?: (value: string) => void;
   /** Display mode of chatbot */
@@ -142,6 +145,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   newChatButtonProps,
   searchInputPlaceholder = 'Search previous conversations...',
   searchInputAriaLabel = 'Filter menu items',
+  searchInputProps,
   handleTextInputChange,
   displayMode,
   reverseButtonOrder = false,
@@ -281,6 +285,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
                 aria-label={searchInputAriaLabel}
                 onChange={(_event, value) => handleTextInputChange(value)}
                 placeholder={searchInputPlaceholder}
+                {...searchInputProps}
               />
             </div>
           )}
