@@ -25,7 +25,9 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
   const onRenameClick = (itemId: string | number) => {
     setConversations((prevConversations) => {
       const result = findConversationAndGroup(prevConversations, itemId);
-      if (!result) return prevConversations;
+      if (!result) {
+        return prevConversations;
+      }
 
       const { groupKey, conversationIndex } = result;
       const newConversations = { ...prevConversations };
@@ -49,7 +51,9 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
   const handleInputChange = (itemId: string | number, event: React.FormEvent<HTMLInputElement>, value: string) => {
     setConversations((prevConversations) => {
       const result = findConversationAndGroup(prevConversations, itemId);
-      if (!result) return prevConversations;
+      if (!result) {
+        return prevConversations;
+      }
       const { groupKey, conversationIndex } = result;
       const newConversations = { ...prevConversations };
       const newGroup = [...newConversations[groupKey]];
@@ -65,7 +69,9 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
     const newValue = event.target.value;
     setConversations((prevConversations) => {
       const result = findConversationAndGroup(prevConversations, itemId);
-      if (!result) return prevConversations;
+      if (!result) {
+        return prevConversations;
+      }
 
       const { groupKey, conversationIndex } = result;
       const newConversations = { ...prevConversations };
@@ -86,7 +92,9 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
       const newValue = event.currentTarget.value;
       setConversations((prevConversations) => {
         const result = findConversationAndGroup(prevConversations, itemId);
-        if (!result) return prevConversations;
+        if (!result) {
+          return prevConversations;
+        }
 
         const { groupKey, conversationIndex } = result;
         const newConversations = { ...prevConversations };
@@ -106,7 +114,9 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
       const originalText = originalTextRef.current[itemId] || '';
       setConversations((prevConversations) => {
         const result = findConversationAndGroup(prevConversations, itemId);
-        if (!result) return prevConversations;
+        if (!result) {
+          return prevConversations;
+        }
 
         const { groupKey, conversationIndex } = result;
         const newConversations = { ...prevConversations };
