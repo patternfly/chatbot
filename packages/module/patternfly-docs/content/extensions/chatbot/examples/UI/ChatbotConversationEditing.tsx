@@ -12,18 +12,29 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
 
   const originalTextRef = useRef({});
 
+  const findConversationAndGroup = (conversations: { [key: string]: Conversation[] }, itemId: string | number) => {
+    for (const [groupKey, conversationList] of Object.entries(conversations)) {
+      const conversationIndex = conversationList.findIndex((conv) => conv.id === itemId);
+      if (conversationIndex !== -1) {
+        return { groupKey, conversationIndex, conversation: conversationList[conversationIndex] };
+      }
+    }
+    return null;
+  };
+
   const onRenameClick = (itemId: string | number) => {
     setConversations((prevConversations) => {
+      const result = findConversationAndGroup(prevConversations, itemId);
+      if (!result) return prevConversations;
+
+      const { groupKey, conversationIndex } = result;
       const newConversations = { ...prevConversations };
-      Object.keys(newConversations).forEach((groupKey) => {
-        newConversations[groupKey] = newConversations[groupKey].map((conv) => {
-          if (conv.id === itemId) {
-            originalTextRef.current[conv.id] = conv.text;
-            return { ...conv, isEditing: true };
-          }
-          return conv;
-        });
-      });
+      const newGroup = [...newConversations[groupKey]];
+
+      originalTextRef.current[itemId] = newGroup[conversationIndex].text;
+      newGroup[conversationIndex] = { ...newGroup[conversationIndex], isEditing: true };
+      newConversations[groupKey] = newGroup;
+
       return newConversations;
     });
 
@@ -37,12 +48,15 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
 
   const handleInputChange = (itemId: string | number, event: React.FormEvent<HTMLInputElement>, value: string) => {
     setConversations((prevConversations) => {
+      const result = findConversationAndGroup(prevConversations, itemId);
+      if (!result) return prevConversations;
+      const { groupKey, conversationIndex } = result;
       const newConversations = { ...prevConversations };
-      Object.keys(newConversations).forEach((groupKey) => {
-        newConversations[groupKey] = newConversations[groupKey].map((conv) =>
-          conv.id === itemId ? { ...conv, text: value } : conv
-        );
-      });
+      const newGroup = [...newConversations[groupKey]];
+
+      newGroup[conversationIndex] = { ...newGroup[conversationIndex], text: value };
+      newConversations[groupKey] = newGroup;
+
       return newConversations;
     });
   };
@@ -50,12 +64,16 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
   const handleInputBlur = (itemId: string | number, event: React.FocusEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     setConversations((prevConversations) => {
+      const result = findConversationAndGroup(prevConversations, itemId);
+      if (!result) return prevConversations;
+
+      const { groupKey, conversationIndex } = result;
       const newConversations = { ...prevConversations };
-      Object.keys(newConversations).forEach((groupKey) => {
-        newConversations[groupKey] = newConversations[groupKey].map((conv) =>
-          conv.id === itemId ? { ...conv, text: newValue, isEditing: false } : conv
-        );
-      });
+      const newGroup = [...newConversations[groupKey]];
+
+      newGroup[conversationIndex] = { ...newGroup[conversationIndex], text: newValue, isEditing: false };
+      newConversations[groupKey] = newGroup;
+
       return newConversations;
     });
 
@@ -67,12 +85,16 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
       event.preventDefault();
       const newValue = event.currentTarget.value;
       setConversations((prevConversations) => {
+        const result = findConversationAndGroup(prevConversations, itemId);
+        if (!result) return prevConversations;
+
+        const { groupKey, conversationIndex } = result;
         const newConversations = { ...prevConversations };
-        Object.keys(newConversations).forEach((groupKey) => {
-          newConversations[groupKey] = newConversations[groupKey].map((conv) =>
-            conv.id === itemId ? { ...conv, text: newValue, isEditing: false } : conv
-          );
-        });
+        const newGroup = [...newConversations[groupKey]];
+
+        newGroup[conversationIndex] = { ...newGroup[conversationIndex], text: newValue, isEditing: false };
+        newConversations[groupKey] = newGroup;
+
         return newConversations;
       });
       // Clean up the stored original text
@@ -83,12 +105,16 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
       // Revert to the original text
       const originalText = originalTextRef.current[itemId] || '';
       setConversations((prevConversations) => {
+        const result = findConversationAndGroup(prevConversations, itemId);
+        if (!result) return prevConversations;
+
+        const { groupKey, conversationIndex } = result;
         const newConversations = { ...prevConversations };
-        Object.keys(newConversations).forEach((groupKey) => {
-          newConversations[groupKey] = newConversations[groupKey].map((conv) =>
-            conv.id === itemId ? { ...conv, text: originalText, isEditing: false } : conv
-          );
-        });
+        const newGroup = [...newConversations[groupKey]];
+
+        newGroup[conversationIndex] = { ...newGroup[conversationIndex], text: originalText, isEditing: false };
+        newConversations[groupKey] = newGroup;
+
         return newConversations;
       });
       // Clean up the stored original text
@@ -97,7 +123,7 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
   };
 
   const renderMenuItems = (itemId: string | number) => [
-    <DropdownList key="list-1">
+    <DropdownList key={`list-${itemId}`}>
       <DropdownItem value="Download" id="Download">
         Download
       </DropdownItem>
