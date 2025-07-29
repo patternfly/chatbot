@@ -34,7 +34,8 @@ import {
   DrawerPanelBodyProps,
   SkeletonProps,
   Title,
-  Icon
+  Icon,
+  ButtonProps
 } from '@patternfly/react-core';
 
 import { OutlinedClockIcon, OutlinedCommentAltIcon } from '@patternfly/react-icons';
@@ -76,6 +77,8 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   onSelectActiveItem?: (event?: React.MouseEvent, itemId?: string | number) => void;
   /** Items shown in conversation history */
   conversations: Conversation[] | { [key: string]: Conversation[] };
+  /** Additional button props for new chat button. */
+  newChatButtonProps?: ButtonProps;
   /** Text shown in blue button */
   newChatButtonText?: string;
   /** Callback function for when blue button is clicked. Omit to hide blue "new chat button" */
@@ -136,6 +139,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   newChatButtonText = 'New chat',
   drawerContent,
   onNewChat,
+  newChatButtonProps,
   searchInputPlaceholder = 'Search previous conversations...',
   searchInputAriaLabel = 'Filter menu items',
   handleTextInputChange,
@@ -258,7 +262,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
           >
             <DrawerCloseButton onClick={onDrawerToggle} {...drawerCloseButtonProps} />
             {onNewChat && (
-              <Button size={isCompact ? 'sm' : undefined} onClick={onNewChat}>
+              <Button size={isCompact ? 'sm' : undefined} onClick={onNewChat} {...newChatButtonProps}>
                 {newChatButtonText}
               </Button>
             )}
