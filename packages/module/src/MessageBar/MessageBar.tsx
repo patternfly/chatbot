@@ -141,6 +141,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
   const [message, setMessage] = useState<string | number>(value ?? '');
   const [isListeningMessage, setIsListeningMessage] = useState<boolean>(false);
   const [hasSentMessage, setHasSentMessage] = useState(false);
+  const [isComposing, setIsComposing] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const textareaRef = (innerRef as React.RefObject<HTMLTextAreaElement>) ?? inputRef;
   const attachButtonRef = useRef<HTMLButtonElement>(null);
@@ -285,20 +286,37 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
 
   const handleKeyDown = useCallback(
     (event: ReactKeyboardEvent) => {
-      if (event.key === 'Enter' && !event.shiftKey) {
+      // Japanese and other languages may use IME for character input.
+      // In these cases, enter is used to select the final input, so we need to check for composition end instead.
+      // See more info at https://www.stum.de/2016/06/24/handling-ime-events-in-javascript/
+      // Chrome, Edge, and Firefox seem to work well with just the compose event.
+      // Safari is a little bit special. We need to handle 229 as well in this case.
+      const nativeEvent = event.nativeEvent as KeyboardEvent;
+      const isCompositionKey = nativeEvent.which === 229;
+      const isCurrentlyComposing = isComposing || isCompositionKey;
+
+      if (event.key === 'Enter' && !isCurrentlyComposing && !event.shiftKey) {
         event.preventDefault();
         if (!isSendButtonDisabled && !hasStopButton) {
           handleSend(message);
         }
       }
-      if (event.key === 'Enter' && event.shiftKey) {
+      if (event.key === 'Enter' && !isCurrentlyComposing && event.shiftKey) {
         if (textareaRef.current) {
           handleNewLine(textareaRef.current);
         }
       }
     },
-    [isSendButtonDisabled, hasStopButton, handleSend, message]
+    [isSendButtonDisabled, hasStopButton, handleSend, message, isComposing]
   );
+
+  const handleCompositionStart = useCallback(() => {
+    setIsComposing(true);
+  }, []);
+
+  const handleCompositionEnd = useCallback(() => {
+    setIsComposing(false);
+  }, []);
 
   const handleAttachMenuToggle = () => {
     attachMenuProps?.setIsAttachMenuOpen && attachMenuProps?.setIsAttachMenuOpen(!attachMenuProps?.isAttachMenuOpen);
@@ -402,6 +420,8 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
           placeholder={isListeningMessage ? listeningText : placeholder}
           ref={textareaRef}
           onKeyDown={handleKeyDown}
+          onCompositionStart={handleCompositionStart}
+          onCompositionEnd={handleCompositionEnd}
           {...props}
         />
       </div>
