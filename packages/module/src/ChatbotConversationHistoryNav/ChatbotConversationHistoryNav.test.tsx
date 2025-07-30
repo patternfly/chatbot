@@ -491,4 +491,20 @@ describe('ChatbotConversationHistoryNav', () => {
     const iconElement = container.querySelector('.pf-chatbot__title-icon');
     expect(iconElement).toBeInTheDocument();
   });
+
+  it('should be able to have controlled search input', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        handleTextInputChange={jest.fn()}
+        searchInputProps={{ value: 'I am a sample search' }}
+      />
+    );
+
+    expect(screen.getByRole('dialog', { name: /Chat history I am a sample search/i })).toBeInTheDocument();
+  });
 });
