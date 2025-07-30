@@ -48,19 +48,16 @@ exports[`FileDetails should render file details 1`] = `
         <span
           class="pf-chatbot__code-fileName"
         >
-          <div
-            style="display: contents;"
+          <span
+            class="pf-v6-c-truncate"
+            tabindex="0"
           >
             <span
-              class="pf-v6-c-truncate"
+              class="pf-v6-c-truncate__start"
             >
-              <span
-                class="pf-v6-c-truncate__start"
-              >
-                test
-              </span>
+              test
             </span>
-          </div>
+          </span>
         </span>
       </div>
       <div

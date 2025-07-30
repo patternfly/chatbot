@@ -38,7 +38,7 @@ import {
   ButtonProps
 } from '@patternfly/react-core';
 
-import { OutlinedClockIcon, OutlinedCommentAltIcon } from '@patternfly/react-icons';
+import { OutlinedClockIcon, OutlinedCommentAltIcon, PenToSquareIcon } from '@patternfly/react-icons';
 import { ChatbotDisplayMode } from '../Chatbot/Chatbot';
 import ConversationHistoryDropdown from './ChatbotConversationHistoryDropdown';
 import LoadingState from './LoadingState';
@@ -262,7 +262,12 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
           >
             <DrawerCloseButton onClick={onDrawerToggle} {...drawerCloseButtonProps} />
             {onNewChat && (
-              <Button size={isCompact ? 'sm' : undefined} onClick={onNewChat} {...newChatButtonProps}>
+              <Button
+                size={isCompact ? 'sm' : undefined}
+                onClick={onNewChat}
+                icon={<PenToSquareIcon />}
+                {...newChatButtonProps}
+              >
                 {newChatButtonText}
               </Button>
             )}

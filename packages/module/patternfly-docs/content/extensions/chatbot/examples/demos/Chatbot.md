@@ -45,7 +45,7 @@ ChatbotHeaderTitle,
 ChatbotHeaderActions,
 ChatbotHeaderSelectorDropdown,
 ChatbotHeaderOptionsDropdown,
-ChatbotHeaderCloseButton
+ChatbotHeaderCloseButton,
 } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
 
 import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';

@@ -61,7 +61,8 @@ ChatbotHeaderMenu,
 ChatbotHeaderActions,
 ChatbotHeaderTitle,
 ChatbotHeaderOptionsDropdown,
-ChatbotHeaderSelectorDropdown
+ChatbotHeaderSelectorDropdown,
+ChatbotHeaderNewChatButton
 } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
 import { ChatbotFooter, ChatbotFootnote } from '@patternfly/chatbot/dist/dynamic/ChatbotFooter';
 import { MessageBar } from '@patternfly/chatbot/dist/dynamic/MessageBar';
@@ -78,6 +79,7 @@ import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/ou
 import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
 import OpenDrawerRightIcon from '@patternfly/react-icons/dist/esm/icons/open-drawer-right-icon';
 import CogIcon from '@patternfly/react-icons/dist/esm/icons/cog-icon';
+import PenToSquareIcon from '@patternfly/react-icons/dist/esm/icons/pen-to-square-icon';
 import PFHorizontalLogoColor from './PF-HorizontalLogo-Color.svg';
 import PFHorizontalLogoReverse from './PF-HorizontalLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
@@ -184,9 +186,10 @@ The ChatBot header is persistent, and contains the title for the ChatBot window,
 
 The `<ChatbotHeader>` has 2 sections:
 
-- `<ChatbotHeaderMain>` contains the title and an optional menu toggle:
+- `<ChatbotHeaderMain>` contains the title and an optional menu toggle or new chat button:
   - `<ChatbotHeaderTitle>` handles the layout and display of a title or image at different responsive sizes.
   - `<ChatbotHeaderMenu>` (optional) is placed on the left side of the header and used to toggle a chat history menu.
+  - `<ChatbotHeaderNewChatButton>` (optional) is placed on the left side of the header and used to initiate a new chat.
 - `<ChatbotHeaderActions>` contains any additional controls:
   - The `<ChatbotHeaderSelectorDropdown>` component is a standard PatternFly dropdown that matches the ChatBot styles.
   - The `<ChatbotHeaderOptionsDropdown>` component is a dropdown with a menu toggle that is intended to be used to update ChatBot settings (like the display mode).
@@ -197,6 +200,7 @@ Your `<ChatbotHeader>` code structure should look like this:
 <ChatbotHeader>
   <ChatbotHeaderMain>
     <ChatbotHeaderMenu ... />
+    <ChatbotHeaderNewChatButton ... />
     <ChatbotHeaderTitle ... />
   </ChatbotHeaderMain>
   <ChatbotHeaderActions>
@@ -221,6 +225,7 @@ There are a variety of options and customizations you can make to the header, to
 In this example, select the respective checkbox to toggle these features:
 
 - **Menu:** Users can select the menu toggle to open a menu of additional options or actions.
+- **New chat button:** Used to start a new chat session. The header button can be used in addition to or in place of a new chat button within the [conversation history drawer](/patternfly-ai/chatbot/ui/#drawer-with-search-and-new-chat-button).
 - **Left-aligned logo**
 - **Centered logo**
 - **Selector dropdown:** Users can choose from preselected options in a dropdown menu. For example, they can toggle between AI models.
