@@ -27,7 +27,6 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingConversationId, setEditingConversationId] = useState<string | number | null>(null);
   const [editingText, setEditingText] = useState('');
-  const [originalText, setOriginalText] = useState('');
 
   // Ref for the text input
   const textInputRef = useRef<HTMLInputElement>(null);
@@ -57,7 +56,6 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
     if (result) {
       setEditingConversationId(itemId);
       setEditingText(result.conversation.text);
-      setOriginalText(result.conversation.text);
       setIsModalOpen(true);
     }
   };
@@ -91,7 +89,6 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
     setIsModalOpen(false);
     setEditingConversationId(null);
     setEditingText('');
-    setOriginalText('');
   };
 
   const handleTextInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {

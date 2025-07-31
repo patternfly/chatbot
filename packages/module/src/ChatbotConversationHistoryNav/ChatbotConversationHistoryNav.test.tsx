@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
 import { ChatbotDisplayMode } from '../Chatbot/Chatbot';
 import ChatbotConversationHistoryNav, { Conversation } from './ChatbotConversationHistoryNav';
@@ -557,7 +556,7 @@ describe('ChatbotConversationHistoryNav', () => {
         isDrawerOpen={true}
         displayMode={ChatbotDisplayMode.fullscreen}
         setIsDrawerOpen={jest.fn()}
-        conversations={initialConversations}
+        conversations={[{ id: '1', text: 'ChatBot documentation', listItemProps: { className: 'test' } }]}
       />
     );
     expect(screen.getByRole('listitem')).toHaveClass('test');

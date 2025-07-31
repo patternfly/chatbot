@@ -376,12 +376,12 @@ To help users track important conversations, add a "pin" option to the conversat
 
 ### Drawer with editable conversations
 
-To make conversation names in the history drawer editable, pass the `isEditable` property to each conversation item that is intended or expected to be editable. When a conversation item is editable, you must ensure the following:
+You can allow conversation items in the history drawer editable by implementing a modal that opens upon clicking a "Rename" (or similar) action. When doing so, you must ensure the following:
 
-- Each text input has a unique accessible name - this is handled automatically, but can be customized via the `inputAriaLabel` property on the conversation item.
-- The `onBlur` and `onKeyDown` callback handlers are passed in, typically to "exit" editing mode on blur and to handle the Enter or Escape keys on key down - in this example, `onBlur` and the Enter key via `onKeyDown` save the text input content, while Escape via `onKeyDown` cancels the edit and reverts to the original text.
-- The `onChange` callback handler is passed in to handle updating the text input value and any conversation state.
-- Focus is handled correctly when enabling and disabled editing mode - when `isEditing` becomes true, focus should be moved to the text input, and when the Enter or Escape keys are pressed and `isEditing` becomes false focus should be moved to the conversation actions dropdown toggle.
+- When the modal opens, place focus at the end of the text input.
+- When the modal closes, focus goes back to the action toggle that was previously opened.
+- Changes can be canceled via the Escape key or clicking a "cancel" button.
+- Changes can be saved via the Enter key or clicking a "save" button.
 
 ```js file="./ChatbotConversationEditing.tsx"
 
