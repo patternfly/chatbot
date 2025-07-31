@@ -493,249 +493,73 @@ describe('ChatbotConversationHistoryNav', () => {
     expect(iconElement).toBeInTheDocument();
   });
 
-  describe('Editable conversations', () => {
-    const editableConversations: Conversation = {
-      id: '1',
-      text: 'ChatBot documentation',
-      isEditing: true,
-      listItemProps: {
-        className: 'test'
-      },
-      inputProps: {
-        id: 'test'
-      }
-    };
+  it('Passes titleProps to Title', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={{ Today: initialConversations }}
+        titleProps={{ className: 'test' }}
+      />
+    );
+    expect(screen.getByRole('heading', { name: /Today/i })).toHaveClass('test');
+  });
 
-    it('Passes titleProps to Title', () => {
-      render(
-        <ChatbotConversationHistoryNav
-          onDrawerToggle={onDrawerToggle}
-          isDrawerOpen={true}
-          displayMode={ChatbotDisplayMode.fullscreen}
-          setIsDrawerOpen={jest.fn()}
-          conversations={{ Today: [editableConversations] }}
-          titleProps={{ className: 'test' }}
-        />
-      );
-      expect(screen.getByRole('heading', { name: /Today/i })).toHaveClass('test');
-    });
+  it('Overrides Title heading level when titleProps.headingLevel is passed', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={{ Today: initialConversations }}
+        titleProps={{ headingLevel: 'h2' }}
+      />
+    );
+    expect(screen.queryByRole('heading', { name: /Today/i, level: 4 })).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Today/i, level: 2 })).toBeInTheDocument();
+  });
 
-    it('Overrides Title heading level when titleProps.headingLevel is passed', () => {
-      render(
-        <ChatbotConversationHistoryNav
-          onDrawerToggle={onDrawerToggle}
-          isDrawerOpen={true}
-          displayMode={ChatbotDisplayMode.fullscreen}
-          setIsDrawerOpen={jest.fn()}
-          conversations={{ Today: [editableConversations] }}
-          titleProps={{ headingLevel: 'h2' }}
-        />
-      );
-      expect(screen.queryByRole('heading', { name: /Today/i, level: 4 })).not.toBeInTheDocument();
-      expect(screen.getByRole('heading', { name: /Today/i, level: 2 })).toBeInTheDocument();
-    });
+  it('Passes listProps to List when conversations is an array', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        listProps={{ className: 'test' }}
+      />
+    );
+    expect(screen.getByRole('list')).toHaveClass('test');
+  });
 
-    it('Passes listProps to List when conversations is an array', () => {
-      render(
-        <ChatbotConversationHistoryNav
-          onDrawerToggle={onDrawerToggle}
-          isDrawerOpen={true}
-          displayMode={ChatbotDisplayMode.fullscreen}
-          setIsDrawerOpen={jest.fn()}
-          conversations={initialConversations}
-          listProps={{ className: 'test' }}
-        />
-      );
-      expect(screen.getByRole('list')).toHaveClass('test');
-    });
+  it('Passes listProps to List when conversations is an object', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={{ Today: initialConversations }}
+        listProps={{ Today: { className: 'test' } }}
+      />
+    );
+    expect(screen.getByRole('list')).toHaveClass('test');
+  });
 
-    it('Passes listProps to List when conversations is an object', () => {
-      render(
-        <ChatbotConversationHistoryNav
-          onDrawerToggle={onDrawerToggle}
-          isDrawerOpen={true}
-          displayMode={ChatbotDisplayMode.fullscreen}
-          setIsDrawerOpen={jest.fn()}
-          conversations={{ Today: [editableConversations] }}
-          listProps={{ Today: { className: 'test' } }}
-        />
-      );
-      expect(screen.getByRole('list')).toHaveClass('test');
-    });
-
-    it('Passes listItemProps to ListItem', () => {
-      render(
-        <ChatbotConversationHistoryNav
-          onDrawerToggle={onDrawerToggle}
-          isDrawerOpen={true}
-          displayMode={ChatbotDisplayMode.fullscreen}
-          setIsDrawerOpen={jest.fn()}
-          conversations={[editableConversations]}
-        />
-      );
-      expect(screen.getByRole('listitem')).toHaveClass('test');
-    });
-
-    it('Renders conversation as button when isEditing is false', () => {
-      render(
-        <ChatbotConversationHistoryNav
-          onDrawerToggle={onDrawerToggle}
-          isDrawerOpen={true}
-          displayMode={ChatbotDisplayMode.fullscreen}
-          setIsDrawerOpen={jest.fn()}
-          conversations={initialConversations}
-        />
-      );
-      expect(screen.getByRole('button', { name: /ChatBot documentation/i })).toBeInTheDocument();
-      expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
-    });
-
-    it('Renders conversation as text input when isEditing is true', () => {
-      render(
-        <ChatbotConversationHistoryNav
-          onDrawerToggle={onDrawerToggle}
-          isDrawerOpen={true}
-          displayMode={ChatbotDisplayMode.fullscreen}
-          setIsDrawerOpen={jest.fn()}
-          conversations={[editableConversations]}
-        />
-      );
-      expect(
-        screen.getByRole('textbox', { name: /Edit conversation name for ChatBot documentation/i })
-      ).toBeInTheDocument();
-      expect(screen.queryByRole('button', { name: /ChatBot documentation/i })).not.toBeInTheDocument();
-    });
-
-    it('Passes inputProps to TextInput', () => {
-      render(
-        <ChatbotConversationHistoryNav
-          onDrawerToggle={onDrawerToggle}
-          isDrawerOpen={true}
-          displayMode={ChatbotDisplayMode.fullscreen}
-          setIsDrawerOpen={jest.fn()}
-          conversations={[editableConversations]}
-        />
-      );
-      expect(
-        screen.getByRole('textbox', { name: /Edit conversation name for ChatBot documentation/i })
-      ).toHaveAttribute('id', 'test');
-    });
-
-    it('Renders conversation input with custom aria-label when inputAriaLabel is passed', () => {
-      render(
-        <ChatbotConversationHistoryNav
-          onDrawerToggle={onDrawerToggle}
-          isDrawerOpen={true}
-          displayMode={ChatbotDisplayMode.fullscreen}
-          setIsDrawerOpen={jest.fn()}
-          conversations={[
-            {
-              ...editableConversations,
-              inputAriaLabel: 'Edit name for guidelines'
-            }
-          ]}
-        />
-      );
-      expect(screen.getByDisplayValue('ChatBot documentation')).toHaveAccessibleName('Edit name for guidelines');
-    });
-
-    it('Does not call onChange on input by default', async () => {
-      const onChange = jest.fn();
-      render(
-        <>
-          <input type="text" aria-label="Other input" />
-          <ChatbotConversationHistoryNav
-            onDrawerToggle={onDrawerToggle}
-            isDrawerOpen={true}
-            displayMode={ChatbotDisplayMode.fullscreen}
-            setIsDrawerOpen={jest.fn()}
-            conversations={[{ ...editableConversations, onChange }]}
-          />
-        </>
-      );
-      const input = screen.getByRole('textbox', { name: /Other input/i });
-      await userEvent.type(input, 'New value');
-      expect(onChange).not.toHaveBeenCalled();
-    });
-
-    it('Calls onChange when input is changed', async () => {
-      const onChange = jest.fn();
-      render(
-        <ChatbotConversationHistoryNav
-          onDrawerToggle={onDrawerToggle}
-          isDrawerOpen={true}
-          displayMode={ChatbotDisplayMode.fullscreen}
-          setIsDrawerOpen={jest.fn()}
-          conversations={[{ ...editableConversations, onChange }]}
-        />
-      );
-      const input = screen.getByRole('textbox', { name: /Edit conversation name for ChatBot documentation/i });
-      await userEvent.type(input, 'New value');
-      expect(onChange).toHaveBeenCalled();
-    });
-
-    it('Does not call onBlur on input by default', async () => {
-      const onBlur = jest.fn();
-      render(
-        <ChatbotConversationHistoryNav
-          onDrawerToggle={onDrawerToggle}
-          isDrawerOpen={true}
-          displayMode={ChatbotDisplayMode.fullscreen}
-          setIsDrawerOpen={jest.fn()}
-          conversations={[{ ...editableConversations, onBlur }]}
-        />
-      );
-      const input = screen.getByRole('textbox', { name: /Edit conversation name for ChatBot documentation/i });
-      await userEvent.click(input);
-      expect(onBlur).not.toHaveBeenCalled();
-    });
-
-    it('Calls onBlur when input is blurred', async () => {
-      const onBlur = jest.fn();
-      render(
-        <ChatbotConversationHistoryNav
-          onDrawerToggle={onDrawerToggle}
-          isDrawerOpen={true}
-          displayMode={ChatbotDisplayMode.fullscreen}
-          setIsDrawerOpen={jest.fn()}
-          conversations={[{ ...editableConversations, onBlur }]}
-        />
-      );
-      const input = screen.getByRole('textbox', { name: /Edit conversation name for ChatBot documentation/i });
-      await userEvent.click(input);
-      await userEvent.tab();
-      expect(onBlur).toHaveBeenCalled();
-    });
-
-    it('Does not call onKeyDown on input by default', async () => {
-      const onKeyDown = jest.fn();
-      render(
-        <ChatbotConversationHistoryNav
-          onDrawerToggle={onDrawerToggle}
-          isDrawerOpen={true}
-          displayMode={ChatbotDisplayMode.fullscreen}
-          setIsDrawerOpen={jest.fn()}
-          conversations={[{ ...editableConversations, onKeyDown }]}
-        />
-      );
-      expect(onKeyDown).not.toHaveBeenCalled();
-    });
-
-    it('Calls onKeyDown when input is focused and key is pressed', async () => {
-      const onKeyDown = jest.fn();
-      render(
-        <ChatbotConversationHistoryNav
-          onDrawerToggle={onDrawerToggle}
-          isDrawerOpen={true}
-          displayMode={ChatbotDisplayMode.fullscreen}
-          setIsDrawerOpen={jest.fn()}
-          conversations={[{ ...editableConversations, onKeyDown }]}
-        />
-      );
-      const input = screen.getByRole('textbox', { name: /Edit conversation name for ChatBot documentation/i });
-
-      await userEvent.type(input, 'Enter');
-      expect(onKeyDown).toHaveBeenCalled();
-    });
+  it('Passes listItemProps to ListItem', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+      />
+    );
+    expect(screen.getByRole('listitem')).toHaveClass('test');
   });
 });

@@ -32,8 +32,6 @@ import {
   DrawerPanelBodyProps,
   SkeletonProps,
   Icon,
-  TextInput,
-  TextInputProps,
   MenuProps, // Remove in next breaking change
   TitleProps,
   ListProps
@@ -54,20 +52,6 @@ export interface Conversation {
   noIcon?: boolean;
   /** Conversation */
   text: string;
-  /** Flag to indicate if the conversation name is being edited. */
-  isEditing?: boolean;
-  /** Ref for the text input that renders when isEditing is true. */
-  inputRef?: React.RefObject<HTMLInputElement>;
-  /** The accessible name for the text input that renders when isEditing is true. */
-  inputAriaLabel?: string;
-  /** Additional props passed to the text input that renders when isEditing is true. */
-  inputProps?: TextInputProps;
-  /** Callback for when the conversation text input value changes during editing. */
-  onChange?: (event: React.FormEvent<HTMLInputElement>, value: string) => void;
-  /** Callback for when the conversation text input value is blurred during editing. */
-  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
-  /** Callback for when a keydown event is truggered during editing. This must include logic to submit or cancel an edit. */
-  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   /** Dropdown items rendered in conversation settings dropdown */
   menuItems?: React.ReactNode;
   /** Optional classname applied to conversation settings dropdown */
@@ -198,38 +182,25 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
       {...conversation.listItemProps}
       /* eslint-enable indent */
     >
-      {conversation.isEditing ? (
-        <TextInput
-          aria-label={conversation.inputAriaLabel ?? `Edit conversation name for ${conversation.text}`}
-          innerRef={conversation.inputRef}
-          value={conversation.text}
-          onChange={conversation.onChange}
-          onBlur={conversation.onBlur}
-          onKeyDown={conversation.onKeyDown}
-          id={`conversation-${conversation.id}-input`}
-          {...conversation.inputProps}
-        />
-      ) : (
-        <>
-          <Button
-            className="pf-chatbot__conversation-history-item"
-            variant="link"
-            {...conversation.additionalProps}
-            {...(conversation.noIcon ? {} : { icon: conversation.icon ?? <OutlinedCommentAltIcon /> })}
-            onClick={(event) => onSelectActiveItem?.(event, conversation.id)}
-          >
-            {conversation.text}
-          </Button>
-          {conversation.menuItems && (
-            <ConversationHistoryDropdown
-              menuClassName={conversation.menuClassName}
-              onSelect={conversation.onSelect}
-              menuItems={conversation.menuItems}
-              label={conversation.label}
-            />
-          )}
-        </>
-      )}
+      <>
+        <Button
+          className="pf-chatbot__conversation-history-item"
+          variant="link"
+          {...conversation.additionalProps}
+          {...(conversation.noIcon ? {} : { icon: conversation.icon ?? <OutlinedCommentAltIcon /> })}
+          onClick={(event) => onSelectActiveItem?.(event, conversation.id)}
+        >
+          {conversation.text}
+        </Button>
+        {conversation.menuItems && (
+          <ConversationHistoryDropdown
+            menuClassName={conversation.menuClassName}
+            onSelect={conversation.onSelect}
+            menuItems={conversation.menuItems}
+            label={conversation.label}
+          />
+        )}
+      </>
     </ListItem>
   );
 

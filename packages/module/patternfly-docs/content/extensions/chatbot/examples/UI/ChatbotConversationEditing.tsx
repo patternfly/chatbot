@@ -1,16 +1,46 @@
 // From Cursor, with aid
-import { FunctionComponent, useState, useRef } from 'react';
+import React, { FunctionComponent, useState, useRef, useEffect } from 'react';
 import { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
 import ChatbotConversationHistoryNav, {
   Conversation
 } from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
-import { Checkbox, DropdownItem, DropdownList } from '@patternfly/react-core';
+import {
+  Checkbox,
+  DropdownItem,
+  DropdownList,
+  Modal,
+  ModalVariant,
+  Button,
+  TextInput,
+  Form,
+  FormGroup,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
+} from '@patternfly/react-core';
 
 export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
   const displayMode = ChatbotDisplayMode.embedded;
 
-  const originalTextRef = useRef({});
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingConversationId, setEditingConversationId] = useState<string | number | null>(null);
+  const [editingText, setEditingText] = useState('');
+  const [originalText, setOriginalText] = useState('');
+
+  // Ref for the text input
+  const textInputRef = useRef<HTMLInputElement>(null);
+
+  // Focus the text input when modal opens
+  useEffect(() => {
+    if (isModalOpen && textInputRef.current) {
+      textInputRef.current.focus();
+      // Move cursor to the end of the text
+      const length = textInputRef.current.value.length;
+      textInputRef.current.setSelectionRange(length, length);
+    }
+  }, [isModalOpen]);
 
   const findConversationAndGroup = (conversations: { [key: string]: Conversation[] }, itemId: string | number) => {
     for (const [groupKey, conversationList] of Object.entries(conversations)) {
@@ -23,112 +53,51 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
   };
 
   const onRenameClick = (itemId: string | number) => {
-    setConversations((prevConversations) => {
-      const result = findConversationAndGroup(prevConversations, itemId);
-      if (!result) {
-        return prevConversations;
-      }
-
-      const { groupKey, conversationIndex } = result;
-      const newConversations = { ...prevConversations };
-      const newGroup = [...newConversations[groupKey]];
-
-      originalTextRef.current[itemId] = newGroup[conversationIndex].text;
-      newGroup[conversationIndex] = { ...newGroup[conversationIndex], isEditing: true };
-      newConversations[groupKey] = newGroup;
-
-      return newConversations;
-    });
-
-    setTimeout(() => {
-      const input = document.getElementById(`conversation-${itemId}-input`);
-      if (input) {
-        input.focus();
-      }
-    }, 100);
+    const result = findConversationAndGroup(conversations, itemId);
+    if (result) {
+      setEditingConversationId(itemId);
+      setEditingText(result.conversation.text);
+      setOriginalText(result.conversation.text);
+      setIsModalOpen(true);
+    }
   };
 
-  const handleInputChange = (itemId: string | number, event: React.FormEvent<HTMLInputElement>, value: string) => {
-    setConversations((prevConversations) => {
-      const result = findConversationAndGroup(prevConversations, itemId);
-      if (!result) {
-        return prevConversations;
-      }
-      const { groupKey, conversationIndex } = result;
-      const newConversations = { ...prevConversations };
-      const newGroup = [...newConversations[groupKey]];
+  const handleModalSave = () => {
+    if (editingConversationId) {
+      setConversations((prevConversations) => {
+        const result = findConversationAndGroup(prevConversations, editingConversationId);
+        if (!result) {
+          return prevConversations;
+        }
 
-      newGroup[conversationIndex] = { ...newGroup[conversationIndex], text: value };
-      newConversations[groupKey] = newGroup;
+        const { groupKey, conversationIndex } = result;
+        const newConversations = { ...prevConversations };
+        const newGroup = [...newConversations[groupKey]];
 
-      return newConversations;
-    });
+        newGroup[conversationIndex] = { ...newGroup[conversationIndex], text: editingText };
+        newConversations[groupKey] = newGroup;
+
+        return newConversations;
+      });
+    }
+    handleModalClose();
   };
 
-  const handleInputBlur = (itemId: string | number, event: React.FocusEvent<HTMLInputElement>) => {
-    const newValue = event.target.value;
-    setConversations((prevConversations) => {
-      const result = findConversationAndGroup(prevConversations, itemId);
-      if (!result) {
-        return prevConversations;
-      }
-
-      const { groupKey, conversationIndex } = result;
-      const newConversations = { ...prevConversations };
-      const newGroup = [...newConversations[groupKey]];
-
-      newGroup[conversationIndex] = { ...newGroup[conversationIndex], text: newValue, isEditing: false };
-      newConversations[groupKey] = newGroup;
-
-      return newConversations;
-    });
-
-    delete originalTextRef.current[itemId];
+  const handleModalCancel = () => {
+    handleModalClose();
   };
 
-  const handleInputKeyDown = (itemId: string | number, event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setEditingConversationId(null);
+    setEditingText('');
+    setOriginalText('');
+  };
+
+  const handleTextInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      const newValue = event.currentTarget.value;
-      setConversations((prevConversations) => {
-        const result = findConversationAndGroup(prevConversations, itemId);
-        if (!result) {
-          return prevConversations;
-        }
-
-        const { groupKey, conversationIndex } = result;
-        const newConversations = { ...prevConversations };
-        const newGroup = [...newConversations[groupKey]];
-
-        newGroup[conversationIndex] = { ...newGroup[conversationIndex], text: newValue, isEditing: false };
-        newConversations[groupKey] = newGroup;
-
-        return newConversations;
-      });
-      // Clean up the stored original text
-      delete originalTextRef.current[itemId];
-    } else if (event.key === 'Escape') {
-      event.stopPropagation();
-      event.preventDefault();
-      // Revert to the original text
-      const originalText = originalTextRef.current[itemId] || '';
-      setConversations((prevConversations) => {
-        const result = findConversationAndGroup(prevConversations, itemId);
-        if (!result) {
-          return prevConversations;
-        }
-
-        const { groupKey, conversationIndex } = result;
-        const newConversations = { ...prevConversations };
-        const newGroup = [...newConversations[groupKey]];
-
-        newGroup[conversationIndex] = { ...newGroup[conversationIndex], text: originalText, isEditing: false };
-        newConversations[groupKey] = newGroup;
-
-        return newConversations;
-      });
-      // Clean up the stored original text
-      delete originalTextRef.current[itemId];
+      handleModalSave();
     }
   };
 
@@ -150,48 +119,42 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
   ];
 
   const initialConversations: { [key: string]: Conversation[] } = {
-    Today: [{ id: '1', text: 'Red Hat products and services', menuItems: renderMenuItems('1'), isEditing: false }],
+    Today: [{ id: '1', text: 'Red Hat products and services' }],
     'This month': [
       {
         id: '2',
-        text: 'Enterprise Linux installation and setup',
-        menuItems: renderMenuItems('2'),
-        isEditing: false
+        text: 'Enterprise Linux installation and setup'
       },
-      { id: '3', text: 'Troubleshoot system crash', menuItems: renderMenuItems('3'), isEditing: false }
+      { id: '3', text: 'Troubleshoot system crash' }
     ],
     March: [
-      { id: '4', text: 'Ansible security and updates', menuItems: renderMenuItems('4'), isEditing: false },
-      { id: '5', text: 'Red Hat certification', menuItems: renderMenuItems('5'), isEditing: false },
-      { id: '6', text: 'Lightspeed user documentation', menuItems: renderMenuItems('6'), isEditing: false }
+      { id: '4', text: 'Ansible security and updates' },
+      { id: '5', text: 'Red Hat certification' },
+      { id: '6', text: 'Lightspeed user documentation' }
     ],
     February: [
-      { id: '7', text: 'Crashing pod assistance', menuItems: renderMenuItems('7'), isEditing: false },
-      { id: '8', text: 'OpenShift AI pipelines', menuItems: renderMenuItems('8'), isEditing: false },
-      { id: '9', text: 'Updating subscription plan', menuItems: renderMenuItems('9'), isEditing: false },
-      { id: '10', text: 'Red Hat licensing options', menuItems: renderMenuItems('10'), isEditing: false }
+      { id: '7', text: 'Crashing pod assistance' },
+      { id: '8', text: 'OpenShift AI pipelines' },
+      { id: '9', text: 'Updating subscription plan' },
+      { id: '10', text: 'Red Hat licensing options' }
     ],
     January: [
-      { id: '11', text: 'RHEL system performance', menuItems: renderMenuItems('11'), isEditing: false },
-      { id: '12', text: 'Manage user accounts', menuItems: renderMenuItems('12'), isEditing: false }
+      { id: '11', text: 'RHEL system performance' },
+      { id: '12', text: 'Manage user accounts' }
     ]
   };
 
   const [conversations, setConversations] = useState(initialConversations);
 
-  const createConversationItems = () => {
+  // Create conversations with menu items dynamically
+  const conversationsWithMenuItems = () => {
     const newConversations = { ...conversations };
-
     Object.keys(newConversations).forEach((groupKey) => {
       newConversations[groupKey] = newConversations[groupKey].map((conv) => ({
         ...conv,
-        inputAriaLabel: `Edit conversation name: ${originalTextRef.current[conv.id] ?? conv.text}`,
-        onChange: (event: React.FormEvent<HTMLInputElement>, value: string) => handleInputChange(conv.id, event, value),
-        onBlur: (event: React.FocusEvent<HTMLInputElement>) => handleInputBlur(conv.id, event),
-        onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => handleInputKeyDown(conv.id, event)
+        menuItems: renderMenuItems(conv.id)
       }));
     });
-
     return newConversations;
   };
 
@@ -209,9 +172,35 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
         onDrawerToggle={() => setIsDrawerOpen(!isDrawerOpen)}
         isDrawerOpen={isDrawerOpen}
         setIsDrawerOpen={setIsDrawerOpen}
-        conversations={createConversationItems()}
+        conversations={conversationsWithMenuItems()}
         drawerContent={<div>Drawer content</div>}
       />
+
+      <Modal variant={ModalVariant.small} isOpen={isModalOpen} onClose={handleModalClose}>
+        <ModalHeader title="Rename Conversation" />
+        <ModalBody>
+          <Form>
+            <FormGroup label="Conversation Name" fieldId="conversation-name" isRequired>
+              <TextInput
+                isRequired
+                ref={textInputRef}
+                value={editingText}
+                onChange={(_, value) => setEditingText(value)}
+                onKeyDown={handleTextInputKeyDown}
+                id="conversation-name"
+              />
+            </FormGroup>
+          </Form>
+        </ModalBody>
+        <ModalFooter>
+          <Button key="save" variant="primary" onClick={handleModalSave}>
+            Save
+          </Button>
+          <Button key="cancel" variant="link" onClick={handleModalCancel}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
     </>
   );
 };
