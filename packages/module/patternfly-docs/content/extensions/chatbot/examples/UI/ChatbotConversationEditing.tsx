@@ -9,7 +9,6 @@ import {
   Checkbox,
   DropdownItem,
   DropdownList,
-  ModalVariant,
   Button,
   TextInput,
   Form,

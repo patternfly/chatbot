@@ -376,12 +376,12 @@ To help users track important conversations, add a "pin" option to the conversat
 
 ### Drawer with editable conversations
 
-You can allow conversation items in the history drawer editable by implementing a modal that opens upon clicking a "Rename" (or similar) action. When doing so, you must ensure the following:
+You can allow users to edit conversation names in the history drawer by implementing a modal that opens upon clicking a "Rename" (or similar) action. When doing so, you must ensure the following:
 
-- When the modal opens, place focus at the end of the text input.
+- When the modal opens, focus is placed at the end of the text input.
 - When the modal closes, focus goes back to the action toggle that was previously opened.
-- Changes can be canceled via the Escape key or clicking a "cancel" button.
-- Changes can be saved via the Enter key or clicking a "save" button.
+- Changes can be canceled via the **<kbd>Escape</kbd>** key or clicking a "Cancel" button.
+- Changes can be saved via the **<kbd>Enter</kbd>** key or by clicking a "Save" button.
 
 ```js file="./ChatbotConversationEditing.tsx"
 
