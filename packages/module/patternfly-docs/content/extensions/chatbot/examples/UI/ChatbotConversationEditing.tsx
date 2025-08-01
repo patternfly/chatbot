@@ -4,11 +4,11 @@ import { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
 import ChatbotConversationHistoryNav, {
   Conversation
 } from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
+import { ChatbotModal } from '@patternfly/chatbot/dist/dynamic/ChatbotModal';
 import {
   Checkbox,
   DropdownItem,
   DropdownList,
-  Modal,
   ModalVariant,
   Button,
   TextInput,
@@ -173,7 +173,7 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
         drawerContent={<div>Drawer content</div>}
       />
 
-      <Modal variant={ModalVariant.small} isOpen={isModalOpen} onClose={handleModalClose}>
+      <ChatbotModal displayMode={displayMode} isOpen={isModalOpen} onClose={handleModalClose}>
         <ModalHeader title="Rename Conversation" />
         <ModalBody>
           <Form>
@@ -197,7 +197,7 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
             Cancel
           </Button>
         </ModalFooter>
-      </Modal>
+      </ChatbotModal>
     </>
   );
 };
