@@ -962,4 +962,23 @@ describe('Message', () => {
     const form = container.querySelector('form');
     expect(form).toHaveClass('test');
   });
+  it('should be able to disable markdown parsing', () => {
+    render(<Message avatar="./img" role="user" name="User" content={CODE_MESSAGE} isMarkdownDisabled />);
+    // this is looking for markdown syntax that is ordinarily stripped
+    expect(screen.getByText(/~~~yaml/i)).toBeTruthy();
+  });
+  it('should be able to pass props to react-markdown, such as disabling tags', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="user"
+        name="User"
+        content={CODE_MESSAGE}
+        reactMarkdownProps={{ disallowedElements: ['code'] }}
+      />
+    );
+    expect(screen.getByText('Here is some YAML code:')).toBeTruthy();
+    // code block isn't rendering
+    expect(screen.queryByRole('button', { name: 'Copy code' })).toBeFalsy();
+  });
 });
