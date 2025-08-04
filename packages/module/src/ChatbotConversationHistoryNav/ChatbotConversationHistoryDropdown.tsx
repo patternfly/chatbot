@@ -19,7 +19,7 @@ export interface ChatbotConversationHistoryDropdownProps extends Omit<DropdownPr
   label?: string;
   /** Callback for when user selects item. */
   onSelect?: (event?: React.MouseEvent, value?: string | number) => void;
-  /** Id applied to dropdown */
+  /** Id applied to dropdown menu toggle */
   id?: string;
 }
 
