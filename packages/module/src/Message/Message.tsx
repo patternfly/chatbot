@@ -3,7 +3,7 @@
 // ============================================================================
 import { forwardRef, ReactNode, useEffect, useState } from 'react';
 import type { FunctionComponent, HTMLProps, MouseEvent as ReactMouseEvent, Ref } from 'react';
-import Markdown from 'react-markdown';
+import Markdown, { Options } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import {
   AlertProps,
@@ -185,6 +185,10 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   editFormProps?: FormProps;
   /** Sets message to compact styling. */
   isCompact?: boolean;
+  /** Disables markdown parsing for message, allowing only text input */
+  isMarkdownDisabled?: boolean;
+  /** Allows passing additional props down to markdown parser react-markdown, such as allowedElements and disallowedElements. See https://github.com/remarkjs/react-markdown?tab=readme-ov-file#options for options */
+  reactMarkdownProps?: Options;
 }
 
 export const MessageBase: FunctionComponent<MessageProps> = ({
@@ -224,6 +228,8 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   inputRef,
   editFormProps,
   isCompact,
+  isMarkdownDisabled,
+  reactMarkdownProps,
   ...props
 }: MessageProps) => {
   const [messageText, setMessageText] = useState(content);
@@ -249,6 +255,60 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   // Keep timestamps consistent between Timestamp component and aria-label
   const date = new Date();
   const dateString = timestamp ?? `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+
+  const handleMarkdown = () => {
+    if (isMarkdownDisabled) {
+      return (
+        <TextMessage component={ContentVariants.p} {...props}>
+          {messageText}
+        </TextMessage>
+      );
+    }
+    return (
+      <Markdown
+        components={{
+          p: (props) => <TextMessage component={ContentVariants.p} {...props} />,
+          code: ({ children, ...props }) => (
+            <CodeBlockMessage {...props} {...codeBlockProps}>
+              {children}
+            </CodeBlockMessage>
+          ),
+          h1: (props) => <TextMessage component={ContentVariants.h1} {...props} />,
+          h2: (props) => <TextMessage component={ContentVariants.h2} {...props} />,
+          h3: (props) => <TextMessage component={ContentVariants.h3} {...props} />,
+          h4: (props) => <TextMessage component={ContentVariants.h4} {...props} />,
+          h5: (props) => <TextMessage component={ContentVariants.h5} {...props} />,
+          h6: (props) => <TextMessage component={ContentVariants.h6} {...props} />,
+          blockquote: (props) => <TextMessage component={ContentVariants.blockquote} {...props} />,
+          ul: (props) => <UnorderedListMessage {...props} />,
+          ol: (props) => <OrderedListMessage {...props} />,
+          li: (props) => <ListItemMessage {...props} />,
+          table: (props) => <TableMessage {...props} {...tableProps} />,
+          tbody: (props) => <TbodyMessage {...props} />,
+          thead: (props) => <TheadMessage {...props} />,
+          tr: (props) => <TrMessage {...props} />,
+          td: (props) => {
+            // Conflicts with Td type
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { width, ...rest } = props;
+            return <TdMessage {...rest} />;
+          },
+          th: (props) => <ThMessage {...props} />,
+          img: (props) => <ImageMessage {...props} />,
+          a: (props) => (
+            <LinkMessage href={props.href} rel={props.rel} target={props.target} {...linkProps}>
+              {props.children}
+            </LinkMessage>
+          )
+        }}
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={rehypePlugins}
+        {...reactMarkdownProps}
+      >
+        {messageText}
+      </Markdown>
+    );
+  };
 
   const renderMessage = () => {
     if (isLoading) {
@@ -277,51 +337,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
     return (
       <>
         {beforeMainContent && <>{beforeMainContent}</>}
-        {error ? (
-          <ErrorMessage {...error} />
-        ) : (
-          <Markdown
-            components={{
-              p: (props) => <TextMessage component={ContentVariants.p} {...props} />,
-              code: ({ children, ...props }) => (
-                <CodeBlockMessage {...props} {...codeBlockProps}>
-                  {children}
-                </CodeBlockMessage>
-              ),
-              h1: (props) => <TextMessage component={ContentVariants.h1} {...props} />,
-              h2: (props) => <TextMessage component={ContentVariants.h2} {...props} />,
-              h3: (props) => <TextMessage component={ContentVariants.h3} {...props} />,
-              h4: (props) => <TextMessage component={ContentVariants.h4} {...props} />,
-              h5: (props) => <TextMessage component={ContentVariants.h5} {...props} />,
-              h6: (props) => <TextMessage component={ContentVariants.h6} {...props} />,
-              blockquote: (props) => <TextMessage component={ContentVariants.blockquote} {...props} />,
-              ul: (props) => <UnorderedListMessage {...props} />,
-              ol: (props) => <OrderedListMessage {...props} />,
-              li: (props) => <ListItemMessage {...props} />,
-              table: (props) => <TableMessage {...props} {...tableProps} />,
-              tbody: (props) => <TbodyMessage {...props} />,
-              thead: (props) => <TheadMessage {...props} />,
-              tr: (props) => <TrMessage {...props} />,
-              td: (props) => {
-                // Conflicts with Td type
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                const { width, ...rest } = props;
-                return <TdMessage {...rest} />;
-              },
-              th: (props) => <ThMessage {...props} />,
-              img: (props) => <ImageMessage {...props} />,
-              a: (props) => (
-                <LinkMessage href={props.href} rel={props.rel} target={props.target} {...linkProps}>
-                  {props.children}
-                </LinkMessage>
-              )
-            }}
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={rehypePlugins}
-          >
-            {messageText}
-          </Markdown>
-        )}
+        {error ? <ErrorMessage {...error} /> : handleMarkdown()}
       </>
     );
   };
