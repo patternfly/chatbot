@@ -8,6 +8,7 @@ import { useRef, Fragment } from 'react';
 // Import PatternFly components
 import {
   Button,
+  ButtonProps,
   Drawer,
   DrawerPanelContent,
   DrawerContent,
@@ -18,13 +19,10 @@ import {
   DrawerCloseButton,
   DrawerContentBody,
   SearchInput,
-  Menu,
-  MenuList,
-  MenuGroup,
-  MenuItem,
-  MenuContent,
-  MenuItemProps,
-  MenuProps,
+  List,
+  ListItem,
+  ListItemProps,
+  Title,
   DrawerPanelContentProps,
   DrawerContentProps,
   DrawerContentBodyProps,
@@ -33,9 +31,10 @@ import {
   DrawerCloseButtonProps,
   DrawerPanelBodyProps,
   SkeletonProps,
-  Title,
   Icon,
-  ButtonProps
+  MenuProps, // Remove in next breaking change
+  TitleProps,
+  ListProps
 } from '@patternfly/react-core';
 
 import { OutlinedClockIcon, OutlinedCommentAltIcon, PenToSquareIcon } from '@patternfly/react-icons';
@@ -61,8 +60,10 @@ export interface Conversation {
   label?: string;
   /** Callback for when user selects item. */
   onSelect?: (event?: React.MouseEvent, value?: string | number) => void;
-  /** Additional props passed to conversation menu item */
-  additionalProps?: MenuItemProps;
+  /** Additional props passed to conversation button item */
+  additionalProps?: ButtonProps;
+  /** Additional props passed to conversation list item */
+  listItemProps?: Omit<ListItemProps, 'children'>;
 }
 export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   /** Function called to toggle drawer */
@@ -79,6 +80,10 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   conversations: Conversation[] | { [key: string]: Conversation[] };
   /** Additional button props for new chat button. */
   newChatButtonProps?: ButtonProps;
+  /** Additional props applied to all conversation list headers */
+  titleProps?: Partial<TitleProps>;
+  /** Additional props applied to conversation list. If conversations is an object, you should pass an object of ListProps for each group. */
+  listProps?: ListProps | { [key: string]: ListProps };
   /** Text shown in blue button */
   newChatButtonText?: string;
   /** Callback function for when blue button is clicked. Omit to hide blue "new chat button" */
@@ -97,7 +102,7 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   reverseButtonOrder?: boolean;
   /** Custom test id for the drawer actions */
   drawerActionsTestId?: string;
-  /** Additional props applied to menu  */
+  /** @deprecated Additional props applied to list container  */
   menuProps?: MenuProps;
   /** Additional props applied to panel */
   drawerPanelContentProps?: DrawerPanelContentProps;
@@ -136,6 +141,8 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   activeItemId,
   onSelectActiveItem,
   conversations,
+  titleProps,
+  listProps,
   newChatButtonText = 'New chat',
   drawerContent,
   onNewChat,
@@ -146,7 +153,6 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   displayMode,
   reverseButtonOrder = false,
   drawerActionsTestId = 'chatbot-nav-drawer-actions',
-  menuProps,
   drawerPanelContentProps,
   drawerContentProps,
   drawerContentBodyProps,
@@ -170,55 +176,59 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   };
 
   const getNavItem = (conversation: Conversation) => (
-    <MenuItem
-      className={`pf-chatbot__menu-item ${activeItemId && activeItemId === conversation.id ? 'pf-chatbot__menu-item--active' : ''}`}
-      itemId={conversation.id}
+    <ListItem
+      className={`pf-chatbot__conversation-list-item ${activeItemId && activeItemId === conversation.id ? 'pf-chatbot__conversation-list-item--active' : ''}`}
       key={conversation.id}
-      {...(conversation.noIcon ? {} : { icon: conversation.icon ?? <OutlinedCommentAltIcon /> })}
-      /* eslint-disable indent */
-      {...(conversation.menuItems
-        ? {
-            actions: (
-              <ConversationHistoryDropdown
-                menuClassName={conversation.menuClassName}
-                onSelect={conversation.onSelect}
-                menuItems={conversation.menuItems}
-                label={conversation.label}
-              />
-            )
-          }
-        : {})}
-      {...conversation.additionalProps}
+      {...conversation.listItemProps}
       /* eslint-enable indent */
     >
-      {conversation.text}
-    </MenuItem>
+      <>
+        <Button
+          className="pf-chatbot__conversation-history-item"
+          variant="link"
+          {...conversation.additionalProps}
+          {...(conversation.noIcon ? {} : { icon: conversation.icon ?? <OutlinedCommentAltIcon /> })}
+          onClick={(event) => onSelectActiveItem?.(event, conversation.id)}
+        >
+          {conversation.text}
+        </Button>
+        {conversation.menuItems && (
+          <ConversationHistoryDropdown
+            menuClassName={conversation.menuClassName}
+            onSelect={conversation.onSelect}
+            menuItems={conversation.menuItems}
+            label={conversation.label}
+          />
+        )}
+      </>
+    </ListItem>
   );
 
-  const buildMenu = () => {
+  const buildConversations = () => {
     if (Array.isArray(conversations)) {
-      // Render for array of MenuItemObject
       return (
-        <MenuList>
+        <List className="pf-chatbot__conversation-list" isPlain {...listProps}>
           {conversations.map((conversation) => (
             <Fragment key={conversation.id}>{getNavItem(conversation)}</Fragment>
           ))}
-        </MenuList>
+        </List>
       );
     } else {
-      // Render for object with NavItemObject arrays as values
       return (
-        <>
+        <div>
           {Object.keys(conversations).map((navGroup) => (
-            <MenuGroup className="pf-chatbot__menu-item-header" label={navGroup} key={navGroup}>
-              <MenuList>
+            <section key={navGroup}>
+              <Title headingLevel="h4" className="pf-chatbot__conversation-list-header" {...titleProps}>
+                {navGroup}
+              </Title>
+              <List className="pf-chatbot__conversation-list" isPlain {...listProps?.[navGroup]}>
                 {conversations[navGroup].map((conversation) => (
                   <Fragment key={conversation.id}>{getNavItem(conversation)}</Fragment>
                 ))}
-              </MenuList>
-            </MenuGroup>
+              </List>
+            </section>
           ))}
-        </>
+        </div>
       );
     }
   };
@@ -238,11 +248,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
     if (noResultsState) {
       return <HistoryEmptyState {...noResultsState} />;
     }
-    return (
-      <Menu isPlain onSelect={onSelectActiveItem} activeItemId={activeItemId} {...menuProps}>
-        <MenuContent>{buildMenu()}</MenuContent>
-      </Menu>
-    );
+    return <>{buildConversations()}</>;
   };
 
   const renderDrawerContent = () => (

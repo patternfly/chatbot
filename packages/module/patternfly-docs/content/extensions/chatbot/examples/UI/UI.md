@@ -86,7 +86,7 @@ import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import termsAndConditionsHeader from './PF-TermsAndConditionsHeader.svg';
 import { CloseIcon, SearchIcon, OutlinedCommentsIcon } from '@patternfly/react-icons';
-import { FunctionComponent, FormEvent, useState, useRef, MouseEvent, isValidElement, cloneElement, Children, ReactNode, Ref, MouseEvent as ReactMouseEvent, CSSProperties} from 'react';
+import { FunctionComponent, FormEvent, useState, useRef, MouseEvent, isValidElement, cloneElement, Children, ReactNode, Ref, MouseEvent as ReactMouseEvent, CSSProperties, useEffect} from 'react';
 
 ## Structure
 
@@ -371,6 +371,19 @@ Actions can be added to conversations with `menuItems`. Optionally, you can also
 To help users track important conversations, add a "pin" option to the conversation action menus. This action moves a conversation to a dedicated "pinned" section at the top of the history drawer for quick access. Pinned items should contain an "unpin" option, so that users can remove pinned conversations as needed.
 
 ```js file="./ChatbotHeaderDrawerWithPin.tsx"
+
+```
+
+### Renaming conversations in history drawer
+
+You can allow users to rename a conversation in the history drawer by implementing a modal that opens upon clicking a "Rename" (or similar) action. When doing so, you must ensure the following:
+
+- When the modal opens, focus is placed at the end of the text input.
+- When the modal closes, focus goes back to the action toggle that was previously opened.
+- Changes can be canceled via the **<kbd>Escape</kbd>** key or clicking a "Cancel" button.
+- Changes can be saved via the **<kbd>Enter</kbd>** key or by clicking a "Save" button.
+
+```js file="./ChatbotConversationEditing.tsx"
 
 ```
 
