@@ -20,6 +20,10 @@ import '@patternfly/chatbot/dist/css/main.css';
 
 ## Contribution guide
 
+### AI-assisted development guidelines
+
+Please reference [PatternFly's AI-assisted development guidelines](https://github.com/patternfly/.github/blob/main/CONTRIBUTING.md) if you'd like to contribute code generated using AI.
+
 ### To add a new assistant sub-component:
 
 1. create a folder in `src/` matching its name (for example `src/MyComponent`)
