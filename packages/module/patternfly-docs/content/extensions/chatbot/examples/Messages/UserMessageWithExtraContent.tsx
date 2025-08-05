@@ -152,7 +152,7 @@ ${initialWord} openshift-ingress operator...`}
               >
                 <Flex spaceItems={{ default: 'spaceItemsSm' }} alignItems={{ default: 'alignItemsCenter' }}>
                   <FlexItem>
-                    <CheckCircleIcon color="green" />
+                    <CheckCircleIcon color="green" aria-label="Complete" />
                   </FlexItem>
                   <FlexItem>Installing cluster bootstrap</FlexItem>
                 </Flex>
@@ -182,7 +182,7 @@ ${initialWord} openshift-ingress operator...`}
               >
                 <Flex spaceItems={{ default: 'spaceItemsSm' }} alignItems={{ default: 'alignItemsCenter' }}>
                   <FlexItem>
-                    <CheckCircleIcon color="green" />
+                    <CheckCircleIcon color="green" aria-label="Complete" />
                   </FlexItem>
                   <FlexItem>Control plane setup</FlexItem>
                 </Flex>
@@ -212,7 +212,7 @@ ${initialWord} openshift-ingress operator...`}
               >
                 <Flex spaceItems={{ default: 'spaceItemsSm' }} alignItems={{ default: 'alignItemsCenter' }}>
                   <FlexItem>
-                    <Spinner size="sm" />
+                    <Spinner size="sm" aria-valuetext="In progress" />
                   </FlexItem>
                   <FlexItem>Deploying cluster operators</FlexItem>
                 </Flex>
@@ -239,7 +239,6 @@ ${initialWord} openshift-ingress operator...`}
                   onExpandAccordion('finalizing-toggle');
                 }}
                 id="finalizing-toggle"
-                disabled
               >
                 <Flex spaceItems={{ default: 'spaceItemsSm' }} alignItems={{ default: 'alignItemsCenter' }}>
                   <FlexItem style={{ width: '1rem' }}>{/* Empty space to maintain consistent alignment */}</FlexItem>
