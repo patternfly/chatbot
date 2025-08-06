@@ -18,6 +18,7 @@ import {
   WheelEventHandler
 } from 'react';
 import JumpButton from './JumpButton';
+import { ButtonProps, TooltipProps } from '@patternfly/react-core';
 
 export interface MessageBoxProps extends HTMLProps<HTMLDivElement> {
   /** Content that can be announced, such as a new message, for screen readers */
@@ -38,6 +39,14 @@ export interface MessageBoxProps extends HTMLProps<HTMLDivElement> {
   onScrollToBottomClick?: () => void;
   /** Flag to enable automatic scrolling when new messages are added */
   enableSmartScroll?: boolean;
+  /** Props passed to top jump button */
+  jumpButtonTopProps?: ButtonProps;
+  /** Props passed to bottom jump button */
+  jumpButtonBottomProps?: ButtonProps;
+  /** Props passed to top jump button tooltip */
+  jumpButtonTopTooltipProps?: TooltipProps;
+  /** Props passed to top jump button tooltip */
+  jumpButtonBottomTooltipProps?: TooltipProps;
 }
 
 export interface MessageBoxHandle extends HTMLDivElement {
@@ -60,6 +69,10 @@ export const MessageBox = forwardRef(
       onScrollToTopClick,
       onScrollToBottomClick,
       enableSmartScroll = false,
+      jumpButtonTopProps,
+      jumpButtonBottomProps,
+      jumpButtonBottomTooltipProps,
+      jumpButtonTopTooltipProps,
       ...props
     }: MessageBoxProps,
     ref: ForwardedRef<MessageBoxHandle | null>
@@ -305,7 +318,13 @@ export const MessageBox = forwardRef(
 
     return (
       <>
-        <JumpButton position="top" isHidden={isOverflowing && atTop} onClick={scrollToTop} />
+        <JumpButton
+          position="top"
+          isHidden={isOverflowing && atTop}
+          onClick={scrollToTop}
+          jumpButtonProps={jumpButtonTopProps}
+          jumpButtonTooltipProps={jumpButtonTopTooltipProps}
+        />
         <div
           role="region"
           tabIndex={0}
@@ -324,6 +343,8 @@ export const MessageBox = forwardRef(
           position="bottom"
           isHidden={isOverflowing && atBottom}
           onClick={() => scrollToBottom({ resumeSmartScroll: true })}
+          jumpButtonProps={jumpButtonBottomProps}
+          jumpButtonTooltipProps={jumpButtonBottomTooltipProps}
         />
       </>
     );
