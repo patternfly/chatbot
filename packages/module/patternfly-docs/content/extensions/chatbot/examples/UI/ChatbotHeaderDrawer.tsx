@@ -190,6 +190,7 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
             setConversations(initialConversations);
             setAnnouncement('');
             setDebouncedAnnouncement('');
+            setHasNoResults(false);
           } else {
             // this is where you would perform search on the items in the drawer
             // and update the state
