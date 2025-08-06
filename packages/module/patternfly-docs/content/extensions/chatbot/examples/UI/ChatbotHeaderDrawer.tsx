@@ -1,4 +1,4 @@
-import { useState, FunctionComponent } from 'react';
+import { useState, useEffect, useRef, FunctionComponent } from 'react';
 import { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
 import ChatbotConversationHistoryNav, {
   Conversation
@@ -72,7 +72,26 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
   const [isEmpty, setIsEmpty] = useState(false);
   const [hasNoResults, setHasNoResults] = useState(false);
   const [announcement, setAnnouncement] = useState('');
+  const [debouncedAnnouncement, setDebouncedAnnouncement] = useState('');
+  const announcementTimeoutRef = useRef<NodeJS.Timeout>();
   const displayMode = ChatbotDisplayMode.embedded;
+
+  // Debounce announcement updates to prevent screen reader overload
+  useEffect(() => {
+    if (announcementTimeoutRef.current) {
+      clearTimeout(announcementTimeoutRef.current);
+    }
+
+    announcementTimeoutRef.current = setTimeout(() => {
+      setDebouncedAnnouncement(announcement);
+    }, 500);
+
+    return () => {
+      if (announcementTimeoutRef.current) {
+        clearTimeout(announcementTimeoutRef.current);
+      }
+    };
+  }, [announcement]);
 
   const findMatchingItems = (targetValue: string) => {
     const filteredConversations = Object.entries(initialConversations).reduce((acc, [key, items]) => {
@@ -170,6 +189,7 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
           if (value === '') {
             setConversations(initialConversations);
             setAnnouncement('');
+            setDebouncedAnnouncement('');
           } else {
             // this is where you would perform search on the items in the drawer
             // and update the state
@@ -183,7 +203,7 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
             setConversations(newConversations);
           }
         }}
-        announcement={announcement}
+        searchInputScreenReaderText={debouncedAnnouncement}
         drawerContent={<div>Drawer content</div>}
         isLoading={isLoading}
         errorState={hasError ? ERROR : undefined}

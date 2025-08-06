@@ -141,8 +141,8 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   navTitleIcon?: React.ReactNode;
   /** Title header level */
   navTitleProps?: Partial<TitleProps>;
-  /** Announcement text to be read by screen readers when search results change */
-  announcement?: string;
+  /** Visually hidden text that gets announced by assistive technologies. Should be used to convey the result count when the search input value changes. */
+  searchInputScreenReaderText?: string;
 }
 
 export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversationHistoryNavProps> = ({
@@ -159,7 +159,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   onNewChat,
   newChatButtonProps,
   searchInputPlaceholder = 'Search previous conversations...',
-  searchInputAriaLabel = 'Search previous conversations...',
+  searchInputAriaLabel = 'Search previous conversations',
   searchInputProps,
   handleTextInputChange,
   displayMode,
@@ -181,7 +181,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   title = 'Chat history',
   navTitleProps,
   navTitleIcon = <OutlinedClockIcon />,
-  announcement,
+  searchInputScreenReaderText,
   ...props
 }: ChatbotConversationHistoryNavProps) => {
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -312,6 +312,9 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
                 placeholder={searchInputPlaceholder}
                 {...searchInputProps}
               />
+              {searchInputScreenReaderText && (
+                <div className="pf-chatbot__filter-announcement">{searchInputScreenReaderText}</div>
+              )}
             </div>
           )}
         </div>
@@ -325,11 +328,6 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
         defaultSize="384px"
         {...drawerPanelContentProps}
       >
-        {announcement && (
-          <div className="pf-chatbot__filter-announcement" aria-live="polite">
-            {announcement}
-          </div>
-        )}
         {drawer}
       </DrawerPanelContent>
     );

@@ -348,7 +348,7 @@ describe('ChatbotConversationHistoryNav', () => {
     ).toBeTruthy();
     expect(screen.getByRole('button', { name: /Close drawer panel/i })).toBeTruthy();
     expect(screen.getByRole('button', { name: /Loading... Reload/i })).toBeTruthy();
-    expect(screen.getByRole('textbox', { name: /Search previous conversations.../i })).toBeTruthy();
+    expect(screen.getByRole('textbox', { name: /Search previous conversations/i })).toBeTruthy();
     expect(screen.getByRole('heading', { name: /Could not load chat history/i })).toBeTruthy();
   });
 
@@ -372,7 +372,7 @@ describe('ChatbotConversationHistoryNav', () => {
     ).toBeTruthy();
     expect(screen.getByRole('button', { name: /Close drawer panel/i })).toBeTruthy();
     expect(screen.queryByRole('button', { name: /Loading... Reload/i })).toBeFalsy();
-    expect(screen.getByRole('textbox', { name: /Search previous conversations.../i })).toBeTruthy();
+    expect(screen.getByRole('textbox', { name: /Search previous conversations/i })).toBeTruthy();
     expect(screen.getByRole('heading', { name: /Could not load chat history/i })).toBeTruthy();
   });
 
