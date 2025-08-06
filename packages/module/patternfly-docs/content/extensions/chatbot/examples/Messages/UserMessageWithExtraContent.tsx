@@ -235,7 +235,7 @@ Setting up cluster console...`;
 
   return (
     <>
-      <Flex spaceItems={{ default: 'spaceItemsSm' }} style={{ marginBlockEnd: 'var(--pf-t--global--spacer--md)' }}>
+      <Flex className="pf-v6-u-mt-lg" spaceItems={{ default: 'spaceItemsSm' }}>
         <FlexItem>
           <Button
             variant="primary"
@@ -316,8 +316,19 @@ Setting up cluster console...`;
         </CardHeader>
         <CardExpandableContent>
           <CardBody>
-            <hr style={{ marginBlockEnd: 'var(--pf-t--global--spacer--md)' }} />
-            <Accordion>
+            <hr className="pf-v6-u-mb-md" />
+            <Accordion
+              style={
+                {
+                  '--pf-v6-c-accordion__expandable-content-body--PaddingBlockStart': '0',
+                  '--pf-v6-c-accordion__expandable-content-body--PaddingBlockEnd': '0',
+                  '--pf-v6-c-accordion__expandable-content-body--PaddingInlineStart': '0',
+                  '--pf-v6-c-accordion__expandable-content-body--PaddingInlineEnd': '0',
+                  '--pf-v6-c-accordion__expandable-content--BackgroundColor': 'initial',
+                  '--pf-v6-c-accordion__expandable-content--Color': '#fff'
+                } as React.CSSProperties
+              }
+            >
               {stages.map((stage) => (
                 <AccordionItem key={stage.id} isExpanded={isAccordionExpanded === stage.id}>
                   <AccordionToggle
@@ -331,21 +342,7 @@ Setting up cluster console...`;
                       <FlexItem>{stage.name}</FlexItem>
                     </Flex>
                   </AccordionToggle>
-                  <AccordionContent
-                    id={stage.id.replace('-toggle', '')}
-                    style={
-                      {
-                        '--pf-v6-c-accordion__expandable-content-body--PaddingBlockStart': '0',
-                        '--pf-v6-c-accordion__expandable-content-body--PaddingBlockEnd': '0',
-                        '--pf-v6-c-accordion__expandable-content-body--PaddingInlineStart': '0',
-                        '--pf-v6-c-accordion__expandable-content-body--PaddingInlineEnd': '0',
-                        '--pf-v6-c-accordion__expandable-content--BackgroundColor': 'initial',
-                        '--pf-v6-c-accordion__expandable-content--Color': '#fff'
-                      } as React.CSSProperties
-                    }
-                  >
-                    {renderCodeBlock(stage)}
-                  </AccordionContent>
+                  <AccordionContent id={stage.id.replace('-toggle', '')}>{renderCodeBlock(stage)}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
