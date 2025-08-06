@@ -13,28 +13,6 @@ source: Customizing messages
 sortValue: 60
 ---
 
-import { FunctionComponent } from 'react';
-import Message from '@patternfly/chatbot/dist/dynamic/Message';
-import {
-  Button,
-  ButtonVariant,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  Content,
-  ContentVariants,
-  Flex,
-  FlexItem,
-  Icon,
-  Stack,
-  StackItem
-} from '@patternfly/react-core';
-import CheckCircleIcon from '@patternfly/react-icons/dist/esm/icons/check-circle-icon';
-import ArrowCircleDownIcon from '@patternfly/react-icons/dist/esm/icons/arrow-circle-down-icon';
-import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
-
 ## Modifying static content
 
 The ChatBot extension `<Message>` component transforms Markdown to PatternFly React components via [react-markdown](https://github.com/remarkjs/react-markdown), which supports both [rehype](https://unifiedjs.com/explore/package/rehype/) and [remark](https://unifiedjs.com/explore/package/remark/) plugins for further output customization.
@@ -71,10 +49,3 @@ Continuing with our link modification example, let's say you also wanted to add 
 
 Instead, you can utilize ChatBot features to customize dynamic content. We offer many `<Message>` props that allow you to implement custom behavior.
 For example, you can use `linkProps` to pass `onClick` events and other PatternFly `<Button>` props down to links. A very basic example would be `linkProps={{onClick: (event) => console.log(event}}`, which would apply to every link in the `<Message>`. Or, you could use the `event.target`, adding your own custom `onClick` logic based on the `innerText`, `innerHTML`, or other attributes of the `event.target`.
-
-
-## ISO Download card
-
-```js file="./ISODownloadCard.tsx"
-
-```
