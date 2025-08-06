@@ -80,11 +80,8 @@ const VersionSelectorCard = () => {
 
   const generateTabContent = (title: string, subtitle: string) => (
     <Flex direction={{ default: 'column' }} alignItems={{ default: 'alignItemsCenter' }} gap={{ default: 'gapMd' }}>
-      <FlexItem
-        alignSelf={{ default: 'alignSelfCenter' }}
-        style={{ marginBlockStart: 'var(--pf-t--global--spacer--md)', textAlign: 'center' }}
-      >
-        <div style={{ fontWeight: 'var(--pf-t--global--font--weight--heading--bold)' }}>{title}</div>
+      <FlexItem alignSelf={{ default: 'alignSelfCenter' }} className="pf-v6-u-mt-md pf-v6-u-text-align-center">
+        <div className="pf-v6-u-font-weight-bold">{title}</div>
         <div>{subtitle}</div>
       </FlexItem>
       <FlexItem alignSelf={{ default: 'alignSelfStretch' }}>
@@ -158,12 +155,7 @@ const VersionSelectorCard = () => {
             gap={{ default: 'gapMd' }}
           >
             <FlexItem alignSelf={{ default: 'alignSelfStretch' }}>
-              <Card
-                id="4.17-card"
-                isSelectable
-                isSelected={isCardSelected === id4}
-                style={{ marginBlockStart: 'var(--pf-t--global--spacer--md)' }}
-              >
+              <Card className="pf-v6-u-mt-md" id="4.17-card" isSelectable isSelected={isCardSelected === id4}>
                 <CardHeader
                   selectableActions={{
                     selectableActionId: id4,
