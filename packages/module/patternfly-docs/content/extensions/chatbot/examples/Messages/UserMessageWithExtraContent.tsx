@@ -304,7 +304,10 @@ Setting up cluster console...`;
                       </FlexItem>
                       <FlexItem>
                         <HelperText>
-                          <HelperTextItem>{progress >= 100 ? 'Completed' : getTimeRemaining()}</HelperTextItem>
+                          {/* Progress was getting announced on VoiceOver constantly - this helps avoid that */}
+                          <HelperTextItem aria-live="off">
+                            {progress >= 100 ? 'Completed' : getTimeRemaining()}
+                          </HelperTextItem>
                         </HelperText>
                       </FlexItem>
                     </Flex>
