@@ -4,7 +4,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ChatbotDisplayMode } from '../Chatbot/Chatbot';
 import ChatbotConversationHistoryNav, { Conversation } from './ChatbotConversationHistoryNav';
 import { EmptyStateStatus, Spinner } from '@patternfly/react-core';
-import { OutlinedCommentsIcon, SearchIcon } from '@patternfly/react-icons';
+import { BellIcon, OutlinedCommentsIcon, SearchIcon } from '@patternfly/react-icons';
 import { ComponentType } from 'react';
 
 const ERROR = {
@@ -492,7 +492,7 @@ describe('ChatbotConversationHistoryNav', () => {
     expect(iconElement).toBeInTheDocument();
   });
 
-  it('Passes titleProps to Title', () => {
+  it('Passes listTitleProps to Title', () => {
     render(
       <ChatbotConversationHistoryNav
         onDrawerToggle={onDrawerToggle}
@@ -500,13 +500,13 @@ describe('ChatbotConversationHistoryNav', () => {
         displayMode={ChatbotDisplayMode.fullscreen}
         setIsDrawerOpen={jest.fn()}
         conversations={{ Today: initialConversations }}
-        titleProps={{ className: 'test' }}
+        listTitleProps={{ className: 'test' }}
       />
     );
     expect(screen.getByRole('heading', { name: /Today/i })).toHaveClass('test');
   });
 
-  it('Overrides Title heading level when titleProps.headingLevel is passed', () => {
+  it('Overrides list title heading level when titleProps.headingLevel is passed', () => {
     render(
       <ChatbotConversationHistoryNav
         onDrawerToggle={onDrawerToggle}
@@ -514,7 +514,7 @@ describe('ChatbotConversationHistoryNav', () => {
         displayMode={ChatbotDisplayMode.fullscreen}
         setIsDrawerOpen={jest.fn()}
         conversations={{ Today: initialConversations }}
-        titleProps={{ headingLevel: 'h2' }}
+        listTitleProps={{ headingLevel: 'h2' }}
       />
     );
     expect(screen.queryByRole('heading', { name: /Today/i, level: 4 })).not.toBeInTheDocument();
@@ -576,5 +576,34 @@ describe('ChatbotConversationHistoryNav', () => {
     );
 
     expect(screen.getByRole('dialog', { name: /Chat history I am a sample search/i })).toBeInTheDocument();
+  });
+
+  it('overrides nav title heading level when navTitleProps.headingLevel is passed', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={{ Today: initialConversations }}
+        navTitleProps={{ headingLevel: 'h1' }}
+      />
+    );
+    expect(screen.queryByRole('heading', { name: /Chat history/i, level: 2 })).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Chat history/i, level: 1 })).toBeInTheDocument();
+  });
+
+  it('overrides nav title icon when navTitleIcon is passed in', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        navTitleIcon={<BellIcon data-testid="bell" />}
+      />
+    );
+    expect(screen.getByTestId('bell')).toBeInTheDocument();
   });
 });

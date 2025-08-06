@@ -65,6 +65,8 @@ export interface Conversation {
   additionalProps?: ButtonProps;
   /** Additional props passed to conversation list item */
   listItemProps?: Omit<ListItemProps, 'children'>;
+  /** Custom dropdown ID to ensure uniqueness across demo instances */
+  dropdownId?: string;
 }
 export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   /** Function called to toggle drawer */
@@ -82,7 +84,7 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   /** Additional button props for new chat button. */
   newChatButtonProps?: ButtonProps;
   /** Additional props applied to all conversation list headers */
-  titleProps?: Partial<TitleProps>;
+  listTitleProps?: Partial<TitleProps>;
   /** Additional props applied to conversation list. If conversations is an object, you should pass an object of ListProps for each group. */
   listProps?: ListProps | { [key: string]: ListProps };
   /** Text shown in blue button */
@@ -135,6 +137,10 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   isCompact?: boolean;
   /** Display title  */
   title?: string;
+  /** Icon displayed in title */
+  navTitleIcon?: React.ReactNode;
+  /** Title header level */
+  navTitleProps?: Partial<TitleProps>;
 }
 
 export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversationHistoryNavProps> = ({
@@ -144,7 +150,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   activeItemId,
   onSelectActiveItem,
   conversations,
-  titleProps,
+  listTitleProps,
   listProps,
   newChatButtonText = 'New chat',
   drawerContent,
@@ -171,6 +177,8 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   noResultsState,
   isCompact,
   title = 'Chat history',
+  navTitleProps,
+  navTitleIcon = <OutlinedClockIcon />,
   ...props
 }: ChatbotConversationHistoryNavProps) => {
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -202,6 +210,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
             onSelect={conversation.onSelect}
             menuItems={conversation.menuItems}
             label={conversation.label}
+            id={conversation.dropdownId}
           />
         )}
       </>
@@ -222,7 +231,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
         <div>
           {Object.keys(conversations).map((navGroup) => (
             <section key={navGroup}>
-              <Title headingLevel="h4" className="pf-chatbot__conversation-list-header" {...titleProps}>
+              <Title headingLevel="h4" className="pf-chatbot__conversation-list-header" {...listTitleProps}>
                 {navGroup}
               </Title>
               <List className="pf-chatbot__conversation-list" isPlain {...listProps?.[navGroup]}>
@@ -283,13 +292,15 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
             )}
           </DrawerActions>
         </DrawerHead>
-        <div className="pf-chatbot__title-container">
-          <Title headingLevel="h3">
+        <div className="pf-chatbot__heading-container">
+          <div className="pf-chatbot__title-container">
             <Icon size="lg" className="pf-chatbot__title-icon">
-              <OutlinedClockIcon />
+              {navTitleIcon}
             </Icon>
-            {title}
-          </Title>
+            <Title className="pf-chatbot__title" headingLevel="h2" {...navTitleProps}>
+              {title}
+            </Title>
+          </div>
           {!isLoading && handleTextInputChange && (
             <div className="pf-chatbot__input">
               <SearchInput
