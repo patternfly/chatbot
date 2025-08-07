@@ -38,6 +38,8 @@ import { RobotIcon } from '@patternfly/react-icons/dist/esm/icons/robot-icon';
 import InfoCircleIcon from '@patternfly/react-icons/dist/esm/icons/info-circle-icon';
 import DownloadIcon from '@patternfly/react-icons/dist/esm/icons/download-icon';
 import RedoIcon from '@patternfly/react-icons/dist/esm/icons/redo-icon';
+import CheckCircleIcon from '@patternfly/react-icons/dist/esm/icons/check-circle-icon';
+import ArrowCircleDownIcon from '@patternfly/react-icons/dist/esm/icons/arrow-circle-down-icon';
 import patternflyAvatar from './patternfly_avatar.jpg';
 import AttachmentEdit from '@patternfly/chatbot/dist/dynamic/AttachmentEdit';
 import FileDetails from '@patternfly/chatbot/dist/dynamic/FileDetails';
