@@ -111,7 +111,7 @@ const LiveProgressSummaryCard = () => {
   const getTimeRemaining = () => {
     const remainingProgress = 100 - progress;
     const estimatedMinutes = Math.max(1, Math.round((remainingProgress / 100) * 30)); // 30 minutes total simulation
-    return `About ${estimatedMinutes} minute${estimatedMinutes !== 1 ? 's' : ''} left`;
+    return `About ${estimatedMinutes} minute${estimatedMinutes !== 1 ? 's' : ''} remaining`;
   };
 
   const getCurrentStageName = () => {
