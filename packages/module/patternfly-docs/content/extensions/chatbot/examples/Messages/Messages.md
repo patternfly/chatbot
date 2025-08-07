@@ -30,6 +30,7 @@ propComponents:
 sortValue: 3
 ---
 
+import { ArrowRightIcon, CheckCircleIcon } from '@patternfly/react-icons';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import MessageDivider from '@patternfly/chatbot/dist/dynamic/MessageDivider';
 import { rehypeCodeBlockToggle } from '@patternfly/chatbot/dist/esm/Message/Plugins/rehypeCodeBlockToggle';
