@@ -114,7 +114,7 @@ export const UserMessageWithExtraContent: FunctionComponent = () => (
       avatar={patternflyAvatar}
       name="Bot"
       role="bot"
-      content="All set! I've finished building the Discovery ISO. The next step is to download it and boot your hosts, which you can do using the summary card I've prepared for you below"
+      content="All set! I've finished building the Discovery ISO. The next step is to download it and boot your hosts, which you can do using the summary card I've prepared for you:"
       extraContent={{
         endContent: downloadCard
       }}
