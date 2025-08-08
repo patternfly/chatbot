@@ -1,104 +1,130 @@
 import { useState, FunctionComponent } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import patternflyAvatar from './patternfly_avatar.jpg';
-import { Checkbox, FormGroup, Stack } from '@patternfly/react-core';
+import { Checkbox, FormGroup, Flex, FlexItem } from '@patternfly/react-core';
 
 export const MessageWithFeedbackExample: FunctionComponent = () => {
   const [hasCloseButton, setHasCloseButton] = useState(false);
   const [hasTextArea, setHasTextArea] = useState(false);
+  const [hasChildren, setHasChildren] = useState(false);
+
+  const children = <>Do not share any personal or other sensitive information in your feedback.</>;
 
   return (
     <>
-      <Stack hasGutter>
-        <FormGroup role="radiogroup" isInline fieldId="feedback-card" label="Variant">
-          <Checkbox
-            isChecked={hasTextArea}
-            onChange={() => {
-              setHasTextArea(!hasTextArea);
+      <Flex direction={{ default: 'column' }} spaceItems={{ default: 'spaceItemsMd' }}>
+        <FlexItem>
+          <FormGroup role="radiogroup" isInline isStack fieldId="feedback-card" label="Variant">
+            <Checkbox
+              isChecked={hasTextArea}
+              onChange={() => {
+                setHasTextArea(!hasTextArea);
+              }}
+              name="feedback-card-with-text-area"
+              label="Has text area"
+              id="has-text-area"
+            />
+            <Checkbox
+              isChecked={hasChildren}
+              onChange={() => {
+                setHasChildren(!hasChildren);
+              }}
+              name="feedback-card-with-children"
+              label="Has additional content"
+              id="has-children"
+            />
+          </FormGroup>
+        </FlexItem>
+        <FlexItem>
+          <Message
+            name="Bot"
+            role="bot"
+            avatar={patternflyAvatar}
+            content="This is a message with the feedback card:"
+            userFeedbackForm={{
+              quickResponses: [
+                { id: '1', content: 'Helpful information' },
+                { id: '2', content: 'Easy to understand' },
+                { id: '3', content: 'Resolved my issue' }
+              ],
+              onSubmit: (quickResponse, additionalFeedback) =>
+                alert(`Selected ${quickResponse} and received the additional feedback: ${additionalFeedback}`),
+              hasTextArea,
+              children: hasChildren ? children : undefined,
+              // eslint-disable-next-line no-console
+              onClose: () => console.log('closed feedback form'),
+              focusOnLoad: false
             }}
-            name="basic-inline-radio"
-            label="Has text area"
-            id="has-text-area"
           />
-        </FormGroup>
-        <Message
-          name="Bot"
-          role="bot"
-          avatar={patternflyAvatar}
-          content="This is a message with the feedback card:"
-          userFeedbackForm={{
-            quickResponses: [
-              { id: '1', content: 'Helpful information' },
-              { id: '2', content: 'Easy to understand' },
-              { id: '3', content: 'Resolved my issue' }
-            ],
-            onSubmit: (quickResponse, additionalFeedback) =>
-              alert(`Selected ${quickResponse} and received the additional feedback: ${additionalFeedback}`),
-            hasTextArea,
-            // eslint-disable-next-line no-console
-            onClose: () => console.log('closed feedback form'),
-            focusOnLoad: false
-          }}
-        />
-        <Message
-          name="Bot"
-          role="bot"
-          avatar={patternflyAvatar}
-          content="This is a compact message with the feedback card:"
-          userFeedbackForm={{
-            quickResponses: [
-              { id: '1', content: 'Helpful information' },
-              { id: '2', content: 'Easy to understand' },
-              { id: '3', content: 'Resolved my issue' }
-            ],
-            onSubmit: (quickResponse, additionalFeedback) =>
-              alert(`Selected ${quickResponse} and received the additional feedback: ${additionalFeedback}`),
-            hasTextArea,
-            // eslint-disable-next-line no-console
-            onClose: () => console.log('closed feedback form'),
-            focusOnLoad: false
-          }}
-          isCompact
-        />
-      </Stack>
-      <Stack hasGutter>
-        <FormGroup role="radiogroup" isInline fieldId="feedback-thank-you" label="Variant">
-          <Checkbox
-            isChecked={hasCloseButton}
-            onChange={() => {
-              setHasCloseButton(!hasCloseButton);
+        </FlexItem>
+        <FlexItem>
+          <Message
+            name="Bot"
+            role="bot"
+            avatar={patternflyAvatar}
+            content="This is a compact message with the feedback card:"
+            userFeedbackForm={{
+              quickResponses: [
+                { id: '1', content: 'Helpful information' },
+                { id: '2', content: 'Easy to understand' },
+                { id: '3', content: 'Resolved my issue' }
+              ],
+              onSubmit: (quickResponse, additionalFeedback) =>
+                alert(`Selected ${quickResponse} and received the additional feedback: ${additionalFeedback}`),
+              hasTextArea,
+              children: hasChildren ? children : undefined,
+              // eslint-disable-next-line no-console
+              onClose: () => console.log('closed feedback form'),
+              focusOnLoad: false
             }}
-            name="basic-inline-radio"
-            label="Has close button"
-            id="has-close"
+            isCompact
           />
-        </FormGroup>
-        <Message
-          name="Bot"
-          role="bot"
-          avatar={patternflyAvatar}
-          content="This is a thank-you message, which is displayed once the feedback card is submitted:"
-          // eslint-disable-next-line no-console
-          userFeedbackComplete={{
+        </FlexItem>
+      </Flex>
+      <Flex direction={{ default: 'column' }}>
+        <FlexItem>
+          <FormGroup role="radiogroup" isInline fieldId="feedback-thank-you" label="Variant">
+            <Checkbox
+              isChecked={hasCloseButton}
+              onChange={() => {
+                setHasCloseButton(!hasCloseButton);
+              }}
+              name="basic-inline-radio"
+              label="Has close button"
+              id="has-close"
+            />
+          </FormGroup>
+        </FlexItem>
+        <FlexItem>
+          <Message
+            name="Bot"
+            role="bot"
+            avatar={patternflyAvatar}
+            content="This is a thank-you message, which is displayed once the feedback card is submitted:"
             // eslint-disable-next-line no-console
-            onClose: hasCloseButton ? () => console.log('closed completion message') : undefined,
-            focusOnLoad: false
-          }}
-        />
-        <Message
-          name="Bot"
-          role="bot"
-          avatar={patternflyAvatar}
-          content="This is a compact thank-you message, which is displayed once the feedback card is submitted:"
-          // eslint-disable-next-line no-console
-          userFeedbackComplete={{
+            userFeedbackComplete={{
+              // eslint-disable-next-line no-console
+              onClose: hasCloseButton ? () => console.log('closed completion message') : undefined,
+              focusOnLoad: false
+            }}
+          />
+        </FlexItem>
+        <FlexItem>
+          <Message
+            name="Bot"
+            role="bot"
+            avatar={patternflyAvatar}
+            content="This is a compact thank-you message, which is displayed once the feedback card is submitted:"
             // eslint-disable-next-line no-console
-            onClose: hasCloseButton ? () => console.log('closed completion message') : undefined,
-            focusOnLoad: false
-          }}
-          isCompact
-        />
-      </Stack>
+            userFeedbackComplete={{
+              // eslint-disable-next-line no-console
+              onClose: hasCloseButton ? () => console.log('closed completion message') : undefined,
+              focusOnLoad: false
+            }}
+            isCompact
+          />
+        </FlexItem>
+      </Flex>
     </>
   );
 };
