@@ -8,15 +8,21 @@ import { useState, useRef, useEffect } from 'react';
 // Import PatternFly components
 import {
   ActionGroup,
+  ActionGroupProps,
   Button,
+  ButtonProps,
   Card,
   CardBody,
+  CardBodyProps,
   CardHeader,
+  CardHeaderProps,
   CardProps,
   Form,
+  FormProps,
   LabelGroupProps,
   OUIAProps,
-  TextArea
+  TextArea,
+  TextAreaProps
 } from '@patternfly/react-core';
 import QuickResponse from '../QuickResponse/QuickResponse';
 import CloseButton from './CloseButton';
@@ -54,6 +60,20 @@ export interface UserFeedbackProps extends Omit<CardProps, 'onSubmit'>, OUIAProp
   focusOnLoad?: boolean;
   /** Timestamp passed in by Message for more context in aria announcements */
   timestamp?: string;
+  /** Additional props passed to submit button */
+  buttonProps?: ButtonProps;
+  /** Additional props passed to card header */
+  cardHeaderProps?: CardHeaderProps;
+  /** Additional props passed to card body */
+  cardBodyProps?: CardBodyProps;
+  /** Additional props passed to title heading */
+  headingLevelProps?: React.HTMLAttributes<HTMLHeadingElement>;
+  /** Additional props passed to form */
+  formProps?: FormProps;
+  /** Additional props passed to text area */
+  textAreaProps?: TextAreaProps;
+  /** Additional props passed to action group */
+  actionGroupProps?: ActionGroupProps;
 }
 
 const UserFeedback: FunctionComponent<UserFeedbackProps> = ({
@@ -74,6 +94,14 @@ const UserFeedback: FunctionComponent<UserFeedbackProps> = ({
   headingLevel: HeadingLevel = 'h1',
   focusOnLoad = true,
   isCompact,
+  children,
+  cardHeaderProps,
+  cardBodyProps,
+  headingLevelProps,
+  formProps,
+  textAreaProps,
+  actionGroupProps,
+  buttonProps,
   ...props
 }: UserFeedbackProps) => {
   const [selectedResponse, setSelectedResponse] = useState<string>();
@@ -94,11 +122,14 @@ const UserFeedback: FunctionComponent<UserFeedbackProps> = ({
           actions={{
             actions: <CloseButton onClose={onClose} ariaLabel={closeButtonAriaLabel} />
           }}
+          {...cardHeaderProps}
         >
-          <HeadingLevel className="pf-chatbot__feedback-card-title">{title}</HeadingLevel>
+          <HeadingLevel className="pf-chatbot__feedback-card-title" {...headingLevelProps}>
+            {title}
+          </HeadingLevel>
         </CardHeader>
-        <CardBody>
-          <Form className={`pf-chatbot__feedback-card-form ${isCompact ? 'pf-m-compact' : ''}`}>
+        <CardBody {...cardBodyProps}>
+          <Form className={`pf-chatbot__feedback-card-form ${isCompact ? 'pf-m-compact' : ''}`} {...formProps}>
             {quickResponses && (
               <QuickResponse
                 quickResponses={quickResponses}
@@ -117,10 +148,14 @@ const UserFeedback: FunctionComponent<UserFeedbackProps> = ({
                 placeholder={textAreaPlaceholder}
                 aria-label={textAreaAriaLabel}
                 resizeOrientation="vertical"
+                {...textAreaProps}
               />
             )}
-            <ActionGroup>
-              <Button onClick={() => onSubmit(selectedResponse, value)}>{submitWord}</Button>
+            {children}
+            <ActionGroup {...actionGroupProps}>
+              <Button onClick={() => onSubmit(selectedResponse, value)} {...buttonProps}>
+                {submitWord}
+              </Button>
             </ActionGroup>
           </Form>
         </CardBody>

@@ -245,4 +245,111 @@ describe('UserFeedback', () => {
     );
     expect(screen.getByTestId('card')).toHaveClass('pf-m-compact');
   });
+  it('should pass buttonProps to submit button', () => {
+    render(
+      <UserFeedback
+        timestamp="12/12/12"
+        onClose={jest.fn}
+        onSubmit={jest.fn}
+        quickResponses={MOCK_RESPONSES}
+        buttonProps={{ variant: 'secondary', isDisabled: true }}
+      />
+    );
+    const submitButton = screen.getByRole('button', { name: /Submit/i });
+    expect(submitButton).toHaveClass('pf-v6-c-button pf-m-secondary');
+    expect(submitButton).toBeDisabled();
+  });
+  it('should pass cardHeaderProps to card header', () => {
+    render(
+      <UserFeedback
+        timestamp="12/12/12"
+        onClose={jest.fn}
+        onSubmit={jest.fn}
+        quickResponses={MOCK_RESPONSES}
+        cardHeaderProps={{ 'data-testid': 'card-header', className: 'custom-header' } as any}
+      />
+    );
+    const cardHeader = screen.getByTestId('card-header');
+    expect(cardHeader).toHaveClass('custom-header');
+  });
+  it('should pass cardBodyProps to card body', () => {
+    render(
+      <UserFeedback
+        timestamp="12/12/12"
+        onClose={jest.fn}
+        onSubmit={jest.fn}
+        quickResponses={MOCK_RESPONSES}
+        cardBodyProps={{ 'data-testid': 'card-body', className: 'custom-body' } as any}
+      />
+    );
+    const cardBody = screen.getByTestId('card-body');
+    expect(cardBody).toHaveClass('custom-body');
+  });
+  it('should pass headingLevelProps to title heading', () => {
+    render(
+      <UserFeedback
+        timestamp="12/12/12"
+        onClose={jest.fn}
+        onSubmit={jest.fn}
+        quickResponses={MOCK_RESPONSES}
+        headingLevelProps={{ className: 'custom-heading', id: 'feedback-title' }}
+      />
+    );
+    const heading = screen.getByRole('heading', { level: 1, name: /Why did you choose this rating?/i });
+    expect(heading).toHaveClass('custom-heading');
+    expect(heading).toHaveAttribute('id', 'feedback-title');
+  });
+
+  it('should pass formProps to form', () => {
+    render(
+      <UserFeedback
+        timestamp="12/12/12"
+        onClose={jest.fn}
+        onSubmit={jest.fn}
+        quickResponses={MOCK_RESPONSES}
+        formProps={{ 'data-testid': 'feedback-form', className: 'custom-form' } as any}
+      />
+    );
+    const form = screen.getByTestId('feedback-form');
+    expect(form).toHaveClass('custom-form');
+  });
+  it('should pass textAreaProps to text area when hasTextArea is true', () => {
+    render(
+      <UserFeedback
+        timestamp="12/12/12"
+        onClose={jest.fn}
+        onSubmit={jest.fn}
+        quickResponses={MOCK_RESPONSES}
+        hasTextArea
+        textAreaProps={{ 'data-testid': 'custom-textarea', rows: 5 } as any}
+      />
+    );
+    const textArea = screen.getByTestId('custom-textarea');
+    expect(textArea).toHaveAttribute('rows', '5');
+    expect(textArea).toHaveAttribute('data-testid', 'custom-textarea');
+  });
+  it('should pass actionGroupProps to action group', () => {
+    render(
+      <UserFeedback
+        timestamp="12/12/12"
+        onClose={jest.fn}
+        onSubmit={jest.fn}
+        quickResponses={MOCK_RESPONSES}
+        actionGroupProps={{ 'data-testid': 'action-group', className: 'custom-actions' } as any}
+      />
+    );
+    const actionGroup = screen.getByTestId('action-group');
+    expect(actionGroup).toHaveClass('custom-actions');
+  });
+  it('should render children', () => {
+    render(
+      <UserFeedback timestamp="12/12/12" onClose={jest.fn} onSubmit={jest.fn} quickResponses={MOCK_RESPONSES}>
+        <div data-testid="custom-content">Custom feedback content</div>
+        <p>Additional paragraph</p>
+      </UserFeedback>
+    );
+    expect(screen.getByTestId('custom-content')).toBeInTheDocument();
+    expect(screen.getByText('Custom feedback content')).toBeInTheDocument();
+    expect(screen.getByText('Additional paragraph')).toBeInTheDocument();
+  });
 });
