@@ -44,6 +44,8 @@ export const BotMessageExample: FunctionComponent = () => {
         return table;
       case 'Image':
         return image;
+      case 'Footnote':
+        return footnote;
       default:
         return;
     }
@@ -150,6 +152,20 @@ _Italic text, formatted with single underscores_
 
   const image = `![Multi-colored wavy lines on a black background](https://cdn.dribbble.com/userupload/10651749/file/original-8a07b8e39d9e8bf002358c66fce1223e.gif)`;
 
+  const footnote = `This is some text with a footnote[^1] and here's a longer one.[^bignote]
+
+You can also reference the same footnote multiple times[^1].
+
+  [^1]: This is the full footnote text. You can click the arrow to go back up. 
+  
+  [^bignote]: Here's one with multiple paragraphs and **formatting**.
+
+      Indent paragraphs to include them in the footnote.
+
+      Add as many paragraphs as you like. You can include *italic text*, **bold text**, and even \`code\`.
+
+      > You can even include blockquotes in footnotes!`;
+
   const error = {
     title: 'Could not load chat',
     children: 'Wait a few minutes and check your network settings. If the issue persists: ',
@@ -166,7 +182,7 @@ _Italic text, formatted with single underscores_
   };
 
   const onSelect = (_event: MouseEvent<Element, MouseEvent> | undefined, value: string | number | undefined) => {
-    setVariant(value);
+    setVariant(value as string);
     setSelected(value as string);
     setIsOpen(false);
     if (value === 'Expandable code') {
@@ -248,6 +264,7 @@ _Italic text, formatted with single underscores_
           <SelectOption value="More complex list">More complex list</SelectOption>
           <SelectOption value="Table">Table</SelectOption>
           <SelectOption value="Image">Image</SelectOption>
+          <SelectOption value="Footnote">Footnote</SelectOption>
           <SelectOption value="Error">Error</SelectOption>
         </SelectList>
       </Select>

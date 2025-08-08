@@ -4,8 +4,25 @@
 
 import { Button, ButtonProps } from '@patternfly/react-core';
 import { ExternalLinkSquareAltIcon } from '@patternfly/react-icons';
+import { ExtraProps } from 'react-markdown';
 
-const LinkMessage = ({ children, target, href, ...props }: ButtonProps) => {
+export interface LinkMessageProps extends ButtonProps, ExtraProps {;
+  /** Anchor href attribute */
+  href?: string;
+  /** Anchor target attribute */
+  target?: string;
+  /** Anchor id attribute */
+  id?: string;
+}
+
+const LinkMessage = ({
+  children,
+  target,
+  href,
+  id,
+  onClick,
+  ...props
+}: LinkMessageProps) => {
   if (target === '_blank') {
     return (
       <Button
@@ -16,6 +33,8 @@ const LinkMessage = ({ children, target, href, ...props }: ButtonProps) => {
         iconPosition="end"
         isInline
         target={target}
+        id={id}
+        onClick={onClick}
         {...props}
       >
         {children}
@@ -24,7 +43,7 @@ const LinkMessage = ({ children, target, href, ...props }: ButtonProps) => {
   }
 
   return (
-    <Button isInline component="a" href={href} variant="link" {...props}>
+    <Button isInline component="a" href={href} variant="link" id={id} onClick={onClick} {...props}>
       {children}
     </Button>
   );
