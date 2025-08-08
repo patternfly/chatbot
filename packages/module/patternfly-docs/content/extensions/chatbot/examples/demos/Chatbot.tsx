@@ -90,6 +90,20 @@ const MessageLoading = () => (
 export default MessageLoading;
 
 ~~~
+
+This is some text with a footnote[^1] and here's a longer one.[^bignote]
+
+You can also reference the same footnote multiple times[^1].
+
+  [^1]: This is the full footnote text. You can click the arrow to go back up. 
+  
+  [^bignote]: Here's one with multiple paragraphs and **formatting**.
+
+      Indent paragraphs to include them in the footnote.
+
+      Add as many paragraphs as you like. You can include *italic text*, **bold text**, and even \`code\`.
+
+      > You can even include blockquotes in footnotes!
 `;
 
 // It's important to set a date and timestamp prop since the Message components re-render.
