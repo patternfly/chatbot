@@ -1,4 +1,14 @@
-import { Fragment, useState, useRef, useEffect, CSSProperties, FunctionComponent, MouseEvent, Ref } from 'react';
+import {
+  Fragment,
+  useState,
+  useRef,
+  useEffect,
+  CSSProperties,
+  FunctionComponent,
+  MouseEvent as ReactMouseEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+  Ref
+} from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import userAvatar from './user_avatar.svg';
 import {
@@ -64,6 +74,8 @@ export const UserMessageExample: FunctionComponent = () => {
         return table;
       case 'Image':
         return image;
+      case 'Footnote':
+        return footnote;
       default:
         return '';
     }
@@ -170,6 +182,20 @@ _Italic text, formatted with single underscores_
 
   const image = `![Multi-colored wavy lines on a black background](https://cdn.dribbble.com/userupload/10651749/file/original-8a07b8e39d9e8bf002358c66fce1223e.gif)`;
 
+  const footnote = `This is some text with a footnote[^1] and here's a longer one.[^bignote]
+
+You can also reference the same footnote multiple times[^1].
+
+  [^1]: This is the full footnote text. You can click the arrow to go back up. 
+  
+  [^bignote]: Here's one with multiple paragraphs and **formatting**.
+
+      Indent paragraphs to include them in the footnote.
+
+      Add as many paragraphs as you like. You can include *italic text*, **bold text**, and even \`code\`.
+
+      > You can even include blockquotes in footnotes!`;
+
   const error = {
     title: 'Could not load chat',
     children: 'Wait a few minutes and check your network settings. If the issue persists: ',
@@ -185,7 +211,7 @@ _Italic text, formatted with single underscores_
     )
   };
 
-  const onSelect = (_event: MouseEvent<Element, MouseEvent> | undefined, value: string | number | undefined) => {
+  const onSelect = (_event: ReactMouseEvent<Element> | undefined, value: string | number | undefined) => {
     setVariant(value);
     setSelected(value as string);
     setIsOpen(false);
@@ -220,6 +246,96 @@ _Italic text, formatted with single underscores_
       {selected}
     </MenuToggle>
   );
+
+  const handleFootnoteNavigation = (event: ReactMouseEvent<HTMLElement> | ReactKeyboardEvent<HTMLElement>) => {
+    const target = event.target as HTMLElement;
+
+    // Depending on whether it is a click event or keyboard event, target may be a link or something like a span
+    // Look for the closest anchor element (could be a parent)
+    const anchorElement = target.closest('a');
+    const href = anchorElement?.getAttribute('href');
+
+    // Check if this is a footnote link - we only have internal links in this example, so this is all we need here
+    if (href && href.startsWith('#')) {
+      // Prevent default behavior to avoid page re-render on click in PatternFly docs framework
+      event.preventDefault();
+
+      let targetElement: HTMLElement | null = null;
+      const targetId = href.replace('#', '');
+      targetElement = document.querySelector(`[id="${targetId}"]`);
+
+      if (targetElement) {
+        // For footnote definitions, try to focus on the backref link inside
+        let focusTarget = targetElement;
+
+        // If we found a footnote definition container, look for the backref link inside it
+        if (targetElement.id?.startsWith('user-content-fn-')) {
+          const backrefLink = targetElement.querySelector('a[data-footnote-backref]');
+          if (backrefLink) {
+            focusTarget = backrefLink as HTMLElement;
+          }
+        }
+
+        focusTarget.focus({ preventScroll: true });
+
+        // For all footnote navigation, find the nearest span with class "pf-chatbot__message-text"
+        // to ensure we highlight the appropriate container
+        let elementToHighlight = targetElement;
+
+        const searchStartElement = targetElement;
+
+        let elementToHighlightContainer: HTMLElement | null = null;
+
+        // If navigating to a footnote definition, look for the footnotes container
+        if (targetElement.id?.startsWith('user-content-fn-')) {
+          let parent = searchStartElement.parentElement;
+          while (
+            parent &&
+            !(
+              parent.tagName.toLowerCase() === 'div' && parent.classList.contains('pf-chatbot__message-ordered-list')
+            ) &&
+            parent !== document.body
+          ) {
+            parent = parent.parentElement;
+          }
+          elementToHighlightContainer = parent;
+        } else {
+          // For footnote references, look for the message text span
+          let parent = searchStartElement.parentElement;
+          while (
+            parent &&
+            !(parent.tagName.toLowerCase() === 'span' && parent.classList.contains('pf-chatbot__message-text')) &&
+            parent !== document.body
+          ) {
+            parent = parent.parentElement;
+          }
+          elementToHighlightContainer = parent;
+        }
+
+        // Use the found container if available, otherwise fall back to the target element
+        elementToHighlight = elementToHighlightContainer || targetElement;
+
+        // Briefly highlight the target element since we're not scrolling to it in this example
+        // You could also use onClick to implement scrolling to the target element if you wanted
+        const originalBackground = elementToHighlight.style.backgroundColor;
+        const originalTransition = elementToHighlight.style.transition;
+
+        elementToHighlight.style.transition = 'background-color 0.3s ease';
+        elementToHighlight.style.backgroundColor = 'var(--pf-t--global--icon--color--brand--hover)';
+
+        setTimeout(() => {
+          elementToHighlight.style.backgroundColor = originalBackground;
+          setTimeout(() => {
+            elementToHighlight.style.transition = originalTransition;
+          }, 300);
+        }, 1000);
+      }
+    }
+  };
+
+  const onClick = (event: ReactMouseEvent<HTMLElement> | ReactKeyboardEvent<HTMLElement>) => {
+    handleFootnoteNavigation(event);
+  };
 
   return (
     <>
@@ -270,6 +386,7 @@ _Italic text, formatted with single underscores_
           <SelectOption value="More complex list">More complex list</SelectOption>
           <SelectOption value="Table">Table</SelectOption>
           <SelectOption value="Image">Image</SelectOption>
+          <SelectOption value="Footnote">Footnote</SelectOption>
           <SelectOption value="Error">Error</SelectOption>
         </SelectList>
       </Select>
@@ -287,6 +404,7 @@ _Italic text, formatted with single underscores_
         // The purpose of this plugin is to provide unique link names for the code blocks
         // Because they are in the same message, this requires a custom plugin to parse the syntax tree
         additionalRehypePlugins={[rehypeCodeBlockToggle]}
+        linkProps={{ onClick }}
       />
     </>
   );

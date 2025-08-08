@@ -51,6 +51,7 @@ import MessageInput from './MessageInput';
 import { rehypeMoveImagesOutOfParagraphs } from './Plugins/rehypeMoveImagesOutOfParagraphs';
 import ToolResponse, { ToolResponseProps } from '../ToolResponse';
 import DeepThinking, { DeepThinkingProps } from '../DeepThinking';
+import SuperscriptMessage from './SuperscriptMessage/SuperscriptMessage';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -163,6 +164,8 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   tableProps?: Required<Pick<TableProps, 'aria-label'>> & TableProps;
   /** Additional rehype plugins passed from the consumer */
   additionalRehypePlugins?: PluggableList;
+  /** Additional remark plugins passed from the consumer */
+  additionalRemarkPlugins?: PluggableList;
   /** Whether to open links in message in new tab. */
   openLinkInNewTab?: boolean;
   /** Optional inline error message that can be displayed in the message */
@@ -223,6 +226,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   tableProps,
   openLinkInNewTab = true,
   additionalRehypePlugins = [],
+  additionalRemarkPlugins = [],
   linkProps,
   error,
   isEditable,
@@ -275,41 +279,123 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
     return (
       <Markdown
         components={{
-          p: (props) => <TextMessage component={ContentVariants.p} {...props} />,
-          code: ({ children, ...props }) => (
-            <CodeBlockMessage {...props} {...codeBlockProps}>
-              {children}
-            </CodeBlockMessage>
-          ),
-          h1: (props) => <TextMessage component={ContentVariants.h1} {...props} />,
-          h2: (props) => <TextMessage component={ContentVariants.h2} {...props} />,
-          h3: (props) => <TextMessage component={ContentVariants.h3} {...props} />,
-          h4: (props) => <TextMessage component={ContentVariants.h4} {...props} />,
-          h5: (props) => <TextMessage component={ContentVariants.h5} {...props} />,
-          h6: (props) => <TextMessage component={ContentVariants.h6} {...props} />,
-          blockquote: (props) => <TextMessage component={ContentVariants.blockquote} {...props} />,
-          ul: (props) => <UnorderedListMessage {...props} />,
-          ol: (props) => <OrderedListMessage {...props} />,
-          li: (props) => <ListItemMessage {...props} />,
+          p: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <TextMessage component={ContentVariants.p} {...rest} />;
+          },
+          code: ({ children, ...props }) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...codeProps } = props;
+            return (
+              <CodeBlockMessage {...codeProps} {...codeBlockProps}>
+                {children}
+              </CodeBlockMessage>
+            );
+          },
+          h1: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <TextMessage component={ContentVariants.h1} {...rest} />;
+          },
+          h2: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <TextMessage component={ContentVariants.h2} {...rest} />;
+          },
+          h3: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <TextMessage component={ContentVariants.h3} {...rest} />;
+          },
+          h4: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <TextMessage component={ContentVariants.h4} {...rest} />;
+          },
+          h5: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <TextMessage component={ContentVariants.h5} {...rest} />;
+          },
+          h6: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <TextMessage component={ContentVariants.h6} {...rest} />;
+          },
+          blockquote: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <TextMessage component={ContentVariants.blockquote} {...rest} />;
+          },
+          ul: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <UnorderedListMessage {...rest} />;
+          },
+          ol: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <OrderedListMessage {...rest} />;
+          },
+          li: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <ListItemMessage {...rest} />;
+          },
+          // table requires node attribute for calculating headers for mobile breakpoint
           table: (props) => <TableMessage {...props} {...tableProps} />,
-          tbody: (props) => <TbodyMessage {...props} />,
-          thead: (props) => <TheadMessage {...props} />,
-          tr: (props) => <TrMessage {...props} />,
+          tbody: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <TbodyMessage {...rest} />;
+          },
+          thead: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <TheadMessage {...rest} />;
+          },
+          tr: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <TrMessage {...rest} />;
+          },
           td: (props) => {
             // Conflicts with Td type
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { width, ...rest } = props;
+            const { node, width, ...rest } = props;
             return <TdMessage {...rest} />;
           },
-          th: (props) => <ThMessage {...props} />,
-          img: (props) => <ImageMessage {...props} />,
-          a: (props) => (
-            <LinkMessage href={props.href} rel={props.rel} target={props.target} {...linkProps}>
-              {props.children}
-            </LinkMessage>
-          )
+          th: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <ThMessage {...rest} />;
+          },
+          img: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <ImageMessage {...rest} />;
+          },
+          a: (props) => {
+            // node is just the details of the document structure - not needed
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return (
+              // some a types conflict with ButtonProps, but it's ok because we are using an a tag
+              // there are too many to handle manually
+              <LinkMessage {...(rest as any)} {...linkProps}>
+                {props.children}
+              </LinkMessage>
+            );
+          },
+          // used for footnotes
+          sup: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <SuperscriptMessage {...rest} />;
+          }
         }}
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[remarkGfm, ...additionalRemarkPlugins]}
         rehypePlugins={rehypePlugins}
         {...reactMarkdownProps}
       >
