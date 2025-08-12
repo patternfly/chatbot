@@ -492,36 +492,7 @@ describe('ChatbotConversationHistoryNav', () => {
     expect(iconElement).toBeInTheDocument();
   });
 
-  it('Passes listTitleProps to Title', () => {
-    render(
-      <ChatbotConversationHistoryNav
-        onDrawerToggle={onDrawerToggle}
-        isDrawerOpen={true}
-        displayMode={ChatbotDisplayMode.fullscreen}
-        setIsDrawerOpen={jest.fn()}
-        conversations={{ Today: initialConversations }}
-        listTitleProps={{ className: 'test' }}
-      />
-    );
-    expect(screen.getByRole('heading', { name: /Today/i })).toHaveClass('test');
-  });
-
-  it('Overrides list title heading level when titleProps.headingLevel is passed', () => {
-    render(
-      <ChatbotConversationHistoryNav
-        onDrawerToggle={onDrawerToggle}
-        isDrawerOpen={true}
-        displayMode={ChatbotDisplayMode.fullscreen}
-        setIsDrawerOpen={jest.fn()}
-        conversations={{ Today: initialConversations }}
-        listTitleProps={{ headingLevel: 'h2' }}
-      />
-    );
-    expect(screen.queryByRole('heading', { name: /Today/i, level: 4 })).not.toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Today/i, level: 2 })).toBeInTheDocument();
-  });
-
-  it('Passes listProps to List when conversations is an array', () => {
+  it('Passes menuProps to Menu', () => {
     render(
       <ChatbotConversationHistoryNav
         onDrawerToggle={onDrawerToggle}
@@ -529,13 +500,42 @@ describe('ChatbotConversationHistoryNav', () => {
         displayMode={ChatbotDisplayMode.fullscreen}
         setIsDrawerOpen={jest.fn()}
         conversations={initialConversations}
-        listProps={{ className: 'test' }}
+        menuProps={{ className: 'test' }}
       />
     );
-    expect(screen.getByRole('list')).toHaveClass('test');
+
+    expect(screen.getByRole('menu').parentElement?.parentElement).toHaveClass('test');
   });
 
-  it('Passes listProps to List when conversations is an object', () => {
+  it('Passes menuContentProps to MenuContent', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        menuContentProps={{ className: 'test' }}
+      />
+    );
+    expect(screen.getByRole('menu').parentElement).toHaveClass('test');
+  });
+
+  it('Passes menuListProps to MenuList when conversations is an array', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        menuListProps={{ className: 'test' }}
+      />
+    );
+    expect(screen.getByRole('menu')).toHaveClass('test');
+  });
+
+  it('Passes menuListProps to MenuList when conversations is an object', () => {
     render(
       <ChatbotConversationHistoryNav
         onDrawerToggle={onDrawerToggle}
@@ -543,23 +543,37 @@ describe('ChatbotConversationHistoryNav', () => {
         displayMode={ChatbotDisplayMode.fullscreen}
         setIsDrawerOpen={jest.fn()}
         conversations={{ Today: initialConversations }}
-        listProps={{ Today: { className: 'test' } }}
+        menuListProps={{ Today: { className: 'test' } }}
       />
     );
-    expect(screen.getByRole('list')).toHaveClass('test');
+    expect(screen.getByRole('menu')).toHaveClass('test');
   });
 
-  it('Passes listItemProps to ListItem', () => {
+  it('Passes menuGroupProps to MenuGroup when conversations is an object', () => {
     render(
       <ChatbotConversationHistoryNav
         onDrawerToggle={onDrawerToggle}
         isDrawerOpen={true}
         displayMode={ChatbotDisplayMode.fullscreen}
         setIsDrawerOpen={jest.fn()}
-        conversations={[{ id: '1', text: 'ChatBot documentation', listItemProps: { className: 'test' } }]}
+        conversations={{ Today: initialConversations }}
+        menuGroupProps={{ Today: { className: 'test' } }}
       />
     );
-    expect(screen.getByRole('listitem')).toHaveClass('test');
+    expect(screen.getByRole('menu').parentElement).toHaveClass('test');
+  });
+
+  it('Passes additionalProps to MenuItem', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={[{ id: '1', text: 'ChatBot documentation', additionalProps: { className: 'test' } }]}
+      />
+    );
+    expect(screen.getByRole('menuitem')).toHaveClass('test');
   });
 
   it('should be able to spread search input props when searchInputProps is passed', () => {

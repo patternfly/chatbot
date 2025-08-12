@@ -14,13 +14,13 @@ describe('ChatbotConversationHistoryDropdown', () => {
 
   it('should render the dropdown', () => {
     render(<ChatbotConversationHistoryDropdown menuItems={menuItems} menuClassName="custom-class" />);
-    expect(screen.queryByRole('button', { name: /Conversation options/i })).toBeInTheDocument();
+    expect(screen.queryByRole('menuitem', { name: /Conversation options/i })).toBeInTheDocument();
   });
 
   it('should display the dropdown menuItems', () => {
     render(<ChatbotConversationHistoryDropdown menuItems={menuItems} />);
 
-    const toggle = screen.queryByRole('button', { name: /Conversation options/i })!;
+    const toggle = screen.queryByRole('menuitem', { name: /Conversation options/i })!;
 
     expect(toggle).toBeInTheDocument();
     fireEvent.click(toggle);
@@ -33,7 +33,7 @@ describe('ChatbotConversationHistoryDropdown', () => {
 
   it('should invoke onSelect callback when menuitem is clicked', () => {
     render(<ChatbotConversationHistoryDropdown menuItems={menuItems} onSelect={onSelect} />);
-    const toggle = screen.queryByRole('button', { name: /Conversation options/i })!;
+    const toggle = screen.queryByRole('menuitem', { name: /Conversation options/i })!;
     fireEvent.click(toggle);
     fireEvent.click(screen.getByText('Rename'));
 
@@ -42,7 +42,7 @@ describe('ChatbotConversationHistoryDropdown', () => {
 
   it('should toggle the dropdown when menuitem is clicked', () => {
     render(<ChatbotConversationHistoryDropdown menuItems={menuItems} onSelect={onSelect} />);
-    const toggle = screen.queryByRole('button', { name: /Conversation options/i })!;
+    const toggle = screen.queryByRole('menuitem', { name: /Conversation options/i })!;
     fireEvent.click(toggle);
     fireEvent.click(screen.getByText('Delete'));
 
@@ -53,7 +53,7 @@ describe('ChatbotConversationHistoryDropdown', () => {
 
   it('should close the dropdown when user clicks outside', () => {
     render(<ChatbotConversationHistoryDropdown menuItems={menuItems} onSelect={onSelect} />);
-    const toggle = screen.queryByRole('button', { name: /Conversation options/i })!;
+    const toggle = screen.queryByRole('menuitem', { name: /Conversation options/i })!;
     fireEvent.click(toggle);
 
     expect(screen.queryByText('Delete')).toBeInTheDocument();
@@ -64,7 +64,7 @@ describe('ChatbotConversationHistoryDropdown', () => {
 
   it('should show the tooltip when the user hovers over the toggle button', async () => {
     render(<ChatbotConversationHistoryDropdown menuItems={menuItems} label="Actions dropdown" />);
-    const toggle = screen.queryByRole('button', { name: /Actions dropdown/i })!;
+    const toggle = screen.queryByRole('menuitem', { name: /Actions dropdown/i })!;
 
     fireEvent(
       toggle,

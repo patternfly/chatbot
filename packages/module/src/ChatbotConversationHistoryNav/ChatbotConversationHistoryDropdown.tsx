@@ -48,6 +48,7 @@ export const ChatbotConversationHistoryDropdown: FunctionComponent<ChatbotConver
         isExpanded={isOpen}
         onClick={() => setIsOpen(!isOpen)}
         id={id}
+        role="menuitem"
       >
         <EllipsisIcon />
       </MenuToggle>
