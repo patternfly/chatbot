@@ -75,10 +75,14 @@ const downloadCard = (
   <Card>
     <CardHeader isToggleRightAligned>
       <CardTitle>
-        <Icon size="lg" status="success">
-          <CheckCircleIcon />
-        </Icon>
-        Your discovery ISO is ready
+        <Flex spaceItems={{ default: 'spaceItemsSm' }}>
+          <FlexItem>
+            <Icon size="lg" status="success">
+              <CheckCircleIcon />
+            </Icon>
+          </FlexItem>
+          <FlexItem>Your discovery ISO is ready</FlexItem>
+        </Flex>
       </CardTitle>
     </CardHeader>
 
