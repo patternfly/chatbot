@@ -413,6 +413,14 @@ The drawer can also be used to display a list of basic menu items.
 
 ```
 
+### Drawer with custom nodes
+
+The drawer can also be used to display custom React nodes - we recommend using ListItem.
+
+```js file="./ChatbotHeaderDrawerWithCustomNodes.tsx"
+
+```
+
 ### Terms of use
 
 Based on the [PatternFly modal](/components/modal), this modal adapts to the ChatBot display mode and is meant to display terms and conditions for using a ChatBot in your project. The image in the header can be toggled on or off depending on whether the `image` and `altText` props are provided.

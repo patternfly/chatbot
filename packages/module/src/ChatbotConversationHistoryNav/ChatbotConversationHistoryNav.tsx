@@ -80,7 +80,7 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   /** Callback function for when an item is selected */
   onSelectActiveItem?: (event?: React.MouseEvent, itemId?: string | number) => void;
   /** Items shown in conversation history */
-  conversations: Conversation[] | { [key: string]: Conversation[] };
+  conversations: Conversation[] | { [key: string]: Conversation[] } | React.ReactNode[];
   /** Additional button props for new chat button. */
   newChatButtonProps?: ButtonProps;
   /** Additional props applied to all conversation list headers */
@@ -190,12 +190,14 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
     drawerRef.current && drawerRef.current.focus();
   };
 
+  const isConversation = (item: any): item is Conversation =>
+    item && typeof item === 'object' && 'id' in item && 'text' in item;
+
   const getNavItem = (conversation: Conversation) => (
     <ListItem
       className={`pf-chatbot__conversation-list-item ${activeItemId && activeItemId === conversation.id ? 'pf-chatbot__conversation-list-item--active' : ''}`}
       key={conversation.id}
       {...conversation.listItemProps}
-      /* eslint-enable indent */
     >
       <>
         <Button
@@ -224,9 +226,13 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
     if (Array.isArray(conversations)) {
       return (
         <List className="pf-chatbot__conversation-list" isPlain {...listProps}>
-          {conversations.map((conversation) => (
-            <Fragment key={conversation.id}>{getNavItem(conversation)}</Fragment>
-          ))}
+          {conversations.map((conversation) => {
+            if (isConversation(conversation)) {
+              return <Fragment key={conversation.id}>{getNavItem(conversation)}</Fragment>;
+            } else {
+              return conversation;
+            }
+          })}
         </List>
       );
     } else {
