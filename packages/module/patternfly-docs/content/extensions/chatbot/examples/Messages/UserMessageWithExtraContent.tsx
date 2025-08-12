@@ -225,7 +225,8 @@ Setting up cluster console...`;
     <CodeBlock
       style={
         {
-          '--pf-v6-c-code-block--BackgroundColor': 'var(--pf-t--color--gray--95)'
+          '--pf-v6-c-code-block--BackgroundColor': 'var(--pf-t--color--gray--95)',
+          '--pf-v6-c-code-block--BorderRadius': 'var(--pf-t--global--border--radius--small)'
         } as React.CSSProperties
       }
     >
@@ -323,7 +324,7 @@ Setting up cluster console...`;
             <Accordion
               style={
                 {
-                  '--pf-v6-c-accordion__expandable-content-body--PaddingBlockStart': '0',
+                  '--pf-v6-c-accordion__expandable-content-body--PaddingBlockStart': 'var(--pf-t--global--spacer--md)',
                   '--pf-v6-c-accordion__expandable-content-body--PaddingBlockEnd': '0',
                   '--pf-v6-c-accordion__expandable-content-body--PaddingInlineStart': '0',
                   '--pf-v6-c-accordion__expandable-content-body--PaddingInlineEnd': '0',
@@ -352,7 +353,7 @@ Setting up cluster console...`;
           </CardBody>
         </CardExpandableContent>
         <CardFooter>
-          <Button isBlock variant="secondary" icon={<ArrowRightIcon />} iconPosition="end">
+          <Button isBlock variant="tertiary" icon={<ArrowRightIcon />} iconPosition="end">
             Open in console
           </Button>
         </CardFooter>
