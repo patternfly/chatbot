@@ -252,7 +252,7 @@ describe('UserFeedback', () => {
         onClose={jest.fn}
         onSubmit={jest.fn}
         quickResponses={MOCK_RESPONSES}
-        buttonProps={{ variant: 'secondary', isDisabled: true }}
+        submitButtonProps={{ variant: 'secondary', isDisabled: true }}
       />
     );
     const submitButton = screen.getByRole('button', { name: /Submit/i });

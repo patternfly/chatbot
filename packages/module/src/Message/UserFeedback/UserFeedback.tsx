@@ -61,7 +61,7 @@ export interface UserFeedbackProps extends Omit<CardProps, 'onSubmit'>, OUIAProp
   /** Timestamp passed in by Message for more context in aria announcements */
   timestamp?: string;
   /** Additional props passed to submit button */
-  buttonProps?: ButtonProps;
+  submitButtonProps?: ButtonProps;
   /** Additional props passed to card header */
   cardHeaderProps?: CardHeaderProps;
   /** Additional props passed to card body */
@@ -101,7 +101,7 @@ const UserFeedback: FunctionComponent<UserFeedbackProps> = ({
   formProps,
   textAreaProps,
   actionGroupProps,
-  buttonProps,
+  submitButtonProps,
   ...props
 }: UserFeedbackProps) => {
   const [selectedResponse, setSelectedResponse] = useState<string>();
@@ -153,7 +153,7 @@ const UserFeedback: FunctionComponent<UserFeedbackProps> = ({
             )}
             {children}
             <ActionGroup {...actionGroupProps}>
-              <Button onClick={() => onSubmit(selectedResponse, value)} {...buttonProps}>
+              <Button onClick={() => onSubmit(selectedResponse, value)} {...submitButtonProps}>
                 {submitWord}
               </Button>
             </ActionGroup>
