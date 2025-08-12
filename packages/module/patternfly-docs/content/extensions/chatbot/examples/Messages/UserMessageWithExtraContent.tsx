@@ -320,7 +320,16 @@ Setting up cluster console...`;
         </CardHeader>
         <CardExpandableContent>
           <CardBody>
-            <hr className="pf-v6-u-mb-md" />
+            <hr
+              style={
+                {
+                  border: 'none',
+                  height: 'var(--pf-t--global--border--width--divider--default)',
+                  backgroundColor: 'var(--pf-t--global--border--color--control--read-only)'
+                } as React.CSSProperties
+              }
+              className="pf-v6-u-mb-md"
+            />
             <Accordion
               style={
                 {
