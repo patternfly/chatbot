@@ -30,7 +30,6 @@ propComponents:
 sortValue: 3
 ---
 
-import { ArrowRightIcon, CheckCircleIcon } from '@patternfly/react-icons';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import MessageDivider from '@patternfly/chatbot/dist/dynamic/MessageDivider';
 import { rehypeCodeBlockToggle } from '@patternfly/chatbot/dist/esm/Message/Plugins/rehypeCodeBlockToggle';
@@ -39,6 +38,9 @@ import { RobotIcon } from '@patternfly/react-icons/dist/esm/icons/robot-icon';
 import InfoCircleIcon from '@patternfly/react-icons/dist/esm/icons/info-circle-icon';
 import DownloadIcon from '@patternfly/react-icons/dist/esm/icons/download-icon';
 import RedoIcon from '@patternfly/react-icons/dist/esm/icons/redo-icon';
+import CheckCircleIcon from '@patternfly/react-icons/dist/esm/icons/check-circle-icon';
+import ArrowCircleDownIcon from '@patternfly/react-icons/dist/esm/icons/arrow-circle-down-icon';
+import ArrowRightIcon from '@patternfly/react-icons/dist/esm/icons/arrow-right-icon';
 import patternflyAvatar from './patternfly_avatar.jpg';
 import AttachmentEdit from '@patternfly/chatbot/dist/dynamic/AttachmentEdit';
 import FileDetails from '@patternfly/chatbot/dist/dynamic/FileDetails';
