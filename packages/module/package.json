@@ -40,7 +40,6 @@
     "@segment/analytics-next": "^1.76.0",
     "posthog-js": "^1.194.4",
     "clsx": "^2.1.0",
-    "framer-motion": "^11.3.28",
     "react-markdown": "^9.0.1",
     "remark-gfm": "^4.0.0",
     "rehype-unwrap-images": "^1.0.0",

@@ -4,7 +4,6 @@
 import type { Ref, FunctionComponent } from 'react';
 
 import { forwardRef } from 'react';
-import { motion } from 'framer-motion';
 
 export interface ChatbotProps {
   /** Content to be displayed in the chatbot */
@@ -40,36 +39,24 @@ const ChatbotBase: FunctionComponent<ChatbotProps> = ({
   ariaLabel,
   isCompact,
   ...props
-}: ChatbotProps) => {
-  // Configure animations
-  const motionChatbot = {
-    visible: { opacity: 1, y: 0 },
-    hidden: { opacity: 0, y: '16px' }
-  };
-
-  return (
-    <motion.div
-      className={`pf-chatbot pf-chatbot--${displayMode} ${!isVisible ? 'pf-chatbot--hidden' : ''}  ${isCompact ? 'pf-m-compact' : ''} ${className ?? ''}`}
-      variants={motionChatbot}
-      initial="hidden"
-      animate={isVisible ? 'visible' : 'hidden'}
-      {...props}
-    >
-      {/* Ref is intended for use with skip to chatbot links, etc. */}
-      {/* Motion.div does not accept refs */}
-      {isVisible ? (
-        <section
-          aria-label={ariaLabel ?? 'Chatbot'}
-          className={`pf-chatbot-container pf-chatbot-container--${displayMode} ${!isVisible ? 'pf-chatbot-container--hidden' : ''}`}
-          tabIndex={-1}
-          ref={innerRef}
-        >
-          {children}
-        </section>
-      ) : undefined}
-    </motion.div>
-  );
-};
+}: ChatbotProps) => (
+  <div
+    className={`pf-chatbot pf-chatbot--${displayMode} ${!isVisible ? 'pf-chatbot--hidden' : 'pf-chatbot--visible'}  ${isCompact ? 'pf-m-compact' : ''} ${className ?? ''}`}
+    {...props}
+  >
+    {/* Ref is intended for use with skip to chatbot links, etc. */}
+    {isVisible ? (
+      <section
+        aria-label={ariaLabel ?? 'Chatbot'}
+        className={`pf-chatbot-container pf-chatbot-container--${displayMode} ${!isVisible ? 'pf-chatbot-container--hidden' : ''}`}
+        tabIndex={-1}
+        ref={innerRef}
+      >
+        {children}
+      </section>
+    ) : undefined}
+  </div>
+);
 
 const Chatbot = forwardRef((props: ChatbotProps, ref: Ref<HTMLDivElement>) => (
   <ChatbotBase innerRef={ref} {...props} />

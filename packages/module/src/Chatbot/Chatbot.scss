@@ -16,10 +16,17 @@
   z-index: var(--pf-t--global--z-index--md);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  // Hide chatbot
+  transition:
+    opacity 0.3s ease-out,
+    transform 0.3s ease-out;
   &--hidden {
     pointer-events: none;
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  &--visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   // 32 rem is the width of the overlay chatbot plus the insets
