@@ -160,17 +160,17 @@ _Italic text, formatted with single underscores_
 
   const image = `![Multi-colored wavy lines on a black background](https://cdn.dribbble.com/userupload/10651749/file/original-8a07b8e39d9e8bf002358c66fce1223e.gif)`;
 
-  const footnote = `This is some text with a footnote[^1] and here's a longer one.[^bignote]
+  const footnote = `This is some text that has a short footnote[^1] and this is text with a longer footnote.[^bignote]
 
 You can also reference the same footnote multiple times[^1].
 
-  [^1]: This is the full footnote text. You can click the arrow to go back up. 
+  [^1]: This is a short footnote. To return the highlight to the original message, click the arrow. 
   
-  [^bignote]: Here's one with multiple paragraphs and **formatting**.
+  [^bignote]: This is a long footnote with multiple paragraphs and formatting.
 
-      Indent paragraphs to include them in the footnote.
+      To break long footnotes into paragraphs, indent the text. 
 
-      Add as many paragraphs as you like. You can include *italic text*, **bold text**, and even \`code\`.
+      Add as many paragraphs as you like. You can include *italic text*, **bold text**, and \`code\`.
 
       > You can even include blockquotes in footnotes!`;
 
