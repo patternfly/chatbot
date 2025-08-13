@@ -4,8 +4,9 @@
 
 import { Button, ButtonProps } from '@patternfly/react-core';
 import { ExternalLinkSquareAltIcon } from '@patternfly/react-icons';
+import { ExtraProps } from 'react-markdown';
 
-const LinkMessage = ({ children, target, href, ...props }: ButtonProps) => {
+const LinkMessage = ({ children, target, href, id, ...props }: ButtonProps & ExtraProps) => {
   if (target === '_blank') {
     return (
       <Button
@@ -16,6 +17,8 @@ const LinkMessage = ({ children, target, href, ...props }: ButtonProps) => {
         iconPosition="end"
         isInline
         target={target}
+        // need to explicitly call this out or id doesn't seem to get passed - required for footnotes
+        id={id}
         {...props}
       >
         {children}
@@ -24,7 +27,8 @@ const LinkMessage = ({ children, target, href, ...props }: ButtonProps) => {
   }
 
   return (
-    <Button isInline component="a" href={href} variant="link" {...props}>
+    // need to explicitly call this out or id doesn't seem to get passed - required for footnotes
+    <Button isInline component="a" href={href} variant="link" id={id} {...props}>
       {children}
     </Button>
   );
