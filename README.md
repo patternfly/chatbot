@@ -18,6 +18,8 @@ Make sure to add the CSS imports as the last import in your index file. The exte
 import '@patternfly/chatbot/dist/css/main.css';
 ```
 
+If you are using React 17, ChatBot currently has a dependency on [react-markdown](https://github.com/remarkjs/react-markdown) that relies on React 18 and 19. There is an older version of react-markdown (8.0.7) that supports 17, but it does not have support for 19. You should be able to add `"react"` and `"react-dom"` of the appropriate version to the `overrides` section of your `package.json` file if you need to use ChatBot with 17.
+
 ## Contribution guide
 
 ### AI-assisted development guidelines
