@@ -244,6 +244,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
               className="pf-chatbot__menu-item-header"
               label={navGroup}
               key={navGroup}
+              labelHeadingLevel="h3"
               {...menuGroupProps?.[navGroup]}
             >
               <MenuList {...menuListProps?.[navGroup]}>
