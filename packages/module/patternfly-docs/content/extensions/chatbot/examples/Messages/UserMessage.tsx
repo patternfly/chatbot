@@ -270,13 +270,32 @@ You can also reference the same footnote multiple times[^1].
 
         // If we found a footnote definition container, look for the backref link inside it
         if (targetElement.id?.startsWith('user-content-fn-')) {
-          const backrefLink = targetElement.querySelector('a[data-footnote-backref]');
-          if (backrefLink) {
-            focusTarget = backrefLink as HTMLElement;
+          // Check if we came from a specific footnote reference by looking at the clicked element
+          const clickedElement = event.target as HTMLElement;
+          const clickedAnchor = clickedElement.closest('a');
+
+          // If we clicked from a footnote reference, find the backref that points back to that specific reference
+          if (clickedAnchor?.id && clickedAnchor.id.startsWith('user-content-fnref-')) {
+            const specificBackref = targetElement.querySelector(`a[href="#${clickedAnchor.id}"]`);
+            if (specificBackref) {
+              focusTarget = specificBackref as HTMLElement;
+            } else {
+              // Fallback to any backref link
+              const backrefLink = targetElement.querySelector('a[data-footnote-backref]');
+              if (backrefLink) {
+                focusTarget = backrefLink as HTMLElement;
+              }
+            }
+          } else {
+            // Default behavior: focus on any backref link
+            const backrefLink = targetElement.querySelector('a[data-footnote-backref]');
+            if (backrefLink) {
+              focusTarget = backrefLink as HTMLElement;
+            }
           }
         }
 
-        focusTarget.focus({ preventScroll: true });
+        focusTarget.focus();
 
         // For all footnote navigation, find the nearest span with class "pf-chatbot__message-text"
         // to ensure we highlight the appropriate container
