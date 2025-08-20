@@ -238,33 +238,14 @@ You can also reference the same footnote multiple times[^1].
       targetElement = document.querySelector(`[id="${targetId}"]`);
 
       if (targetElement) {
-        // For footnote definitions, try to focus on the backref link inside
         let focusTarget = targetElement;
 
-        // If we found a footnote definition container, look for the backref link inside it
-        if (targetElement.id?.startsWith('user-content-fn-')) {
-          // Check if we came from a specific footnote reference by looking at the clicked element
-          const clickedElement = event.target as HTMLElement;
-          const clickedAnchor = clickedElement.closest('a');
-
-          // If we clicked from a footnote reference, find the backref that points back to that specific reference
-          if (clickedAnchor?.id && clickedAnchor.id.startsWith('user-content-fnref-')) {
-            const specificBackref = targetElement.querySelector(`a[href="#${clickedAnchor.id}"]`);
-            if (specificBackref) {
-              focusTarget = specificBackref as HTMLElement;
-            } else {
-              // Fallback to any backref link
-              const backrefLink = targetElement.querySelector('a[data-footnote-backref]');
-              if (backrefLink) {
-                focusTarget = backrefLink as HTMLElement;
-              }
-            }
-          } else {
-            // Default behavior: focus on any backref link
-            const backrefLink = targetElement.querySelector('a[data-footnote-backref]');
-            if (backrefLink) {
-              focusTarget = backrefLink as HTMLElement;
-            }
+        // If we found a footnote definition container, focus on the parent li element
+        if (targetElement.id?.startsWith('bot-message-fn-')) {
+          // Find the parent li element that contains the footnote
+          const parentLi = targetElement.closest('li');
+          if (parentLi) {
+            focusTarget = parentLi as HTMLElement;
           }
         }
 
@@ -275,22 +256,20 @@ You can also reference the same footnote multiple times[^1].
         // If this is a backref link (going back to footnote reference),
         // we want to highlight more of the ref line and not just the link itself
         // since the target is so small
-        if (targetElement.id?.startsWith('user-content-fnref-')) {
+        if (targetElement.id?.startsWith('bot-message-fnref-')) {
           const refLink = targetElement;
 
-          // Walk up the DOM to find a paragraph or other meaningful container
-          // This may just be a "sup" element, so we want to find the parent
+          // Walk up the DOM to find a meaningful container
           let parent = refLink.parentElement;
           while (parent && parent.tagName.toLowerCase() !== 'p' && parent !== document.body) {
             parent = parent.parentElement;
           }
 
-          // Use the paragraph if found, otherwise use the immediate parent or target as a fallback
+          // Use if found, otherwise use the immediate parent or target as a fallback
           elementToHighlight = parent || refLink.parentElement || targetElement;
         }
 
-        // Briefly highlight the target element since we're not scrolling to it in this example
-        // You could also use onClick to implement scrolling to the target element if you wanted
+        // Briefly highlight the target element for fun to show what you can do
         const originalBackground = elementToHighlight.style.backgroundColor;
         const originalTransition = elementToHighlight.style.transition;
 
@@ -382,6 +361,10 @@ You can also reference the same footnote multiple times[^1].
         // Because they are in the same message, this requires a custom plugin to parse the syntax tree
         additionalRehypePlugins={[rehypeCodeBlockToggle]}
         linkProps={{ onClick }}
+        // clobberPrefix controls the label ids
+        reactMarkdownProps={{
+          remarkRehypeOptions: { footnoteLabel: 'Bot message footnotes', clobberPrefix: 'bot-message-' }
+        }}
       />
     </>
   );
