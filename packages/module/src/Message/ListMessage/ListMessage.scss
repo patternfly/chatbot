@@ -29,9 +29,11 @@
   }
 
   // targets footnotes specifically and prevents misalignment problems
-  li[id*='user-content-fn-'] > span {
-    display: inline-flex;
-    flex-direction: column;
+  .footnotes {
+    li > span {
+      display: inline-flex;
+      flex-direction: column;
+    }
   }
 
   li a {

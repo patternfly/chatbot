@@ -265,61 +265,25 @@ You can also reference the same footnote multiple times[^1].
       targetElement = document.querySelector(`[id="${targetId}"]`);
 
       if (targetElement) {
-        // For footnote definitions, try to focus on the backref link inside
         let focusTarget = targetElement;
 
-        // If we found a footnote definition container, look for the backref link inside it
-        if (targetElement.id?.startsWith('user-content-fn-')) {
-          // Check if we came from a specific footnote reference by looking at the clicked element
-          const clickedElement = event.target as HTMLElement;
-          const clickedAnchor = clickedElement.closest('a');
-
-          // If we clicked from a footnote reference, find the backref that points back to that specific reference
-          if (clickedAnchor?.id && clickedAnchor.id.startsWith('user-content-fnref-')) {
-            const specificBackref = targetElement.querySelector(`a[href="#${clickedAnchor.id}"]`);
-            if (specificBackref) {
-              focusTarget = specificBackref as HTMLElement;
-            } else {
-              // Fallback to any backref link
-              const backrefLink = targetElement.querySelector('a[data-footnote-backref]');
-              if (backrefLink) {
-                focusTarget = backrefLink as HTMLElement;
-              }
-            }
-          } else {
-            // Default behavior: focus on any backref link
-            const backrefLink = targetElement.querySelector('a[data-footnote-backref]');
-            if (backrefLink) {
-              focusTarget = backrefLink as HTMLElement;
-            }
+        // If we found a footnote definition container, focus on the parent li element
+        if (targetElement.id?.startsWith('user-message-fn-')) {
+          // Find the parent li element that contains the footnote
+          const parentLi = targetElement.closest('li');
+          if (parentLi) {
+            focusTarget = parentLi as HTMLElement;
           }
         }
 
         focusTarget.focus();
 
-        // For all footnote navigation, find the nearest span with class "pf-chatbot__message-text"
-        // to ensure we highlight the appropriate container
         let elementToHighlight = targetElement;
-
         const searchStartElement = targetElement;
-
         let elementToHighlightContainer: HTMLElement | null = null;
 
-        // If navigating to a footnote definition, look for the footnotes container
-        if (targetElement.id?.startsWith('user-content-fn-')) {
-          let parent = searchStartElement.parentElement;
-          while (
-            parent &&
-            !(
-              parent.tagName.toLowerCase() === 'div' && parent.classList.contains('pf-chatbot__message-ordered-list')
-            ) &&
-            parent !== document.body
-          ) {
-            parent = parent.parentElement;
-          }
-          elementToHighlightContainer = parent;
-        } else {
-          // For footnote references, look for the message text span
+        // For footnote references, look for an appropriate container
+        if (!targetElement.id?.startsWith('user-message-fn-')) {
           let parent = searchStartElement.parentElement;
           while (
             parent &&
@@ -334,8 +298,7 @@ You can also reference the same footnote multiple times[^1].
         // Use the found container if available, otherwise fall back to the target element
         elementToHighlight = elementToHighlightContainer || targetElement;
 
-        // Briefly highlight the target element since we're not scrolling to it in this example
-        // You could also use onClick to implement scrolling to the target element if you wanted
+        // Briefly highlight the target element for fun to show what you can do
         const originalBackground = elementToHighlight.style.backgroundColor;
         const originalTransition = elementToHighlight.style.transition;
 
@@ -424,6 +387,13 @@ You can also reference the same footnote multiple times[^1].
         // Because they are in the same message, this requires a custom plugin to parse the syntax tree
         additionalRehypePlugins={[rehypeCodeBlockToggle]}
         linkProps={{ onClick }}
+        // clobberPrefix controls the label ids
+        reactMarkdownProps={{
+          remarkRehypeOptions: {
+            footnoteLabel: 'User message footnotes',
+            clobberPrefix: 'user-message-'
+          }
+        }}
       />
     </>
   );

@@ -52,6 +52,7 @@ import { rehypeMoveImagesOutOfParagraphs } from './Plugins/rehypeMoveImagesOutOf
 import ToolResponse, { ToolResponseProps } from '../ToolResponse';
 import DeepThinking, { DeepThinkingProps } from '../DeepThinking';
 import SuperscriptMessage from './SuperscriptMessage/SuperscriptMessage';
+import { ElementContent } from 'rehype-external-links/lib';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -198,6 +199,8 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   toolResponse?: ToolResponseProps;
   /** Props for deep thinking card */
   deepThinking?: DeepThinkingProps;
+  /** Allows passing additional props down to remark-gfm. See https://github.com/remarkjs/remark-gfm?tab=readme-ov-file#options for options */
+  remarkGfmProps?: Options;
 }
 
 export const MessageBase: FunctionComponent<MessageProps> = ({
@@ -242,6 +245,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   reactMarkdownProps,
   toolResponse,
   deepThinking,
+  remarkGfmProps,
   ...props
 }: MessageProps) => {
   const [messageText, setMessageText] = useState(content);
@@ -268,6 +272,28 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   const date = new Date();
   const dateString = timestamp ?? `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 
+  const defaultFootnoteBackContent = (referenceIndex: number, rereferenceIndex: number): ElementContent[] => {
+    const result: ElementContent[] = [{ type: 'text', value: '↩' }];
+
+    if (rereferenceIndex > 1) {
+      result.push({
+        type: 'element',
+        tagName: 'sup',
+        properties: {},
+        children: [{ type: 'text', value: `${String(referenceIndex + 1)}-${String(rereferenceIndex)}` }]
+      });
+    } else {
+      result.push({
+        type: 'element',
+        tagName: 'sup',
+        properties: {},
+        children: [{ type: 'text', value: String(referenceIndex + 1) }]
+      });
+    }
+
+    return result;
+  };
+
   const handleMarkdown = () => {
     if (isMarkdownDisabled) {
       return (
@@ -279,6 +305,11 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
     return (
       <Markdown
         components={{
+          section: (props) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { node, ...rest } = props;
+            return <section {...rest} className={`pf-chatbot__message-text ${rest?.className}`} />;
+          },
           p: (props) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { node, ...rest } = props;
@@ -395,9 +426,15 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
             return <SuperscriptMessage {...rest} />;
           }
         }}
-        remarkPlugins={[remarkGfm, ...additionalRemarkPlugins]}
+        remarkPlugins={[[remarkGfm, { ...remarkGfmProps }], ...additionalRemarkPlugins]}
         rehypePlugins={rehypePlugins}
         {...reactMarkdownProps}
+        remarkRehypeOptions={{
+          // removes sr-only class from footnote labels applied by default
+          footnoteLabelProperties: { className: [''] },
+          footnoteBackContent: defaultFootnoteBackContent,
+          ...reactMarkdownProps?.remarkRehypeOptions
+        }}
       >
         {messageText}
       </Markdown>
