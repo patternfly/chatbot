@@ -1,7 +1,7 @@
 // ============================================================================
 // Chatbot Main - Message - Content - Code Block
 // ============================================================================
-import { useState, useRef, useId, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 // Import PatternFly components
 import {
   CodeBlock,
@@ -13,7 +13,8 @@ import {
   ExpandableSectionToggle,
   ExpandableSectionProps,
   ExpandableSectionToggleProps,
-  ExpandableSectionVariant
+  ExpandableSectionVariant,
+  getUniqueId
 } from '@patternfly/react-core';
 
 import { CheckIcon } from '@patternfly/react-icons/dist/esm/icons/check-icon';
@@ -56,9 +57,9 @@ const CodeBlockMessage = ({
   const [isExpanded, setIsExpanded] = useState(false);
 
   const buttonRef = useRef();
-  const tooltipID = useId();
-  const toggleId = useId();
-  const contentId = useId();
+  const tooltipID = getUniqueId();
+  const toggleId = getUniqueId();
+  const contentId = getUniqueId();
   const codeBlockRef = useRef<HTMLDivElement>(null);
 
   const language = /language-(\w+)/.exec(className || '')?.[1];
