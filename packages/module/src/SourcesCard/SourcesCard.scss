@@ -16,6 +16,17 @@
   box-shadow: var(--pf-t--global--box-shadow--sm);
 }
 
+.pf-chatbot__compact-sources-card-body {
+  --pf-v6-c-card--child--PaddingBlockEnd: var(--pf-t--global--spacer--md);
+}
+
+.pf-chatbot__sources-card-subtitle,
+.pf-chatbot__sources-card-subtle {
+  color: var(--pf-t--global--text--color--subtle);
+  font-size: var(--pf-t--global--font--size--body--sm);
+  font-weight: var(--pf-t--global--font--weight--body--default);
+}
+
 .pf-chatbot__sources-card-body-text {
   display: block;
   display: -webkit-box;
@@ -25,6 +36,11 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.pf-chatbot__sources-card-title-container {
+  display: flex;
+  gap: var(--pf-t--global--spacer--xs);
 }
 
 .pf-chatbot__sources-card-footer-container {
