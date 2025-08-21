@@ -34,7 +34,7 @@ import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import MessageDivider from '@patternfly/chatbot/dist/dynamic/MessageDivider';
 import { rehypeCodeBlockToggle } from '@patternfly/chatbot/dist/esm/Message/Plugins/rehypeCodeBlockToggle';
 import SourcesCard from '@patternfly/chatbot/dist/dynamic/SourcesCard';
-import { ArrowCircleDownIcon, ArrowRightIcon, CheckCircleIcon, CubeIcon, CubesIcon, DownloadIcon, InfoCircleIcon, OutlinedQuestionCircleIcon, RedoIcon, RobotIcon } from '@patternfly/react-icons';
+import { ArrowCircleDownIcon, ArrowRightIcon, CheckCircleIcon, CopyIcon, CubeIcon, CubesIcon, DownloadIcon, InfoCircleIcon, OutlinedQuestionCircleIcon, RedoIcon, RobotIcon, WrenchIcon } from '@patternfly/react-icons';
 import patternflyAvatar from './patternfly_avatar.jpg';
 import AttachmentEdit from '@patternfly/chatbot/dist/dynamic/AttachmentEdit';
 import FileDetails from '@patternfly/chatbot/dist/dynamic/FileDetails';
@@ -175,6 +175,14 @@ If a source will open outside of the ChatBot window, add an external link icon v
 The API for a source requires a link at minimum, but we strongly recommend providing a more descriptive title and body description so users have enough context. For the best clarity and readability, we strongly recommend limiting the title to 1 line and the body to 2 lines. If the body description is more than 2 lines, use the "long sources" or "very long sources" variant.
 
 ```js file="./MessageWithSources.tsx"
+
+```
+
+### Messages with tool responses
+
+If you are using [model context protocol (MCP)](https://www.redhat.com/en/blog/model-context-protocol-discover-missing-link-ai-integration), you may find it useful to display information on tool responses as part of a message. Passing `toolResponse` to `<Message>` allows you to display a card with an optional subheading and body, as well as custom card content. Content is intentionally left fully customizable for now as this is an evolving area.
+
+```js file="./MessageWithToolResponse.tsx"
 
 ```
 
