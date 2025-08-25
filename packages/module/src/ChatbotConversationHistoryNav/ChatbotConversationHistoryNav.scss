@@ -42,61 +42,53 @@
   }
   // Drawer menu
   // ----------------------------------------------------------------------------
-  .pf-chatbot__conversation-list {
-    --pf-v6-c-list--Gap: var(--pf-t--global--spacer--xs);
-
-    margin-block-start: var(--pf-t--global--spacer--md);
-    margin-block-end: var(--pf-t--global--spacer--md);
+  .pf-v6-c-menu {
+    --pf-v6-c-menu--PaddingBlockStart: 0;
+    --pf-v6-c-menu--BackgroundColor: var(--pf-t--global--background--color--floating--default);
+    overflow: initial;
+    position: relative;
+  }
+  .pf-v6-c-menu__item-main {
+    --pf-v6-c-menu__item-main--ColumnGap: var(--pf-t--global--spacer--md);
   }
 
-  .pf-chatbot__conversation-list-header {
+  .pf-chatbot__menu-item-header > .pf-v6-c-menu__group-title {
     color: var(--pf-t--global--text--color--subtle);
     font-weight: var(--pf-t--global--font--weight--body--bold);
     font-size: var(--pf-t--global--icon--size--font--sm);
-    padding-inline-start: var(--pf-t--global--spacer--sm);
-    padding-inline-end: var(--pf-t--global--spacer--sm);
+    --pf-v6-c-menu__group-title--PaddingInlineStart: var(--pf-t--global--spacer--sm);
+    --pf-v6-c-menu__group-title--PaddingInlineEnd: var(--pf-t--global--spacer--sm);
     position: -webkit-sticky;
     position: sticky;
     top: 0;
     background-color: var(--pf-t--global--background--color--floating--default);
     z-index: var(--pf-t--global--z-index--md);
   }
-  .pf-chatbot__conversation-list-item {
-    & > span {
-      display: flex;
-      column-gap: var(--pf-t--global--spacer--sm);
-    }
 
-    & .pf-chatbot__conversation-history-item {
-      --pf-v6-c-button--JustifyContent: flex-start;
-      --pf-v6-c-button--FontSize: var(--pf-t--global--font--size--body--lg);
-      --pf-v6-c-button--m-link--Color: var(--pf-t--global--text--color--regular);
-      --pf-v6-c-button--m-link__icon--Color: var(--pf-t--global--icon--color--regular);
-      --pf-v6-c-button--m-link--hover--Color: var(--pf-t--global--text--color--regular--hover);
-      --pf-v6-c-button--m-link--hover__icon--Color: var(--pf-t--global--icon--color--regular);
-      --pf-v6-c-button--m-link--m-clicked--Color: var(--pf-t--global--text--color--regular--clicked);
-      --pf-v6-c-button--m-link--m-clicked__icon--Color: var(--pf-t--global--icon--color--regular);
-
-      column-gap: var(--pf-t--global--spacer--md);
-      flex-basis: 100%;
-
-      & .pf-v6-c-button__text {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-    }
+  .pf-chatbot__menu-item {
+    --pf-v6-c-menu__item--PaddingInlineStart: var(--pf-t--global--spacer--sm);
+    --pf-v6-c-menu__item--PaddingInlineEnd: var(--pf-t--global--spacer--sm);
+    padding-block-start: var(--pf-t--global--spacer--xs);
+    padding-block-end: var(--pf-t--global--spacer--xs);
+    color: var(--pf-t--global--text--color--regular);
+    font-size: var(--pf-t--global--font--size--body--lg);
+    font-weight: var(--pf-t--global--font--weight--body--default);
+    border-radius: var(--pf-t--global--border--radius--small);
+  }
+  // allows focus state to have border radius
+  .pf-v6-c-menu__list-item.pf-chatbot__menu-item {
+    overflow: hidden;
   }
 
   .pf-chatbot__history-actions {
     transform: rotate(90deg);
   }
 
-  .pf-chatbot__conversation-list-item--active {
+  .pf-chatbot__menu-item--active {
     background-color: var(--pf-t--global--background--color--action--plain--clicked);
   }
 
-  button.pf-chatbot__conversation-list-item--active {
+  button.pf-chatbot__menu-item--active {
     background-color: initial;
   }
 }
@@ -259,8 +251,8 @@
     }
   }
 
-  .pf-chatbot__conversation-history-item {
-    --pf-v6-c-button--FontSize: var(--pf-t--global--font--size--body--md);
+  .pf-chatbot__menu-item {
+    font-size: var(--pf-t--global--font--size--body--md);
   }
 
   .pf-v6-c-drawer__head {
