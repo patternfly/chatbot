@@ -256,4 +256,97 @@ describe('SourcesCard', () => {
     );
     expect(screen.getByRole('link', { name: /How to make an apple pie/i })).toHaveClass('test');
   });
+
+  it('should apply cardTitleProps appropriately', () => {
+    render(
+      <SourcesCard
+        cardTitleProps={{ 'data-testid': 'card-title', className: 'test' } as any}
+        sources={[{ title: 'How to make an apple pie', link: '' }]}
+      />
+    );
+    expect(screen.getByTestId('card-title')).toHaveClass('test');
+  });
+
+  it('should apply cardBodyProps appropriately', () => {
+    render(
+      <SourcesCard
+        cardBodyProps={
+          { 'data-testid': 'card-body', body: 'To make an apple pie, you must first...', className: 'test' } as any
+        }
+        sources={[{ title: 'How to make an apple pie', link: '', body: 'To make an apple pie, you must first...' }]}
+      />
+    );
+    expect(screen.getByTestId('card-body')).toHaveClass('test');
+  });
+
+  it('should apply cardFooterProps appropriately', () => {
+    render(
+      <SourcesCard
+        cardFooterProps={{ 'data-testid': 'card-footer', className: 'test' } as any}
+        sources={[
+          { title: 'How to make an apple pie', link: '' },
+          { title: 'How to make cookies', link: '' }
+        ]}
+      />
+    );
+    expect(screen.getByTestId('card-footer')).toHaveClass('test');
+  });
+
+  it('should apply truncateProps appropriately', () => {
+    render(
+      <SourcesCard
+        sources={[
+          {
+            title: 'How to make an apple pie',
+            link: '',
+            truncateProps: { 'data-testid': 'card-truncate', className: 'test' } as any
+          }
+        ]}
+      />
+    );
+    expect(screen.getByTestId('card-truncate')).toHaveClass('test');
+  });
+
+  it('should apply custom footer appropriately when there is one source', () => {
+    render(
+      <SourcesCard sources={[{ title: 'How to make an apple pie', link: '', footer: <>I am a custom footer</> }]} />
+    );
+    expect(screen.getByText('I am a custom footer'));
+    expect(screen.queryByText('1/1')).toBeFalsy();
+  });
+
+  it('should apply custom footer appropriately when are multiple sources', () => {
+    render(
+      <SourcesCard
+        sources={[
+          { title: 'How to make an apple pie', link: '', footer: <>I am a custom footer</> },
+          { title: 'How to bake bread', link: '' }
+        ]}
+      />
+    );
+    expect(screen.getByText('I am a custom footer'));
+    // does not show navigation bar
+    expect(screen.queryByText('1/2')).toBeFalsy();
+  });
+
+  it('should apply footer props to custom footer appropriately', () => {
+    render(
+      <SourcesCard
+        cardFooterProps={{ 'data-testid': 'card-footer', className: 'test' } as any}
+        sources={[{ title: 'How to make an apple pie', link: '', footer: <>I am a custom footer</> }]}
+      />
+    );
+    expect(screen.getByText('I am a custom footer'));
+    expect(screen.getByTestId('card-footer')).toHaveClass('test');
+  });
+
+  it('should apply subtitle appropriately', () => {
+    render(
+      <SourcesCard
+        sources={[{ title: 'How to make an apple pie', link: '', subtitle: 'You must first create the universe' }]}
+      />
+    );
+    expect(screen.getByText('How to make an apple pie'));
+    expect(screen.getByText('You must first create the universe'));
+  });
 });
