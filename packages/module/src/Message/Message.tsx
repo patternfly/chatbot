@@ -53,6 +53,7 @@ import ToolResponse, { ToolResponseProps } from '../ToolResponse';
 import DeepThinking, { DeepThinkingProps } from '../DeepThinking';
 import SuperscriptMessage from './SuperscriptMessage/SuperscriptMessage';
 import { ElementContent } from 'rehype-external-links/lib';
+import { rehypeFootnotes } from './Plugins/rehypeFootnotes';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -255,7 +256,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   }, [content]);
 
   const { beforeMainContent, afterMainContent, endContent } = extraContent || {};
-  let rehypePlugins: PluggableList = [rehypeUnwrapImages, rehypeMoveImagesOutOfParagraphs];
+  let rehypePlugins: PluggableList = [rehypeUnwrapImages, rehypeMoveImagesOutOfParagraphs, rehypeFootnotes];
   if (openLinkInNewTab) {
     rehypePlugins = rehypePlugins.concat([[rehypeExternalLinks, { target: '_blank' }, rehypeSanitize]]);
   }
