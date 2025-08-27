@@ -10,14 +10,18 @@ import {
   ButtonVariant,
   Card,
   CardBody,
+  CardBodyProps,
   CardFooter,
+  CardFooterProps,
   CardProps,
   CardTitle,
+  CardTitleProps,
   ExpandableSection,
   ExpandableSectionVariant,
   Icon,
   pluralize,
-  Truncate
+  Truncate,
+  TruncateProps
 } from '@patternfly/react-core';
 import { ExternalLinkSquareAltIcon } from '@patternfly/react-icons';
 
@@ -34,6 +38,8 @@ export interface SourcesCardProps extends CardProps {
   sources: {
     /** Title of sources card */
     title?: string;
+    /** Subtitle of sources card */
+    subtitle?: string;
     /** Link to source */
     link: string;
     /** Body of sources card */
@@ -46,6 +52,10 @@ export interface SourcesCardProps extends CardProps {
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
     /** Any additional props applied to the title of the Sources card  */
     titleProps?: ButtonProps;
+    /** Custom footer applied to the Sources card */
+    footer?: React.ReactNode;
+    /** Additional props passed to Truncate component */
+    truncateProps?: TruncateProps;
   }[];
   /** Label for the English word "source" */
   sourceWord?: string;
@@ -65,6 +75,12 @@ export interface SourcesCardProps extends CardProps {
   showMoreWords?: string;
   /** Label for English words "show less" */
   showLessWords?: string;
+  /** Additional props passed to card title */
+  cardTitleProps?: CardTitleProps;
+  /** Additional props passed to card body */
+  cardBodyProps?: CardBodyProps;
+  /** Additional props passed to card footer */
+  cardFooterProps?: CardFooterProps;
 }
 
 const SourcesCard: FunctionComponent<SourcesCardProps> = ({
@@ -82,6 +98,9 @@ const SourcesCard: FunctionComponent<SourcesCardProps> = ({
   showMoreWords = 'show more',
   showLessWords = 'show less',
   isCompact,
+  cardTitleProps,
+  cardBodyProps,
+  cardFooterProps,
   ...props
 }: SourcesCardProps) => {
   const [page, setPage] = useState(1);
@@ -96,9 +115,9 @@ const SourcesCard: FunctionComponent<SourcesCardProps> = ({
     onSetPage && onSetPage(_evt, newPage);
   };
 
-  const renderTitle = (title?: string) => {
+  const renderTitle = (title?: string, truncateProps?: TruncateProps) => {
     if (title) {
-      return <Truncate content={title} />;
+      return <Truncate content={title} {...truncateProps} />;
     }
     return `Source ${page}`;
   };
@@ -107,24 +126,32 @@ const SourcesCard: FunctionComponent<SourcesCardProps> = ({
     <div className="pf-chatbot__source">
       <span>{pluralize(sources.length, sourceWord, sourceWordPlural)}</span>
       <Card isCompact={isCompact} className="pf-chatbot__sources-card" {...props}>
-        <CardTitle className="pf-chatbot__sources-card-title">
-          <Button
-            component="a"
-            variant={ButtonVariant.link}
-            href={sources[page - 1].link}
-            icon={sources[page - 1].isExternal ? <ExternalLinkSquareAltIcon /> : undefined}
-            iconPosition="end"
-            isInline
-            rel={sources[page - 1].isExternal ? 'noreferrer' : undefined}
-            target={sources[page - 1].isExternal ? '_blank' : undefined}
-            onClick={sources[page - 1].onClick ?? undefined}
-            {...sources[page - 1].titleProps}
-          >
-            {renderTitle(sources[page - 1].title)}
-          </Button>
+        <CardTitle className="pf-chatbot__sources-card-title" {...cardTitleProps}>
+          <div className="pf-chatbot__sources-card-title-container">
+            <Button
+              component="a"
+              variant={ButtonVariant.link}
+              href={sources[page - 1].link}
+              icon={sources[page - 1].isExternal ? <ExternalLinkSquareAltIcon /> : undefined}
+              iconPosition="end"
+              isInline
+              rel={sources[page - 1].isExternal ? 'noreferrer' : undefined}
+              target={sources[page - 1].isExternal ? '_blank' : undefined}
+              onClick={sources[page - 1].onClick ?? undefined}
+              {...sources[page - 1].titleProps}
+            >
+              {renderTitle(sources[page - 1].title, sources[page - 1].truncateProps)}
+            </Button>
+            {sources[page - 1].subtitle && (
+              <span className="pf-chatbot__sources-card-subtitle">{sources[page - 1].subtitle}</span>
+            )}
+          </div>
         </CardTitle>
         {sources[page - 1].body && (
-          <CardBody className={`pf-chatbot__sources-card-body`}>
+          <CardBody
+            className={`pf-chatbot__sources-card-body ${sources[page - 1].footer ? 'pf-chatbot__compact-sources-card-body' : undefined}`}
+            {...cardBodyProps}
+          >
             {sources[page - 1].hasShowMore ? (
               // prevents extra VO announcements of button text - parent Message has aria-live
               <div aria-live="off">
@@ -143,68 +170,77 @@ const SourcesCard: FunctionComponent<SourcesCardProps> = ({
             )}
           </CardBody>
         )}
-        {sources.length > 1 && (
-          <CardFooter className="pf-chatbot__sources-card-footer-container">
-            <div className="pf-chatbot__sources-card-footer">
-              <nav className={`pf-chatbot__sources-card-footer-buttons ${className}`} aria-label={paginationAriaLabel}>
-                <Button
-                  variant={ButtonVariant.plain}
-                  isDisabled={isDisabled || page === 1}
-                  data-action="previous"
-                  onClick={(event) => {
-                    const newPage = page >= 1 ? page - 1 : 1;
-                    onPreviousClick && onPreviousClick(event, newPage);
-                    handleNewPage(event, newPage);
-                  }}
-                  aria-label={toPreviousPageAriaLabel}
-                >
-                  <Icon iconSize="lg">
-                    {/* these are inline because the viewBox that works in a round icon is different than the PatternFly default */}
-                    <svg
-                      className="pf-v6-svg"
-                      viewBox="0 0 280 500"
-                      fill="currentColor"
-                      aria-hidden="true"
-                      role="img"
-                      width="1em"
-                      height="1em"
-                    >
-                      <path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"></path>
-                    </svg>
-                  </Icon>
-                </Button>
-                <span aria-hidden="true">
-                  {page}/{sources.length}
-                </span>
-                <Button
-                  variant={ButtonVariant.plain}
-                  isDisabled={isDisabled || page === sources.length}
-                  aria-label={toNextPageAriaLabel}
-                  data-action="next"
-                  onClick={(event) => {
-                    const newPage = page + 1 <= sources.length ? page + 1 : sources.length;
-                    onNextClick && onNextClick(event, newPage);
-                    handleNewPage(event, newPage);
-                  }}
-                >
-                  <Icon isInline iconSize="lg">
-                    {/* these are inline because the viewBox that works in a round icon is different than the PatternFly default */}
-                    <svg
-                      className="pf-v6-svg"
-                      viewBox="0 0 180 500"
-                      fill="currentColor"
-                      aria-hidden="true"
-                      role="img"
-                      width="1em"
-                      height="1em"
-                    >
-                      <path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"></path>
-                    </svg>
-                  </Icon>
-                </Button>
-              </nav>
-            </div>
+        {sources[page - 1].footer ? (
+          <CardFooter className="pf-chatbot__sources-card-footer" {...cardFooterProps}>
+            {sources[page - 1].footer}
           </CardFooter>
+        ) : (
+          sources.length > 1 && (
+            <CardFooter className="pf-chatbot__sources-card-footer-container" {...cardFooterProps}>
+              <div className="pf-chatbot__sources-card-footer">
+                <nav
+                  className={`pf-chatbot__sources-card-footer-buttons ${className}`}
+                  aria-label={paginationAriaLabel}
+                >
+                  <Button
+                    variant={ButtonVariant.plain}
+                    isDisabled={isDisabled || page === 1}
+                    data-action="previous"
+                    onClick={(event) => {
+                      const newPage = page >= 1 ? page - 1 : 1;
+                      onPreviousClick && onPreviousClick(event, newPage);
+                      handleNewPage(event, newPage);
+                    }}
+                    aria-label={toPreviousPageAriaLabel}
+                  >
+                    <Icon iconSize="lg">
+                      {/* these are inline because the viewBox that works in a round icon is different than the PatternFly default */}
+                      <svg
+                        className="pf-v6-svg"
+                        viewBox="0 0 280 500"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        role="img"
+                        width="1em"
+                        height="1em"
+                      >
+                        <path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"></path>
+                      </svg>
+                    </Icon>
+                  </Button>
+                  <span aria-hidden="true">
+                    {page}/{sources.length}
+                  </span>
+                  <Button
+                    variant={ButtonVariant.plain}
+                    isDisabled={isDisabled || page === sources.length}
+                    aria-label={toNextPageAriaLabel}
+                    data-action="next"
+                    onClick={(event) => {
+                      const newPage = page + 1 <= sources.length ? page + 1 : sources.length;
+                      onNextClick && onNextClick(event, newPage);
+                      handleNewPage(event, newPage);
+                    }}
+                  >
+                    <Icon isInline iconSize="lg">
+                      {/* these are inline because the viewBox that works in a round icon is different than the PatternFly default */}
+                      <svg
+                        className="pf-v6-svg"
+                        viewBox="0 0 180 500"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        role="img"
+                        width="1em"
+                        height="1em"
+                      >
+                        <path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"></path>
+                      </svg>
+                    </Icon>
+                  </Button>
+                </nav>
+              </div>
+            </CardFooter>
+          )
         )}
       </Card>
     </div>
