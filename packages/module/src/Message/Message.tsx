@@ -52,8 +52,6 @@ import { rehypeMoveImagesOutOfParagraphs } from './Plugins/rehypeMoveImagesOutOf
 import ToolResponse, { ToolResponseProps } from '../ToolResponse';
 import DeepThinking, { DeepThinkingProps } from '../DeepThinking';
 import SuperscriptMessage from './SuperscriptMessage/SuperscriptMessage';
-import { ElementContent } from 'rehype-external-links/lib';
-import { rehypeFootnotes } from './Plugins/rehypeFootnotes';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -256,7 +254,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   }, [content]);
 
   const { beforeMainContent, afterMainContent, endContent } = extraContent || {};
-  let rehypePlugins: PluggableList = [rehypeUnwrapImages, rehypeMoveImagesOutOfParagraphs, rehypeFootnotes];
+  let rehypePlugins: PluggableList = [rehypeUnwrapImages, rehypeMoveImagesOutOfParagraphs];
   if (openLinkInNewTab) {
     rehypePlugins = rehypePlugins.concat([[rehypeExternalLinks, { target: '_blank' }, rehypeSanitize]]);
   }
@@ -272,28 +270,6 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   // Keep timestamps consistent between Timestamp component and aria-label
   const date = new Date();
   const dateString = timestamp ?? `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-
-  const defaultFootnoteBackContent = (referenceIndex: number, rereferenceIndex: number): ElementContent[] => {
-    const result: ElementContent[] = [{ type: 'text', value: '↩' }];
-
-    if (rereferenceIndex > 1) {
-      result.push({
-        type: 'element',
-        tagName: 'sup',
-        properties: {},
-        children: [{ type: 'text', value: `${String(referenceIndex + 1)}-${String(rereferenceIndex)}` }]
-      });
-    } else {
-      result.push({
-        type: 'element',
-        tagName: 'sup',
-        properties: {},
-        children: [{ type: 'text', value: String(referenceIndex + 1) }]
-      });
-    }
-
-    return result;
-  };
 
   const handleMarkdown = () => {
     if (isMarkdownDisabled) {
@@ -433,7 +409,6 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
         remarkRehypeOptions={{
           // removes sr-only class from footnote labels applied by default
           footnoteLabelProperties: { className: [''] },
-          footnoteBackContent: defaultFootnoteBackContent,
           ...reactMarkdownProps?.remarkRehypeOptions
         }}
       >

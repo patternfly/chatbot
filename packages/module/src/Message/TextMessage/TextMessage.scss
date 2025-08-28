@@ -17,9 +17,10 @@
   width: fit-content;
   padding: var(--pf-t--global--spacer--sm) 0 var(--pf-t--global--spacer--sm) 0;
   border-radius: var(--pf-t--global--border--radius--small);
+  --pf-chatbot-message-text-font-size: var(--pf-t--global--font--size--md);
 
   .pf-v6-c-button.pf-m-link {
-    font-size: var(--pf-t--global--font--size--md);
+    font-size: var(--pf-chatbot-message-text-font-size);
   }
 
   .pf-v6-c-content,
@@ -27,12 +28,12 @@
   .pf-v6-c-content--blockquote,
   p,
   a {
-    --pf-v6-c-content--FontSize: var(--pf-t--global--font--size--md);
+    --pf-v6-c-content--FontSize: var(--pf-chatbot-message-text-font-size);
   }
 
   code {
     background-color: var(--pf-t--global--background--color--tertiary--default);
-    font-size: var(--pf-t--global--font--size--body--default);
+    font-size: var(--pf-chatbot-message-text-inline-code-font-size);
   }
 
   // Hide message text that contains sr-only content
@@ -101,8 +102,9 @@ li[id*='user-content-fn-']:has(> span > span > .pf-chatbot__message-text + .pf-c
 .pf-chatbot.pf-m-compact {
   // Need to inline shorter text
   .pf-chatbot__message-text {
+    --pf-chatbot-message-text-font-size: var(--pf-t--global--font--size--sm);
     .pf-v6-c-button.pf-m-link {
-      font-size: var(--pf-t--global--font--size--sm);
+      font-size: var(--pf-chatbot-message-text-font-size);
     }
 
     .pf-v6-c-content,
@@ -110,7 +112,7 @@ li[id*='user-content-fn-']:has(> span > span > .pf-chatbot__message-text + .pf-c
     .pf-v6-c-content--blockquote,
     p,
     a {
-      --pf-v6-c-content--FontSize: var(--pf-t--global--font--size--sm);
+      --pf-v6-c-content--FontSize: var(--pf-chatbot-message-text-font-size);
     }
 
     .pf-v6-c-content--blockquote {

@@ -162,8 +162,6 @@ _Italic text, formatted with single underscores_
 
   const footnote = `This is some text that has a short footnote[^1] and this is text with a longer footnote.[^bignote]
 
-You can also reference the same footnote multiple times[^1].
-
   [^1]: This is a short footnote. To return the highlight to the original message, click the arrow. 
   
   [^bignote]: This is a long footnote with multiple paragraphs and formatting.
