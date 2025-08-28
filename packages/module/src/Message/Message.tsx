@@ -49,6 +49,7 @@ import LinkMessage from './LinkMessage/LinkMessage';
 import ErrorMessage from './ErrorMessage/ErrorMessage';
 import MessageInput from './MessageInput';
 import { rehypeMoveImagesOutOfParagraphs } from './Plugins/rehypeMoveImagesOutOfParagraphs';
+import ToolResponse, { ToolResponseProps } from '../ToolResponse';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -189,6 +190,8 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   isMarkdownDisabled?: boolean;
   /** Allows passing additional props down to markdown parser react-markdown, such as allowedElements and disallowedElements. See https://github.com/remarkjs/react-markdown?tab=readme-ov-file#options for options */
   reactMarkdownProps?: Options;
+  /** Props for tool response card */
+  toolResponse?: ToolResponseProps;
 }
 
 export const MessageBase: FunctionComponent<MessageProps> = ({
@@ -230,6 +233,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   isCompact,
   isMarkdownDisabled,
   reactMarkdownProps,
+  toolResponse,
   ...props
 }: MessageProps) => {
   const [messageText, setMessageText] = useState(content);
@@ -376,6 +380,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
           <div className="pf-chatbot__message-and-actions">
             {renderMessage()}
             {afterMainContent && <>{afterMainContent}</>}
+            {toolResponse && <ToolResponse {...toolResponse} />}
             {!isLoading && sources && <SourcesCard {...sources} isCompact={isCompact} />}
             {quickStarts && quickStarts.quickStart && (
               <QuickStartTile
