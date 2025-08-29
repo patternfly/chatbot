@@ -87,6 +87,7 @@ import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import termsAndConditionsHeader from './PF-TermsAndConditionsHeader.svg';
 import { CloseIcon, SearchIcon, OutlinedCommentsIcon } from '@patternfly/react-icons';
 import { FunctionComponent, FormEvent, useState, useRef, MouseEvent, isValidElement, cloneElement, Children, ReactNode, Ref, MouseEvent as ReactMouseEvent, CSSProperties, useEffect} from 'react';
+import FilePreview from '@patternfly/chatbot/dist/dynamic/FilePreview';
 
 ## Structure
 
