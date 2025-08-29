@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import FileDetailsLabel from './FileDetailsLabel';
 import userEvent from '@testing-library/user-event';
+import { BellIcon } from '@patternfly/react-icons';
 
 describe('FileDetailsLabel', () => {
   it('should render file details label', () => {
@@ -17,6 +18,19 @@ describe('FileDetailsLabel', () => {
     render(<FileDetailsLabel fileName="test.joke" languageTestId="language" />);
     expect(screen.getByText('test')).toBeTruthy();
     expect(screen.queryByTestId('language')).toBeFalsy();
+  });
+  it('should pass file size down', () => {
+    render(<FileDetailsLabel fileName="test.svg" fileSize="100MB" />);
+    expect(screen.getByText('100MB')).toBeTruthy();
+  });
+  it('should pass truncation prop down as true by default', () => {
+    render(<FileDetailsLabel fileName="test.svg" />);
+    expect(screen.getByText('test')).toBeTruthy();
+    expect(screen.queryByText('test.svg')).toBeFalsy();
+  });
+  it('should pass truncation prop down when false', () => {
+    render(<FileDetailsLabel fileName="test.svg" hasTruncation={false} />);
+    expect(screen.getByText('test.svg')).toBeTruthy();
   });
   it('should not show spinner by default', () => {
     render(<FileDetailsLabel fileName="test.txt" spinnerTestId="spinner" />);
@@ -42,6 +56,12 @@ describe('FileDetailsLabel', () => {
   });
   it('should use closeButtonAriaLabel prop appropriately', () => {
     render(<FileDetailsLabel fileName="test.txt" onClose={jest.fn()} closeButtonAriaLabel="Delete file" />);
-    screen.getByRole('button', { name: /Delete file/i });
+    expect(screen.getByRole('button', { name: /Delete file/i })).toBeTruthy();
+  });
+  it('should support custom close icon', () => {
+    render(
+      <FileDetailsLabel fileName="test.txt" onClose={jest.fn()} closeButtonIcon={<BellIcon data-testid="bell" />} />
+    );
+    expect(screen.getByTestId('bell')).toBeTruthy();
   });
 });

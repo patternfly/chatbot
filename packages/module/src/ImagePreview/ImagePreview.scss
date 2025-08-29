@@ -1,0 +1,61 @@
+.pf-chatbot__image-preview-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pf-t--global--spacer--lg);
+  --pf-v6-c-label--MaxWidth: initial;
+  --pf-v6-c-modal-box--ZIndex: var(--pf-t--global--z-index--2xl);
+
+  img {
+    flex: 1 0 0;
+    align-self: stretch;
+  }
+  .pf-chatbot__file-label {
+    min-width: fit-content;
+  }
+}
+
+.pf-chatbot__image-preview-stack {
+  height: unset;
+}
+
+.pf-v6-c-modal-box__footer.pf-chatbot__image-preview-footer {
+  padding-block-start: var(--pf-t--global--spacer--sm);
+}
+
+.pf-chatbot__image-preview-footer-buttons {
+  display: flex;
+  gap: var(--pf-t--global--spacer--xs);
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+
+  .pf-v6-c-button {
+    border-radius: var(--pf-t--global--border--radius--pill);
+    padding: var(--pf-t--global--spacer--sm);
+    width: 2.31rem;
+    height: 2.31rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  button:disabled,
+  button[disabled] {
+    .pf-v6-c-icon__content {
+      color: var(--pf-t--global--icon--color--disabled);
+    }
+  }
+  .pf-v6-c-button__text {
+    display: flex;
+    align-items: center;
+  }
+  // Interactive states
+  .pf-v6-c-button:hover,
+  .pf-v6-c-button:focus {
+    .pf-v6-c-button__icon {
+      color: var(--pf-t--global--icon--color--regular);
+    }
+  }
+  .pf-v6-c-button__icon {
+    color: var(--pf-t--global--icon--color--subtle);
+  }
+}

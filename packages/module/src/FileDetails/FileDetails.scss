@@ -11,8 +11,18 @@
   height: 24px;
 }
 
+.pf-chatbot__image-icon {
+  color: var(--pf-t--global--icon--color--status--info--default);
+  width: 24px;
+  height: 24px;
+}
+
 .pf-chatbot__code-fileName {
   font-size: var(--pf-t--global--font--size--body--default);
+}
+
+.pf-chatbot__code-file-size {
+  color: var(--pf-t--global--text--color--subtle);
 }
 
 // This is used in demos only

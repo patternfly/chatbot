@@ -57,6 +57,9 @@ export * from './FileDropZone';
 export { default as FilePreview } from './FilePreview';
 export * from './FilePreview';
 
+export { default as ImagePreview } from './ImagePreview';
+export * from './ImagePreview';
+
 export { default as LoadingMessage } from './LoadingMessage';
 export * from './LoadingMessage';
 

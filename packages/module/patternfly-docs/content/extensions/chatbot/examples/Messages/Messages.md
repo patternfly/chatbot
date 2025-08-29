@@ -48,6 +48,8 @@ import userAvatar from './user_avatar.svg';
 import squareImg from './PF-social-color-square.svg';
 import { CSSProperties, useState, Fragment, FunctionComponent, MouseEvent as ReactMouseEvent, KeyboardEvent as ReactKeyboardEvent, Ref, isValidElement, cloneElement, Children, ReactNode, useRef, useEffect } from 'react';
 import FilePreview from '@patternfly/chatbot/dist/dynamic/FilePreview';
+import ImagePreview from '@patternfly/chatbot/dist/dynamic/ImagePreview';
+import filePreview from './file-preview.svg';
 
 The `content` prop of the `<Message>` component is passed to a `<Markdown>` component (from [react-markdown](https://remarkjs.github.io/react-markdown/)), which is configured to translate plain text strings into PatternFly [`<Content>` components](/components/content) and code blocks into PatternFly [`<CodeBlock>` components.](/components/code-block)
 
@@ -189,7 +191,7 @@ If you are using [model context protocol (MCP)](https://www.redhat.com/en/blog/m
 
 ### Messages with deep thinking
 
-You can share details about the "thought process" behind an LLM's response, also known as deep thinking. To display a customizable, expandable card with these details, pass `deepThinking` to `<Message>` and provide a subheading (optional) and content body. 
+You can share details about the "thought process" behind an LLM's response, also known as deep thinking. To display a customizable, expandable card with these details, pass `deepThinking` to `<Message>` and provide a subheading (optional) and content body.
 
 Because this is an evolving area, this card content is currently fully customizable.
 
@@ -271,6 +273,14 @@ To allow users to preview the contents of an attachment, load a read-only view o
 To allow users to edit an attached file, load a new code editor within the ChatBot window. On this screen, you can allow users to edit a file and save changes if they'd like. Return users to the main ChatBot window once they dismiss the editor.
 
 ```js file="./AttachmentEdit.tsx"
+
+```
+
+### Image preview
+
+For images, load a view of the file name and other information in a new modal. Return users to the main ChatBot window once they dismiss the modal.
+
+```js file="./ImagePreview.tsx"
 
 ```
 
