@@ -21,6 +21,10 @@ interface FileDetailsLabelProps {
   languageTestId?: string;
   /** Custom test id for the loading spinner in the component */
   spinnerTestId?: string;
+  /** File size */
+  fileSize?: string;
+  /** Whether to truncate file name */
+  hasTruncation?: boolean;
 }
 
 export const FileDetailsLabel = ({
@@ -31,7 +35,9 @@ export const FileDetailsLabel = ({
   onClose,
   closeButtonAriaLabel,
   languageTestId,
-  spinnerTestId
+  spinnerTestId,
+  fileSize,
+  hasTruncation = true
 }: PropsWithChildren<FileDetailsLabelProps>) => {
   const handleClose = (event) => {
     onClose && onClose(event, fileName, fileId);
@@ -56,6 +62,8 @@ export const FileDetailsLabel = ({
           className={isLoading ? 'pf-chatbot__file-label-loading' : undefined}
           fileName={fileName}
           languageTestId={languageTestId}
+          fileSize={fileSize}
+          hasTruncation={hasTruncation}
         />
         {isLoading && <Spinner data-testid={spinnerTestId} size="sm" />}
       </div>
