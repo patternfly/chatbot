@@ -40,30 +40,38 @@ exports[`FileDetails should render file details 1`] = `
       </svg>
     </div>
     <div
-      class="pf-v6-l-stack"
+      class="pf-v6-l-flex pf-m-gap-xs"
     >
       <div
-        class="pf-v6-l-stack__item"
+        class=""
       >
-        <span
-          class="pf-chatbot__code-fileName"
+        <div
+          class="pf-v6-l-flex pf-m-column pf-m-gap-none"
         >
-          <span
-            class="pf-v6-c-truncate"
-            tabindex="0"
+          <div
+            class=""
           >
             <span
-              class="pf-v6-c-truncate__start"
+              class="pf-chatbot__code-fileName"
             >
-              test
+              <span
+                class="pf-v6-c-truncate"
+                tabindex="0"
+              >
+                <span
+                  class="pf-v6-c-truncate__start"
+                >
+                  test
+                </span>
+              </span>
             </span>
-          </span>
-        </span>
-      </div>
-      <div
-        class="pf-v6-l-stack__item pf-chatbot__code-language"
-      >
-        TEXT
+          </div>
+          <div
+            class="pf-chatbot__code-language"
+          >
+            TEXT
+          </div>
+        </div>
       </div>
     </div>
   </div>

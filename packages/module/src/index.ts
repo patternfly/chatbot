@@ -51,6 +51,9 @@ export * from './FileDetailsLabel';
 export { default as FileDropZone } from './FileDropZone';
 export * from './FileDropZone';
 
+export { default as ImagePreview } from './ImagePreview';
+export * from './ImagePreview';
+
 export { default as LoadingMessage } from './LoadingMessage';
 export * from './LoadingMessage';
 
