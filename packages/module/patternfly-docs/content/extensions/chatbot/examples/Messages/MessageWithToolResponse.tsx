@@ -29,10 +29,10 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
       avatar={patternflyAvatar}
       content="This example has a body description that's within the recommended limit of 2 lines:"
       toolResponse={{
-        collapsedToggleText: 'Tool response: Name',
-        expandedToggleText: 'Tool response: Name',
+        collapsedToggleText: 'Tool response: toolName',
+        expandedToggleText: 'Tool response: toolName',
         subheading: 'Thought for 3 seconds',
-        body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        body: "Here's the summary for your Tool name response:",
         cardTitle: (
           <Flex alignItems={{ default: 'alignItemsCenter' }} justifyContent={{ default: 'justifyContentSpaceBetween' }}>
             <FlexItem>
@@ -48,7 +48,7 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
                 <FlexItem>
                   <Flex gap={{ default: 'gapSm' }} style={{ fontSize: '12px', fontWeight: '400' }}>
                     <FlexItem>Execution time:</FlexItem>
-                    <FlexItem>0.12s</FlexItem>
+                    <FlexItem>0.12 seconds</FlexItem>
                   </Flex>
                 </FlexItem>
               </Flex>
@@ -74,7 +74,7 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
                 <DescriptionListTerm>Parameters</DescriptionListTerm>
                 <DescriptionListDescription>
                   <Flex direction={{ default: 'column' }}>
-                    <FlexItem>Optional description text goes here</FlexItem>
+                    <FlexItem>Optional description text for parameters.</FlexItem>
                     <FlexItem>
                       <Flex gap={{ default: 'gapSm' }}>
                         <FlexItem>
@@ -121,14 +121,8 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
                       } as any
                     }
                   >
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nec dignissim turpis, et tristique
-                    purus. Phasellus efficitur ante quis dolor viverra imperdiet. Orci varius natoque penatibus et
-                    magnis dis parturient montes, nascetur ridiculus mus. Pellentesque laoreet, sem ac elementum semper,
-                    lectus mauris vestibulum nulla, eget volutpat massa neque vel turpis. Donec finibus enim eu leo
-                    accumsan consectetur. Praesent massa diam, tincidunt eu dui ac, ullamcorper elementum est. Phasellus
-                    metus felis, venenatis vitae semper nec, porta a metus. Vestibulum justo nisi, imperdiet id eleifend
-                    at, varius nec lorem. Fusce porttitor mollis nibh, ut elementum ante commodo tincidunt. Integer
-                    tincidunt at ipsum non aliquet.
+                    Descriptive text about the tool response, including completion status, details on the data that was
+                    processed, or anything else relevant to the use case.
                   </ExpandableSection>
                 </DescriptionListDescription>
               </DescriptionListGroup>
