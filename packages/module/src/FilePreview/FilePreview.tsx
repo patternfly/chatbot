@@ -33,7 +33,7 @@ const FilePreview: FunctionComponent<FilePreviewProps> = ({
   isCompact,
   className,
   handleModalToggle,
-  title = 'Preview file',
+  title = 'File preview',
   modalHeaderProps,
   modalBodyProps,
   ...props

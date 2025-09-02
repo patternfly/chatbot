@@ -258,7 +258,7 @@ To allow users to edit an attached file, load a new code editor within the ChatB
 
 ### File preview
 
-If the contents of an attachment cannot be previewed, load a view of the file name and other information in a new modal. Return users to the main ChatBot window once they dismiss the modal.
+If the contents of an attachment cannot be previewed, load a file preview modal with a view of the file name and an unavailable message. When users close the modal, return to the main ChatBot window.
 
 ```js file="./FilePreview.tsx"
 

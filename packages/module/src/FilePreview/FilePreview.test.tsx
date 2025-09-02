@@ -18,7 +18,7 @@ describe('FilePreview', () => {
 
   it('should render with basic props', () => {
     render(<FilePreview {...defaultProps} />);
-    expect(screen.getByText('Preview file')).toBeInTheDocument();
+    expect(screen.getByText('File preview')).toBeInTheDocument();
     expect(screen.getByText('test-file.txt')).toBeInTheDocument();
   });
 

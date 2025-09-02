@@ -26,7 +26,7 @@ export const AttachmentEditModalExample: FunctionComponent = () => {
         fileName="compressed-file.zip"
         isCompact={isCompact}
       >
-        Preview is not supported for this file type
+        Preview unavailable
       </FilePreview>
     </>
   );
