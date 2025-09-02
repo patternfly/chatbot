@@ -42,6 +42,9 @@ export * from './CodeModal';
 export { default as Compare } from './Compare';
 export * from './Compare';
 
+export { default as DeepThinking } from './DeepThinking';
+export * from './DeepThinking';
+
 export { default as FileDetails } from './FileDetails';
 export * from './FileDetails';
 

@@ -186,6 +186,14 @@ If you are using [model context protocol (MCP)](https://www.redhat.com/en/blog/m
 
 ```
 
+### Messages with deep thinking
+
+You may find it useful to display information on an LLM's "thought process." Passing `deepThinking` to `<Message>` allows you to display a card with an optional subheading and body. Content is intentionally left fully customizable for now as this is an evolving area.
+
+```js file="./MessageWithDeepThinking.tsx"
+
+```
+
 ### Messages with quick start tiles
 
 [Quick start](/extensions/quick-starts/) tiles can be added to messages via the `quickStarts` prop. Users can initiate the quick start from a link within the message tile.
