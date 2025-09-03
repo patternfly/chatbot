@@ -12,10 +12,8 @@ import {
 import { useState, type FunctionComponent } from 'react';
 
 export interface DeepThinkingProps {
-  /** Toggle text shown on expandable section when it is collapsed */
-  collapsedToggleText: string;
-  /** Toggle text shown on expandable section when it is expanded */
-  expandedToggleText: string;
+  /** Toggle content shown for expandable section  */
+  toggleContent: React.ReactNode;
   /** Additional props passed to expandable section */
   expandableSectionProps?: Omit<ExpandableSectionProps, 'ref'>;
   /** Subheading rendered inside expandable section */
@@ -31,10 +29,9 @@ export interface DeepThinkingProps {
 export const DeepThinking: FunctionComponent<DeepThinkingProps> = ({
   body,
   cardProps,
-  collapsedToggleText,
   expandableSectionProps,
-  expandedToggleText,
   subheading,
+  toggleContent,
   cardBodyProps
 }: DeepThinkingProps) => {
   const [isExpanded, setIsExpanded] = useState(true);
@@ -47,7 +44,7 @@ export const DeepThinking: FunctionComponent<DeepThinkingProps> = ({
     <Card isCompact className="pf-chatbot__deep-thinking" {...cardProps}>
       <CardBody {...cardBodyProps}>
         <ExpandableSection
-          toggleText={isExpanded ? expandedToggleText : collapsedToggleText}
+          toggleContent={toggleContent}
           onToggle={onToggle}
           isExpanded={isExpanded}
           isIndented

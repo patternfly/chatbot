@@ -188,7 +188,9 @@ If you are using [model context protocol (MCP)](https://www.redhat.com/en/blog/m
 
 ### Messages with deep thinking
 
-You may find it useful to display information on an LLM's "thought process." Passing `deepThinking` to `<Message>` allows you to display a card with an optional subheading and body. Content is intentionally left fully customizable for now as this is an evolving area.
+You can share details about the "thought process" behind an LLM's response, also known as deep thinking. To display a customizable, expandable card with these details, pass `deepThinking` to `<Message>` and provide a subheading (optional) and content body. 
+
+Because this is an evolving area, this card content is currently fully customizable.
 
 ```js file="./MessageWithDeepThinking.tsx"
 

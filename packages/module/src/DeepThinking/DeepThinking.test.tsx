@@ -1,38 +1,15 @@
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import DeepThinking from './DeepThinking';
 
 describe('DeepThinking', () => {
   const defaultProps = {
-    collapsedToggleText: 'Show details',
-    expandedToggleText: 'Hide details'
+    toggleContent: 'Show thinking'
   };
 
   it('should render with required props only', () => {
     render(<DeepThinking {...defaultProps} />);
-    expect(screen.getByText('Hide details')).toBeTruthy();
-  });
-
-  it('should render expanded by default', () => {
-    render(<DeepThinking {...defaultProps} />);
-    expect(screen.getByText('Hide details')).toBeTruthy();
-    expect(screen.queryByText('Show details')).toBeFalsy();
-  });
-
-  it('should toggle between expanded and collapsed states', async () => {
-    const user = userEvent.setup();
-    render(<DeepThinking {...defaultProps} />);
-    const toggleButton = screen.getByRole('button', { name: /Hide details/i });
-    expect(screen.getByText('Hide details')).toBeTruthy();
-    await user.click(toggleButton);
-    expect(screen.getByText('Show details')).toBeTruthy();
-    expect(screen.queryByText('Hide details')).toBeFalsy();
-
-    // Click to expand again
-    await user.click(screen.getByRole('button', { name: /Show details/i }));
-    expect(screen.getByText('Hide details')).toBeTruthy();
-    expect(screen.queryByText('Show details')).toBeFalsy();
+    expect(screen.getByText('Show thinking')).toBeTruthy();
   });
 
   it('should render subheading when provided', () => {

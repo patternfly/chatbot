@@ -147,8 +147,7 @@ const IMAGE = `![Multi-colored wavy lines on a black background](https://cdn.dri
 const INLINE_IMAGE = `inline text ![Multi-colored wavy lines on a black background](https://cdn.dribbble.com/userupload/10651749/file/original-8a07b8e39d9e8bf002358c66fce1223e.gif)`;
 
 const DEEP_THINKING: DeepThinkingProps = {
-  collapsedToggleText: 'Show thinking',
-  expandedToggleText: 'Show thinking',
+  toggleContent: 'Show thinking',
   subheading: 'Thought for 3 seconds',
   body: "Here's why I said this."
 };
