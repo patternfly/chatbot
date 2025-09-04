@@ -1,6 +1,8 @@
 import { FunctionComponent, MouseEvent as ReactMouseEvent, KeyboardEvent as ReactKeyboardEvent } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import patternflyAvatar from './patternfly_avatar.jpg';
+import { Button, Flex, FlexItem, Label, Popover } from '@patternfly/react-core';
+import { OutlinedQuestionCircleIcon } from '@patternfly/react-icons';
 
 export const MessageWithSourcesExample: FunctionComponent = () => {
   const onSetPage = (_event: ReactMouseEvent | ReactKeyboardEvent | MouseEvent, newPage: number) => {
@@ -8,8 +10,76 @@ export const MessageWithSourcesExample: FunctionComponent = () => {
     console.log(`Page changed to ${newPage}`);
   };
 
+  const date = new Date();
+
+  const datePart = date.toLocaleDateString('en', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+
+  const timePart = date.toLocaleTimeString('en', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  });
+
+  const formattedDate = `${datePart}, ${timePart}`;
+
   return (
     <>
+      <Message
+        name="Bot"
+        role="bot"
+        avatar={patternflyAvatar}
+        content="This example has a custom subtitle and footer with no pagination"
+        sources={{
+          sources: [
+            {
+              title: 'Getting started with Red Hat OpenShift',
+              subtitle: 'Red Hat knowledge base',
+              link: '#',
+              body: 'Red Hat OpenShift on IBM Cloud is a managed offering to create your own cluster of compute hosts where you can deploy and manage containerized apps on IBM Cloud ...',
+              isExternal: true,
+              footer: (
+                <Flex className="pf-chatbot__sources-card-subtle" gap={{ default: 'gapXs' }}>
+                  <FlexItem alignSelf={{ default: 'alignSelfStretch' }}>
+                    <Flex justifyContent={{ default: 'justifyContentSpaceBetween' }}>
+                      <FlexItem>
+                        <Label color="green">Confidence 93%</Label>
+                      </FlexItem>
+                      <FlexItem>
+                        <Popover
+                          headerContent={
+                            <Flex gap={{ default: 'gapXs' }}>
+                              <FlexItem>
+                                <OutlinedQuestionCircleIcon />
+                              </FlexItem>
+                              <FlexItem>Why this confidence score?</FlexItem>
+                            </Flex>
+                          }
+                          bodyContent={
+                            <>
+                              A high confidence score indicates a strong match. The system found significant overlap in
+                              key data points, including text content, names, dates, and organizational details, with a
+                              high degree of certainty. This match is highly reliable.
+                            </>
+                          }
+                        >
+                          <Button variant="link" icon={<OutlinedQuestionCircleIcon />}>
+                            Learn about this score
+                          </Button>
+                        </Popover>
+                      </FlexItem>
+                    </Flex>
+                  </FlexItem>
+                  <FlexItem>{`Last updated: ${formattedDate}`}</FlexItem>
+                </Flex>
+              )
+            }
+          ]
+        }}
+      />
       <Message
         name="Bot"
         role="bot"

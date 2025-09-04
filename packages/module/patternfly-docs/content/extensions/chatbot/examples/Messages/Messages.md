@@ -34,7 +34,7 @@ import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import MessageDivider from '@patternfly/chatbot/dist/dynamic/MessageDivider';
 import { rehypeCodeBlockToggle } from '@patternfly/chatbot/dist/esm/Message/Plugins/rehypeCodeBlockToggle';
 import SourcesCard from '@patternfly/chatbot/dist/dynamic/SourcesCard';
-import { ArrowCircleDownIcon, ArrowRightIcon, CheckCircleIcon, CubeIcon, CubesIcon, DownloadIcon, InfoCircleIcon, RedoIcon, RobotIcon } from '@patternfly/react-icons';
+import { ArrowCircleDownIcon, ArrowRightIcon, CheckCircleIcon, CubeIcon, CubesIcon, DownloadIcon, InfoCircleIcon, OutlinedQuestionCircleIcon, RedoIcon, RobotIcon } from '@patternfly/react-icons';
 import patternflyAvatar from './patternfly_avatar.jpg';
 import AttachmentEdit from '@patternfly/chatbot/dist/dynamic/AttachmentEdit';
 import FileDetails from '@patternfly/chatbot/dist/dynamic/FileDetails';
