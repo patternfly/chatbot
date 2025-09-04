@@ -108,6 +108,13 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
     </>
   );
 
+  const customActions =
+    actions &&
+    actions.map((action, index) => (
+      <ActionListItem key={index} {...actionListItemProps}>
+        {action}
+      </ActionListItem>
+    ));
   return (
     <Card isCompact className="pf-chatbot__tool-call" {...cardProps}>
       <CardTitle className="pf-chatbot__tool-call-title" {...cardTitleProps}>
@@ -127,15 +134,7 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
       {!isLoading && (
         <CardBody {...cardBodyProps}>
           <ActionList className="pf-chatbot__tool-call-action-list" {...actionListProps}>
-            <ActionListGroup {...actionListGroupProps}>
-              {actions
-                ? actions.map((action, index) => (
-                    <ActionListItem key={index} {...actionListItemProps}>
-                      {action}
-                    </ActionListItem>
-                  ))
-                : defaultActions}
-            </ActionListGroup>
+            <ActionListGroup {...actionListGroupProps}>{customActions || defaultActions}</ActionListGroup>
           </ActionList>
         </CardBody>
       )}
