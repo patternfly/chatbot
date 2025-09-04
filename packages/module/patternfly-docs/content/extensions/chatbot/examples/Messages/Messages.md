@@ -199,6 +199,12 @@ Because this is an evolving area, this card content is currently fully customiza
 
 ```
 
+### Messages with tool calls
+
+```js file="./MessageWithToolCall.tsx"
+
+```
+
 ### Messages with quick start tiles
 
 [Quick start](/extensions/quick-starts/) tiles can be added to messages via the `quickStarts` prop. Users can initiate the quick start from a link within the message tile.
