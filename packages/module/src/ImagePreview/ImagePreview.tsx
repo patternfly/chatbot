@@ -12,6 +12,7 @@ import {
 } from '@patternfly/react-core';
 import {
   useState,
+  useEffect,
   type FunctionComponent,
   MouseEvent as ReactMouseEvent,
   KeyboardEvent as ReactKeyboardEvent
@@ -83,6 +84,12 @@ const ImagePreview: FunctionComponent<ImagePreviewProps> = ({
 }: ImagePreviewProps) => {
   const [page, setPage] = useState(1);
 
+  useEffect(() => {
+    if (images.length === 0 || page > images.length) {
+      setPage(1);
+    }
+  }, [images.length, page]);
+
   const handleNewPage = (_evt: ReactMouseEvent | ReactKeyboardEvent | MouseEvent, newPage: number) => {
     setPage(newPage);
     onSetPage && onSetPage(_evt, newPage);
@@ -99,21 +106,23 @@ const ImagePreview: FunctionComponent<ImagePreviewProps> = ({
     >
       <ModalHeader title={title} {...modalHeaderProps} />
       <ModalBody className="pf-chatbot__image-preview-body" {...modalBodyProps}>
-        <Stack hasGutter className="pf-chatbot__image-preview-stack">
-          <StackItem>
-            <FileDetailsLabel
-              fileName={images[page - 1].fileName}
-              fileSize={images[page - 1].fileSize}
-              hasTruncation={false}
-              onClose={onCloseFileDetailsLabel}
-              closeButtonIcon={<TrashIcon />}
-              {...fileDetailsLabelProps}
-            />
-          </StackItem>
-          <StackItem>
-            <div className="pf-chatbot__image-preview-body">{images[page - 1].image}</div>
-          </StackItem>
-        </Stack>
+        {images.length > 0 && images[page - 1] && (
+          <Stack hasGutter className="pf-chatbot__image-preview-stack">
+            <StackItem>
+              <FileDetailsLabel
+                fileName={images[page - 1].fileName}
+                fileSize={images[page - 1].fileSize}
+                hasTruncation={false}
+                onClose={onCloseFileDetailsLabel}
+                closeButtonIcon={<TrashIcon />}
+                {...fileDetailsLabelProps}
+              />
+            </StackItem>
+            <StackItem>
+              <div className="pf-chatbot__image-preview-body">{images[page - 1].image}</div>
+            </StackItem>
+          </Stack>
+        )}
       </ModalBody>
       {images.length > 1 && (
         <ModalFooter className="pf-chatbot__image-preview-footer">
@@ -123,9 +132,9 @@ const ImagePreview: FunctionComponent<ImagePreviewProps> = ({
               isDisabled={isDisabled || page === 1}
               data-action="previous"
               onClick={(event) => {
-                const newPage = page >= 1 ? page - 1 : 1;
-                onPreviousClick && onPreviousClick(event, newPage);
+                const newPage = page > 1 ? page - 1 : 1;
                 handleNewPage(event, newPage);
+                onPreviousClick && onPreviousClick(event, newPage);
               }}
               aria-label={toPreviousPageAriaLabel}
             >
@@ -154,8 +163,8 @@ const ImagePreview: FunctionComponent<ImagePreviewProps> = ({
               data-action="next"
               onClick={(event) => {
                 const newPage = page + 1 <= images.length ? page + 1 : images.length;
-                onNextClick && onNextClick(event, newPage);
                 handleNewPage(event, newPage);
+                onNextClick && onNextClick(event, newPage);
               }}
             >
               <Icon isInline iconSize="lg">
