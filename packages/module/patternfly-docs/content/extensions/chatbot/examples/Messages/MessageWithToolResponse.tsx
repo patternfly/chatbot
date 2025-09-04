@@ -32,7 +32,7 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
         collapsedToggleText: 'Tool response: toolName',
         expandedToggleText: 'Tool response: toolName',
         subheading: 'Thought for 3 seconds',
-        body: "Here's the summary for your Tool name response:",
+        body: "Here's the summary for your toolName response:",
         cardTitle: (
           <Flex alignItems={{ default: 'alignItemsCenter' }} justifyContent={{ default: 'justifyContentSpaceBetween' }}>
             <FlexItem>
@@ -42,7 +42,7 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
                     <FlexItem>
                       <WrenchIcon style={{ color: 'var(--pf-t--global--icon--color--brand--default' }} />
                     </FlexItem>
-                    <FlexItem>Tool name</FlexItem>
+                    <FlexItem>toolName</FlexItem>
                   </Flex>
                 </FlexItem>
                 <FlexItem>
