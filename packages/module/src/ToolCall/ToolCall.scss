@@ -18,12 +18,18 @@
     }
   }
 
-  .pf-chatbot__tool-call-title:has(.pf-chatbot__tool-call-expandable-section) {
+  .pf-chatbot__tool-call-title {
     overflow: unset;
   }
 
   .pf-chatbot__tool-call-expandable-section {
     --pf-v6-c-expandable-section--Gap: var(--pf-t--global--spacer--xs);
+
+    .pf-v6-c-expandable-section__content {
+      color: var(--pf-t--global--text--color--subtle);
+      font-size: var(--pf-t--global--font--size--body--default);
+      font-weight: var(--pf-t--global--font--weight--body--default);
+    }
   }
 
   .pf-chatbot__tool-call-action-list {

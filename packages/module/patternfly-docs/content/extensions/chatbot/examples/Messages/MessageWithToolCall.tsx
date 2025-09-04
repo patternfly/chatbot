@@ -1,12 +1,12 @@
 import { FunctionComponent, useState } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import patternflyAvatar from './patternfly_avatar.jpg';
-import { Checkbox } from '@patternfly/react-core';
+import { Checkbox, Flex, FlexItem } from '@patternfly/react-core';
 
 export const MessageWithToolCallExample: FunctionComponent = () => {
   const [toolCallsAreLoading, setToolCallsAreLoading] = useState(false);
   return (
-    <>
+    <Flex direction={{ default: 'column' }} spaceItems={{ default: 'spaceItemsXl' }}>
       <Checkbox
         label="Tool calls are loading"
         id="tool-calls-are-loading"
@@ -15,30 +15,31 @@ export const MessageWithToolCallExample: FunctionComponent = () => {
           setToolCallsAreLoading(!toolCallsAreLoading);
         }}
       />
-      <br />
-      <Message
-        name="Bot"
-        role="bot"
-        avatar={patternflyAvatar}
-        content="This example has a body description that's within the recommended limit of 2 lines:"
-        toolCall={{
-          titleText: "Calling 'awesome_tool'",
-          loadingText: "Loading 'awesome_tool'",
-          isLoading: toolCallsAreLoading
-        }}
-      />
-      <Message
-        name="Bot"
-        role="bot"
-        avatar={patternflyAvatar}
-        content="This example has a body description that's within the recommended limit of 2 lines:"
-        toolCall={{
-          titleText: "Calling 'awesome_tool_expansion'",
-          expandableContent: 'This is the expandable content for the tool call.',
-          isLoading: toolCallsAreLoading,
-          loadingText: "Loading 'awesome_tool_expansion'"
-        }}
-      />
-    </>
+      <FlexItem>
+        <Message
+          name="Bot"
+          role="bot"
+          avatar={patternflyAvatar}
+          content="This example has a static tool call title:"
+          toolCall={{
+            titleText: "Calling 'awesome_tool'",
+            loadingText: "Loading 'awesome_tool'",
+            isLoading: toolCallsAreLoading
+          }}
+        />
+        <Message
+          name="Bot"
+          role="bot"
+          avatar={patternflyAvatar}
+          content="This example has an expandable tool call:"
+          toolCall={{
+            titleText: "Calling 'awesome_tool_expansion'",
+            expandableContent: 'This is the expandable content for the tool call.',
+            isLoading: toolCallsAreLoading,
+            loadingText: "Loading 'awesome_tool_expansion'"
+          }}
+        />
+      </FlexItem>
+    </Flex>
   );
 };
