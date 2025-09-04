@@ -91,9 +91,9 @@
   }
 
   // targets footnotes specifically
-  .footnotes {
-    background-color: var(--pf-t--global--background--color--tertiary--default);
-    padding: var(--pf-t--global--spacer--md);
+  .footnotes,
+  .pf-chatbot__message-text.footnotes {
+    padding: var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--sm) 0 var(--pf-t--global--spacer--sm);
     --pf-chatbot-message-text-font-size: var(--pf-t--global--font--size--xs);
     --pf-chatbot-message-text-inline-code-font-size: var(--pf-t--global--font--size--xs);
 
@@ -127,6 +127,10 @@
     .pf-chatbot__message-unordered-list li {
       font-size: var(--pf-t--global--font--size--xs);
     }
+  }
+
+  .footnotes {
+    background-color: var(--pf-t--global--background--color--tertiary--default);
   }
 }
 
