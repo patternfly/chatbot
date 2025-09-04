@@ -51,6 +51,7 @@ import MessageInput from './MessageInput';
 import { rehypeMoveImagesOutOfParagraphs } from './Plugins/rehypeMoveImagesOutOfParagraphs';
 import ToolResponse, { ToolResponseProps } from '../ToolResponse';
 import DeepThinking, { DeepThinkingProps } from '../DeepThinking';
+import ToolCall, { ToolCallProps } from '../ToolCall';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -195,6 +196,8 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   toolResponse?: ToolResponseProps;
   /** Props for deep thinking card */
   deepThinking?: DeepThinkingProps;
+  /** Props for a tool call message */
+  toolCall?: ToolCallProps;
 }
 
 export const MessageBase: FunctionComponent<MessageProps> = ({
@@ -238,6 +241,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   reactMarkdownProps,
   toolResponse,
   deepThinking,
+  toolCall,
   ...props
 }: MessageProps) => {
   const [messageText, setMessageText] = useState(content);
@@ -386,6 +390,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
             {afterMainContent && <>{afterMainContent}</>}
             {toolResponse && <ToolResponse {...toolResponse} />}
             {deepThinking && <DeepThinking {...deepThinking} />}
+            {toolCall && <ToolCall {...toolCall} />}
             {!isLoading && sources && <SourcesCard {...sources} isCompact={isCompact} />}
             {quickStarts && quickStarts.quickStart && (
               <QuickStartTile

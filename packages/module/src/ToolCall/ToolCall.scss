@@ -1,0 +1,32 @@
+.pf-chatbot__tool-call {
+  --pf-v6-c-card--BorderColor: var(--pf-t--global--border--color--control--read-only);
+  --pf-v6-c-card--BorderRadius: var(--pf-t--global--border--radius--small);
+
+  overflow: unset;
+  row-gap: var(--pf-t--global--spacer--sm);
+
+  .pf-chatbot__tool-call-title-content {
+    display: flex;
+    gap: var(--pf-t--global--spacer--xs);
+  }
+
+  .pf-chatbot__tool-call-title:not(:has(.pf-chatbot__tool-call-expandable-section)) {
+    .pf-chatbot__tool-call-title-text {
+      color: var(--pf-t--global--text--color--regular);
+      font-size: var(--pf-t--global--font--size--body--default);
+      font-weight: var(--pf-t--global--font--weight--body--default);
+    }
+  }
+
+  .pf-chatbot__tool-call-title:has(.pf-chatbot__tool-call-expandable-section) {
+    overflow: unset;
+  }
+
+  .pf-chatbot__tool-call-expandable-section {
+    --pf-v6-c-expandable-section--Gap: var(--pf-t--global--spacer--xs);
+  }
+
+  .pf-chatbot__tool-call-action-list {
+    justify-content: flex-end;
+  }
+}
