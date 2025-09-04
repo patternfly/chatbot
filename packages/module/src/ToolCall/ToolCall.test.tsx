@@ -24,6 +24,11 @@ describe('ToolCall', () => {
     expect(screen.getByText(defaultProps.loadingText)).toBeVisible();
   });
 
+  it('Does not render titleText when isLoading is true', () => {
+    render(<ToolCall {...defaultProps} isLoading />);
+    expect(screen.queryByText(defaultProps.titleText)).not.toBeInTheDocument();
+  });
+
   it('Passes spinnerProps to Spinner', () => {
     render(<ToolCall {...defaultProps} isLoading spinnerProps={{ id: 'spinner-test-id' }} />);
 
@@ -40,7 +45,7 @@ describe('ToolCall', () => {
     expect(screen.getByRole('button', { name: defaultProps.titleText })).toBeVisible();
   });
 
-  it('Does not render expandable content when expandableContent is passed', () => {
+  it('Does not render expandable content when expandableContent is passed by default', () => {
     render(<ToolCall {...defaultProps} expandableContent="Expandable Content" />);
     expect(screen.queryByText('Expandable Content')).not.toBeVisible();
   });

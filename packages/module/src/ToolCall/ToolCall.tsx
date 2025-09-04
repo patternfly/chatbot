@@ -86,7 +86,8 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
     <span className={`pf-chatbot__tool-call-title-content`}>
       {isLoading ? (
         <>
-          <Spinner diameter="1em" {...spinnerProps} /> {loadingText}
+          <Spinner diameter="1em" {...spinnerProps} />{' '}
+          {<span className="pf-chatbot__tool-call-title-text">{loadingText}</span>}
         </>
       ) : (
         <span className="pf-chatbot__tool-call-title-text">{titleText}</span>
@@ -115,10 +116,11 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
         {action}
       </ActionListItem>
     ));
+
   return (
     <Card isCompact className="pf-chatbot__tool-call" {...cardProps}>
       <CardTitle className="pf-chatbot__tool-call-title" {...cardTitleProps}>
-        {expandableContent ? (
+        {expandableContent && !isLoading ? (
           <ExpandableSection
             className="pf-chatbot__tool-call-expandable-section"
             toggleContent={titleContent}
