@@ -1,5 +1,6 @@
 .pf-chatbot__tool-response {
   --pf-v6-c-card--BorderColor: var(--pf-t--global--border--color--control--read-only);
+  overflow: unset;
 }
 
 .pf-chatbot__tool-response-expandable-section {
