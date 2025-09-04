@@ -42,7 +42,7 @@ export const MessageWithSourcesExample: FunctionComponent = () => {
               body: 'Red Hat OpenShift on IBM Cloud is a managed offering to create your own cluster of compute hosts where you can deploy and manage containerized apps on IBM Cloud ...',
               isExternal: true,
               footer: (
-                <Flex className="pf-chatbot__sources-card-subtle" gap={{ default: 'gapMd' }}>
+                <Flex className="pf-chatbot__sources-card-subtle" gap={{ default: 'gapXs' }}>
                   <FlexItem alignSelf={{ default: 'alignSelfStretch' }}>
                     <Flex justifyContent={{ default: 'justifyContentSpaceBetween' }}>
                       <FlexItem>
@@ -51,7 +51,7 @@ export const MessageWithSourcesExample: FunctionComponent = () => {
                       <FlexItem>
                         <Popover
                           headerContent={
-                            <Flex gap={{ default: 'gapSm' }}>
+                            <Flex gap={{ default: 'gapXs' }}>
                               <FlexItem>
                                 <OutlinedQuestionCircleIcon />
                               </FlexItem>
