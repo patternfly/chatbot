@@ -129,7 +129,11 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
           <ActionList className="pf-chatbot__tool-call-action-list" {...actionListProps}>
             <ActionListGroup {...actionListGroupProps}>
               {actions
-                ? actions.map((action) => <ActionListItem {...actionListItemProps}>{action}</ActionListItem>)
+                ? actions.map((action, index) => (
+                    <ActionListItem key={index} {...actionListItemProps}>
+                      {action}
+                    </ActionListItem>
+                  ))
                 : defaultActions}
             </ActionListGroup>
           </ActionList>
