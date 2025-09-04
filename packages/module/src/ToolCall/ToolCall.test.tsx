@@ -137,7 +137,12 @@ describe('ToolCall', () => {
   });
 
   it('Renders custom actions instead of default actions when actions are passed', () => {
-    render(<ToolCall {...defaultProps} actions={[<div>Custom action 1</div>, <div>Custom action 2</div>]} />);
+    render(
+      <ToolCall
+        {...defaultProps}
+        actions={[<div key="custom-action-1">Custom action 1</div>, <div key="custom-action-2">Custom action 2</div>]}
+      />
+    );
 
     expect(screen.getByText('Custom action 1')).toBeVisible();
     expect(screen.getByText('Custom action 2')).toBeVisible();
@@ -149,7 +154,7 @@ describe('ToolCall', () => {
     render(
       <ToolCall
         {...defaultProps}
-        actions={[<div>Custom action 1</div>, <div>Custom action 2</div>]}
+        actions={[<div key="custom-action-1">Custom action 1</div>, <div key="custom-action-2">Custom action 2</div>]}
         actionListItemProps={{ className: 'action-list-item-test-class' }}
       />
     );
