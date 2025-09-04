@@ -29,8 +29,7 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
       avatar={patternflyAvatar}
       content="This example has a body description that's within the recommended limit of 2 lines:"
       toolResponse={{
-        collapsedToggleText: 'Tool response: toolName',
-        expandedToggleText: 'Tool response: toolName',
+        toggleContent: 'Tool response: toolName',
         subheading: 'Thought for 3 seconds',
         body: "Here's the summary for your toolName response:",
         cardTitle: (
@@ -109,7 +108,8 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
                 <DescriptionListDescription>
                   <ExpandableSection
                     variant={ExpandableSectionVariant.truncate}
-                    toggleText={isExpanded ? 'show less' : 'show more'}
+                    toggleTextExpanded="show less of response"
+                    toggleTextCollapsed="show more of response"
                     onToggle={onToggle}
                     isExpanded={isExpanded}
                     style={

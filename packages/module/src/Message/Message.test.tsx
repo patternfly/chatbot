@@ -683,8 +683,7 @@ describe('Message', () => {
         name="User"
         content="Hi"
         toolResponse={{
-          collapsedToggleText: 'Tool response: Name',
-          expandedToggleText: 'Tool response: Name',
+          toggleContent: 'Tool response: Name',
           subheading: 'Thought for 3 seconds',
           body: 'Lorem ipsum dolor sit amet',
           cardTitle: 'Card title',

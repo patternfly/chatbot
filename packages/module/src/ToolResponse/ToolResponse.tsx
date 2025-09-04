@@ -16,10 +16,8 @@ import {
 import { useState, type FunctionComponent } from 'react';
 
 export interface ToolResponseProps {
-  /** Toggle text shown on expandable section when it is collapsed */
-  collapsedToggleText: string;
-  /** Toggle text shown on expandable section when it is expanded */
-  expandedToggleText: string;
+  /** Toggle content shown for expandable section */
+  toggleContent: React.ReactNode;
   /** Additional props passed to expandable section */
   expandableSectionProps?: Omit<ExpandableSectionProps, 'ref'>;
   /** Subheading rendered inside expandable section */
@@ -47,13 +45,12 @@ export interface ToolResponseProps {
 export const ToolResponse: FunctionComponent<ToolResponseProps> = ({
   body,
   cardProps,
-  collapsedToggleText,
   expandableSectionProps,
-  expandedToggleText,
   subheading,
   cardBody,
   cardTitle,
   cardBodyProps,
+  toggleContent,
   toolResponseCardBodyProps,
   toolResponseCardDividerProps,
   toolResponseCardProps,
@@ -69,7 +66,7 @@ export const ToolResponse: FunctionComponent<ToolResponseProps> = ({
     <Card isCompact className="pf-chatbot__tool-response" {...cardProps}>
       <CardBody {...cardBodyProps}>
         <ExpandableSection
-          toggleText={isExpanded ? expandedToggleText : collapsedToggleText}
+          toggleContent={toggleContent}
           onToggle={onToggle}
           isExpanded={isExpanded}
           isIndented

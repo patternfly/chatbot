@@ -1,12 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import ToolResponse from './ToolResponse';
 
 describe('ToolResponse', () => {
   const defaultProps = {
-    collapsedToggleText: 'Show details',
-    expandedToggleText: 'Hide details',
+    toggleContent: 'Tool response: toolName',
     cardTitle: 'Title',
     cardBody: 'Body'
   };
@@ -15,28 +13,7 @@ describe('ToolResponse', () => {
     render(<ToolResponse {...defaultProps} />);
     expect(screen.getByText('Title')).toBeTruthy();
     expect(screen.getByText('Body')).toBeTruthy();
-    expect(screen.getByText('Hide details')).toBeTruthy();
-  });
-
-  it('should render expanded by default', () => {
-    render(<ToolResponse {...defaultProps} />);
-    expect(screen.getByText('Hide details')).toBeTruthy();
-    expect(screen.queryByText('Show details')).toBeFalsy();
-  });
-
-  it('should toggle between expanded and collapsed states', async () => {
-    const user = userEvent.setup();
-    render(<ToolResponse {...defaultProps} />);
-    const toggleButton = screen.getByRole('button', { name: /Hide details/i });
-    expect(screen.getByText('Hide details')).toBeTruthy();
-    await user.click(toggleButton);
-    expect(screen.getByText('Show details')).toBeTruthy();
-    expect(screen.queryByText('Hide details')).toBeFalsy();
-
-    // Click to expand again
-    await user.click(screen.getByRole('button', { name: /Show details/i }));
-    expect(screen.getByText('Hide details')).toBeTruthy();
-    expect(screen.queryByText('Show details')).toBeFalsy();
+    expect(screen.getByText('Tool response: toolName')).toBeTruthy();
   });
 
   it('should render subheading when provided', () => {
