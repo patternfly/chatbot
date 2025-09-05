@@ -12,8 +12,8 @@ import {
   CardProps,
   CardBody,
   CardBodyProps,
-  CardTitle,
-  CardTitleProps,
+  CardFooter,
+  CardFooterProps,
   ExpandableSection,
   ExpandableSectionProps,
   Spinner,
@@ -21,9 +21,9 @@ import {
 } from '@patternfly/react-core';
 
 export interface ToolCallProps {
-  /** Title text for the tool call */
+  /** Title text for the tool call. */
   titleText: string;
-  /** Loading text for the tool call */
+  /** Loading text for the tool call. */
   loadingText?: string;
   /** Flag indicating whether the tool call is loading or not. */
   isLoading?: boolean;
@@ -47,17 +47,17 @@ export interface ToolCallProps {
   actions?: React.ReactNode[];
   /** Additional props for the action list */
   actionListProps?: ActionListProps;
-  /** Additional props for the action list group */
+  /** Additional props for the action list group. */
   actionListGroupProps?: ActionListGroupProps;
-  /** Additional props for all action list items */
+  /** Additional props for all action list items. */
   actionListItemProps?: ActionListItemProps;
-  /** Additional props for the card */
+  /** Additional props for the card. */
   cardProps?: CardProps;
-  /** Additional props for the card body */
+  /** Additional props for the card body that contains the main tool call content. */
   cardBodyProps?: CardBodyProps;
-  /** Additional props for the card title */
-  cardTitleProps?: CardTitleProps;
-  /** Additional props for the expandable section */
+  /** Additional props for the card footer that contains the tool call actions. */
+  cardFooterProps?: CardFooterProps;
+  /** Additional props for the expandable section when expandableContent is passed. */
   expandableSectionProps?: Omit<ExpandableSectionProps, 'ref'>;
 }
 
@@ -78,7 +78,7 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
   actionListItemProps,
   cardProps,
   cardBodyProps,
-  cardTitleProps,
+  cardFooterProps,
   expandableSectionProps,
   spinnerProps
 }: ToolCallProps) => {
@@ -119,7 +119,7 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
 
   return (
     <Card isCompact className="pf-chatbot__tool-call" {...cardProps}>
-      <CardTitle className="pf-chatbot__tool-call-title" {...cardTitleProps}>
+      <CardBody className="pf-chatbot__tool-call-title" {...cardBodyProps}>
         {expandableContent && !isLoading ? (
           <ExpandableSection
             className="pf-chatbot__tool-call-expandable-section"
@@ -132,13 +132,13 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
         ) : (
           titleContent
         )}
-      </CardTitle>
+      </CardBody>
       {!isLoading && (
-        <CardBody {...cardBodyProps}>
+        <CardFooter {...cardFooterProps}>
           <ActionList className="pf-chatbot__tool-call-action-list" {...actionListProps}>
             <ActionListGroup {...actionListGroupProps}>{customActions || defaultActions}</ActionListGroup>
           </ActionList>
-        </CardBody>
+        </CardFooter>
       )}
     </Card>
   );
