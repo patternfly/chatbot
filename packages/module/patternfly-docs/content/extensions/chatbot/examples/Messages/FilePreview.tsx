@@ -19,7 +19,7 @@ export const AttachmentEditModalExample: FunctionComponent = () => {
         id="modal-compact-no-preview"
         name="modal-compact-no-preview"
       ></Checkbox>
-      <Button onClick={handleModalToggle}>Launch modal</Button>
+      <Button onClick={handleModalToggle}>Launch file preview modal</Button>
       <FilePreview
         isModalOpen={isModalOpen}
         handleModalToggle={handleModalToggle}
