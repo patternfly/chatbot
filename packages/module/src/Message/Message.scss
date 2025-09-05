@@ -89,6 +89,49 @@
     display: grid;
     gap: var(--pf-t--global--spacer--sm);
   }
+
+  // targets footnotes specifically
+  .footnotes,
+  .pf-chatbot__message-text.footnotes {
+    padding: var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--sm) 0 var(--pf-t--global--spacer--sm);
+    --pf-chatbot-message-text-font-size: var(--pf-t--global--font--size--xs);
+    --pf-chatbot-message-text-inline-code-font-size: var(--pf-t--global--font--size--xs);
+
+    .pf-chatbot__message-text h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      --pf-v6-c-content--h1--FontSize: var(--pf-t--global--font--size--md);
+      --pf-v6-c-content--h2--FontSize: var(--pf-t--global--font--size--md);
+      --pf-v6-c-content--h3--FontSize: var(--pf-t--global--font--size--md);
+      --pf-v6-c-content--h4--FontSize: var(--pf-t--global--font--size--md);
+      --pf-v6-c-content--h5--FontSize: var(--pf-t--global--font--size--md);
+      --pf-v6-c-content--h6--FontSize: var(--pf-t--global--font--size--md);
+    }
+    .pf-chatbot__message-text .pf-v6-c-content,
+    .pf-chatbot__message-text .pf-v6-c-content--small,
+    .pf-chatbot__message-text .pf-v6-c-content--blockquote,
+    .pf-chatbot__message-text p,
+    .pf-chatbot__message-text a {
+      --pf-v6-c-content--FontSize: var(--pf-t--global--font--size--xs);
+    }
+    .pf-chatbot__message-inline-code,
+    .pf-chatbot__message-text .pf-v6-c-button.pf-m-link,
+    .pf-chatbot__message-ordered-list .pf-v6-c-list,
+    .pf-chatbot__message-ordered-list ul,
+    .pf-chatbot__message-ordered-list li,
+    .pf-chatbot__message-unordered-list .pf-v6-c-list,
+    .pf-chatbot__message-unordered-list ul,
+    .pf-chatbot__message-unordered-list li {
+      font-size: var(--pf-t--global--font--size--xs);
+    }
+  }
+
+  .footnotes {
+    background-color: var(--pf-t--global--background--color--tertiary--default);
+  }
 }
 
 // Attachments
@@ -106,6 +149,7 @@
 @import './MessageLoading';
 @import './CodeBlockMessage/CodeBlockMessage';
 @import './TextMessage/TextMessage';
+@import './SuperscriptMessage/SuperscriptMessage.scss';
 
 // ============================================================================
 // Information density styles

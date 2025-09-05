@@ -1,4 +1,14 @@
-import { Fragment, useState, useRef, useEffect, CSSProperties, FunctionComponent, MouseEvent, Ref } from 'react';
+import {
+  Fragment,
+  useState,
+  useRef,
+  useEffect,
+  CSSProperties,
+  FunctionComponent,
+  MouseEvent as ReactMouseEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+  Ref
+} from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import userAvatar from './user_avatar.svg';
 import {
@@ -64,6 +74,8 @@ export const UserMessageExample: FunctionComponent = () => {
         return table;
       case 'Image':
         return image;
+      case 'Footnote':
+        return footnote;
       default:
         return '';
     }
@@ -170,6 +182,18 @@ _Italic text, formatted with single underscores_
 
   const image = `![Multi-colored wavy lines on a black background](https://cdn.dribbble.com/userupload/10651749/file/original-8a07b8e39d9e8bf002358c66fce1223e.gif)`;
 
+  const footnote = `This is some text that has a short footnote[^1] and this is text with a longer footnote.[^bignote]
+
+  [^1]: This is a short footnote. To return the highlight to the original message, click the arrow. 
+  
+  [^bignote]: This is a long footnote with multiple paragraphs and formatting.
+
+      To break long footnotes into paragraphs, indent the text. 
+
+      Add as many paragraphs as you like. You can include *italic text*, **bold text**, and \`code\`.
+
+      > You can even include blockquotes in footnotes!`;
+
   const error = {
     title: 'Could not load chat',
     children: 'Wait a few minutes and check your network settings. If the issue persists: ',
@@ -185,7 +209,7 @@ _Italic text, formatted with single underscores_
     )
   };
 
-  const onSelect = (_event: MouseEvent<Element, MouseEvent> | undefined, value: string | number | undefined) => {
+  const onSelect = (_event: ReactMouseEvent<Element> | undefined, value: string | number | undefined) => {
     setVariant(value);
     setSelected(value as string);
     setIsOpen(false);
@@ -220,6 +244,78 @@ _Italic text, formatted with single underscores_
       {selected}
     </MenuToggle>
   );
+
+  const handleFootnoteNavigation = (event: ReactMouseEvent<HTMLElement> | ReactKeyboardEvent<HTMLElement>) => {
+    const target = event.target as HTMLElement;
+
+    // Depending on whether it is a click event or keyboard event, target may be a link or something like a span
+    // Look for the closest anchor element (could be a parent)
+    const anchorElement = target.closest('a');
+    const href = anchorElement?.getAttribute('href');
+
+    // Check if this is a footnote link - we only have internal links in this example, so this is all we need here
+    if (href && href.startsWith('#')) {
+      // Prevent default behavior to avoid page re-render on click in PatternFly docs framework
+      event.preventDefault();
+
+      let targetElement: HTMLElement | null = null;
+      const targetId = href.replace('#', '');
+      targetElement = document.querySelector(`[id="${targetId}"]`);
+
+      if (targetElement) {
+        let focusTarget = targetElement;
+
+        // If we found a footnote definition container, focus on the parent li element
+        if (targetElement.id?.startsWith('user-message-fn-')) {
+          // Find the parent li element that contains the footnote
+          const parentLi = targetElement.closest('li');
+          if (parentLi) {
+            focusTarget = parentLi as HTMLElement;
+          }
+        }
+
+        focusTarget.focus();
+
+        let elementToHighlight = targetElement;
+        const searchStartElement = targetElement;
+        let elementToHighlightContainer: HTMLElement | null = null;
+
+        // For footnote references, look for an appropriate container
+        if (!targetElement.id?.startsWith('user-message-fn-')) {
+          let parent = searchStartElement.parentElement;
+          while (
+            parent &&
+            !(parent.tagName.toLowerCase() === 'span' && parent.classList.contains('pf-chatbot__message-text')) &&
+            parent !== document.body
+          ) {
+            parent = parent.parentElement;
+          }
+          elementToHighlightContainer = parent;
+        }
+
+        // Use the found container if available, otherwise fall back to the target element
+        elementToHighlight = elementToHighlightContainer || targetElement;
+
+        // Briefly highlight the target element for fun to show what you can do
+        const originalBackground = elementToHighlight.style.backgroundColor;
+        const originalTransition = elementToHighlight.style.transition;
+
+        elementToHighlight.style.transition = 'background-color 0.3s ease';
+        elementToHighlight.style.backgroundColor = 'var(--pf-t--global--icon--color--brand--hover)';
+
+        setTimeout(() => {
+          elementToHighlight.style.backgroundColor = originalBackground;
+          setTimeout(() => {
+            elementToHighlight.style.transition = originalTransition;
+          }, 300);
+        }, 1000);
+      }
+    }
+  };
+
+  const onClick = (event: ReactMouseEvent<HTMLElement> | ReactKeyboardEvent<HTMLElement>) => {
+    handleFootnoteNavigation(event);
+  };
 
   return (
     <>
@@ -270,6 +366,7 @@ _Italic text, formatted with single underscores_
           <SelectOption value="More complex list">More complex list</SelectOption>
           <SelectOption value="Table">Table</SelectOption>
           <SelectOption value="Image">Image</SelectOption>
+          <SelectOption value="Footnote">Footnote</SelectOption>
           <SelectOption value="Error">Error</SelectOption>
         </SelectList>
       </Select>
@@ -287,6 +384,14 @@ _Italic text, formatted with single underscores_
         // The purpose of this plugin is to provide unique link names for the code blocks
         // Because they are in the same message, this requires a custom plugin to parse the syntax tree
         additionalRehypePlugins={[rehypeCodeBlockToggle]}
+        linkProps={{ onClick }}
+        // clobberPrefix controls the label ids
+        reactMarkdownProps={{
+          remarkRehypeOptions: {
+            footnoteLabel: 'User message footnotes',
+            clobberPrefix: 'user-message-'
+          }
+        }}
       />
     </>
   );

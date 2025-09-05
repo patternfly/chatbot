@@ -142,6 +142,20 @@ const EMPTY_TABLE = `
 
  `;
 
+const FOOTNOTE = `This is some text with a footnote[^1] and here's a longer one.[^bignote]
+
+ You can also reference the same footnote multiple times[^1].
+ 
+   [^1]: This is the full footnote text. You can click the arrow to go back up. 
+   
+   [^bignote]: Here's one with multiple paragraphs and **formatting**.
+ 
+       Indent paragraphs to include them in the footnote.
+ 
+       Add as many paragraphs as you like. You can include *italic text*, **bold text**, and even \`code\`.
+ 
+       > You can even include blockquotes in footnotes!`;
+
 const IMAGE = `![Multi-colored wavy lines on a black background](https://cdn.dribbble.com/userupload/10651749/file/original-8a07b8e39d9e8bf002358c66fce1223e.gif)`;
 
 const INLINE_IMAGE = `inline text ![Multi-colored wavy lines on a black background](https://cdn.dribbble.com/userupload/10651749/file/original-8a07b8e39d9e8bf002358c66fce1223e.gif)`;
@@ -768,6 +782,28 @@ describe('Message', () => {
   it('should render custom table aria label correctly', () => {
     render(<Message avatar="./img" role="user" name="User" content={TABLE} tableProps={{ 'aria-label': 'Test' }} />);
     expect(screen.getByRole('grid', { name: /Test/i })).toBeTruthy();
+  });
+  it('should render footnote correctly', () => {
+    render(<Message avatar="./img" role="user" name="User" content={FOOTNOTE} />);
+    expect(screen.getByText(/This is some text with a footnote/i)).toBeTruthy();
+    expect(screen.getByText(/and here's a longer one./i)).toBeTruthy();
+    expect(screen.getByText(/You can also reference the same footnote multiple times./i)).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /Footnotes/i })).toBeTruthy();
+    expect(screen.getByText(/This is the full footnote text. You can click the arrow to go back up./i)).toBeTruthy();
+    expect(screen.getByText(/Here's one with multiple paragraphs and/i)).toBeTruthy();
+    expect(screen.getByText(/formatting/i)).toBeTruthy();
+    expect(screen.getByText(/Indent paragraphs to include them in the footnote./i)).toBeTruthy();
+    expect(screen.getByText(/Add as many paragraphs as you like. You can include/i)).toBeTruthy();
+    expect(screen.getByText(/italic text/i)).toBeTruthy();
+    expect(screen.getByText(/bold text/i)).toBeTruthy();
+    expect(screen.getByText(/, and even/i)).toBeTruthy();
+    expect(screen.getByText(/code/i)).toBeTruthy();
+    expect(screen.getByText(/You can even include blockquotes in footnotes!/i)).toBeTruthy();
+    expect(screen.getAllByRole('link', { name: '1' })).toHaveLength(2);
+    expect(screen.getAllByRole('link', { name: '2' })).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Back to reference 1' })).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Back to reference 1-2' })).toBeTruthy();
+    expect(screen.getByRole('link', { name: /Back to reference 2/i })).toBeTruthy();
   });
   it('should render beforeMainContent with main content', () => {
     const mainContent = 'Main message content';

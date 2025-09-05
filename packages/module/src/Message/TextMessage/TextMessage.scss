@@ -17,9 +17,10 @@
   width: fit-content;
   padding: var(--pf-t--global--spacer--sm) 0 var(--pf-t--global--spacer--sm) 0;
   border-radius: var(--pf-t--global--border--radius--small);
+  --pf-chatbot-message-text-font-size: var(--pf-t--global--font--size--md);
 
   .pf-v6-c-button.pf-m-link {
-    font-size: var(--pf-t--global--font--size--md);
+    font-size: var(--pf-chatbot-message-text-font-size);
   }
 
   .pf-v6-c-content,
@@ -27,13 +28,47 @@
   .pf-v6-c-content--blockquote,
   p,
   a {
-    --pf-v6-c-content--FontSize: var(--pf-t--global--font--size--md);
+    --pf-v6-c-content--FontSize: var(--pf-chatbot-message-text-font-size);
   }
 
   code {
     background-color: var(--pf-t--global--background--color--tertiary--default);
-    font-size: var(--pf-t--global--font--size--body--default);
+    font-size: var(--pf-chatbot-message-text-inline-code-font-size);
   }
+
+  // Hide message text that contains sr-only content
+  // https://css-tricks.com/inclusively-hidden/
+  &:has(.sr-only) {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+// ============================================================================
+// Footnote spacing styles
+// ============================================================================
+
+// Add spacing to paragraphs in multi-paragraph footnotes
+// Only target p tags that are direct children of message-text spans (not inside blockquotes, etc.)
+li[id*='user-content-fn-']:has(> span > .pf-chatbot__message-text + .pf-chatbot__message-text)
+  > span
+  > .pf-chatbot__message-text
+  > p {
+  margin-block-end: var(--pf-t--global--spacer--md);
+}
+
+// Handle user message footnotes which may have extra span wrappers
+li[id*='user-content-fn-']:has(> span > span > .pf-chatbot__message-text + .pf-chatbot__message-text)
+  > span
+  > span
+  > .pf-chatbot__message-text
+  > p {
+  margin-block-end: var(--pf-t--global--spacer--md);
 }
 
 .pf-chatbot__message--user {
@@ -54,6 +89,11 @@
       color: var(--pf-t--global--text--color--on-brand--default);
     }
   }
+
+  .pf-chatbot__message-text > .pf-chatbot__message-text {
+    background-color: initial;
+    padding: initial;
+  }
 }
 
 // ============================================================================
@@ -62,8 +102,9 @@
 .pf-chatbot.pf-m-compact {
   // Need to inline shorter text
   .pf-chatbot__message-text {
+    --pf-chatbot-message-text-font-size: var(--pf-t--global--font--size--sm);
     .pf-v6-c-button.pf-m-link {
-      font-size: var(--pf-t--global--font--size--sm);
+      font-size: var(--pf-chatbot-message-text-font-size);
     }
 
     .pf-v6-c-content,
@@ -71,7 +112,7 @@
     .pf-v6-c-content--blockquote,
     p,
     a {
-      --pf-v6-c-content--FontSize: var(--pf-t--global--font--size--sm);
+      --pf-v6-c-content--FontSize: var(--pf-chatbot-message-text-font-size);
     }
 
     .pf-v6-c-content--blockquote {
