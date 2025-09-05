@@ -1,0 +1,24 @@
+.pf-chatbot__deep-thinking {
+  --pf-v6-c-card--BorderColor: var(--pf-t--global--border--color--control--read-only);
+  overflow: unset;
+}
+
+.pf-chatbot__deep-thinking-expandable-section {
+  --pf-v6-c-expandable-section--Gap: var(--pf-t--global--spacer--xs);
+}
+
+.pf-chatbot__deep-thinking-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pf-t--global--spacer--xs);
+}
+
+.pf-chatbot__deep-thinking-subheading {
+  font-size: var(--pf-t--global--font--size--body--sm);
+  font-weight: var(--pf-t--global--font--weight--body--default);
+  color: var(--pf-t--global--text--color--subtle);
+}
+
+.pf-chatbot__deep-thinking-body {
+  color: var(--pf-t--global--text--color--subtle);
+}

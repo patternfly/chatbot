@@ -7,6 +7,7 @@ import { monitorSampleAppQuickStart } from './QuickStarts/monitor-sampleapp-quic
 import { monitorSampleAppQuickStartWithImage } from './QuickStarts/monitor-sampleapp-quickstart-with-image';
 import rehypeExternalLinks from '../__mocks__/rehype-external-links';
 import { AlertActionLink } from '@patternfly/react-core';
+import { DeepThinkingProps } from '../DeepThinking';
 
 const ALL_ACTIONS = [
   { label: /Good response/i },
@@ -144,6 +145,12 @@ const EMPTY_TABLE = `
 const IMAGE = `![Multi-colored wavy lines on a black background](https://cdn.dribbble.com/userupload/10651749/file/original-8a07b8e39d9e8bf002358c66fce1223e.gif)`;
 
 const INLINE_IMAGE = `inline text ![Multi-colored wavy lines on a black background](https://cdn.dribbble.com/userupload/10651749/file/original-8a07b8e39d9e8bf002358c66fce1223e.gif)`;
+
+const DEEP_THINKING: DeepThinkingProps = {
+  toggleContent: 'Show thinking',
+  subheading: 'Thought for 3 seconds',
+  body: "Here's why I said this."
+};
 
 const ERROR = {
   title: 'Could not load chat',
@@ -1002,5 +1009,11 @@ describe('Message', () => {
     expect(screen.getByText('Here is some YAML code:')).toBeTruthy();
     // code block isn't rendering
     expect(screen.queryByRole('button', { name: 'Copy code' })).toBeFalsy();
+  });
+  it('should render deep thinking section correctly', () => {
+    render(<Message avatar="./img" role="user" name="User" content="" deepThinking={DEEP_THINKING} />);
+    expect(screen.getByRole('button', { name: /Show thinking/i })).toBeTruthy();
+    expect(screen.getByText('Thought for 3 seconds')).toBeTruthy();
+    expect(screen.getByText("Here's why I said this.")).toBeTruthy();
   });
 });
