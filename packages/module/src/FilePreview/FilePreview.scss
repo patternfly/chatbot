@@ -1,0 +1,22 @@
+.pf-chatbot__file-preview-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pf-t--global--spacer--md);
+  align-items: center;
+  justify-content: center;
+}
+
+.pf-chatbot__file-preview-icon {
+  color: var(--pf-t--global--icon--color--subtle);
+  width: var(--pf-t--global--icon--size--2xl);
+  height: var(--pf-t--global--icon--size--2xl);
+}
+
+.pf-chatbot__file-preview-name {
+  font-size: var(--pf-t--global--font--size--xl);
+  font-weight: var(--pf-t--global--font--weight--heading--default);
+}
+.pf-chatbot__file-preview-body {
+  color: var(--pf-t--global--text--color--subtle);
+  font-size: var(--pf-t--global--font--size--body--lg);
+}

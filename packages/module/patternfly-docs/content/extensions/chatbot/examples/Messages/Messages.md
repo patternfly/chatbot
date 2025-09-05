@@ -47,6 +47,7 @@ import { monitorSampleAppQuickStart } from '@patternfly/chatbot/src/Message/Quic
 import userAvatar from './user_avatar.svg';
 import squareImg from './PF-social-color-square.svg';
 import { CSSProperties, useState, Fragment, FunctionComponent, MouseEvent as ReactMouseEvent, KeyboardEvent as ReactKeyboardEvent, Ref, isValidElement, cloneElement, Children, ReactNode, useRef, useEffect } from 'react';
+import FilePreview from '@patternfly/chatbot/dist/dynamic/FilePreview';
 
 The `content` prop of the `<Message>` component is passed to a `<Markdown>` component (from [react-markdown](https://remarkjs.github.io/react-markdown/)), which is configured to translate plain text strings into PatternFly [`<Content>` components](/components/content) and code blocks into PatternFly [`<CodeBlock>` components.](/components/code-block)
 
@@ -270,6 +271,14 @@ To allow users to preview the contents of an attachment, load a read-only view o
 To allow users to edit an attached file, load a new code editor within the ChatBot window. On this screen, you can allow users to edit a file and save changes if they'd like. Return users to the main ChatBot window once they dismiss the editor.
 
 ```js file="./AttachmentEdit.tsx"
+
+```
+
+### File preview
+
+If the contents of an attachment cannot be previewed, load a file preview modal with a view of the file name and an unavailable message. When users close the modal, return to the main ChatBot window.
+
+```js file="./FilePreview.tsx"
 
 ```
 
