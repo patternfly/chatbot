@@ -174,11 +174,11 @@ describe('ToolCall', () => {
 
   it('Passes cardBodyProps to CardBody', () => {
     render(<ToolCall {...defaultProps} cardBodyProps={{ id: 'card-body-test-id' }} />);
-    expect(screen.getByRole('button', { name: 'Run tool' }).closest('#card-body-test-id')).toBeVisible();
+    expect(screen.getByText(defaultProps.titleText).closest('#card-body-test-id')).toBeVisible();
   });
 
-  it('Passes cardTitleProps to CardTitle', () => {
-    render(<ToolCall {...defaultProps} cardTitleProps={{ id: 'card-title-test-id' }} />);
-    expect(screen.getByText(defaultProps.titleText).closest('#card-title-test-id')).toBeVisible();
+  it('Passes cardFooterProps to CardFooter', () => {
+    render(<ToolCall {...defaultProps} cardFooterProps={{ id: 'card-footer-test-id' }} />);
+    expect(screen.getByRole('button', { name: 'Run tool' }).closest('#card-footer-test-id')).toBeVisible();
   });
 });
