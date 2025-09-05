@@ -76,7 +76,7 @@ describe('ImagePreview', () => {
   it('navigates to next image when next button is clicked', () => {
     const mockOnNextClick = jest.fn();
     render(<ImagePreview {...defaultProps} onNextClick={mockOnNextClick} />);
-    const nextButton = screen.getByRole('button', { name: /Go to next page/i });
+    const nextButton = screen.getByRole('button', { name: /Go to next image/i });
     fireEvent.click(nextButton);
     expect(mockOnNextClick).toHaveBeenCalled();
     expect(screen.getByText('2/3')).toBeInTheDocument();
@@ -87,10 +87,10 @@ describe('ImagePreview', () => {
     const mockOnPreviousClick = jest.fn();
     render(<ImagePreview {...defaultProps} onPreviousClick={mockOnPreviousClick} />);
     // First go to page 2
-    const nextButton = screen.getByRole('button', { name: /Go to next page/i });
+    const nextButton = screen.getByRole('button', { name: /Go to next image/i });
     fireEvent.click(nextButton);
     // Then go back to page 1
-    const previousButton = screen.getByRole('button', { name: /Go to previous page/i });
+    const previousButton = screen.getByRole('button', { name: /Go to previous image/i });
     fireEvent.click(previousButton);
     expect(mockOnPreviousClick).toHaveBeenCalled();
     expect(screen.getByText('1/3')).toBeInTheDocument();
@@ -99,21 +99,21 @@ describe('ImagePreview', () => {
   it('calls onSetPage when page changes', () => {
     const mockOnSetPage = jest.fn();
     render(<ImagePreview {...defaultProps} onSetPage={mockOnSetPage} />);
-    const nextButton = screen.getByRole('button', { name: /Go to next page/i });
+    const nextButton = screen.getByRole('button', { name: /Go to next image/i });
     fireEvent.click(nextButton);
     expect(mockOnSetPage).toHaveBeenCalledWith(expect.any(Object), 2);
   });
 
   it('disables previous button on first page', () => {
     render(<ImagePreview {...defaultProps} />);
-    const previousButton = screen.getByRole('button', { name: /Go to previous page/i });
+    const previousButton = screen.getByRole('button', { name: /Go to previous image/i });
     expect(previousButton).toBeDisabled();
   });
 
   it('disables next button on last page', () => {
     render(<ImagePreview {...defaultProps} />);
     // Navigate to last page
-    const nextButton = screen.getByRole('button', { name: /Go to next page/i });
+    const nextButton = screen.getByRole('button', { name: /Go to next image/i });
     fireEvent.click(nextButton); // page 2
     fireEvent.click(nextButton); // page 3
     expect(nextButton).toBeDisabled();
@@ -121,8 +121,8 @@ describe('ImagePreview', () => {
 
   it('disables both navigation buttons when isDisabled is true', () => {
     render(<ImagePreview {...defaultProps} isDisabled={true} />);
-    const previousButton = screen.getByRole('button', { name: /Go to previous page/i });
-    const nextButton = screen.getByRole('button', { name: /Go to next page/i });
+    const previousButton = screen.getByRole('button', { name: /Go to previous image/i });
+    const nextButton = screen.getByRole('button', { name: /Go to next image/i });
     expect(previousButton).toBeDisabled();
     expect(nextButton).toBeDisabled();
   });
@@ -198,8 +198,8 @@ describe('ImagePreview', () => {
     const singleImage = [mockImages[0]];
     render(<ImagePreview {...defaultProps} images={singleImage} />);
     expect(screen.queryByText('1/1')).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /Go to previous page/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /Go to next page/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Go to previous image/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Go to next image/i })).not.toBeInTheDocument();
   });
 
   it('calls onCloseFileDetailsLabel when file details close button is clicked', () => {
@@ -225,7 +225,7 @@ describe('ImagePreview', () => {
     expect(screen.getByText('2.5 MB')).toBeInTheDocument();
 
     // Navigate to second page
-    const nextButton = screen.getByRole('button', { name: /Go to next page/i });
+    const nextButton = screen.getByRole('button', { name: /Go to next image/i });
     fireEvent.click(nextButton);
 
     // Should now show second image details

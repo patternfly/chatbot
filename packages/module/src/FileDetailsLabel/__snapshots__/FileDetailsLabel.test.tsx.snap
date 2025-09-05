@@ -21,6 +21,7 @@ exports[`FileDetailsLabel should render file details label 1`] = `
               class="pf-v6-l-flex pf-m-align-items-center pf-m-align-self-center pf-m-justify-content-center pf-chatbot__code-icon"
             >
               <svg
+                aria-hidden="true"
                 fill="currentColor"
                 height="24"
                 viewBox="0 0 24 24"

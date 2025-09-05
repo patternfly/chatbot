@@ -28,7 +28,7 @@ export const AttachmentEditModalExample: FunctionComponent = () => {
         id="modal-compact-image-preview"
         name="modal-compact-image-preview"
       ></Checkbox>
-      <Button onClick={handleModalToggle}>Launch modal</Button>
+      <Button onClick={handleModalToggle}>Launch image preview modal</Button>
       <ImagePreview
         isModalOpen={isModalOpen}
         handleModalToggle={handleModalToggle}
@@ -41,8 +41,8 @@ export const AttachmentEditModalExample: FunctionComponent = () => {
           hasNav
             ? /* eslint-disable indent */
               [
-                { fileName: 'image1.png', fileSize: '134KB', image: <img src={filePreview} alt="One" /> },
-                { fileName: 'image2.png', fileSize: '134KB', image: <img src={filePreview} alt="Two" /> }
+                { fileName: 'image1.png', fileSize: '134KB', image: <img src={filePreview} alt="Preview one" /> },
+                { fileName: 'image2.png', fileSize: '134KB', image: <img src={filePreview} alt="Preview two" /> }
               ]
             : [{ fileName: 'image.png', fileSize: '134KB', image: <img src={filePreview} alt="One" /> }]
           /* eslint-enable indent */

@@ -59,6 +59,10 @@ export interface ImagePreviewProps extends Omit<ChatbotModalProps, 'children'> {
   onCloseFileDetailsLabel?: (event: React.MouseEvent, fileName: string, fileId?: string | number) => void;
   /** Props passed to file details label */
   fileDetailsLabelProps?: Omit<FileDetailsLabelProps, 'fileName'>;
+  /** Text shown in navigation */
+  paginationContent?: string;
+  /** Navigation progress announced to assistive devices. Should state the current page/image. */
+  screenreaderText?: string;
 }
 
 const ImagePreview: FunctionComponent<ImagePreviewProps> = ({
@@ -74,15 +78,18 @@ const ImagePreview: FunctionComponent<ImagePreviewProps> = ({
   isDisabled,
   onSetPage,
   onPreviousClick,
-  toNextPageAriaLabel = 'Go to next page',
-  toPreviousPageAriaLabel = 'Go to previous page',
+  toNextPageAriaLabel = 'Go to next image',
+  toPreviousPageAriaLabel = 'Go to previous image',
   onNextClick,
   paginationAriaLabel,
   onCloseFileDetailsLabel,
   fileDetailsLabelProps,
+  paginationContent,
+  screenreaderText,
   ...props
 }: ImagePreviewProps) => {
   const [page, setPage] = useState(1);
+  const paginationText = paginationContent || `${page}/${images.length}`;
 
   useEffect(() => {
     if (images.length === 0 || page > images.length) {
@@ -153,9 +160,10 @@ const ImagePreview: FunctionComponent<ImagePreviewProps> = ({
                 </svg>
               </Icon>
             </Button>
-            <span aria-hidden="true">
-              {page}/{images.length}
-            </span>
+            <span>{paginationText}</span>
+            <div className="pf-chatbot-m-hidden" aria-live="polite">
+              {screenreaderText ?? `Image ${page} of ${images.length}`}
+            </div>
             <Button
               variant={ButtonVariant.plain}
               isDisabled={isDisabled || page === images.length}

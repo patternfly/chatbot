@@ -335,7 +335,7 @@ export const MessageBox = forwardRef(
           {...(enableSmartScroll ? { ...smartScrollHandlers } : {})}
         >
           {children}
-          <div className="pf-chatbot__messagebox-announcement" aria-live="polite">
+          <div className="pf-chatbot__messagebox-announcement pf-chatbot-m-hidden" aria-live="polite">
             {announcement}
           </div>
         </div>
