@@ -278,7 +278,7 @@ To allow users to edit an attached file, load a new code editor within the ChatB
 
 ### Image preview
 
-For images, load a view of the file name and other information in a new modal. Return users to the main ChatBot window once they dismiss the modal.
+To allow users to preview images, load a modal that contains a view of the file name, file size, and the image. Users can toggle between multiple images by using pagination controls at the bottom of the modal. Return users to the main ChatBot window once they close the modal.
 
 ```js file="./ImagePreview.tsx"
 
