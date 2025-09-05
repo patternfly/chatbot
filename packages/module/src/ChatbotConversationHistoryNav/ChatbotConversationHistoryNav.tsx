@@ -327,7 +327,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
                 {...searchInputProps}
               />
               {searchInputScreenReaderText && (
-                <div className="pf-chatbot__filter-announcement">{searchInputScreenReaderText}</div>
+                <div className="pf-chatbot__filter-announcement pf-chatbot-m-hidden">{searchInputScreenReaderText}</div>
               )}
             </div>
           )}

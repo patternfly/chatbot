@@ -16,6 +16,7 @@
 @import './FileDetailsLabel/FileDetailsLabel';
 @import './FileDropZone/FileDropZone';
 @import './FilePreview/FilePreview.scss';
+@import './ImagePreview/ImagePreview';
 @import './Message/Message';
 @import './Message/CodeBlockMessage/CodeBlockMessage';
 @import './Message/ImageMessage/ImageMessage';
@@ -40,4 +41,16 @@
 .ws-full-page-utils {
   left: 0 !important;
   right: auto !important;
+}
+
+// hide from view but not assistive technologies
+// https://css-tricks.com/inclusively-hidden/
+.pf-chatbot-m-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }

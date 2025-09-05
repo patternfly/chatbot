@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
-import { Flex, Stack, StackItem, Truncate } from '@patternfly/react-core';
+import { Flex, FlexItem, Truncate } from '@patternfly/react-core';
 import path from 'path-browserify';
-interface FileDetailsProps {
+export interface FileDetailsProps {
   /** Class name applied to container */
   className?: string;
   /** Name of file, including extension */
@@ -10,7 +10,23 @@ interface FileDetailsProps {
   languageTestId?: string;
   /** Class name applied to file name */
   fileNameClassName?: string;
+  /** File size */
+  fileSize?: string;
+  /** Whether to truncate file name */
+  hasTruncation?: boolean;
 }
+
+// manually added for image modal
+// based on https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Formats/Image_types
+export const IMAGE_FORMATS = {
+  png: 'PNG',
+  apng: 'APNG',
+  avif: 'AVIF',
+  gif: 'GIF',
+  jpg: 'JPEG',
+  svg: 'SVG',
+  webp: 'WebP'
+};
 
 // source https://gist.github.com/ppisarczyk/43962d06686722d26d176fad46879d41
 // FIXME We could probably check against the PF Language hash to trim this down to what the code editor supports.
@@ -678,7 +694,6 @@ export const extensionToLanguage = {
   viw: 'SQL',
   db2: 'SQLPL',
   ston: 'STON',
-  svg: 'SVG',
   sage: 'Sage',
   sagews: 'Sage',
   sls: 'Scheme',
@@ -935,54 +950,96 @@ export const extensionToLanguage = {
   ppt: 'Presentation',
   pptx: 'Presentation',
   odp: 'Presentation',
-  pdf: 'PDF'
+  pdf: 'PDF',
+  // manually added for image modal
+  // based on https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Formats/Image_types
+  ...IMAGE_FORMATS
 };
 
 export const FileDetails = ({
   className,
   fileName,
   fileNameClassName,
-  languageTestId
+  languageTestId,
+  fileSize,
+  hasTruncation = true
 }: PropsWithChildren<FileDetailsProps>) => {
   const language = extensionToLanguage[path.extname(fileName).slice(1)]?.toUpperCase();
+  const isImage = IMAGE_FORMATS[path.extname(fileName).slice(1)] ? true : false;
   return (
     <Flex className={`pf-chatbot__file-details ${className ? className : ''}`} gap={{ default: 'gapSm' }}>
       <Flex
-        className="pf-chatbot__code-icon"
+        className={`${isImage ? 'pf-chatbot__image-icon' : 'pf-chatbot__code-icon'}`}
         justifyContent={{ default: 'justifyContentCenter' }}
         alignItems={{ default: 'alignItemsCenter' }}
         alignSelf={{ default: 'alignSelfCenter' }}
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M0 4C0 1.79086 1.79086 0 4 0H20C22.2091 0 24 1.79086 24 4V20C24 22.2091 22.2091 24 20 24H4C1.79086 24 0 22.2091 0 20V4Z"
-            fill="currentColor"
-          />
-          <g clipPath="url(#clip0_3280_27505)">
+        {isImage ? (
+          <svg
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="25"
+            viewBox="0 0 24 25"
+            fill="none"
+          >
             <path
-              d="M13.8204 5.63002C13.3954 5.50752 12.9529 5.75502 12.8304 6.18002L9.63035 17.38C9.50785 17.805 9.75535 18.2475 10.1804 18.37C10.6054 18.4925 11.0479 18.245 11.1704 17.82L14.3704 6.62002C14.4929 6.19502 14.2454 5.75252 13.8204 5.63002ZM15.8354 8.63252C15.5229 8.94502 15.5229 9.45252 15.8354 9.76502L18.0679 12L15.8329 14.235C15.5204 14.5475 15.5204 15.055 15.8329 15.3675C16.1454 15.68 16.6529 15.68 16.9654 15.3675L19.7654 12.5675C20.0779 12.255 20.0779 11.7475 19.7654 11.435L16.9654 8.63502C16.6529 8.32252 16.1454 8.32252 15.8329 8.63502L15.8354 8.63252ZM8.16785 8.63252C7.85535 8.32002 7.34785 8.32002 7.03535 8.63252L4.23535 11.4325C3.92285 11.745 3.92285 12.2525 4.23535 12.565L7.03535 15.365C7.34785 15.6775 7.85535 15.6775 8.16785 15.365C8.48035 15.0525 8.48035 14.545 8.16785 14.2325L5.93285 12L8.16785 9.76502C8.48035 9.45252 8.48035 8.94502 8.16785 8.63252Z"
+              d="M0 4.5C0 2.29086 1.79086 0.5 4 0.5H20C22.2091 0.5 24 2.29086 24 4.5V20.5C24 22.7091 22.2091 24.5 20 24.5H4C1.79086 24.5 0 22.7091 0 20.5V4.5Z"
+              fill="currentColor"
+            />
+            <path
+              d="M4 7.5C4 6.39688 4.89688 5.5 6 5.5H18C19.1031 5.5 20 6.39688 20 7.5V17.5C20 18.6031 19.1031 19.5 18 19.5H6C4.89688 19.5 4 18.6031 4 17.5V7.5ZM14.1187 10.8281C13.9781 10.6219 13.7469 10.5 13.5 10.5C13.2531 10.5 13.0188 10.6219 12.8813 10.8281L10.1625 14.8156L9.33437 13.7812C9.19062 13.6031 8.975 13.5 8.75 13.5C8.525 13.5 8.30625 13.6031 8.16563 13.7812L6.16563 16.2812C5.98438 16.5063 5.95 16.8156 6.075 17.075C6.2 17.3344 6.4625 17.5 6.75 17.5H9.75H10.75H17.25C17.5281 17.5 17.7844 17.3469 17.9125 17.1C18.0406 16.8531 18.025 16.5562 17.8687 16.3281L14.1187 10.8281ZM7.5 10.5C7.89782 10.5 8.27936 10.342 8.56066 10.0607C8.84196 9.77936 9 9.39782 9 9C9 8.60218 8.84196 8.22064 8.56066 7.93934C8.27936 7.65804 7.89782 7.5 7.5 7.5C7.10218 7.5 6.72064 7.65804 6.43934 7.93934C6.15804 8.22064 6 8.60218 6 9C6 9.39782 6.15804 9.77936 6.43934 10.0607C6.72064 10.342 7.10218 10.5 7.5 10.5Z"
               fill="white"
             />
-          </g>
-          <defs>
-            <clipPath>
-              <rect width="16" height="12.8" fill="white" transform="translate(4 5.60001)" />
-            </clipPath>
-          </defs>
-        </svg>
-      </Flex>
-      <Stack>
-        <StackItem>
-          <span className="pf-chatbot__code-fileName">
-            <Truncate className={fileNameClassName} content={path.parse(fileName).name} />
-          </span>
-        </StackItem>
-        {language && (
-          <StackItem data-testid={languageTestId} className="pf-chatbot__code-language">
-            {language}
-          </StackItem>
+          </svg>
+        ) : (
+          <svg
+            aria-hidden="true"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0 4C0 1.79086 1.79086 0 4 0H20C22.2091 0 24 1.79086 24 4V20C24 22.2091 22.2091 24 20 24H4C1.79086 24 0 22.2091 0 20V4Z"
+              fill="currentColor"
+            />
+            <g clipPath="url(#clip0_3280_27505)">
+              <path
+                d="M13.8204 5.63002C13.3954 5.50752 12.9529 5.75502 12.8304 6.18002L9.63035 17.38C9.50785 17.805 9.75535 18.2475 10.1804 18.37C10.6054 18.4925 11.0479 18.245 11.1704 17.82L14.3704 6.62002C14.4929 6.19502 14.2454 5.75252 13.8204 5.63002ZM15.8354 8.63252C15.5229 8.94502 15.5229 9.45252 15.8354 9.76502L18.0679 12L15.8329 14.235C15.5204 14.5475 15.5204 15.055 15.8329 15.3675C16.1454 15.68 16.6529 15.68 16.9654 15.3675L19.7654 12.5675C20.0779 12.255 20.0779 11.7475 19.7654 11.435L16.9654 8.63502C16.6529 8.32252 16.1454 8.32252 15.8329 8.63502L15.8354 8.63252ZM8.16785 8.63252C7.85535 8.32002 7.34785 8.32002 7.03535 8.63252L4.23535 11.4325C3.92285 11.745 3.92285 12.2525 4.23535 12.565L7.03535 15.365C7.34785 15.6775 7.85535 15.6775 8.16785 15.365C8.48035 15.0525 8.48035 14.545 8.16785 14.2325L5.93285 12L8.16785 9.76502C8.48035 9.45252 8.48035 8.94502 8.16785 8.63252Z"
+                fill="white"
+              />
+            </g>
+            <defs>
+              <clipPath>
+                <rect width="16" height="12.8" fill="white" transform="translate(4 5.60001)" />
+              </clipPath>
+            </defs>
+          </svg>
         )}
-      </Stack>
+      </Flex>
+      <Flex gap={{ default: 'gapXs' }}>
+        <FlexItem>
+          <Flex direction={{ default: 'column' }} gap={{ default: 'gapNone' }}>
+            <FlexItem>
+              <span className="pf-chatbot__code-fileName">
+                {hasTruncation ? (
+                  <Truncate className={fileNameClassName} content={path.parse(fileName).name} />
+                ) : (
+                  fileName
+                )}
+              </span>
+            </FlexItem>
+            {!isImage && language && (
+              <FlexItem data-testid={languageTestId} className="pf-chatbot__code-language">
+                {language}
+              </FlexItem>
+            )}
+          </Flex>
+        </FlexItem>
+        {fileSize && <FlexItem className="pf-chatbot__code-file-size">{fileSize}</FlexItem>}
+      </Flex>
     </Flex>
   );
 };
