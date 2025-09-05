@@ -675,6 +675,28 @@ describe('Message', () => {
     );
     expect(screen.getAllByRole('img')[1]).toHaveAttribute('src', 'test.png');
   });
+  it('should handle tool response correctly', async () => {
+    render(
+      <Message
+        avatar="./img"
+        role="user"
+        name="User"
+        content="Hi"
+        toolResponse={{
+          toggleContent: 'Tool response: Name',
+          subheading: 'Thought for 3 seconds',
+          body: 'Lorem ipsum dolor sit amet',
+          cardTitle: 'Card title',
+          cardBody: 'Card body'
+        }}
+      />
+    );
+    expect(screen.getByRole('button', { name: /Tool response: Name/i })).toBeTruthy();
+    expect(screen.getByText('Thought for 3 seconds')).toBeTruthy();
+    expect(screen.getByText('Lorem ipsum dolor sit amet')).toBeTruthy();
+    expect(screen.getByText('Card title')).toBeTruthy();
+    expect(screen.getByText('Card body')).toBeTruthy();
+  });
   it('should handle block quote correctly', () => {
     render(<Message avatar="./img" role="user" name="User" content={BLOCK_QUOTES} />);
     expect(screen.getByText(/Blockquotes can also be nested.../)).toBeTruthy();
