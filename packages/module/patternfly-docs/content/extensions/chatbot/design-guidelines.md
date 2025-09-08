@@ -88,6 +88,7 @@ The following actions can be used for some of the most common interactions:
 1. **Feedback (good response):** Applies a positive rating to the message.
 1. **Feedback (bad response):** Applies a negative rating to the message.
 1. **Copy:** Copies the message content to the clipboard.
+1. **Download:** Downloads the chat message. [Learn more about downloading chat transcripts](#downloading-chat-transcripts).
 1. **Listen:** Reads the message content out loud.
 
 You can also use [custom message actions](/patternfly-ai/chatbot/messages#custom-message-actions) as needed for your particular use case. When using custom actions, be sure to add a tooltip that describes the effect that the action will have. For more information, view [our tooltips guidelines](/ux-writing/tooltips). 
@@ -338,6 +339,38 @@ If a message attachment fails, an error message should share the reason for fail
 
 <div class="ws-docs-content-img">
 ![Error alert for failed attachment.](./img/attachment-error.svg)
+</div>
+
+### Downloading chat transcripts
+
+You can enable users to download chat transcripts, for their personal records or to share with others. When users choose to download a transcript, you can choose how you want to configure the behavior in your ChatBot. 
+
+For guidance, refer to our download transcripts demo, which opens a Markdown file for a conversation within a new tab. 
+
+Choose the download action location that best works for your ChatBot:
+
+#### Download via conversation history drawer
+
+If your ChatBot uses a conversation history drawer, you can provide a download option in the [actions menu linked to a previous conversation](/patternfly-ai/chatbot/ui#drawer-with-conversation-actions).
+
+<div class="ws-docs-content-img">
+![Expanded menu for previous chat in the history window, which shows a download option.](./img/download-chat-history.svg)
+</div>
+
+#### Download message response action
+
+To allow users to download individual bot messages, the message actions can include a download option.
+
+<div class="ws-docs-content-img">
+![Download action for a message from a bot.](./img/download-message-action.svg)
+</div>
+
+#### Download control in header
+
+If you don't use a conversation history drawer, you can place an option to download the transcript for the active chat within the header options menu. 
+
+<div class="ws-docs-content-img">
+![Download transcript action within the ChatBot header options menu.](./img/download-header.svg)
 </div>
 
 ## Variations
