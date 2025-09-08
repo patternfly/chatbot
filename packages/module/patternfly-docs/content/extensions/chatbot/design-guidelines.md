@@ -364,11 +364,13 @@ To allow users to download individual bot messages, the message actions can incl
 ![Download action for a message from a bot.](./img/download-message-action.svg)
 </div>
 
-#### Download action in message bar
-
-
 #### Download control in header
 
+If you don't use a conversation history drawer, you can place an option to download the transcript for the active chat within the header options menu. 
+
+<div class="ws-docs-content-img">
+![Download transcript action within the ChatBot header options menu.](./img/download-header.svg)
+</div>
 
 ## Variations
 
