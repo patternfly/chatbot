@@ -21,5 +21,22 @@
     background-color: var(--pf-t--global--color--brand--default);
     color: var(--pf-t--global--text--color--on-brand--default);
     padding: var(--pf-t--global--spacer--sm);
+
+    // prevents issues when highlighting things like footnotes - don't have blue on blue
+    .pf-chatbot__message-text {
+      background-color: initial;
+    }
+  }
+
+  // targets footnotes specifically and prevents misalignment problems
+  .footnotes {
+    li > span {
+      display: inline-flex;
+      flex-direction: column;
+    }
+  }
+
+  li a {
+    color: var(--pf-t--global--text--color--on-brand--default);
   }
 }

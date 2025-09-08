@@ -1,7 +1,7 @@
 // ============================================================================
 // Chatbot Main - Message Input
 // ============================================================================
-import type { FormEvent, FunctionComponent } from 'react';
+import type { FormEvent, FunctionComponent, Ref } from 'react';
 import { useState } from 'react';
 import { ActionGroup, Button, Form, FormProps, TextArea } from '@patternfly/react-core';
 
@@ -16,6 +16,8 @@ export interface MessageInputProps extends FormProps {
   onEditUpdate?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: string) => void;
   /** Callback functionf or when edit cancel update button is clicked */
   onEditCancel?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  /** Ref applied to editable message input */
+  inputRef?: Ref<HTMLTextAreaElement>;
   /** Message text */
   content?: string;
 }
@@ -26,6 +28,7 @@ const MessageInput: FunctionComponent<MessageInputProps> = ({
   cancelWord = 'Cancel',
   onEditUpdate,
   onEditCancel,
+  inputRef,
   content,
   ...props
 }: MessageInputProps) => {
@@ -43,6 +46,7 @@ const MessageInput: FunctionComponent<MessageInputProps> = ({
         onChange={onChange}
         aria-label={editPlaceholder}
         autoResize
+        ref={inputRef}
       />
       <ActionGroup className="pf-chatbot__message-edit-buttons">
         <Button variant="primary" onClick={(event) => onEditUpdate && onEditUpdate(event, messageText)}>

@@ -1,4 +1,4 @@
-import { useState, FunctionComponent } from 'react';
+import { useState, useEffect, useRef, FunctionComponent } from 'react';
 import { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
 import ChatbotConversationHistoryNav, {
   Conversation
@@ -62,6 +62,7 @@ const EMPTY_STATE = {
 export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [isButtonOrderReversed, setIsButtonOrderReversed] = useState(false);
+  const [isNewChatButtonDisabled, setIsNewChatButtonDisabled] = useState(false);
   const [isCompact, setIsCompact] = useState(false);
   const [conversations, setConversations] = useState<Conversation[] | { [key: string]: Conversation[] }>(
     initialConversations
@@ -70,7 +71,27 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
   const [hasError, setHasError] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
   const [hasNoResults, setHasNoResults] = useState(false);
+  const [announcement, setAnnouncement] = useState('');
+  const [debouncedAnnouncement, setDebouncedAnnouncement] = useState('');
+  const announcementTimeoutRef = useRef<NodeJS.Timeout>();
   const displayMode = ChatbotDisplayMode.embedded;
+
+  // Debounce announcement updates to prevent screen reader overload
+  useEffect(() => {
+    if (announcementTimeoutRef.current) {
+      clearTimeout(announcementTimeoutRef.current);
+    }
+
+    announcementTimeoutRef.current = setTimeout(() => {
+      setDebouncedAnnouncement(announcement);
+    }, 500);
+
+    return () => {
+      if (announcementTimeoutRef.current) {
+        clearTimeout(announcementTimeoutRef.current);
+      }
+    };
+  }, [announcement]);
 
   const findMatchingItems = (targetValue: string) => {
     const filteredConversations = Object.entries(initialConversations).reduce((acc, [key, items]) => {
@@ -108,6 +129,13 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
         onChange={() => setIsButtonOrderReversed(!isButtonOrderReversed)}
         id="drawer-actions-visible"
         name="drawer-actions-visible"
+      ></Checkbox>
+      <Checkbox
+        label="Disable new chat button"
+        isChecked={isNewChatButtonDisabled}
+        onChange={() => setIsNewChatButtonDisabled(!isNewChatButtonDisabled)}
+        id="drawer-actions-disabled"
+        name="drawer-actions-disabled"
       ></Checkbox>
       <Checkbox
         label="Show loading state"
@@ -152,6 +180,7 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
         // eslint-disable-next-line no-console
         onSelectActiveItem={(e, selectedItem) => console.log(`Selected history item with id ${selectedItem}`)}
         conversations={conversations}
+        newChatButtonProps={{ isDisabled: isNewChatButtonDisabled }}
         onNewChat={() => {
           setIsOpen(!isOpen);
         }}
@@ -159,12 +188,23 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
         handleTextInputChange={(value: string) => {
           if (value === '') {
             setConversations(initialConversations);
+            setAnnouncement('');
+            setDebouncedAnnouncement('');
+            setHasNoResults(false);
+          } else {
+            // this is where you would perform search on the items in the drawer
+            // and update the state
+            const newConversations: { [key: string]: Conversation[] } = findMatchingItems(value);
+            const totalCount = Object.values(newConversations).flat().length;
+            const newAnnouncement =
+              totalCount === 1
+                ? `${totalCount} conversation matches "${value}"`
+                : `${totalCount} conversations match "${value}"`;
+            setAnnouncement(newAnnouncement);
+            setConversations(newConversations);
           }
-          // this is where you would perform search on the items in the drawer
-          // and update the state
-          const newConversations: { [key: string]: Conversation[] } = findMatchingItems(value);
-          setConversations(newConversations);
         }}
+        searchInputScreenReaderText={debouncedAnnouncement}
         drawerContent={<div>Drawer content</div>}
         isLoading={isLoading}
         errorState={hasError ? ERROR : undefined}

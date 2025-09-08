@@ -12,7 +12,7 @@ describe('ChatbotHeaderMenu', () => {
   it('should call onMenuToggle when ChatbotHeaderMenu button is clicked', () => {
     const onMenuToggle = jest.fn();
     render(<ChatbotHeaderMenu className="custom-header-menu" onMenuToggle={onMenuToggle} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Toggle menu' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Chat history menu' }));
 
     expect(onMenuToggle).toHaveBeenCalled();
   });

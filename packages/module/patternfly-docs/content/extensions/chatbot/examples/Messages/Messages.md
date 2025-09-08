@@ -31,11 +31,10 @@ sortValue: 3
 ---
 
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
+import MessageDivider from '@patternfly/chatbot/dist/dynamic/MessageDivider';
+import { rehypeCodeBlockToggle } from '@patternfly/chatbot/dist/esm/Message/Plugins/rehypeCodeBlockToggle';
 import SourcesCard from '@patternfly/chatbot/dist/dynamic/SourcesCard';
-import { RobotIcon } from '@patternfly/react-icons/dist/esm/icons/robot-icon';
-import InfoCircleIcon from '@patternfly/react-icons/dist/esm/icons/info-circle-icon';
-import DownloadIcon from '@patternfly/react-icons/dist/esm/icons/download-icon';
-import RedoIcon from '@patternfly/react-icons/dist/esm/icons/redo-icon';
+import { ArrowCircleDownIcon, ArrowRightIcon, CheckCircleIcon, CopyIcon, CubeIcon, CubesIcon, DownloadIcon, InfoCircleIcon, OutlinedQuestionCircleIcon, RedoIcon, RobotIcon, WrenchIcon } from '@patternfly/react-icons';
 import patternflyAvatar from './patternfly_avatar.jpg';
 import AttachmentEdit from '@patternfly/chatbot/dist/dynamic/AttachmentEdit';
 import FileDetails from '@patternfly/chatbot/dist/dynamic/FileDetails';
@@ -47,7 +46,10 @@ import { explorePipelinesQuickStart } from './explore-pipeline-quickstart.ts';
 import { monitorSampleAppQuickStart } from '@patternfly/chatbot/src/Message/QuickStarts/monitor-sampleapp-quickstart.ts';
 import userAvatar from './user_avatar.svg';
 import squareImg from './PF-social-color-square.svg';
-import { CSSProperties, useState, Fragment, FunctionComponent, MouseEvent as ReactMouseEvent, KeyboardEvent as ReactKeyboardEvent, Ref, isValidElement, cloneElement, Children, ReactNode } from 'react';
+import { CSSProperties, useState, Fragment, FunctionComponent, MouseEvent as ReactMouseEvent, KeyboardEvent as ReactKeyboardEvent, Ref, isValidElement, cloneElement, Children, ReactNode, useRef, useEffect } from 'react';
+import FilePreview from '@patternfly/chatbot/dist/dynamic/FilePreview';
+import ImagePreview from '@patternfly/chatbot/dist/dynamic/ImagePreview';
+import filePreview from './file-preview.svg';
 
 The `content` prop of the `<Message>` component is passed to a `<Markdown>` component (from [react-markdown](https://remarkjs.github.io/react-markdown/)), which is configured to translate plain text strings into PatternFly [`<Content>` components](/components/content) and code blocks into PatternFly [`<CodeBlock>` components.](/components/code-block)
 
@@ -65,12 +67,23 @@ You can further customize the avatar by applying an additional class or passing 
 
 ```
 
+### Message dividers
+
+To provide users with important contextual updates, you can add dividers between messages.
+
+For example, you can use the default divider to display a "timestamp" for more significant gaps in the conversation, or you can pass `variant="fullWidth"` to a divider to announce that an agent has joined the chat.
+
+```js file="./MessageWithDividers.tsx"
+
+```
+
 ### Message actions
 
 You can add actions to a message, to allow users to interact with the message content. These actions can include:
 
 - Feedback responses that allow users to rate a message as "good" or "bad".
 - Copy and share controls that allow users to share the message content with others.
+- An edit action to allow users to edit a message they previously sent. This should only be applied to user messages - see the [user messages example](#user-messages) for details on how to implement this action.
 - A listen action, that will read the message content out loud.
 
 **Note:** The logic for the actions is not built into the component and must be implemented by the consuming application.
@@ -168,6 +181,24 @@ The API for a source requires a link at minimum, but we strongly recommend provi
 
 ```
 
+### Messages with tool responses
+
+If you are using [model context protocol (MCP)](https://www.redhat.com/en/blog/model-context-protocol-discover-missing-link-ai-integration), you may find it useful to display information on tool responses as part of a message. Passing `toolResponse` to `<Message>` allows you to display a card with an optional subheading and body, as well as custom card content. Content is intentionally left fully customizable for now as this is an evolving area.
+
+```js file="./MessageWithToolResponse.tsx"
+
+```
+
+### Messages with deep thinking
+
+You can share details about the "thought process" behind an LLM's response, also known as deep thinking. To display a customizable, expandable card with these details, pass `deepThinking` to `<Message>` and provide a subheading (optional) and content body.
+
+Because this is an evolving area, this card content is currently fully customizable.
+
+```js file="./MessageWithDeepThinking.tsx"
+
+```
+
 ### Messages with quick start tiles
 
 [Quick start](/extensions/quick-starts/) tiles can be added to messages via the `quickStarts` prop. Users can initiate the quick start from a link within the message tile.
@@ -181,6 +212,8 @@ The quick start tile displayed below the message is based on the tile included i
 ### User messages
 
 Messages from users have a different background color to differentiate them from bot messages. You can also display a custom avatar that is uploaded by the user. You can further customize the avatar by applying an additional class or passing [PatternFly avatar props](/components/avatar) to the `<Message>` component via `avatarProps`.
+
+User messages can also be made editable by passing an "edit" object to the `actions` property. When editing is enabled focus should be placed on the text area. When editing is completed or canceled the focus should be moved back to the edit button.
 
 ```js file="./UserMessage.tsx"
 
@@ -240,6 +273,22 @@ To allow users to preview the contents of an attachment, load a read-only view o
 To allow users to edit an attached file, load a new code editor within the ChatBot window. On this screen, you can allow users to edit a file and save changes if they'd like. Return users to the main ChatBot window once they dismiss the editor.
 
 ```js file="./AttachmentEdit.tsx"
+
+```
+
+### Image preview
+
+To allow users to preview images, load a modal that contains a view of the file name, file size, and the image. Users can toggle between multiple images by using pagination controls at the bottom of the modal. Return users to the main ChatBot window once they close the modal.
+
+```js file="./ImagePreview.tsx"
+
+```
+
+### File preview
+
+If the contents of an attachment cannot be previewed, load a file preview modal with a view of the file name and an unavailable message. When users close the modal, return to the main ChatBot window.
+
+```js file="./FilePreview.tsx"
 
 ```
 

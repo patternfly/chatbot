@@ -9,6 +9,7 @@ const ALL_ACTIONS = [
   { type: 'positive', label: 'Good response', clickedLabel: 'Response recorded' },
   { type: 'negative', label: 'Bad response', clickedLabel: 'Response recorded' },
   { type: 'copy', label: 'Copy', clickedLabel: 'Copied' },
+  { type: 'edit', label: 'Edit', clickedLabel: 'Editing' },
   { type: 'share', label: 'Share', clickedLabel: 'Shared' },
   { type: 'listen', label: 'Listen', clickedLabel: 'Listening' }
 ];
@@ -44,6 +45,7 @@ const ALL_ACTIONS_DATA_TEST = [
   { type: 'positive', label: 'Good response', dataTestId: 'positive' },
   { type: 'negative', label: 'Bad response', dataTestId: 'negative' },
   { type: 'copy', label: 'Copy', dataTestId: 'copy' },
+  { type: 'edit', label: 'Edit', dataTestId: 'edit' },
   { type: 'share', label: 'Share', dataTestId: 'share' },
   { type: 'download', label: 'Download', dataTestId: 'download' },
   { type: 'listen', label: 'Listen', dataTestId: 'listen' }
@@ -60,6 +62,7 @@ describe('ResponseActions', () => {
           positive: { onClick: jest.fn() },
           negative: { onClick: jest.fn() },
           copy: { onClick: jest.fn() },
+          edit: { onClick: jest.fn() },
           share: { onClick: jest.fn() },
           download: { onClick: jest.fn() },
           listen: { onClick: jest.fn() }
@@ -69,10 +72,11 @@ describe('ResponseActions', () => {
     const goodBtn = screen.getByRole('button', { name: 'Good response' });
     const badBtn = screen.getByRole('button', { name: 'Bad response' });
     const copyBtn = screen.getByRole('button', { name: 'Copy' });
+    const editBtn = screen.getByRole('button', { name: 'Edit' });
     const shareBtn = screen.getByRole('button', { name: 'Share' });
     const downloadBtn = screen.getByRole('button', { name: 'Download' });
     const listenBtn = screen.getByRole('button', { name: 'Listen' });
-    const buttons = [goodBtn, badBtn, copyBtn, shareBtn, downloadBtn, listenBtn];
+    const buttons = [goodBtn, badBtn, copyBtn, editBtn, shareBtn, downloadBtn, listenBtn];
     buttons.forEach((button) => {
       expect(button).toBeTruthy();
     });
@@ -265,6 +269,7 @@ describe('ResponseActions', () => {
       { type: 'positive', ariaLabel: 'Thumbs up' },
       { type: 'negative', ariaLabel: 'Thumbs down' },
       { type: 'copy', ariaLabel: 'Copy the message' },
+      { type: 'edit', ariaLabel: 'Edit this message' },
       { type: 'share', ariaLabel: 'Share it with friends' },
       { type: 'download', ariaLabel: 'Download your cool message' },
       { type: 'listen', ariaLabel: 'Listen up' }

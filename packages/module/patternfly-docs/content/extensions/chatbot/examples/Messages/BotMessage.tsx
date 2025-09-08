@@ -1,4 +1,12 @@
-import { CSSProperties, useState, Fragment, FunctionComponent, MouseEvent, Ref } from 'react';
+import {
+  CSSProperties,
+  useState,
+  Fragment,
+  FunctionComponent,
+  MouseEvent as ReactMouseEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+  Ref
+} from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import patternflyAvatar from './patternfly_avatar.jpg';
 import squareImg from './PF-social-color-square.svg';
@@ -10,6 +18,7 @@ import {
   SelectList,
   SelectOption
 } from '@patternfly/react-core';
+import { rehypeCodeBlockToggle } from '@patternfly/chatbot/dist/esm/Message/Plugins/rehypeCodeBlockToggle';
 
 export const BotMessageExample: FunctionComponent = () => {
   const [variant, setVariant] = useState<string>('Code');
@@ -43,6 +52,8 @@ export const BotMessageExample: FunctionComponent = () => {
         return table;
       case 'Image':
         return image;
+      case 'Footnote':
+        return footnote;
       default:
         return;
     }
@@ -149,6 +160,18 @@ _Italic text, formatted with single underscores_
 
   const image = `![Multi-colored wavy lines on a black background](https://cdn.dribbble.com/userupload/10651749/file/original-8a07b8e39d9e8bf002358c66fce1223e.gif)`;
 
+  const footnote = `This is some text that has a short footnote[^1] and this is text with a longer footnote.[^bignote]
+
+  [^1]: This is a short footnote. To return the highlight to the original message, click the arrow. 
+  
+  [^bignote]: This is a long footnote with multiple paragraphs and formatting.
+
+      To break long footnotes into paragraphs, indent the text. 
+
+      Add as many paragraphs as you like. You can include *italic text*, **bold text**, and \`code\`.
+
+      > You can even include blockquotes in footnotes!`;
+
   const error = {
     title: 'Could not load chat',
     children: 'Wait a few minutes and check your network settings. If the issue persists: ',
@@ -164,8 +187,8 @@ _Italic text, formatted with single underscores_
     )
   };
 
-  const onSelect = (_event: MouseEvent<Element, MouseEvent> | undefined, value: string | number | undefined) => {
-    setVariant(value);
+  const onSelect = (_event: ReactMouseEvent<Element, MouseEvent> | undefined, value: string | number | undefined) => {
+    setVariant(value as string);
     setSelected(value as string);
     setIsOpen(false);
     if (value === 'Expandable code') {
@@ -194,6 +217,76 @@ _Italic text, formatted with single underscores_
       {selected}
     </MenuToggle>
   );
+
+  const handleFootnoteNavigation = (event: ReactMouseEvent<HTMLElement> | ReactKeyboardEvent<HTMLElement>) => {
+    const target = event.target as HTMLElement;
+
+    // Depending on whether it is a click event or keyboard event, target may be a link or something like a span
+    // Look for the closest anchor element (could be a parent)
+    const anchorElement = target.closest('a');
+    const href = anchorElement?.getAttribute('href');
+
+    // Check if this is a footnote link - we only have internal links in this example, so this is all we need here
+    if (href && href.startsWith('#')) {
+      // Prevent default behavior to avoid page re-render on click in PatternFly docs framework
+      event.preventDefault();
+
+      let targetElement: HTMLElement | null = null;
+      const targetId = href.replace('#', '');
+      targetElement = document.querySelector(`[id="${targetId}"]`);
+
+      if (targetElement) {
+        let focusTarget = targetElement;
+
+        // If we found a footnote definition container, focus on the parent li element
+        if (targetElement.id?.startsWith('bot-message-fn-')) {
+          // Find the parent li element that contains the footnote
+          const parentLi = targetElement.closest('li');
+          if (parentLi) {
+            focusTarget = parentLi as HTMLElement;
+          }
+        }
+
+        focusTarget.focus();
+
+        let elementToHighlight = targetElement;
+
+        // If this is a backref link (going back to footnote reference),
+        // we want to highlight more of the ref line and not just the link itself
+        // since the target is so small
+        if (targetElement.id?.startsWith('bot-message-fnref-')) {
+          const refLink = targetElement;
+
+          // Walk up the DOM to find a meaningful container
+          let parent = refLink.parentElement;
+          while (parent && parent.tagName.toLowerCase() !== 'p' && parent !== document.body) {
+            parent = parent.parentElement;
+          }
+
+          // Use if found, otherwise use the immediate parent or target as a fallback
+          elementToHighlight = parent || refLink.parentElement || targetElement;
+        }
+
+        // Briefly highlight the target element for fun to show what you can do
+        const originalBackground = elementToHighlight.style.backgroundColor;
+        const originalTransition = elementToHighlight.style.transition;
+
+        elementToHighlight.style.transition = 'background-color 0.3s ease';
+        elementToHighlight.style.backgroundColor = 'var(--pf-t--global--background--color--tertiary--default)';
+
+        setTimeout(() => {
+          elementToHighlight.style.backgroundColor = originalBackground;
+          setTimeout(() => {
+            elementToHighlight.style.transition = originalTransition;
+          }, 300);
+        }, 1000);
+      }
+    }
+  };
+
+  const onClick = (event: ReactMouseEvent<HTMLElement> | ReactKeyboardEvent<HTMLElement>) => {
+    handleFootnoteNavigation(event);
+  };
 
   return (
     <>
@@ -247,6 +340,7 @@ _Italic text, formatted with single underscores_
           <SelectOption value="More complex list">More complex list</SelectOption>
           <SelectOption value="Table">Table</SelectOption>
           <SelectOption value="Image">Image</SelectOption>
+          <SelectOption value="Footnote">Footnote</SelectOption>
           <SelectOption value="Error">Error</SelectOption>
         </SelectList>
       </Select>
@@ -260,6 +354,15 @@ _Italic text, formatted with single underscores_
         }
         error={variant === 'Error' ? error : undefined}
         codeBlockProps={{ isExpandable, expandableSectionProps: { truncateMaxLines: isExpandable ? 1 : undefined } }}
+        // In this example, custom plugin will override any custom expandedText or collapsedText attributes provided
+        // The purpose of this plugin is to provide unique link names for the code blocks
+        // Because they are in the same message, this requires a custom plugin to parse the syntax tree
+        additionalRehypePlugins={[rehypeCodeBlockToggle]}
+        linkProps={{ onClick }}
+        // clobberPrefix controls the label ids
+        reactMarkdownProps={{
+          remarkRehypeOptions: { footnoteLabel: 'Bot message footnotes', clobberPrefix: 'bot-message-' }
+        }}
       />
     </>
   );

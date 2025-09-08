@@ -18,7 +18,7 @@
     "cypress:run:ci:cp": "cypress run --component",
     "cypress:run:e2e": "cypress run --headless",
     "cypress:run:ci:e2e": "start-server-and-test start http://localhost:8006 cypress:run:e2e",
-    "start": "concurrently \"npm run build:watch\" \"npx wait-on packages/module/dist && npm run docs:develop -w @patternfly/chatbot\"",
+    "start": "concurrently \"npm run build:css:watch -w @patternfly/chatbot\" \"npm run build:watch\" \"npx wait-on packages/module/dist/esm packages/module/dist/css/main.css && npm run docs:develop -w @patternfly/chatbot\"",
     "serve:docs": "npm run docs:serve -w @patternfly/chatbot",
     "clean": "npm run clean -w @patternfly/chatbot",
     "lint:js": "node --max-old-space-size=4096 node_modules/.bin/eslint packages --ext js,jsx,ts,tsx --cache",
@@ -39,7 +39,7 @@
     "@babel/preset-react": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
     "@octokit/rest": "^18.0.0",
-    "@patternfly/documentation-framework": "6.8.2",
+    "@patternfly/documentation-framework": "6.19.0",
     "@patternfly/patternfly": "^6.1.0",
     "@patternfly/react-icons": "^6.1.0",
     "@patternfly/react-table": "^6.1.0",
@@ -91,7 +91,7 @@
     "puppeteer-cluster": "^0.24.0"
   },
   "dependencies": {
-    "react-dropzone": "^14.2.3"
+    "react-dropzone": "^14.3.8"
   },
   "packageManager": "yarn@4.5.0+sha512.837566d24eec14ec0f5f1411adb544e892b3454255e61fdef8fd05f3429480102806bac7446bc9daff3896b01ae4b62d00096c7e989f1596f2af10b927532f39"
 }

@@ -19,7 +19,7 @@ export const AttachmentEditModalExample: FunctionComponent = () => {
         id="modal-compact-edit"
         name="modal-compact-edit"
       ></Checkbox>
-      <Button onClick={handleModalToggle}>Launch modal</Button>
+      <Button onClick={handleModalToggle}>Launch attachment edit modal</Button>
       <AttachmentEdit
         code="I am a code snippet"
         fileName="test.yaml"

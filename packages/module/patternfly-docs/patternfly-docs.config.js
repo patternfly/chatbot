@@ -2,7 +2,7 @@
 module.exports = {
   sideNavItems: [{ section: 'PatternFly-AI' }],
   topNavItems: [],
-  hasDarkThemeSwitcher: true,
+  hasThemeSwitcher: true,
   hasRTLSwitcher: true,
   port: 8006
 };

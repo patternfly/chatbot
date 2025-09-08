@@ -1,9 +1,9 @@
-import { DropEvent, MultipleFileUpload, MultipleFileUploadMain } from '@patternfly/react-core';
+import { MultipleFileUpload, MultipleFileUploadMain } from '@patternfly/react-core';
 import type { FunctionComponent } from 'react';
 import { useState } from 'react';
 import { ChatbotDisplayMode } from '../Chatbot';
 import { UploadIcon } from '@patternfly/react-icons';
-import { Accept, FileError, FileRejection } from 'react-dropzone/.';
+import { Accept, DropEvent, FileError, FileRejection } from 'react-dropzone';
 
 export interface FileDropZoneProps {
   /** Content displayed when the drop zone is not currently in use */

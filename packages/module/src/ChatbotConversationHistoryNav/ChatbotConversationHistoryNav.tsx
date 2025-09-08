@@ -2,12 +2,12 @@
 // Chatbot Header - Chatbot Conversation History Nav
 // ============================================================================
 import type { KeyboardEvent, FunctionComponent } from 'react';
-
 import { useRef, Fragment } from 'react';
 
 // Import PatternFly components
 import {
   Button,
+  ButtonProps,
   Drawer,
   DrawerPanelContent,
   DrawerContent,
@@ -18,13 +18,7 @@ import {
   DrawerCloseButton,
   DrawerContentBody,
   SearchInput,
-  Menu,
-  MenuList,
-  MenuGroup,
-  MenuItem,
-  MenuContent,
-  MenuItemProps,
-  MenuProps,
+  Title,
   DrawerPanelContentProps,
   DrawerContentProps,
   DrawerContentBodyProps,
@@ -32,10 +26,23 @@ import {
   DrawerActionsProps,
   DrawerCloseButtonProps,
   DrawerPanelBodyProps,
-  SkeletonProps
+  SkeletonProps,
+  Icon,
+  MenuProps,
+  TitleProps,
+  MenuListProps,
+  SearchInputProps,
+  MenuList,
+  MenuGroup,
+  MenuItem,
+  Menu,
+  MenuContent,
+  MenuItemProps,
+  MenuGroupProps,
+  MenuContentProps
 } from '@patternfly/react-core';
 
-import { OutlinedCommentAltIcon } from '@patternfly/react-icons';
+import { OutlinedClockIcon, OutlinedCommentAltIcon, PenToSquareIcon } from '@patternfly/react-icons';
 import { ChatbotDisplayMode } from '../Chatbot/Chatbot';
 import ConversationHistoryDropdown from './ChatbotConversationHistoryDropdown';
 import LoadingState from './LoadingState';
@@ -58,8 +65,10 @@ export interface Conversation {
   label?: string;
   /** Callback for when user selects item. */
   onSelect?: (event?: React.MouseEvent, value?: string | number) => void;
-  /** Additional props passed to conversation menu item */
+  /** Additional props passed to menu item */
   additionalProps?: MenuItemProps;
+  /** Custom dropdown ID to ensure uniqueness across demo instances */
+  dropdownId?: string;
 }
 export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   /** Function called to toggle drawer */
@@ -74,6 +83,12 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   onSelectActiveItem?: (event?: React.MouseEvent, itemId?: string | number) => void;
   /** Items shown in conversation history */
   conversations: Conversation[] | { [key: string]: Conversation[] };
+  /** Additional button props for new chat button. */
+  newChatButtonProps?: ButtonProps;
+  /** Additional props applied to conversation menu group. If conversations is an object, you should pass an object of MenuGroupProps for each group. */
+  menuGroupProps?: MenuGroupProps | { [key: string]: MenuGroupProps };
+  /** Additional props applied to conversation list. If conversations is an object, you should pass an object of MenuListProps for each group. */
+  menuListProps?: Omit<MenuListProps, 'children'> | { [key: string]: Omit<MenuListProps, 'children'> };
   /** Text shown in blue button */
   newChatButtonText?: string;
   /** Callback function for when blue button is clicked. Omit to hide blue "new chat button" */
@@ -84,6 +99,8 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   searchInputPlaceholder?: string;
   /** Aria label for search input */
   searchInputAriaLabel?: string;
+  /** Additional props passed to search input */
+  searchInputProps?: SearchInputProps;
   /** A callback for when the input value changes. Omit to hide input field */
   handleTextInputChange?: (value: string) => void;
   /** Display mode of chatbot */
@@ -120,6 +137,16 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   noResultsState?: HistoryEmptyStateProps;
   /** Sets drawer to compact styling. */
   isCompact?: boolean;
+  /** Display title  */
+  title?: string;
+  /** Icon displayed in title */
+  navTitleIcon?: React.ReactNode;
+  /** Title header level */
+  navTitleProps?: Partial<TitleProps>;
+  /** Visually hidden text that gets announced by assistive technologies. Should be used to convey the result count when the search input value changes. */
+  searchInputScreenReaderText?: string;
+  /** Additional props passed to MenuContent */
+  menuContentProps?: Omit<MenuContentProps, 'ref'>;
 }
 
 export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversationHistoryNavProps> = ({
@@ -129,16 +156,18 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   activeItemId,
   onSelectActiveItem,
   conversations,
+  menuListProps,
   newChatButtonText = 'New chat',
   drawerContent,
   onNewChat,
+  newChatButtonProps,
   searchInputPlaceholder = 'Search previous conversations...',
-  searchInputAriaLabel = 'Filter menu items',
+  searchInputAriaLabel = 'Search previous conversations',
+  searchInputProps,
   handleTextInputChange,
   displayMode,
   reverseButtonOrder = false,
   drawerActionsTestId = 'chatbot-nav-drawer-actions',
-  menuProps,
   drawerPanelContentProps,
   drawerContentProps,
   drawerContentBodyProps,
@@ -152,6 +181,13 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   emptyState,
   noResultsState,
   isCompact,
+  title = 'Chat history',
+  navTitleProps,
+  navTitleIcon = <OutlinedClockIcon />,
+  searchInputScreenReaderText,
+  menuProps,
+  menuGroupProps,
+  menuContentProps,
   ...props
 }: ChatbotConversationHistoryNavProps) => {
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -160,11 +196,13 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
     drawerRef.current && drawerRef.current.focus();
   };
 
+  const isConversation = (item: any): item is Conversation =>
+    item && typeof item === 'object' && 'id' in item && 'text' in item;
+
   const getNavItem = (conversation: Conversation) => (
     <MenuItem
       className={`pf-chatbot__menu-item ${activeItemId && activeItemId === conversation.id ? 'pf-chatbot__menu-item--active' : ''}`}
       itemId={conversation.id}
-      key={conversation.id}
       {...(conversation.noIcon ? {} : { icon: conversation.icon ?? <OutlinedCommentAltIcon /> })}
       /* eslint-disable indent */
       {...(conversation.menuItems
@@ -180,30 +218,37 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
           }
         : {})}
       {...conversation.additionalProps}
-      /* eslint-enable indent */
     >
       {conversation.text}
     </MenuItem>
   );
 
-  const buildMenu = () => {
+  const buildConversations = () => {
     if (Array.isArray(conversations)) {
-      // Render for array of MenuItemObject
       return (
-        <MenuList>
-          {conversations.map((conversation) => (
-            <Fragment key={conversation.id}>{getNavItem(conversation)}</Fragment>
-          ))}
+        <MenuList {...menuListProps}>
+          {conversations.map((conversation) => {
+            if (isConversation(conversation)) {
+              return <Fragment key={conversation.id}>{getNavItem(conversation)}</Fragment>;
+            } else {
+              return conversation;
+            }
+          })}
         </MenuList>
       );
     } else {
-      // Render for object with NavItemObject arrays as values
       return (
         <>
           {Object.keys(conversations).map((navGroup) => (
-            <MenuGroup className="pf-chatbot__menu-item-header" label={navGroup} key={navGroup}>
-              <MenuList>
-                {conversations[navGroup].map((conversation) => (
+            <MenuGroup
+              className="pf-chatbot__menu-item-header"
+              label={navGroup}
+              key={navGroup}
+              labelHeadingLevel="h3"
+              {...menuGroupProps?.[navGroup]}
+            >
+              <MenuList {...menuListProps?.[navGroup]}>
+                {conversations[navGroup].map((conversation: Conversation) => (
                   <Fragment key={conversation.id}>{getNavItem(conversation)}</Fragment>
                 ))}
               </MenuList>
@@ -231,22 +276,13 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
     }
     return (
       <Menu isPlain onSelect={onSelectActiveItem} activeItemId={activeItemId} {...menuProps}>
-        <MenuContent>{buildMenu()}</MenuContent>
+        <MenuContent {...menuContentProps}>{buildConversations()}</MenuContent>
       </Menu>
     );
   };
 
   const renderDrawerContent = () => (
     <>
-      {handleTextInputChange && (
-        <div className="pf-chatbot__input">
-          <SearchInput
-            aria-label={searchInputAriaLabel}
-            onChange={(_event, value) => handleTextInputChange(value)}
-            placeholder={searchInputPlaceholder}
-          />
-        </div>
-      )}
       <DrawerPanelBody {...drawerPanelBodyProps}>{renderMenuContent()}</DrawerPanelBody>
     </>
   );
@@ -262,12 +298,40 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
           >
             <DrawerCloseButton onClick={onDrawerToggle} {...drawerCloseButtonProps} />
             {onNewChat && (
-              <Button size={isCompact ? 'sm' : undefined} onClick={onNewChat}>
+              <Button
+                size={isCompact ? 'sm' : undefined}
+                onClick={onNewChat}
+                icon={<PenToSquareIcon />}
+                {...newChatButtonProps}
+              >
                 {newChatButtonText}
               </Button>
             )}
           </DrawerActions>
         </DrawerHead>
+        <div className="pf-chatbot__heading-container">
+          <div className="pf-chatbot__title-container">
+            <Icon size="lg" className="pf-chatbot__title-icon">
+              {navTitleIcon}
+            </Icon>
+            <Title className="pf-chatbot__title" headingLevel="h2" {...navTitleProps}>
+              {title}
+            </Title>
+          </div>
+          {!isLoading && handleTextInputChange && (
+            <div className="pf-chatbot__input">
+              <SearchInput
+                aria-label={searchInputAriaLabel}
+                onChange={(_event, value) => handleTextInputChange(value)}
+                placeholder={searchInputPlaceholder}
+                {...searchInputProps}
+              />
+              {searchInputScreenReaderText && (
+                <div className="pf-chatbot__filter-announcement pf-chatbot-m-hidden">{searchInputScreenReaderText}</div>
+              )}
+            </div>
+          )}
+        </div>
         {isLoading ? <LoadingState {...loadingState} /> : renderDrawerContent()}
       </>
     );

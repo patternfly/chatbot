@@ -8,3 +8,4 @@ export * from './ChatbotHeaderTitle';
 export * from './ChatbotHeaderOptionsDropdown';
 export * from './ChatbotHeaderSelectorDropdown';
 export * from './ChatbotHeaderCloseButton';
+export * from './ChatbotHeaderNewChatButton';

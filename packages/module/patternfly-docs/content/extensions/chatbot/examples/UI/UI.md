@@ -61,14 +61,15 @@ ChatbotHeaderMenu,
 ChatbotHeaderActions,
 ChatbotHeaderTitle,
 ChatbotHeaderOptionsDropdown,
-ChatbotHeaderSelectorDropdown
+ChatbotHeaderSelectorDropdown,
+ChatbotHeaderNewChatButton
 } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
 import { ChatbotFooter, ChatbotFootnote } from '@patternfly/chatbot/dist/dynamic/ChatbotFooter';
 import { MessageBar } from '@patternfly/chatbot/dist/dynamic/MessageBar';
 import SourceDetailsMenuItem from '@patternfly/chatbot/dist/dynamic/SourceDetailsMenuItem';
 import { ChatbotModal } from '@patternfly/chatbot/dist/dynamic/ChatbotModal';
 import SettingsForm from '@patternfly/chatbot/dist/dynamic/Settings';
-import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, UploadIcon } from '@patternfly/react-icons';
+import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, ThumbtackIcon, UploadIcon } from '@patternfly/react-icons';
 import { useDropzone } from 'react-dropzone';
 
 import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
@@ -78,13 +79,15 @@ import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/ou
 import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
 import OpenDrawerRightIcon from '@patternfly/react-icons/dist/esm/icons/open-drawer-right-icon';
 import CogIcon from '@patternfly/react-icons/dist/esm/icons/cog-icon';
+import PenToSquareIcon from '@patternfly/react-icons/dist/esm/icons/pen-to-square-icon';
 import PFHorizontalLogoColor from './PF-HorizontalLogo-Color.svg';
 import PFHorizontalLogoReverse from './PF-HorizontalLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import termsAndConditionsHeader from './PF-TermsAndConditionsHeader.svg';
 import { CloseIcon, SearchIcon, OutlinedCommentsIcon } from '@patternfly/react-icons';
-import { FunctionComponent, FormEvent, useState, useRef, MouseEvent, isValidElement, cloneElement, Children, ReactNode, Ref, MouseEvent as ReactMouseEvent, CSSProperties} from 'react';
+import { FunctionComponent, FormEvent, useState, useRef, MouseEvent, isValidElement, cloneElement, Children, ReactNode, Ref, MouseEvent as ReactMouseEvent, CSSProperties, useEffect} from 'react';
+import FilePreview from '@patternfly/chatbot/dist/dynamic/FilePreview';
 
 ## Structure
 
@@ -184,9 +187,10 @@ The ChatBot header is persistent, and contains the title for the ChatBot window,
 
 The `<ChatbotHeader>` has 2 sections:
 
-- `<ChatbotHeaderMain>` contains the title and an optional menu toggle:
+- `<ChatbotHeaderMain>` contains the title and an optional menu toggle or new chat button:
   - `<ChatbotHeaderTitle>` handles the layout and display of a title or image at different responsive sizes.
   - `<ChatbotHeaderMenu>` (optional) is placed on the left side of the header and used to toggle a chat history menu.
+  - `<ChatbotHeaderNewChatButton>` (optional) is placed on the left side of the header and used to initiate a new chat.
 - `<ChatbotHeaderActions>` contains any additional controls:
   - The `<ChatbotHeaderSelectorDropdown>` component is a standard PatternFly dropdown that matches the ChatBot styles.
   - The `<ChatbotHeaderOptionsDropdown>` component is a dropdown with a menu toggle that is intended to be used to update ChatBot settings (like the display mode).
@@ -197,6 +201,7 @@ Your `<ChatbotHeader>` code structure should look like this:
 <ChatbotHeader>
   <ChatbotHeaderMain>
     <ChatbotHeaderMenu ... />
+    <ChatbotHeaderNewChatButton ... />
     <ChatbotHeaderTitle ... />
   </ChatbotHeaderMain>
   <ChatbotHeaderActions>
@@ -221,6 +226,7 @@ There are a variety of options and customizations you can make to the header, to
 In this example, select the respective checkbox to toggle these features:
 
 - **Menu:** Users can select the menu toggle to open a menu of additional options or actions.
+- **New chat button:** Used to start a new chat session. The header button can be used in addition to or in place of a new chat button within the [conversation history drawer](/patternfly-ai/chatbot/ui/#drawer-with-search-and-new-chat-button).
 - **Left-aligned logo**
 - **Centered logo**
 - **Selector dropdown:** Users can choose from preselected options in a dropdown menu. For example, they can toggle between AI models.
@@ -358,6 +364,27 @@ Both the search input field and "New chat" buttons are optional. The `reverseBut
 Actions can be added to conversations with `menuItems`. Optionally, you can also add a `className` to the menu via `menuClassName`, change the default aria-label and tooltip content via `label`, or add an `onSelect` callback for when a user selects an item.
 
 ```js file="./ChatbotHeaderDrawerWithActions.tsx"
+
+```
+
+### Pinning conversations
+
+To help users track important conversations, add a "pin" option to the conversation action menus. This action moves a conversation to a dedicated "pinned" section at the top of the history drawer for quick access. Pinned items should contain an "unpin" option, so that users can remove pinned conversations as needed.
+
+```js file="./ChatbotHeaderDrawerWithPin.tsx"
+
+```
+
+### Renaming conversations in history drawer
+
+You can allow users to rename a conversation in the history drawer by implementing a modal that opens upon clicking a "Rename" (or similar) action. When doing so, you must ensure the following:
+
+- When the modal opens, focus is placed at the end of the text input.
+- When the modal closes, focus goes back to the action toggle that was previously opened.
+- Changes can be canceled via the **<kbd>Escape</kbd>** key or clicking a "Cancel" button.
+- Changes can be saved via the **<kbd>Enter</kbd>** key or by clicking a "Save" button.
+
+```js file="./ChatbotConversationEditing.tsx"
 
 ```
 

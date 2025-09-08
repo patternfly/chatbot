@@ -4,7 +4,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ChatbotDisplayMode } from '../Chatbot/Chatbot';
 import ChatbotConversationHistoryNav, { Conversation } from './ChatbotConversationHistoryNav';
 import { EmptyStateStatus, Spinner } from '@patternfly/react-core';
-import { OutlinedCommentsIcon, SearchIcon } from '@patternfly/react-icons';
+import { BellIcon, OutlinedCommentsIcon, SearchIcon } from '@patternfly/react-icons';
 import { ComponentType } from 'react';
 
 const ERROR = {
@@ -102,6 +102,23 @@ describe('ChatbotConversationHistoryNav', () => {
     );
 
     expect(screen.getByTestId('chatbot-nav-drawer-actions')).toHaveClass('pf-v6-c-drawer__actions--reversed');
+  });
+
+  it('should disable new chat button', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        reverseButtonOrder
+        conversations={initialConversations}
+        newChatButtonProps={{ isDisabled: true }}
+        onNewChat={jest.fn()}
+      />
+    );
+
+    expect(screen.getByRole('button', { name: 'New chat' })).toBeDisabled();
   });
 
   it('should not apply the reversed class when reverseButtonOrder is false', () => {
@@ -331,7 +348,7 @@ describe('ChatbotConversationHistoryNav', () => {
     ).toBeTruthy();
     expect(screen.getByRole('button', { name: /Close drawer panel/i })).toBeTruthy();
     expect(screen.getByRole('button', { name: /Loading... Reload/i })).toBeTruthy();
-    expect(screen.getByRole('textbox', { name: /Filter menu items/i })).toBeTruthy();
+    expect(screen.getByRole('textbox', { name: /Search previous conversations/i })).toBeTruthy();
     expect(screen.getByRole('heading', { name: /Could not load chat history/i })).toBeTruthy();
   });
 
@@ -355,7 +372,7 @@ describe('ChatbotConversationHistoryNav', () => {
     ).toBeTruthy();
     expect(screen.getByRole('button', { name: /Close drawer panel/i })).toBeTruthy();
     expect(screen.queryByRole('button', { name: /Loading... Reload/i })).toBeFalsy();
-    expect(screen.getByRole('textbox', { name: /Filter menu items/i })).toBeTruthy();
+    expect(screen.getByRole('textbox', { name: /Search previous conversations/i })).toBeTruthy();
     expect(screen.getByRole('heading', { name: /Could not load chat history/i })).toBeTruthy();
   });
 
@@ -432,5 +449,175 @@ describe('ChatbotConversationHistoryNav', () => {
       />
     );
     expect(screen.getByTestId('drawer')).toHaveClass('pf-m-compact');
+  });
+
+  it('should display the default title', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+      />
+    );
+    expect(screen.getByText('Chat history')).toBeInTheDocument();
+  });
+
+  it('should display the custom title', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        title="PatternFly history"
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+      />
+    );
+    expect(screen.getByText('PatternFly history')).toBeInTheDocument();
+  });
+
+  it('should display the clock icon', () => {
+    const { container } = render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+      />
+    );
+    const iconElement = container.querySelector('.pf-chatbot__title-icon');
+    expect(iconElement).toBeInTheDocument();
+  });
+
+  it('Passes menuProps to Menu', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        menuProps={{ className: 'test' }}
+      />
+    );
+
+    expect(screen.getByRole('menu').parentElement?.parentElement).toHaveClass('test');
+  });
+
+  it('Passes menuContentProps to MenuContent', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        menuContentProps={{ className: 'test' }}
+      />
+    );
+    expect(screen.getByRole('menu').parentElement).toHaveClass('test');
+  });
+
+  it('Passes menuListProps to MenuList when conversations is an array', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        menuListProps={{ className: 'test' }}
+      />
+    );
+    expect(screen.getByRole('menu')).toHaveClass('test');
+  });
+
+  it('Passes menuListProps to MenuList when conversations is an object', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={{ Today: initialConversations }}
+        menuListProps={{ Today: { className: 'test' } }}
+      />
+    );
+    expect(screen.getByRole('menu')).toHaveClass('test');
+  });
+
+  it('Passes menuGroupProps to MenuGroup when conversations is an object', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={{ Today: initialConversations }}
+        menuGroupProps={{ Today: { className: 'test' } }}
+      />
+    );
+    expect(screen.getByRole('menu').parentElement).toHaveClass('test');
+  });
+
+  it('Passes additionalProps to MenuItem', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={[{ id: '1', text: 'ChatBot documentation', additionalProps: { className: 'test' } }]}
+      />
+    );
+    expect(screen.getByRole('menuitem')).toHaveClass('test');
+  });
+
+  it('should be able to spread search input props when searchInputProps is passed', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        handleTextInputChange={jest.fn()}
+        searchInputProps={{ value: 'I am a sample search' }}
+      />
+    );
+
+    expect(screen.getByRole('dialog', { name: /Chat history I am a sample search/i })).toBeInTheDocument();
+  });
+
+  it('overrides nav title heading level when navTitleProps.headingLevel is passed', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={{ Today: initialConversations }}
+        navTitleProps={{ headingLevel: 'h1' }}
+      />
+    );
+    expect(screen.queryByRole('heading', { name: /Chat history/i, level: 2 })).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Chat history/i, level: 1 })).toBeInTheDocument();
+  });
+
+  it('overrides nav title icon when navTitleIcon is passed in', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={initialConversations}
+        navTitleIcon={<BellIcon data-testid="bell" />}
+      />
+    );
+    expect(screen.getByTestId('bell')).toBeInTheDocument();
   });
 });

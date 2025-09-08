@@ -19,7 +19,7 @@ export const PreviewAttachmentExample: FunctionComponent = () => {
         id="modal-compact-preview"
         name="modal-compact-preview"
       ></Checkbox>
-      <Button onClick={handleModalToggle}>Launch modal</Button>
+      <Button onClick={handleModalToggle}>Launch attachment preview modal</Button>
       <PreviewAttachment
         code="I am a code snippet"
         fileName="test.yaml"

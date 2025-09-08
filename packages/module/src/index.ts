@@ -42,6 +42,9 @@ export * from './CodeModal';
 export { default as Compare } from './Compare';
 export * from './Compare';
 
+export { default as DeepThinking } from './DeepThinking';
+export * from './DeepThinking';
+
 export { default as FileDetails } from './FileDetails';
 export * from './FileDetails';
 
@@ -50,6 +53,12 @@ export * from './FileDetailsLabel';
 
 export { default as FileDropZone } from './FileDropZone';
 export * from './FileDropZone';
+
+export { default as FilePreview } from './FilePreview';
+export * from './FilePreview';
+
+export { default as ImagePreview } from './ImagePreview';
+export * from './ImagePreview';
 
 export { default as LoadingMessage } from './LoadingMessage';
 export * from './LoadingMessage';
@@ -62,6 +71,9 @@ export * from './MessageBar';
 
 export { default as MessageBox } from './MessageBox';
 export * from './MessageBox';
+
+export { default as MessageDivider } from './MessageDivider';
+export * from './MessageDivider';
 
 export { default as PreviewAttachment } from './PreviewAttachment';
 export * from './PreviewAttachment';
@@ -80,6 +92,9 @@ export * from './SourcesCard';
 
 export { default as TermsOfUse } from './TermsOfUse';
 export * from './TermsOfUse';
+
+export { default as ToolResponse } from './ToolResponse';
+export * from './ToolResponse';
 
 export { default as tracking } from './tracking';
 export * from './tracking';

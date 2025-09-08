@@ -9,7 +9,7 @@
   grid-template-columns: 1fr auto;
   gap: var(--pf-t--global--spacer--sm);
   position: relative; // this is so focus ring on parent chatbot doesn't include header
-  background-color: var(--pf-t--chatbot--background);
+  background-color: var(--pf-t--global--background--color--secondary--default);
   justify-content: space-between;
   padding: var(--pf-t--global--spacer--lg);
 
@@ -76,7 +76,7 @@
 .pf-chatbot--drawer,
 .pf-chatbot--docked {
   .pf-chatbot__header {
-    background-color: var(--pf-t--chatbot--background);
+    background-color: var(--pf-t--global--background--color--secondary--default);
   }
 }
 
@@ -144,7 +144,7 @@
 .pf-chatbot.pf-m-compact {
   .pf-chatbot__header {
     gap: var(--pf-t--global--spacer--sm);
-    padding: var(--pf-t--global--spacer--sm);
+    padding: var(--pf-t--global--spacer--md);
   }
 
   .pf-chatbot__header .pf-chatbot__title img {

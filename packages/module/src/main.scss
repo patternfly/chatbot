@@ -11,9 +11,12 @@
 @import './ChatbotWelcomePrompt/ChatbotWelcomePrompt';
 @import './CodeModal/CodeModal';
 @import './Compare/Compare';
+@import './DeepThinking/DeepThinking';
 @import './FileDetails/FileDetails';
 @import './FileDetailsLabel/FileDetailsLabel';
 @import './FileDropZone/FileDropZone';
+@import './FilePreview/FilePreview.scss';
+@import './ImagePreview/ImagePreview';
 @import './Message/Message';
 @import './Message/CodeBlockMessage/CodeBlockMessage';
 @import './Message/ImageMessage/ImageMessage';
@@ -26,66 +29,28 @@
 @import './Message/UserFeedback/UserFeedback';
 @import './MessageBar/MessageBar';
 @import './MessageBox/MessageBox';
+@import './MessageDivider/MessageDivider';
 @import './MessageBox/JumpButton';
 @import './ResponseActions/ResponseActions';
 @import './Settings/Settings';
 @import './SourcesCard/SourcesCard.scss';
 @import './SourceDetailsMenuItem/SourceDetailsMenuItem';
 @import './TermsOfUse/TermsOfUse';
-
-:where(:root) {
-  // ============================================================================
-  // Chatbot Custom Default Tokens
-  // ============================================================================
-
-  --pf-t--chatbot--heading--font-family: var(
-    --pf-v6-c-content--heading--FontFamily,
-    redhatdisplayvf,
-    redhatdisplay,
-    helvetica,
-    arial,
-    sans-serif
-  );
-
-  --pf-t--chatbot--illustration--fill: var(--pf-t--color--red--50);
-  --pf-t--chatbot--code--background: var(--pf-t--color--gray--20);
-
-  --pf-t--chatbot-toggle--background--hover: var(--pf-t--color--gray--70);
-
-  --pf-t--chatbot--blue-icon--background--color--hover: rgba(
-    146,
-    197,
-    249,
-    0.25
-  ); // --pf-t--global--color--nonstatus--blue--default @ 25%
-  --pf-t--chatbot--blue-icon--fill--hover: var(--pf-t--global--color--brand--hover);
-
-  // ============================================================================
-  // Chatbot Default tokens using PF semantic tokens
-  // ============================================================================
-  --pf-t--chatbot-toggle--color: var(--pf-t--global--icon--color--inverse);
-  --pf-t--chatbot--background: var(--pf-t--global--background--color--secondary--default);
-  --pf-t--chatbot--border: var(--pf-t--global--border--color--default);
-
-  --pf-t--chatbot--icon--fill--active: var(--pf-t--global--text--color--regular);
-
-  --pf-t--chatbot--blue-icon--fill: var(--pf-t--global--color--brand--default);
-}
-
-// ============================================================================
-// Chatbot Custom Dark Theme Tokens
-// ============================================================================
-:where(.pf-v6-theme-dark) {
-  --pf-t--chatbot--illustration--fill: var(--pf-t--color--white);
-  --pf-t--chatbot--code--background: var(--pf-t--color--gray--60);
-
-  --pf-t--chatbot-toggle--background--hover: var(--pf-t--color--gray--20);
-
-  --pf-t--chatbot--blue-icon--background--color--hover: var(--pf-t--global--color--brand--hover);
-  --pf-t--chatbot--blue-icon--fill--hover: var(--pf-t--global--icon--color--inverse);
-}
+@import './ToolResponse/ToolResponse';
 
 .ws-full-page-utils {
   left: 0 !important;
   right: auto !important;
+}
+
+// hide from view but not assistive technologies
+// https://css-tricks.com/inclusively-hidden/
+.pf-chatbot-m-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }

@@ -13,11 +13,11 @@
 
   &:hover,
   &:focus {
-    background-color: var(--pf-t--chatbot--blue-icon--background--color--hover);
+    background-color: rgba(146, 197, 249, 0.25); // --pf-t--global--color--nonstatus--blue--default @ 25%;
     color: var(--pf-t--global--color--brand--hover);
 
     .pf-v6-c-button__icon {
-      color: var(--pf-t--chatbot--blue-icon--fill--hover);
+      color: var(--pf-t--global--color--brand--hover);
     }
   }
 }
@@ -37,7 +37,7 @@
 
   .pf-v6-c-button.pf-chatbot__button--send:hover,
   .pf-v6-c-button.pf-chatbot__button--send:focus {
-    background-color: var(--pf-t--chatbot--blue-icon--background--color--hover);
+    background-color: rgba(146, 197, 249, 0.25); // --pf-t--global--color--nonstatus--blue--default @ 25%;
   }
 }
 

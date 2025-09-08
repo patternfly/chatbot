@@ -6,13 +6,28 @@
     position: absolute;
     border-radius: var(--pf-t--global--border--radius--medium);
   }
-  // Drawer input
+
+  // Drawer title
   // ----------------------------------------------------------------------------
-  .pf-chatbot__input {
+  .pf-chatbot__heading-container {
     padding-inline-start: var(--pf-t--global--spacer--lg);
     padding-inline-end: var(--pf-t--global--spacer--lg);
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--pf-t--global--spacer--sm);
   }
-
+  .pf-chatbot__title {
+    font-size: var(--pf-v6-c-title--m-h3--FontSize);
+    font-weight: var(--pf-v6-c-title--m-h3--FontWeight);
+    line-height: var(--pf-v6-c-title--m-h3--LineHeight);
+  }
+  .pf-chatbot__title-container {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: var(--pf-t--global--spacer--gap--text-to-element--default);
+  }
   // Drawer menu
   // ----------------------------------------------------------------------------
   .pf-v6-c-menu {
@@ -24,6 +39,7 @@
   .pf-v6-c-menu__item-main {
     --pf-v6-c-menu__item-main--ColumnGap: var(--pf-t--global--spacer--md);
   }
+
   .pf-chatbot__menu-item-header > .pf-v6-c-menu__group-title {
     color: var(--pf-t--global--text--color--subtle);
     font-weight: var(--pf-t--global--font--weight--body--bold);
@@ -36,6 +52,7 @@
     background-color: var(--pf-t--global--background--color--floating--default);
     z-index: var(--pf-t--global--z-index--md);
   }
+
   .pf-chatbot__menu-item {
     --pf-v6-c-menu__item--PaddingInlineStart: var(--pf-t--global--spacer--sm);
     --pf-v6-c-menu__item--PaddingInlineEnd: var(--pf-t--global--spacer--sm);
@@ -50,6 +67,7 @@
   .pf-v6-c-menu__list-item.pf-chatbot__menu-item {
     overflow: hidden;
   }
+
   .pf-chatbot__history-actions {
     transform: rotate(90deg);
   }
@@ -75,7 +93,7 @@
     --pf-v6-c-drawer__panel--BackgroundColor: var(--pf-t--global--background--color--floating--default);
     --pf-v6-c-drawer__panel--PaddingBlockStart: var(--pf-t--global--spacer--lg);
     --pf-v6-c-drawer__panel--PaddingBlockEnd: var(--pf-t--global--spacer--lg);
-    --pf-v6-c-drawer__panel--RowGap: var(--pf-t--global--spacer--lg);
+    --pf-v6-c-drawer__panel--RowGap: var(--pf-t--global--spacer--gap--group-to-group--vertical--default);
     overflow-x: hidden;
     overflow-y: hidden;
   }

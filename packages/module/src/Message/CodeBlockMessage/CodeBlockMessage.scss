@@ -77,8 +77,9 @@
 }
 
 .pf-chatbot__message-inline-code {
+  --pf-chatbot-message-text-inline-code-font-size: var(--pf-t--global--font--size--body--default);
   background-color: var(--pf-t--global--background--color--tertiary--default);
-  font-size: var(--pf-t--global--font--size--body--default);
+  font-size: var(--pf-chatbot-message-text-inline-code-font-size);
 }
 
 .pf-chatbot__message-code-toggle {

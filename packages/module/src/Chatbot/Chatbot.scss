@@ -9,17 +9,24 @@
   flex-direction: column;
   width: 30rem;
   height: 70vh;
-  background-color: var(--pf-t--chatbot--background);
+  background-color: var(--pf-t--global--background--color--secondary--default);
   border-radius: var(--pf-t--global--border--radius--medium);
   box-shadow: var(--pf-t--global--box-shadow--lg);
   font-size: var(--pf-t--global--font--size--md);
   z-index: var(--pf-t--global--z-index--md);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  // Hide chatbot
+  transition:
+    opacity 0.3s ease-out,
+    transform 0.3s ease-out;
   &--hidden {
     pointer-events: none;
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  &--visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   // 32 rem is the width of the overlay chatbot plus the insets

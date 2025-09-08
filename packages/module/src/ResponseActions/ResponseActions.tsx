@@ -6,7 +6,8 @@ import {
   OutlinedThumbsUpIcon,
   OutlinedThumbsDownIcon,
   OutlinedCopyIcon,
-  DownloadIcon
+  DownloadIcon,
+  PencilAltIcon
 } from '@patternfly/react-icons';
 import ResponseActionButton from './ResponseActionButton';
 import { ButtonProps, TooltipProps } from '@patternfly/react-core';
@@ -50,6 +51,7 @@ export interface ResponseActionProps {
     share?: ActionProps;
     download?: ActionProps;
     listen?: ActionProps;
+    edit?: ActionProps;
   };
 }
 
@@ -58,7 +60,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ action
   const [clickStatePersisted, setClickStatePersisted] = useState<boolean>(false);
   useEffect(() => {
     // Define the order of precedence for checking initial `isClicked`
-    const actionPrecedence = ['positive', 'negative', 'copy', 'share', 'download', 'listen'];
+    const actionPrecedence = ['positive', 'negative', 'copy', 'edit', 'share', 'download', 'listen'];
     let initialActive: string | undefined;
 
     // Check predefined actions first based on precedence
@@ -83,7 +85,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ action
     setActiveButton(initialActive);
   }, [actions]);
 
-  const { positive, negative, copy, share, download, listen, ...additionalActions } = actions;
+  const { positive, negative, copy, edit, share, download, listen, ...additionalActions } = actions;
   const responseActions = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -165,6 +167,24 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ action
           aria-controls={copy['aria-controls']}
         ></ResponseActionButton>
       )}
+      {edit && (
+        <ResponseActionButton
+          {...edit}
+          ariaLabel={edit.ariaLabel ?? 'Edit'}
+          clickedAriaLabel={edit.ariaLabel ?? 'Editing'}
+          onClick={(e) => handleClick(e, 'edit', edit.onClick)}
+          className={edit.className}
+          isDisabled={edit.isDisabled}
+          tooltipContent={edit.tooltipContent ?? 'Edit '}
+          clickedTooltipContent={edit.clickedTooltipContent ?? 'Editing'}
+          tooltipProps={edit.tooltipProps}
+          icon={<PencilAltIcon />}
+          isClicked={activeButton === 'edit'}
+          ref={edit.ref}
+          aria-expanded={edit['aria-expanded']}
+          aria-controls={edit['aria-controls']}
+        ></ResponseActionButton>
+      )}
       {share && (
         <ResponseActionButton
           {...share}
@@ -219,6 +239,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ action
           aria-controls={listen['aria-controls']}
         ></ResponseActionButton>
       )}
+
       {Object.keys(additionalActions).map((action) => (
         <ResponseActionButton
           {...additionalActions[action]}

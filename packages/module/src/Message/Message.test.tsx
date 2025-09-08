@@ -7,11 +7,13 @@ import { monitorSampleAppQuickStart } from './QuickStarts/monitor-sampleapp-quic
 import { monitorSampleAppQuickStartWithImage } from './QuickStarts/monitor-sampleapp-quickstart-with-image';
 import rehypeExternalLinks from '../__mocks__/rehype-external-links';
 import { AlertActionLink } from '@patternfly/react-core';
+import { DeepThinkingProps } from '../DeepThinking';
 
 const ALL_ACTIONS = [
   { label: /Good response/i },
   { label: /Bad response/i },
   { label: /Copy/i },
+  { label: /Edit/i },
   { label: /Share/i },
   { label: /Listen/i }
 ];
@@ -140,9 +142,29 @@ const EMPTY_TABLE = `
 
  `;
 
+const FOOTNOTE = `This is some text with a footnote[^1] and here's a longer one.[^bignote]
+
+ You can also reference the same footnote multiple times[^1].
+ 
+   [^1]: This is the full footnote text. You can click the arrow to go back up. 
+   
+   [^bignote]: Here's one with multiple paragraphs and **formatting**.
+ 
+       Indent paragraphs to include them in the footnote.
+ 
+       Add as many paragraphs as you like. You can include *italic text*, **bold text**, and even \`code\`.
+ 
+       > You can even include blockquotes in footnotes!`;
+
 const IMAGE = `![Multi-colored wavy lines on a black background](https://cdn.dribbble.com/userupload/10651749/file/original-8a07b8e39d9e8bf002358c66fce1223e.gif)`;
 
 const INLINE_IMAGE = `inline text ![Multi-colored wavy lines on a black background](https://cdn.dribbble.com/userupload/10651749/file/original-8a07b8e39d9e8bf002358c66fce1223e.gif)`;
+
+const DEEP_THINKING: DeepThinkingProps = {
+  toggleContent: 'Show thinking',
+  subheading: 'Thought for 3 seconds',
+  body: "Here's why I said this."
+};
 
 const ERROR = {
   title: 'Could not load chat',
@@ -426,6 +448,8 @@ describe('Message', () => {
           // eslint-disable-next-line no-console
           copy: { onClick: () => console.log('Copy') },
           // eslint-disable-next-line no-console
+          edit: { onClick: () => console.log('Edit') },
+          // eslint-disable-next-line no-console
           share: { onClick: () => console.log('Share') },
           // eslint-disable-next-line no-console
           download: { onClick: () => console.log('Download') },
@@ -454,6 +478,8 @@ describe('Message', () => {
           // eslint-disable-next-line no-console
           copy: { onClick: () => console.log('Copy') },
           // eslint-disable-next-line no-console
+          edit: { onClick: () => console.log('Edit') },
+          // eslint-disable-next-line no-console
           share: { onClick: () => console.log('Share') },
           // eslint-disable-next-line no-console
           download: { onClick: () => console.log('Download') },
@@ -463,6 +489,36 @@ describe('Message', () => {
       />
     );
     expect(screen.getByText('Loading message')).toBeTruthy();
+    ALL_ACTIONS.forEach(({ label }) => {
+      expect(screen.queryByRole('button', { name: label })).toBeFalsy();
+    });
+  });
+  it('should not show actions if isEditable is true', async () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        isEditable
+        actions={{
+          // eslint-disable-next-line no-console
+          positive: { onClick: () => console.log('Good response') },
+          // eslint-disable-next-line no-console
+          negative: { onClick: () => console.log('Bad response') },
+          // eslint-disable-next-line no-console
+          copy: { onClick: () => console.log('Copy') },
+          // eslint-disable-next-line no-console
+          edit: { onClick: () => console.log('Edit') },
+          // eslint-disable-next-line no-console
+          share: { onClick: () => console.log('Share') },
+          // eslint-disable-next-line no-console
+          download: { onClick: () => console.log('Download') },
+          // eslint-disable-next-line no-console
+          listen: { onClick: () => console.log('Listen') }
+        }}
+      />
+    );
     ALL_ACTIONS.forEach(({ label }) => {
       expect(screen.queryByRole('button', { name: label })).toBeFalsy();
     });
@@ -640,6 +696,28 @@ describe('Message', () => {
     );
     expect(screen.getAllByRole('img')[1]).toHaveAttribute('src', 'test.png');
   });
+  it('should handle tool response correctly', async () => {
+    render(
+      <Message
+        avatar="./img"
+        role="user"
+        name="User"
+        content="Hi"
+        toolResponse={{
+          toggleContent: 'Tool response: Name',
+          subheading: 'Thought for 3 seconds',
+          body: 'Lorem ipsum dolor sit amet',
+          cardTitle: 'Card title',
+          cardBody: 'Card body'
+        }}
+      />
+    );
+    expect(screen.getByRole('button', { name: /Tool response: Name/i })).toBeTruthy();
+    expect(screen.getByText('Thought for 3 seconds')).toBeTruthy();
+    expect(screen.getByText('Lorem ipsum dolor sit amet')).toBeTruthy();
+    expect(screen.getByText('Card title')).toBeTruthy();
+    expect(screen.getByText('Card body')).toBeTruthy();
+  });
   it('should handle block quote correctly', () => {
     render(<Message avatar="./img" role="user" name="User" content={BLOCK_QUOTES} />);
     expect(screen.getByText(/Blockquotes can also be nested.../)).toBeTruthy();
@@ -704,6 +782,28 @@ describe('Message', () => {
   it('should render custom table aria label correctly', () => {
     render(<Message avatar="./img" role="user" name="User" content={TABLE} tableProps={{ 'aria-label': 'Test' }} />);
     expect(screen.getByRole('grid', { name: /Test/i })).toBeTruthy();
+  });
+  it('should render footnote correctly', () => {
+    render(<Message avatar="./img" role="user" name="User" content={FOOTNOTE} />);
+    expect(screen.getByText(/This is some text with a footnote/i)).toBeTruthy();
+    expect(screen.getByText(/and here's a longer one./i)).toBeTruthy();
+    expect(screen.getByText(/You can also reference the same footnote multiple times./i)).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /Footnotes/i })).toBeTruthy();
+    expect(screen.getByText(/This is the full footnote text. You can click the arrow to go back up./i)).toBeTruthy();
+    expect(screen.getByText(/Here's one with multiple paragraphs and/i)).toBeTruthy();
+    expect(screen.getByText(/formatting/i)).toBeTruthy();
+    expect(screen.getByText(/Indent paragraphs to include them in the footnote./i)).toBeTruthy();
+    expect(screen.getByText(/Add as many paragraphs as you like. You can include/i)).toBeTruthy();
+    expect(screen.getByText(/italic text/i)).toBeTruthy();
+    expect(screen.getByText(/bold text/i)).toBeTruthy();
+    expect(screen.getByText(/, and even/i)).toBeTruthy();
+    expect(screen.getByText(/code/i)).toBeTruthy();
+    expect(screen.getByText(/You can even include blockquotes in footnotes!/i)).toBeTruthy();
+    expect(screen.getAllByRole('link', { name: '1' })).toHaveLength(2);
+    expect(screen.getAllByRole('link', { name: '2' })).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Back to reference 1' })).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Back to reference 1-2' })).toBeTruthy();
+    expect(screen.getByRole('link', { name: /Back to reference 2/i })).toBeTruthy();
   });
   it('should render beforeMainContent with main content', () => {
     const mainContent = 'Main message content';
@@ -926,5 +1026,30 @@ describe('Message', () => {
     );
     const form = container.querySelector('form');
     expect(form).toHaveClass('test');
+  });
+  it('should be able to disable markdown parsing', () => {
+    render(<Message avatar="./img" role="user" name="User" content={CODE_MESSAGE} isMarkdownDisabled />);
+    // this is looking for markdown syntax that is ordinarily stripped
+    expect(screen.getByText(/~~~yaml/i)).toBeTruthy();
+  });
+  it('should be able to pass props to react-markdown, such as disabling tags', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="user"
+        name="User"
+        content={CODE_MESSAGE}
+        reactMarkdownProps={{ disallowedElements: ['code'] }}
+      />
+    );
+    expect(screen.getByText('Here is some YAML code:')).toBeTruthy();
+    // code block isn't rendering
+    expect(screen.queryByRole('button', { name: 'Copy code' })).toBeFalsy();
+  });
+  it('should render deep thinking section correctly', () => {
+    render(<Message avatar="./img" role="user" name="User" content="" deepThinking={DEEP_THINKING} />);
+    expect(screen.getByRole('button', { name: /Show thinking/i })).toBeTruthy();
+    expect(screen.getByText('Thought for 3 seconds')).toBeTruthy();
+    expect(screen.getByText("Here's why I said this.")).toBeTruthy();
   });
 });

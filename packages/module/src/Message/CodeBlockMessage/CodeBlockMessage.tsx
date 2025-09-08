@@ -1,9 +1,7 @@
 // ============================================================================
 // Chatbot Main - Message - Content - Code Block
 // ============================================================================
-import { useState, useRef, useId, useCallback, useEffect } from 'react';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { obsidian } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { useState, useRef, useCallback, useEffect } from 'react';
 // Import PatternFly components
 import {
   CodeBlock,
@@ -15,12 +13,12 @@ import {
   ExpandableSectionToggle,
   ExpandableSectionProps,
   ExpandableSectionToggleProps,
-  ExpandableSectionVariant
+  ExpandableSectionVariant,
+  getUniqueId
 } from '@patternfly/react-core';
 
 import { CheckIcon } from '@patternfly/react-icons/dist/esm/icons/check-icon';
 import { CopyIcon } from '@patternfly/react-icons/dist/esm/icons/copy-icon';
-import { ExpandableSectionForSyntaxHighlighter } from './ExpandableSectionForSyntaxHighlighter';
 
 export interface CodeBlockMessageProps {
   /** Content rendered in code block */
@@ -41,6 +39,9 @@ export interface CodeBlockMessageProps {
   collapsedText?: string;
 }
 
+const DEFAULT_EXPANDED_TEXT = 'Show less';
+const DEFAULT_COLLAPSED_TEXT = 'Show more';
+
 const CodeBlockMessage = ({
   children,
   className,
@@ -48,20 +49,38 @@ const CodeBlockMessage = ({
   isExpandable = false,
   expandableSectionProps,
   expandableSectionToggleProps,
-  expandedText = 'Show less',
-  collapsedText = 'Show more',
+  expandedText = DEFAULT_EXPANDED_TEXT,
+  collapsedText = DEFAULT_COLLAPSED_TEXT,
   ...props
 }: CodeBlockMessageProps) => {
   const [copied, setCopied] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const buttonRef = useRef();
-  const tooltipID = useId();
-  const toggleId = useId();
-  const contentId = useId();
+  const tooltipID = getUniqueId();
+  const toggleId = getUniqueId();
+  const contentId = getUniqueId();
   const codeBlockRef = useRef<HTMLDivElement>(null);
 
   const language = /language-(\w+)/.exec(className || '')?.[1];
+
+  // Get custom toggle text from data attributes if available - for use with rehype plugins
+  const customExpandedText = props['data-expanded-text'];
+  const customCollapsedText = props['data-collapsed-text'];
+
+  const finalExpandedText = customExpandedText || expandedText;
+  const finalCollapsedText = customCollapsedText || collapsedText;
+
+  if (
+    (customExpandedText && expandedText !== DEFAULT_EXPANDED_TEXT) ||
+    (customCollapsedText && collapsedText !== DEFAULT_COLLAPSED_TEXT)
+  ) {
+    // eslint-disable-next-line no-console
+    console.error(
+      'Message:',
+      'Custom rehype plugins that rely on data-expanded-text or data-collapsed-text will override expandedText and collapsedText props if both are passed in.'
+    );
+  }
 
   const onToggle = (isExpanded) => {
     setIsExpanded(isExpanded);
@@ -116,30 +135,7 @@ const CodeBlockMessage = ({
       <CodeBlock actions={actions}>
         <CodeBlockCode>
           <>
-            {language ? (
-              // SyntaxHighlighter doesn't work with ExpandableSection because it targets the direct child
-              // Forked for now and adjusted to match what we need
-              <ExpandableSectionForSyntaxHighlighter
-                variant={ExpandableSectionVariant.truncate}
-                isExpanded={isExpanded}
-                isDetached
-                toggleId={toggleId}
-                contentId={contentId}
-                language={language}
-                {...expandableSectionProps}
-              >
-                <SyntaxHighlighter
-                  {...props}
-                  language={language}
-                  style={obsidian}
-                  PreTag="div"
-                  CodeTag="div"
-                  wrapLongLines
-                >
-                  {String(children).replace(/\n$/, '')}
-                </SyntaxHighlighter>
-              </ExpandableSectionForSyntaxHighlighter>
-            ) : (
+            {isExpandable ? (
               <ExpandableSection
                 variant={ExpandableSectionVariant.truncate}
                 isExpanded={isExpanded}
@@ -150,6 +146,8 @@ const CodeBlockMessage = ({
               >
                 {children}
               </ExpandableSection>
+            ) : (
+              children
             )}
           </>
         </CodeBlockCode>
@@ -164,7 +162,7 @@ const CodeBlockMessage = ({
             className="pf-chatbot__message-code-toggle"
             {...expandableSectionToggleProps}
           >
-            {isExpanded ? expandedText : collapsedText}
+            {isExpanded ? finalExpandedText : finalCollapsedText}
           </ExpandableSectionToggle>
         )}
       </CodeBlock>

@@ -21,6 +21,7 @@ exports[`FileDetailsLabel should render file details label 1`] = `
               class="pf-v6-l-flex pf-m-align-items-center pf-m-align-self-center pf-m-justify-content-center pf-chatbot__code-icon"
             >
               <svg
+                aria-hidden="true"
                 fill="currentColor"
                 height="24"
                 viewBox="0 0 24 24"
@@ -52,33 +53,38 @@ exports[`FileDetailsLabel should render file details label 1`] = `
               </svg>
             </div>
             <div
-              class="pf-v6-l-stack"
+              class="pf-v6-l-flex pf-m-gap-xs"
             >
               <div
-                class="pf-v6-l-stack__item"
+                class=""
               >
-                <span
-                  class="pf-chatbot__code-fileName"
+                <div
+                  class="pf-v6-l-flex pf-m-column pf-m-gap-none"
                 >
                   <div
-                    style="display: contents;"
+                    class=""
                   >
                     <span
-                      class="pf-v6-c-truncate"
+                      class="pf-chatbot__code-fileName"
                     >
                       <span
-                        class="pf-v6-c-truncate__start"
+                        class="pf-v6-c-truncate"
+                        tabindex="0"
                       >
-                        test
+                        <span
+                          class="pf-v6-c-truncate__start"
+                        >
+                          test
+                        </span>
                       </span>
                     </span>
                   </div>
-                </span>
-              </div>
-              <div
-                class="pf-v6-l-stack__item pf-chatbot__code-language"
-              >
-                TEXT
+                  <div
+                    class="pf-chatbot__code-language"
+                  >
+                    TEXT
+                  </div>
+                </div>
               </div>
             </div>
           </div>

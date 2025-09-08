@@ -4,7 +4,7 @@ import FileDetails from '../FileDetails';
 import { Spinner } from '@patternfly/react-core';
 import { TimesIcon } from '@patternfly/react-icons';
 
-interface FileDetailsLabelProps {
+export interface FileDetailsLabelProps {
   /** Name of file, including extension */
   fileName: string;
   /** Unique id of file */
@@ -21,6 +21,12 @@ interface FileDetailsLabelProps {
   languageTestId?: string;
   /** Custom test id for the loading spinner in the component */
   spinnerTestId?: string;
+  /** File size */
+  fileSize?: string;
+  /** Whether to truncate file name */
+  hasTruncation?: boolean;
+  /** Icon used for close button */
+  closeButtonIcon?: React.ReactNode;
 }
 
 export const FileDetailsLabel = ({
@@ -31,7 +37,11 @@ export const FileDetailsLabel = ({
   onClose,
   closeButtonAriaLabel,
   languageTestId,
-  spinnerTestId
+  spinnerTestId,
+  fileSize,
+  hasTruncation = true,
+  closeButtonIcon = <TimesIcon />,
+  ...props
 }: PropsWithChildren<FileDetailsLabelProps>) => {
   const handleClose = (event) => {
     onClose && onClose(event, fileName, fileId);
@@ -45,17 +55,20 @@ export const FileDetailsLabel = ({
           type="button"
           variant="plain"
           aria-label={closeButtonAriaLabel ?? `Close ${fileName}`}
-          icon={<TimesIcon />}
+          icon={closeButtonIcon}
           onClick={handleClose}
         />
       }
       {...(onClick && { onClick: (event) => onClick(event, fileName, fileId) })}
+      {...props}
     >
       <div className="pf-chatbot__file-label-contents">
         <FileDetails
           className={isLoading ? 'pf-chatbot__file-label-loading' : undefined}
           fileName={fileName}
           languageTestId={languageTestId}
+          fileSize={fileSize}
+          hasTruncation={hasTruncation}
         />
         {isLoading && <Spinner data-testid={spinnerTestId} size="sm" />}
       </div>
