@@ -201,7 +201,9 @@ Because this is an evolving area, this card content is currently fully customiza
 
 ### Messages with tool calls
 
-If you are using [model context protocol (MCP)](https://www.redhat.com/en/blog/model-context-protocol-discover-missing-link-ai-integration), you may find it useful to display information on tool calls as part of a message. Passing `toolCalls` to `<Message>` allows you to display a card with tool call content.
+If you are using [model context protocol (MCP)](https://www.redhat.com/en/blog/model-context-protocol-discover-missing-link-ai-integration), you can share tool call information with users as part of a message. To display a tool card card, pass `toolCalls` to `<Message>`. This card contains a title, actions for running the tool and cancelling, and optional descriptive text.
+
+You can also display a loading animation until the tool call can be run. To visualize loading behavior in this example, select the "Tool calls are loading" checkbox.
 
 ```js file="./MessageWithToolCall.tsx"
 

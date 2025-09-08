@@ -31,7 +31,7 @@ export const MessageWithToolCallExample: FunctionComponent = () => {
           name="Bot"
           role="bot"
           avatar={patternflyAvatar}
-          content="This example has an expandable tool call:"
+          content="This example has an expandable tool call title, with an additional description::"
           toolCall={{
             titleText: "Calling 'awesome_tool_expansion'",
             expandableContent: 'This is the expandable content for the tool call.',
