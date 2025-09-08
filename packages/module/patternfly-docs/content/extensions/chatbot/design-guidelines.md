@@ -88,6 +88,7 @@ The following actions can be used for some of the most common interactions:
 1. **Feedback (good response):** Applies a positive rating to the message.
 1. **Feedback (bad response):** Applies a negative rating to the message.
 1. **Copy:** Copies the message content to the clipboard.
+1. **Download:** Downloads the chat message. [Learn more about downloading chat transcripts](#downloading-chat-transcripts).
 1. **Listen:** Reads the message content out loud.
 
 You can also use [custom message actions](/patternfly-ai/chatbot/messages#custom-message-actions) as needed for your particular use case. When using custom actions, be sure to add a tooltip that describes the effect that the action will have. For more information, view [our tooltips guidelines](/ux-writing/tooltips). 
