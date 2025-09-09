@@ -392,6 +392,7 @@ _Italic text, formatted with single underscores_
             clobberPrefix: 'user-message-'
           }
         }}
+        hasNoImagesInUserMessages={false}
       />
     </>
   );
