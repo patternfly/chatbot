@@ -203,6 +203,8 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   remarkGfmProps?: Options;
   /** Props for a tool call message */
   toolCall?: ToolCallProps;
+  /** Whether user messages default to stripping out images in markdown */
+  hasNoImagesInUserMessages?: boolean;
 }
 
 export const MessageBase: FunctionComponent<MessageProps> = ({
@@ -249,6 +251,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   deepThinking,
   remarkGfmProps,
   toolCall,
+  hasNoImagesInUserMessages = true,
   ...props
 }: MessageProps) => {
   const [messageText, setMessageText] = useState(content);
@@ -274,6 +277,11 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   // Keep timestamps consistent between Timestamp component and aria-label
   const date = new Date();
   const dateString = timestamp ?? `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+
+  const disallowedElements = role === 'user' && hasNoImagesInUserMessages ? ['img'] : [];
+  if (reactMarkdownProps && reactMarkdownProps.disallowedElements) {
+    disallowedElements.push(...reactMarkdownProps.disallowedElements);
+  }
 
   const handleMarkdown = () => {
     if (isMarkdownDisabled) {
@@ -415,6 +423,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
           footnoteLabelProperties: { className: [''] },
           ...reactMarkdownProps?.remarkRehypeOptions
         }}
+        disallowedElements={disallowedElements}
       >
         {messageText}
       </Markdown>
