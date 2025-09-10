@@ -39,11 +39,6 @@
 @import './ToolResponse/ToolResponse';
 @import './ToolCall/ToolCall';
 
-.ws-full-page-utils {
-  left: 0 !important;
-  right: auto !important;
-}
-
 // hide from view but not assistive technologies
 // https://css-tricks.com/inclusively-hidden/
 .pf-chatbot-m-hidden {
