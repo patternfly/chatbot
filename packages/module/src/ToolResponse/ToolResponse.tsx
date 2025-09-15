@@ -25,9 +25,9 @@ export interface ToolResponseProps {
   /** Body text rendered inside expandable section */
   body?: React.ReactNode | string;
   /** Content passed into tool response card body */
-  cardBody: React.ReactNode;
+  cardBody?: React.ReactNode;
   /** Content passed into tool response card title */
-  cardTitle: React.ReactNode;
+  cardTitle?: React.ReactNode;
   /** Additional props passed to main card */
   cardProps?: CardProps;
   /** Additional props passed to main card body */
@@ -80,11 +80,13 @@ export const ToolResponse: FunctionComponent<ToolResponseProps> = ({
               </div>
             )}
             {body && <div className="pf-chatbot__tool-response-body">{body}</div>}
-            <Card isCompact className="pf-chatbot__tool-response-card" {...toolResponseCardProps}>
-              <CardTitle {...toolResponseCardTitleProps}>{cardTitle}</CardTitle>
-              <Divider {...toolResponseCardDividerProps} />
-              <CardBody {...toolResponseCardBodyProps}>{cardBody}</CardBody>
-            </Card>
+            {(cardTitle || cardBody) && (
+              <Card isCompact className="pf-chatbot__tool-response-card" {...toolResponseCardProps}>
+                {cardTitle && <CardTitle {...toolResponseCardTitleProps}>{cardTitle}</CardTitle>}
+                {cardTitle && cardBody && <Divider {...toolResponseCardDividerProps} />}
+                {cardBody && <CardBody {...toolResponseCardBodyProps}>{cardBody}</CardBody>}
+              </Card>
+            )}
           </div>
         </ExpandableSection>
       </CardBody>
