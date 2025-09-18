@@ -1,7 +1,7 @@
 ---
 # Sidenav top-level section
 # should be the same for all markdown files
-section: PatternFly-AI
+section: Extensions
 subsection: ChatBot
 # Sidenav secondary level section
 # should be the same for all markdown files
@@ -93,7 +93,7 @@ import FilePreview from '@patternfly/chatbot/dist/dynamic/FilePreview';
 
 ### Container
 
-The PatternFly ChatBot is a separate window that overlays or is embedded within other UI content. This container can be shown and hidden via [the ChatBot toggle.](/patternfly-ai/chatbot/ui#toggle)
+The PatternFly ChatBot is a separate window that overlays or is embedded within other UI content. This container can be shown and hidden via [the ChatBot toggle.](/extensions/chatbot/ui#toggle)
 
 The `<Chatbot>` component is the container that encompasses the ChatBot experience. It adapts to various display modes (overlay/default, docked, fullscreen, and embedded) and supports both light and dark themes.
 
@@ -105,7 +105,7 @@ The "embedded" display mode is meant to be used within a [PatternFly page](/comp
 
 ### Content and message box
 
-The `<ChatbotContent>` component is the container that is placed within the `<Chatbot>`, between the [`<ChatbotHeader>`](/patternfly-ai/chatbot/ui#header) and [`<ChatbotFooter>`.](/patternfly-ai/chatbot/ui#footer)
+The `<ChatbotContent>` component is the container that is placed within the `<Chatbot>`, between the [`<ChatbotHeader>`](/extensions/chatbot/ui#header) and [`<ChatbotFooter>`.](/extensions/chatbot/ui#footer)
 
 `<ChatbotContent>` usually contains a `<ChatbotMessageBox>` for displaying messages.
 
@@ -123,7 +123,7 @@ Your code structure should look like this:
 </Chatbot>
 ```
 
-**Note**: When messages update, it is important to announce new messages to users of assistive technology. To do this, make sure to set the `announcement` prop on `<MessageBox>` whenever you display a new message in `<MessageBox>`. You can view this in action in our [basic ChatBot](/patternfly-ai/chatbot/overview/demo#basic-chatbot) and [embedded ChatBot](/patternfly-ai/chatbot/overview/demo#embedded-chatbot) demos.
+**Note**: When messages update, it is important to announce new messages to users of assistive technology. To do this, make sure to set the `announcement` prop on `<MessageBox>` whenever you display a new message in `<MessageBox>`. You can view this in action in our [basic ChatBot](/extensions/chatbot/overview/demo#basic-chatbot) and [embedded ChatBot](/extensions/chatbot/overview/demo#embedded-chatbot) demos.
 
 ### Welcome message
 
@@ -147,7 +147,7 @@ To provide users with a more specific direction, you can also include optional w
 
 To provide page context, we recommend using a "Skip to chatbot" button. This allows you to skip past other content on the page, directly to the ChatBot content, using a [PatternFly skip to content component](/components/skip-to-content). To display this button, you must tab into the main window.
 
-When using default or docked modes, we recommend putting focus on the toggle if the ChatBot is closed, and the ChatBot when it is open. For fullscreen and embedded, we recommend putting the focus on the first focusable item in the ChatBot, such as a menu toggle. This can be seen in our more fully-featured demos for the [default, embedded, and fullscreen ChatBot](/patternfly-ai/chatbot/overview/demo#basic-chatbot) and the [embedded ChatBot](/patternfly-ai/chatbot/overview/demo#embedded-chatbot).
+When using default or docked modes, we recommend putting focus on the toggle if the ChatBot is closed, and the ChatBot when it is open. For fullscreen and embedded, we recommend putting the focus on the first focusable item in the ChatBot, such as a menu toggle. This can be seen in our more fully-featured demos for the [default, embedded, and fullscreen ChatBot](/extensions/chatbot/overview/demo#basic-chatbot) and the [embedded ChatBot](/extensions/chatbot/overview/demo#embedded-chatbot).
 
 ```js file="./SkipToContent.tsx" isFullscreen
 
@@ -226,7 +226,7 @@ There are a variety of options and customizations you can make to the header, to
 In this example, select the respective checkbox to toggle these features:
 
 - **Menu:** Users can select the menu toggle to open a menu of additional options or actions.
-- **New chat button:** Used to start a new chat session. The header button can be used in addition to or in place of a new chat button within the [conversation history drawer](/patternfly-ai/chatbot/ui/#drawer-with-search-and-new-chat-button).
+- **New chat button:** Used to start a new chat session. The header button can be used in addition to or in place of a new chat button within the [conversation history drawer](/extensions/chatbot/ui/#drawer-with-search-and-new-chat-button).
 - **Left-aligned logo**
 - **Centered logo**
 - **Selector dropdown:** Users can choose from preselected options in a dropdown menu. For example, they can toggle between AI models.
@@ -283,7 +283,7 @@ To disable the send button in the following example, select the "Disable send bu
 
 You can change the behavior of the attach button to open a menu, rather than the default file viewer for your operating system. This menu can display different actions related to attachments.
 
-Attachments can also be added to the ChatBot via [drag and drop.](/patternfly-ai/chatbot/messages#attachment-dropzone)
+Attachments can also be added to the ChatBot via [drag and drop.](/extensions/chatbot/messages#attachment-dropzone)
 
 ```js file="./ChatbotMessageBarAttach.tsx"
 
@@ -342,7 +342,7 @@ The code structure will look like this:
 </Chatbot>
 ```
 
-The conversation history drawer looks different depending on the `displayMode` of the parent `<Chatbot>`. (As shown in the [main ChatBot demo](/patternfly-ai/chatbot/overview/demo#basic-chatbot).):
+The conversation history drawer looks different depending on the `displayMode` of the parent `<Chatbot>`. (As shown in the [main ChatBot demo](/extensions/chatbot/overview/demo#basic-chatbot).):
 
 - `Default` and `docked` display modes display the conversation history on top of the rest of the ChatBot content, with a PatternFly backdrop between the drawer panel and drawer content.
 - `Fullscreen` and `embedded` display modes display the conversation history in line with the drawer content.
@@ -418,7 +418,7 @@ The drawer can also be used to display a list of basic menu items.
 
 Based on the [PatternFly modal](/components/modal), this modal adapts to the ChatBot display mode and is meant to display terms and conditions for using a ChatBot in your project. The image in the header can be toggled on or off depending on whether the `image` and `altText` props are provided.
 
-This example also includes an example of how to use [skip to content](/patternfly-ai/chatbot/ui#skip-to-content). When the terms of use modal is open, focus is placed on the terms of use container. When it is closed, focus is placed on the ChatBot. In a real example with a functioning ChatBot toggle, you would also want to place focus on the toggle when appropriate.
+This example also includes an example of how to use [skip to content](/extensions/chatbot/ui#skip-to-content). When the terms of use modal is open, focus is placed on the terms of use container. When it is closed, focus is placed on the ChatBot. In a real example with a functioning ChatBot toggle, you would also want to place focus on the toggle when appropriate.
 
 ```js file="./TermsOfUse.tsx" isFullscreen
 
