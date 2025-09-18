@@ -116,7 +116,7 @@ const SourcesCardBase: FunctionComponent<SourcesCardBaseProps> = ({
   };
 
   return (
-    <div className="pf-chatbot__source">
+    <div className="pf-chatbot__sources-card-base">
       <Card isCompact={isCompact} className="pf-chatbot__sources-card" {...props}>
         <CardTitle className="pf-chatbot__sources-card-title" {...cardTitleProps}>
           <div className="pf-chatbot__sources-card-title-container">
