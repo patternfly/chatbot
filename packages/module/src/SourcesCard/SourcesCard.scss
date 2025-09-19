@@ -1,10 +1,13 @@
-.pf-chatbot__source {
+.pf-chatbot__source,
+.pf-chatbot__sources-card-base {
   display: flex;
   flex-direction: column;
   gap: var(--pf-t--global--spacer--sm);
   padding-block-start: var(--pf-t--global--spacer--sm);
   max-width: 22.5rem;
+}
 
+.pf-chatbot__sources-card-base {
   a {
     color: var(--pf-t--global--text--color--link--default) !important;
     -webkit-text-decoration: var(--pf-t--global--text-decoration--link--line--default) !important;
