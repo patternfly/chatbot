@@ -78,4 +78,9 @@ describe('ChatbotConversationHistoryDropdown', () => {
       expect(screen.queryByText('Actions dropdown')).toBeInTheDocument();
     });
   });
+
+  it('should be able to set a custom aria-label', () => {
+    render(<ChatbotConversationHistoryDropdown menuItems={menuItems} aria-label="Custom conversation options" />);
+    expect(screen.queryByRole('menuitem', { name: /Custom conversation options/i })).toBeInTheDocument();
+  });
 });

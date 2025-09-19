@@ -15,8 +15,10 @@ export interface ChatbotConversationHistoryDropdownProps extends Omit<DropdownPr
   menuItems: React.ReactNode;
   /** Optional classname applied to conversation settings dropdown */
   menuClassName?: string;
-  /** Tooltip content and aria-label applied to conversation settings dropdown */
+  /** Tooltip content applied to conversation settings dropdown */
   label?: string;
+  /** Aria-label applied to conversation settings dropdown */
+  'aria-label'?: string;
   /** Callback for when user selects item. */
   onSelect?: (event?: React.MouseEvent, value?: string | number) => void;
   /** Id applied to dropdown menu toggle */
@@ -27,7 +29,8 @@ export const ChatbotConversationHistoryDropdown: FunctionComponent<ChatbotConver
   menuItems,
   menuClassName,
   onSelect,
-  label,
+  label = 'Conversation options',
+  'aria-label': ariaLabel,
   id
 }: ChatbotConversationHistoryDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +38,7 @@ export const ChatbotConversationHistoryDropdown: FunctionComponent<ChatbotConver
   const toggle = (toggleRef: Ref<MenuToggleElement>) => (
     <Tooltip
       className="pf-chatbot__tooltip"
-      content={label ?? 'Conversation options'}
+      content={label}
       position="bottom"
       // prevents VO announcements of both aria label and tooltip
       aria="none"
@@ -43,7 +46,7 @@ export const ChatbotConversationHistoryDropdown: FunctionComponent<ChatbotConver
       <MenuToggle
         className="pf-chatbot__history-actions"
         variant="plain"
-        aria-label={label ?? 'Conversation options'}
+        aria-label={ariaLabel ?? label}
         ref={toggleRef}
         isExpanded={isOpen}
         onClick={() => setIsOpen(!isOpen)}
