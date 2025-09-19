@@ -7,7 +7,7 @@ module.exports = {
   collectCoverage: true,
   // most of these are to fix https://github.com/remarkjs/react-markdown/issues/635
   transformIgnorePatterns: [
-    'node_modules/(?!@patternfly|@data-driven-forms|remark-gfm|react-markdown|remark-parse|devlop|hast-util-to-jsx-runtime|comma-separated-tokens|estree-util-is-identifier-name|hast-util-whitespace|property-information|space-separated-tokens|unist-util-position|vfile-message|unist-util-stringify-position|html-url-attributes|mdast-util-from-markdown|mdast-util-to-string|micromark|decode-named-character-reference|remark-rehype|mdast-util-to-hast|trim-lines|unist-util-visit|unist-util-is|unified|bail|is-plain-obj|trough|vfile|mdast-util-gfm|ccount|mdast-util-find-and-replace|escape-string-regexp|markdown-table|mdast-util-to-markdown|zwitch|longest-streak|mdast-util-phrasing)'
+    'node_modules/(?!@patternfly|@data-driven-forms|remark-gfm|react-markdown|remark-parse|devlop|hast-util-to-jsx-runtime|comma-separated-tokens|estree-util-is-identifier-name|hast-util-whitespace|property-information|space-separated-tokens|unist-util-position|vfile-message|unist-util-stringify-position|html-url-attributes|mdast-util-from-markdown|mdast-util-to-string|micromark|decode-named-character-reference|remark-rehype|mdast-util-to-hast|trim-lines|unist-util-visit|unist-util-is|unified|bail|is-plain-obj|trough|vfile|mdast-util-gfm|ccount|mdast-util-find-and-replace|escape-string-regexp|markdown-table|mdast-util-to-markdown|zwitch|longest-streak|mdast-util-phrasing|rehype-highlight)'
     // Uncomment the below line if you face any errors with jest
     // '/node_modules/(?!@redhat-cloud-services)',
   ],

@@ -44,6 +44,9 @@ import ImageMessage from './ImageMessage/ImageMessage';
 import rehypeUnwrapImages from 'rehype-unwrap-images';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeSanitize from 'rehype-sanitize';
+import rehypeHighlight from 'rehype-highlight';
+// see the full list of styles here: https://highlightjs.org/examples
+import 'highlight.js/styles/vs2015.css';
 import { PluggableList } from 'unified';
 import LinkMessage from './LinkMessage/LinkMessage';
 import ErrorMessage from './ErrorMessage/ErrorMessage';
@@ -261,7 +264,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   }, [content]);
 
   const { beforeMainContent, afterMainContent, endContent } = extraContent || {};
-  let rehypePlugins: PluggableList = [rehypeUnwrapImages, rehypeMoveImagesOutOfParagraphs];
+  let rehypePlugins: PluggableList = [rehypeUnwrapImages, rehypeMoveImagesOutOfParagraphs, rehypeHighlight];
   if (openLinkInNewTab) {
     rehypePlugins = rehypePlugins.concat([[rehypeExternalLinks, { target: '_blank' }, rehypeSanitize]]);
   }
