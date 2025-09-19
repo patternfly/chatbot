@@ -71,6 +71,12 @@ li[id*='user-content-fn-']:has(> span > span > .pf-chatbot__message-text + .pf-c
   margin-block-end: var(--pf-t--global--spacer--md);
 }
 
+.pf-chatbot__message-text.footnotes {
+  .data-footnote-backref {
+    width: fit-content;
+  }
+}
+
 .pf-chatbot__message--user {
   .pf-chatbot__message-text {
     background-color: var(--pf-t--global--color--brand--default);
