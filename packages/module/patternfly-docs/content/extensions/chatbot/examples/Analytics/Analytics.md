@@ -1,7 +1,7 @@
 ---
 # Sidenav top-level section
 # should be the same for all markdown files
-section: PatternFly-AI
+section: Extensions
 subsection: ChatBot
 # Sidenav secondary level section
 # should be the same for all markdown files

@@ -1,7 +1,7 @@
 ---
 # Sidenav top-level section
 # should be the same for all markdown files
-section: PatternFly-AI
+section: Extensions
 subsection: ChatBot
 # Sidenav secondary level section
 # should be the same for all markdown files
@@ -66,24 +66,24 @@ import saveAs from 'file-saver';
 
 This demo displays a basic ChatBot, which includes:
 
-1. The [`<ChatbotToggle>`](/patternfly-ai/chatbot/ui#toggle) that controls the [`<Chatbot>` container.](/patternfly-ai/chatbot/ui#container)
-2. A [`<ChatbotHeader>`](/patternfly-ai/chatbot/ui#header) with all built sub-components laid out, including a `<ChatbotHeaderTitle>` that changes its presentation depending on the display mode.
+1. The [`<ChatbotToggle>`](/extensions/chatbot/ui#toggle) that controls the [`<Chatbot>` container.](/extensions/chatbot/ui#container)
+2. A [`<ChatbotHeader>`](/extensions/chatbot/ui#header) with all built sub-components laid out, including a `<ChatbotHeaderTitle>` that changes its presentation depending on the display mode.
 3. The ability to swap display modes via `<ChatbotHeaderOptionsDropdown>`
-4. [`<ChatbotContent>` and `<MessageBox>`](/patternfly-ai/chatbot/ui#content-and-message-box) with:
+4. [`<ChatbotContent>` and `<MessageBox>`](/extensions/chatbot/ui#content-and-message-box) with:
 
 - A `<ChatbotWelcomePrompt>`
-- An initial [user `<Message>`](/patternfly-ai/chatbot/messages#user-messages) and an initial bot message with [message actions.](/patternfly-ai/chatbot/messages#message-actions)
+- An initial [user `<Message>`](/extensions/chatbot/messages#user-messages) and an initial bot message with [message actions.](/extensions/chatbot/messages#message-actions)
 - Logic for enabling auto-scrolling to the most recent message whenever a new message is sent or received using a `scrollToBottomRef`
 
-5. A [`<ChatbotFooter>`](/patternfly-ai/chatbot/ui#footer) with a [`<ChatbotFootNote>`](/patternfly-ai/chatbot/ui#footnote-with-popover) and a `<MessageBar>` that contains the abilities of:
+5. A [`<ChatbotFooter>`](/extensions/chatbot/ui#footer) with a [`<ChatbotFootNote>`](/extensions/chatbot/ui#footnote-with-popover) and a `<MessageBar>` that contains the abilities of:
 
-- [Speech to text.](/patternfly-ai/chatbot/ui#message-bar-with-speech-recognition-and-file-attachment)
+- [Speech to text.](/extensions/chatbot/ui#message-bar-with-speech-recognition-and-file-attachment)
 - Sending a message to the ChatBot.
 - Receiving a response from a backend AI tool with a loading message state.
 
-6. A [`<ChatbotConversationHistoryNav>`](/patternfly-ai/chatbot/ui#navigation) toggled open and closed by the `<ChatbotHeaderMenu`> in the `<ChatbotHeader>`.
+6. A [`<ChatbotConversationHistoryNav>`](/extensions/chatbot/ui#navigation) toggled open and closed by the `<ChatbotHeaderMenu`> in the `<ChatbotHeader>`.
 
-7. A "Skip to chatbot" button that allows you to skip to the chatbot content via the [PatternFly skip to content component](/patternfly-ai/chatbot/ui#skip-to-content). To display this button you must tab into the main window.
+7. A "Skip to chatbot" button that allows you to skip to the chatbot content via the [PatternFly skip to content component](/extensions/chatbot/ui#skip-to-content). To display this button you must tab into the main window.
 
 ```js file="./Chatbot.tsx" isFullscreen
 
@@ -102,17 +102,17 @@ This demo displays a basic compact ChatBot
 This demo displays an embedded ChatBot. Embedded ChatBots are meant to be placed within a page in your product. This demo includes:
 
 1. A [PatternFly page](/components/page) with a sidebar, "Skip to chatbot" button, and masthead. To display the "Skip to chatbot" button you must tab into the main window.
-2. A [`<Chatbot>`](/patternfly-ai/chatbot/ui#container) container.
-3. A [`<ChatbotHeader>`](/patternfly-ai/chatbot/ui#header) with all built sub-components laid out, including a `<ChatbotHeaderTitle>`
-4. [`<ChatbotContent>` and `<MessageBox>`](/patternfly-ai/chatbot/ui#content-and-message-box) with:
+2. A [`<Chatbot>`](/extensions/chatbot/ui#container) container.
+3. A [`<ChatbotHeader>`](/extensions/chatbot/ui#header) with all built sub-components laid out, including a `<ChatbotHeaderTitle>`
+4. [`<ChatbotContent>` and `<MessageBox>`](/extensions/chatbot/ui#content-and-message-box) with:
    - A `<ChatbotWelcomePrompt>`
-   - An initial [user `<Message>`](/patternfly-ai/chatbot/messages#user-messages) and an initial bot message with [message actions.](/patternfly-ai/chatbot/messages/#message-actions)
+   - An initial [user `<Message>`](/extensions/chatbot/messages#user-messages) and an initial bot message with [message actions.](/extensions/chatbot/messages/#message-actions)
    - Logic for enabling auto-scrolling to the most recent message whenever a new message is sent or received using a `scrollToBottomRef`
-5. A [`<ChatbotFooter>`](/patternfly-ai/chatbot/ui#footer) with a [`<ChatbotFootNote>`](/patternfly-ai/chatbot/ui#footnote-with-popover) and a `<MessageBar>` that contains the abilities of:
-   - [Speech to text.](/patternfly-ai/chatbot/ui#message-bar-with-speech-recognition-and-file-attachment)
+5. A [`<ChatbotFooter>`](/extensions/chatbot/ui#footer) with a [`<ChatbotFootNote>`](/extensions/chatbot/ui#footnote-with-popover) and a `<MessageBar>` that contains the abilities of:
+   - [Speech to text.](/extensions/chatbot/ui#message-bar-with-speech-recognition-and-file-attachment)
    - Sending a message to the ChatBot.
    - Receiving a response from a backend AI tool with a loading message state.
-6. A [`<ChatbotConversationHistoryNav>`](/patternfly-ai/chatbot/ui#navigation) that can be toggled by the `<ChatbotHeaderMenu`> in the `<ChatbotHeader>`.
+6. A [`<ChatbotConversationHistoryNav>`](/extensions/chatbot/ui#navigation) that can be toggled by the `<ChatbotHeaderMenu`> in the `<ChatbotHeader>`.
 
 ```js file="./EmbeddedChatbot.tsx" isFullscreen
 
@@ -135,7 +135,7 @@ This demo displays a ChatBot in a static, inline drawer. This demo includes:
 
 This demo showcases how the ChatBot can be rendered in different display modes to suit various application layouts. It demonstrates how to dynamically change the page structure in response to the user's selection. This demo includes:
 
-1. The ability to switch between overlay, drawer, and fullscreen modes using the [`<ChatbotHeaderOptionsDropdown>`](/patternfly-ai/chatbot/ui#header-options) in the header.
+1. The ability to switch between overlay, drawer, and fullscreen modes using the [`<ChatbotHeaderOptionsDropdown>`](/extensions/chatbot/ui#header-options) in the header.
 2. A conditional page layout that renders the ChatBot for each display mode option:
     - **Overlay:** As a floating window on top of the page content.
     - **Drawer:** Inside an inline PatternFly `<Drawer>` as a side panel.
