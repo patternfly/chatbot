@@ -37,11 +37,7 @@
 @import './SourceDetailsMenuItem/SourceDetailsMenuItem';
 @import './TermsOfUse/TermsOfUse';
 @import './ToolResponse/ToolResponse';
-
-.ws-full-page-utils {
-  left: 0 !important;
-  right: auto !important;
-}
+@import './ToolCall/ToolCall';
 
 // hide from view but not assistive technologies
 // https://css-tricks.com/inclusively-hidden/

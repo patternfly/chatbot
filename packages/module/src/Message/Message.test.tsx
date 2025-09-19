@@ -919,12 +919,16 @@ describe('Message', () => {
     expect(screen.getByTestId('after-main-content')).toContainHTML('<strong>Bold after content</strong>');
     expect(screen.getByTestId('end-main-content')).toContainHTML('<strong>Bold end content</strong>');
   });
-  it('should handle image correctly', () => {
+  it('should handle image correctly for user', () => {
     render(<Message avatar="./img" role="user" name="User" content={IMAGE} />);
+    expect(screen.queryByRole('img', { name: /Multi-colored wavy lines on a black background/i })).toBeFalsy();
+  });
+  it('should handle image correctly for bot', () => {
+    render(<Message avatar="./img" role="bot" name="Bot" content={IMAGE} />);
     expect(screen.getByRole('img', { name: /Multi-colored wavy lines on a black background/i })).toBeTruthy();
   });
   it('inline image parent should have class pf-chatbot__message-and-actions', () => {
-    render(<Message avatar="./img" role="user" name="User" content={INLINE_IMAGE} />);
+    render(<Message avatar="./img" role="bot" name="Bot" content={INLINE_IMAGE} />);
     expect(screen.getByRole('img', { name: /Multi-colored wavy lines on a black background/i })).toBeTruthy();
     expect(
       screen.getByRole('img', { name: /Multi-colored wavy lines on a black background/i }).parentElement
@@ -1045,6 +1049,25 @@ describe('Message', () => {
     expect(screen.getByText('Here is some YAML code:')).toBeTruthy();
     // code block isn't rendering
     expect(screen.queryByRole('button', { name: 'Copy code' })).toBeFalsy();
+  });
+  it('should disable images and additional tags for user messages', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="user"
+        name="User"
+        content={`${IMAGE} ${CODE_MESSAGE}`}
+        reactMarkdownProps={{ disallowedElements: ['code'] }}
+      />
+    );
+    expect(screen.getByText('Here is some YAML code:')).toBeTruthy();
+    // code block isn't rendering
+    expect(screen.queryByRole('button', { name: 'Copy code' })).toBeFalsy();
+    expect(screen.queryByRole('img', { name: /Multi-colored wavy lines on a black background/i })).toBeFalsy();
+  });
+  it('can override image tag removal default for user messages', () => {
+    render(<Message avatar="./img" role="user" name="User" content={IMAGE} hasNoImagesInUserMessages={false} />);
+    expect(screen.getByRole('img', { name: /Multi-colored wavy lines on a black background/i })).toBeTruthy();
   });
   it('should render deep thinking section correctly', () => {
     render(<Message avatar="./img" role="user" name="User" content="" deepThinking={DEEP_THINKING} />);

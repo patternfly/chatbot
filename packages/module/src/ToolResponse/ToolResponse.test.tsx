@@ -75,4 +75,34 @@ describe('ToolResponse', () => {
     const subheadingContainer = container.querySelector('.pf-chatbot__tool-response-subheading');
     expect(subheadingContainer).toBeFalsy();
   });
+
+  it('should not render card when cardTitle and cardBody are not provided', () => {
+    const { container } = render(<ToolResponse {...defaultProps} cardTitle={undefined} cardBody={undefined} />);
+    expect(container.querySelector('.pf-chatbot__tool-response-card')).toBeFalsy();
+  });
+
+  it('should render card when only cardTitle is provided', () => {
+    const { container } = render(<ToolResponse {...defaultProps} cardBody={undefined} />);
+    expect(container.querySelector('.pf-chatbot__tool-response-card')).toBeTruthy();
+  });
+
+  it('should render card when only cardBody is provided', () => {
+    const { container } = render(<ToolResponse {...defaultProps} cardTitle={undefined} />);
+    expect(container.querySelector('.pf-chatbot__tool-response-card')).toBeTruthy();
+  });
+
+  it('should render divider when cardBody and cardTitle are provided', () => {
+    const { container } = render(<ToolResponse {...defaultProps} />);
+    expect(container.querySelector('.pf-v6-c-divider')).toBeTruthy();
+  });
+
+  it('should not render divider when only cardBody is provided', () => {
+    const { container } = render(<ToolResponse {...defaultProps} cardTitle={undefined} />);
+    expect(container.querySelector('.pf-v6-c-divider')).toBeFalsy();
+  });
+
+  it('should not render divider when only cardTitle is provided', () => {
+    const { container } = render(<ToolResponse {...defaultProps} cardBody={undefined} />);
+    expect(container.querySelector('.pf-v6-c-divider')).toBeFalsy();
+  });
 });

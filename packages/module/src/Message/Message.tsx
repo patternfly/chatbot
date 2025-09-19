@@ -52,6 +52,7 @@ import { rehypeMoveImagesOutOfParagraphs } from './Plugins/rehypeMoveImagesOutOf
 import ToolResponse, { ToolResponseProps } from '../ToolResponse';
 import DeepThinking, { DeepThinkingProps } from '../DeepThinking';
 import SuperscriptMessage from './SuperscriptMessage/SuperscriptMessage';
+import ToolCall, { ToolCallProps } from '../ToolCall';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -200,6 +201,10 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   deepThinking?: DeepThinkingProps;
   /** Allows passing additional props down to remark-gfm. See https://github.com/remarkjs/remark-gfm?tab=readme-ov-file#options for options */
   remarkGfmProps?: Options;
+  /** Props for a tool call message */
+  toolCall?: ToolCallProps;
+  /** Whether user messages default to stripping out images in markdown */
+  hasNoImagesInUserMessages?: boolean;
 }
 
 export const MessageBase: FunctionComponent<MessageProps> = ({
@@ -245,6 +250,8 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   toolResponse,
   deepThinking,
   remarkGfmProps,
+  toolCall,
+  hasNoImagesInUserMessages = true,
   ...props
 }: MessageProps) => {
   const [messageText, setMessageText] = useState(content);
@@ -270,6 +277,11 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   // Keep timestamps consistent between Timestamp component and aria-label
   const date = new Date();
   const dateString = timestamp ?? `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+
+  const disallowedElements = role === 'user' && hasNoImagesInUserMessages ? ['img'] : [];
+  if (reactMarkdownProps && reactMarkdownProps.disallowedElements) {
+    disallowedElements.push(...reactMarkdownProps.disallowedElements);
+  }
 
   const handleMarkdown = () => {
     if (isMarkdownDisabled) {
@@ -411,6 +423,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
           footnoteLabelProperties: { className: [''] },
           ...reactMarkdownProps?.remarkRehypeOptions
         }}
+        disallowedElements={disallowedElements}
       >
         {messageText}
       </Markdown>
@@ -485,6 +498,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
             {afterMainContent && <>{afterMainContent}</>}
             {toolResponse && <ToolResponse {...toolResponse} />}
             {deepThinking && <DeepThinking {...deepThinking} />}
+            {toolCall && <ToolCall {...toolCall} />}
             {!isLoading && sources && <SourcesCard {...sources} isCompact={isCompact} />}
             {quickStarts && quickStarts.quickStart && (
               <QuickStartTile

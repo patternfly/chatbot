@@ -90,8 +90,14 @@ export * from './SourceDetailsMenuItem';
 export { default as SourcesCard } from './SourcesCard';
 export * from './SourcesCard';
 
+export { default as SourcesCardBase } from './SourcesCardBase';
+export * from './SourcesCardBase';
+
 export { default as TermsOfUse } from './TermsOfUse';
 export * from './TermsOfUse';
+
+export { default as ToolCall } from './ToolCall';
+export * from './ToolCall';
 
 export { default as ToolResponse } from './ToolResponse';
 export * from './ToolResponse';
