@@ -387,4 +387,8 @@ describe('Message bar', () => {
     ref.current?.focus();
     expect(document.activeElement).toBe(screen.getByRole('textbox'));
   });
+  it('should handle isPrimary', () => {
+    const { container } = render(<MessageBar isPrimary onSendMessage={jest.fn} />);
+    expect(container.querySelector('.pf-m-primary')).toBeTruthy();
+  });
 });
