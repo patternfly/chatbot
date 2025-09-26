@@ -15,10 +15,19 @@ describe('ChatbotFooter', () => {
 
   it('should handle isCompact', () => {
     render(
-      <ChatbotFooter className="custom-class" isCompact data-testid="footer">
+      <ChatbotFooter isCompact data-testid="footer">
         Chatbot Content
       </ChatbotFooter>
     );
     expect(screen.getByTestId('footer')).toHaveClass('pf-m-compact');
+  });
+
+  it('should handle isPrimary', () => {
+    render(
+      <ChatbotFooter isPrimary data-testid="footer">
+        Chatbot Content
+      </ChatbotFooter>
+    );
+    expect(screen.getByTestId('footer')).toHaveClass('pf-m-primary');
   });
 });
