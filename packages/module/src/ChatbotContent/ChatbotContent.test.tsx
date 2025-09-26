@@ -11,4 +11,9 @@ describe('ChatbotContent', () => {
     const { container } = render(<ChatbotContent className="custom-class">Chatbot Content</ChatbotContent>);
     expect(container.querySelector('.custom-class')).toBeTruthy();
   });
+
+  it('should render ChatbotContent with primary class', () => {
+    const { container } = render(<ChatbotContent isPrimary>Chatbot Content</ChatbotContent>);
+    expect(container.querySelector('.pf-m-primary')).toBeTruthy();
+  });
 });
