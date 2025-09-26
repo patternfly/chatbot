@@ -12,6 +12,10 @@
   @media screen and (max-height: 518px) {
     overflow: unset;
   }
+
+  &.pf-m-primary {
+    background-color: var(--pf-t--global--background--color--primary--default);
+  }
 }
 
 // ============================================================================
