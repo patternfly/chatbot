@@ -1093,4 +1093,41 @@ describe('Message', () => {
     expect(screen.getByText('Thought for 3 seconds')).toBeTruthy();
     expect(screen.getByText("Here's why I said this.")).toBeTruthy();
   });
+  it('should handle isPrimary correctly for inline code when it is true', () => {
+    const { container } = render(<Message avatar="./img" role="user" name="User" content={INLINE_CODE} isPrimary />);
+    expect(container.querySelector('.pf-m-primary')).toBeTruthy();
+  });
+  it('should handle isPrimary correctly for inline code when it is false', () => {
+    const { container } = render(<Message avatar="./img" role="user" name="User" content={INLINE_CODE} />);
+    expect(container.querySelector('.pf-m-primary')).toBeFalsy();
+  });
+  it('should handle isPrimary correctly for table when it is true', () => {
+    const { container } = render(<Message avatar="./img" role="user" name="User" content={TABLE} isPrimary />);
+    expect(container.querySelector('.pf-m-primary')).toBeTruthy();
+  });
+  it('should handle isPrimary correctly for table when it is false', () => {
+    const { container } = render(<Message avatar="./img" role="user" name="User" content={TABLE} />);
+    expect(container.querySelector('.pf-m-primary')).toBeFalsy();
+  });
+  it('should handle isPrimary correctly for loading when it is true', () => {
+    const { container } = render(<Message avatar="./img" role="user" name="User" content="" isPrimary isLoading />);
+    expect(container.querySelector('.pf-m-primary')).toBeTruthy();
+  });
+  it('should handle isPrimary correctly for loading when it is false', () => {
+    const { container } = render(<Message avatar="./img" role="user" name="User" content="" isLoading />);
+
+    expect(container.querySelector('.pf-m-primary')).toBeFalsy();
+  });
+  it('should handle isPrimary correctly for attachments when it is true', () => {
+    const { container } = render(
+      <Message avatar="./img" role="user" name="User" content="" isPrimary attachments={[{ name: 'testAttachment' }]} />
+    );
+    expect(container.querySelector('.pf-m-outline')).toBeTruthy();
+  });
+  it('should handle isPrimary correctly for attachments when it is false', () => {
+    const { container } = render(
+      <Message avatar="./img" role="user" name="User" content="" attachments={[{ name: 'testAttachment' }]} />
+    );
+    expect(container.querySelector('.pf-m-outline')).toBeFalsy();
+  });
 });

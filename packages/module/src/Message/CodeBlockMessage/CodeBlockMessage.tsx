@@ -39,6 +39,8 @@ export interface CodeBlockMessageProps {
   collapsedText?: string;
   /** Custom actions added to header of code block, after any default actions such as the "copy" action.  */
   customActions?: React.ReactNode;
+  /** Sets background colors to be appropriate on primary chatbot background */
+  isPrimary?: boolean;
 }
 
 const DEFAULT_EXPANDED_TEXT = 'Show less';
@@ -54,6 +56,7 @@ const CodeBlockMessage = ({
   expandedText = DEFAULT_EXPANDED_TEXT,
   collapsedText = DEFAULT_COLLAPSED_TEXT,
   customActions,
+  isPrimary,
   ...props
 }: CodeBlockMessageProps) => {
   const [copied, setCopied] = useState(false);
@@ -108,7 +111,7 @@ const CodeBlockMessage = ({
 
   if (!String(children).includes('\n')) {
     return (
-      <code {...props} className="pf-chatbot__message-inline-code">
+      <code {...props} className={`pf-chatbot__message-inline-code ${isPrimary ? 'pf-m-primary' : ''}`}>
         {children}
       </code>
     );

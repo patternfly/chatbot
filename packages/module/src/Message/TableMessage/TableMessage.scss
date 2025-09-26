@@ -8,6 +8,10 @@
     border-block-start: 0;
   }
 
+  &.pf-m-primary {
+    --pf-v6-c-table--BackgroundColor: var(--pf-t--global--background--color--secondary--default) !important;
+  }
+
   tbody {
     border-radius: var(--pf-t--global--border--radius--small);
   }

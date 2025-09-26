@@ -189,6 +189,8 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   toolCall?: ToolCallProps;
   /** Whether user messages default to stripping out images in markdown */
   hasNoImagesInUserMessages?: boolean;
+  /** Sets background colors to be appropriate on primary chatbot background */
+  isPrimary?: boolean;
 }
 
 export const MessageBase: FunctionComponent<MessageProps> = ({
@@ -236,6 +238,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   remarkGfmProps,
   toolCall,
   hasNoImagesInUserMessages = true,
+  isPrimary,
   ...props
 }: MessageProps) => {
   const [messageText, setMessageText] = useState(content);
@@ -286,13 +289,13 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
           p: (props) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { node, ...rest } = props;
-            return <TextMessage component={ContentVariants.p} {...rest} />;
+            return <TextMessage component={ContentVariants.p} {...rest} isPrimary={isPrimary} />;
           },
           code: ({ children, ...props }) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { node, ...codeProps } = props;
             return (
-              <CodeBlockMessage {...codeProps} {...codeBlockProps}>
+              <CodeBlockMessage {...codeProps} {...codeBlockProps} isPrimary={isPrimary}>
                 {children}
               </CodeBlockMessage>
             );
@@ -348,7 +351,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
             return <ListItemMessage {...rest} />;
           },
           // table requires node attribute for calculating headers for mobile breakpoint
-          table: (props) => <TableMessage {...props} {...tableProps} />,
+          table: (props) => <TableMessage {...props} {...tableProps} isPrimary={isPrimary} />,
           tbody: (props) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { node, ...rest } = props;
@@ -416,7 +419,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
 
   const renderMessage = () => {
     if (isLoading) {
-      return <MessageLoading loadingWord={loadingWord} />;
+      return <MessageLoading loadingWord={loadingWord} isPrimary={isPrimary} />;
     }
     if (isEditable) {
       return (
@@ -522,6 +525,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
                     closeButtonAriaLabel={attachment.closeButtonAriaLabel}
                     languageTestId={attachment.languageTestId}
                     spinnerTestId={attachment.spinnerTestId}
+                    variant={isPrimary ? 'outline' : undefined}
                   />
                 </div>
               ))}
