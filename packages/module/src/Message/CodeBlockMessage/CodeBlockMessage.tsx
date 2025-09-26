@@ -37,6 +37,8 @@ export interface CodeBlockMessageProps {
   expandedText?: string;
   /** Link text applied to expandable toggle when collapsed */
   collapsedText?: string;
+  /** Sets background colors to be appropriate on primary chatbot background */
+  isPrimary?: boolean;
 }
 
 const DEFAULT_EXPANDED_TEXT = 'Show less';
@@ -51,6 +53,7 @@ const CodeBlockMessage = ({
   expandableSectionToggleProps,
   expandedText = DEFAULT_EXPANDED_TEXT,
   collapsedText = DEFAULT_COLLAPSED_TEXT,
+  isPrimary,
   ...props
 }: CodeBlockMessageProps) => {
   const [copied, setCopied] = useState(false);
@@ -105,7 +108,7 @@ const CodeBlockMessage = ({
 
   if (!String(children).includes('\n')) {
     return (
-      <code {...props} className="pf-chatbot__message-inline-code">
+      <code {...props} className={`pf-chatbot__message-inline-code ${isPrimary ? 'pf-m-primary' : ''}`}>
         {children}
       </code>
     );
