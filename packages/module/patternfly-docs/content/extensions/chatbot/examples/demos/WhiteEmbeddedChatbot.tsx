@@ -97,6 +97,14 @@ const MessageLoading = () => (
 export default MessageLoading;
 
 ~~~
+
+Here is a table:
+
+ | Version | GA date | User role 
+ |-|-|-|
+ | 2.5 | September 30, 2024 | Administrator |
+ | 2.5 | June 27, 2023 | Editor |
+ | 3.0 | April 1, 2025 | Administrator
 `;
 
 // It's important to set a date and timestamp prop since the Message components re-render.
@@ -111,7 +119,8 @@ const initialMessages: MessageProps[] = [
     name: 'User',
     avatar: userAvatar,
     timestamp: date.toLocaleString(),
-    avatarProps: { isBordered: true }
+    avatarProps: { isBordered: true },
+    isPrimary: true
   },
   {
     id: '2',
@@ -131,7 +140,9 @@ const initialMessages: MessageProps[] = [
       download: { onClick: () => console.log('Download') },
       // eslint-disable-next-line no-console
       listen: { onClick: () => console.log('Listen') }
-    }
+    },
+    isPrimary: true,
+    attachments: [{ name: 'auth-operator.yml', id: '1' }]
   }
 ];
 
@@ -220,7 +231,8 @@ export const EmbeddedChatbotDemo: FunctionComponent = () => {
       name: 'User',
       avatar: userAvatar,
       timestamp: date.toLocaleString(),
-      avatarProps: { isBordered: true }
+      avatarProps: { isBordered: true },
+      isPrimary: true
     });
     newMessages.push({
       id: generateId(),
@@ -229,7 +241,8 @@ export const EmbeddedChatbotDemo: FunctionComponent = () => {
       name: 'Bot',
       avatar: patternflyAvatar,
       isLoading: true,
-      timestamp: date.toLocaleString()
+      timestamp: date.toLocaleString(),
+      isPrimary: true
     });
     setMessages(newMessages);
     // make announcement to assistive devices that new messages have been added
@@ -261,7 +274,8 @@ export const EmbeddedChatbotDemo: FunctionComponent = () => {
           // eslint-disable-next-line no-console
           listen: { onClick: () => console.log('Listen') }
         },
-        timestamp: date.toLocaleString()
+        timestamp: date.toLocaleString(),
+        isPrimary: true
       });
       setMessages(loadedMessages);
       // make announcement to assistive devices that new message has loaded

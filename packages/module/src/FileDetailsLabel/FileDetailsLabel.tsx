@@ -1,10 +1,10 @@
 import { PropsWithChildren } from 'react';
-import { Button, Label } from '@patternfly/react-core';
+import { Button, Label, LabelProps } from '@patternfly/react-core';
 import FileDetails from '../FileDetails';
 import { Spinner } from '@patternfly/react-core';
 import { TimesIcon } from '@patternfly/react-icons';
 
-export interface FileDetailsLabelProps {
+export interface FileDetailsLabelProps extends Omit<LabelProps, 'onClose' | 'onClick'> {
   /** Name of file, including extension */
   fileName: string;
   /** Unique id of file */

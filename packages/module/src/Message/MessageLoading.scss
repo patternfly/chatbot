@@ -50,4 +50,8 @@
       background-color: rgba(41, 41, 41, 0.25);
     }
   }
+
+  &.pf-m-primary {
+    background-color: var(--pf-t--global--background--color--secondary--default);
+  }
 }

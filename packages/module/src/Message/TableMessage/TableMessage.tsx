@@ -19,7 +19,11 @@ export interface TableNode {
   type: string;
 }
 
-const TableMessage = ({ children, ...props }: Omit<TableProps, 'ref'> & ExtraProps) => {
+export interface TableMessageProps {
+  isPrimary?: boolean;
+}
+
+const TableMessage = ({ children, isPrimary, ...props }: Omit<TableProps, 'ref'> & ExtraProps & TableMessageProps) => {
   const { className, ...rest } = props;
 
   // This allows us to parse the nested data we get back from the 3rd party Markdown parser
@@ -72,7 +76,7 @@ const TableMessage = ({ children, ...props }: Omit<TableProps, 'ref'> & ExtraPro
     <Table
       aria-label={props['aria-label']}
       gridBreakPoint="grid"
-      className={`pf-chatbot__message-table ${className ? className : ''}`}
+      className={`pf-chatbot__message-table ${isPrimary ? 'pf-m-primary' : ''} ${className ? className : ''}`}
       {...rest}
     >
       {modifyChildren(children)}
