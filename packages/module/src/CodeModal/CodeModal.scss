@@ -7,6 +7,7 @@
     --pf-v6-c-code-editor--m-read-only__main--BackgroundColor: #1f1f1f;
   }
   .pf-v6-c-code-editor__header {
+    --pf-v6-c-code-editor__header--BorderWidth: 0;
     background: #1f1f1f !important;
     /** this is for the attachment editor header */
     border-start-start-radius: var(--pf-t--global--border--radius--small);
@@ -42,6 +43,7 @@
     --pf-v6-c-code-editor__tab--BorderStartEndRadius: 0;
     border-start-start-radius: var(--pf-t--global--border--radius--small);
     --pf-t--global--font--weight--body--default: var(--pf-t--global--font--weight--body--bold);
+    margin-inline-start: unset;
   }
   .pf-v6-c-code-editor__tab-icon {
     display: none;
