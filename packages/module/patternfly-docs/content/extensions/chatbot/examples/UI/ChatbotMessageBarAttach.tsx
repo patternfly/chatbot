@@ -66,7 +66,7 @@ export const ChatbotMessageBarDefaultAttachExample: FunctionComponent = () => {
   };
 
   const initialMenuItems = [
-    <DropdownList key="list-1">
+    <DropdownList key="message-bar-attach-menu-items">
       <DropdownItem className="pf-chatbot-source-details-dropdown-item" value="auth-operator Pod" id="0">
         <SourceDetailsMenuItem
           icon={
@@ -93,7 +93,7 @@ export const ChatbotMessageBarDefaultAttachExample: FunctionComponent = () => {
         />
       </DropdownItem>
     </DropdownList>,
-    <DropdownGroup key="group2">
+    <DropdownGroup key="message-bar-attach-dropdown-group">
       <DropdownList>
         <DropdownItem value="Alerts" id="1" icon={<BellIcon />}>
           Alerts

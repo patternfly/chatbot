@@ -5,8 +5,8 @@ import ChatbotConversationHistoryNav, {
 } from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
 import { Checkbox, DropdownItem, DropdownList } from '@patternfly/react-core';
 
-const menuItems = [
-  <DropdownList key="list-1">
+const generateMenuItems = (id: string) => [
+  <DropdownList key={`header-drawer-with-selections-example-conversation-${id}-dropdown`}>
     <DropdownItem value="Download" id="Download">
       Download
     </DropdownItem>
@@ -29,29 +29,29 @@ export const ChatbotHeaderDrawerWithSelection: FunctionComponent = () => {
   const displayMode = ChatbotDisplayMode.embedded;
 
   const conversations: { [key: string]: Conversation[] } = {
-    Today: [{ id: '1', text: 'Red Hat products and services', menuItems }],
+    Today: [{ id: '1', text: 'Red Hat products and services', menuItems: generateMenuItems('1') }],
     'This month': [
       {
         id: '2',
         text: 'Enterprise Linux installation and setup',
-        menuItems
+        menuItems: generateMenuItems('2')
       },
-      { id: '3', text: 'Troubleshoot system crash', menuItems }
+      { id: '3', text: 'Troubleshoot system crash', menuItems: generateMenuItems('3') }
     ],
     March: [
-      { id: '4', text: 'Ansible security and updates', menuItems },
-      { id: '5', text: 'Red Hat certification', menuItems },
-      { id: '6', text: 'Lightspeed user documentation', menuItems }
+      { id: '4', text: 'Ansible security and updates', menuItems: generateMenuItems('4') },
+      { id: '5', text: 'Red Hat certification', menuItems: generateMenuItems('5') },
+      { id: '6', text: 'Lightspeed user documentation', menuItems: generateMenuItems('6') }
     ],
     February: [
-      { id: '7', text: 'Crashing pod assistance', menuItems },
-      { id: '8', text: 'OpenShift AI pipelines', menuItems },
-      { id: '9', text: 'Updating subscription plan', menuItems },
-      { id: '10', text: 'Red Hat licensing options', menuItems }
+      { id: '7', text: 'Crashing pod assistance', menuItems: generateMenuItems('7') },
+      { id: '8', text: 'OpenShift AI pipelines', menuItems: generateMenuItems('8') },
+      { id: '9', text: 'Updating subscription plan', menuItems: generateMenuItems('9') },
+      { id: '10', text: 'Red Hat licensing options', menuItems: generateMenuItems('10') }
     ],
     January: [
-      { id: '11', text: 'RHEL system performance', menuItems },
-      { id: '12', text: 'Manage user accounts', menuItems }
+      { id: '11', text: 'RHEL system performance', menuItems: generateMenuItems('11') },
+      { id: '12', text: 'Manage user accounts', menuItems: generateMenuItems('12') }
     ]
   };
 
