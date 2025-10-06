@@ -118,27 +118,6 @@ This demo displays an embedded ChatBot. Embedded ChatBots are meant to be placed
 
 ```
 
-### Embedded ChatBot with Primary Background
-
-This demo displays an embedded ChatBot with a primary background color. Embedded ChatBots are meant to be placed within a page in your product. This demo includes:
-
-1. A [PatternFly page](/components/page) with a sidebar, "Skip to chatbot" button, and masthead. To display the "Skip to chatbot" button you must tab into the main window.
-2. A [`<Chatbot>`](/patternfly-ai/chatbot/ui#container) container.
-3. A [`<ChatbotHeader>`](/patternfly-ai/chatbot/ui#header) with all built sub-components laid out, including a `<ChatbotHeaderTitle>`
-4. [`<ChatbotContent>` and `<MessageBox>`](/patternfly-ai/chatbot/ui#content-and-message-box) with:
-   - A `<ChatbotWelcomePrompt>`
-   - An initial [user `<Message>`](/patternfly-ai/chatbot/messages#user-messages) and an initial bot message with [message actions.](/patternfly-ai/chatbot/messages/#message-actions)
-   - Logic for enabling auto-scrolling to the most recent message whenever a new message is sent or received using a `scrollToBottomRef`
-5. A [`<ChatbotFooter>`](/patternfly-ai/chatbot/ui#footer) with a [`<ChatbotFootNote>`](/patternfly-ai/chatbot/ui#footnote-with-popover) and a `<MessageBar>` that contains the abilities of:
-   - [Speech to text.](/patternfly-ai/chatbot/ui#message-bar-with-speech-recognition-and-file-attachment)
-   - Sending a message to the ChatBot.
-   - Receiving a response from a backend AI tool with a loading message state.
-6. A [`<ChatbotConversationHistoryNav>`](/patternfly-ai/chatbot/ui#navigation) that can be toggled by the `<ChatbotHeaderMenu`> in the `<ChatbotHeader>`.
-
-```js file="./WhiteEmbeddedChatbot.tsx" isFullscreen
-
-```
-
 ### Inline drawer ChatBot
 
 This demo displays a ChatBot in a static, inline drawer. This demo includes:
@@ -149,6 +128,14 @@ This demo displays a ChatBot in a static, inline drawer. This demo includes:
 **Note:** The inline drawer ChatBot is built to fit and perform within a drawer, but the implementation of the drawer is up to you. This drawer can look different for each product, but will often be placed to the side of the page, inline with the page content.
 
 ```js file="./ChatbotInDrawer.tsx" isFullscreen
+
+```
+
+### Primary color background
+
+This demo displays an embedded ChatBot with a [primary background color](/design-foundations/colors#background-colors). This example includes the same features as the [Embedded ChatBot demo](/patternfly-ai/chatbot/overview/demo/#embedded-chatbot)&mdash;the only differences are that the background color is adjusted via the `isPrimary` prop and some of the sample Messages have changed. You can use the same logic to adjust the background color in any ChatBot layout.
+
+```js file="./WhiteEmbeddedChatbot.tsx" isFullscreen
 
 ```
 
