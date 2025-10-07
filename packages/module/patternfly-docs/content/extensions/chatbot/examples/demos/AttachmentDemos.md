@@ -1,7 +1,7 @@
 ---
 # Sidenav top-level section
 # should be the same for all markdown files
-section: PatternFly-AI
+section: Extensions
 subsection: ChatBot
 # Sidenav secondary level section
 # should be the same for all markdown files
@@ -68,7 +68,7 @@ It is also important to announce when new content appears onscreen for accessibi
 
 This demo shows auto-scrolling functionality, which automatically scrolls to the bottom of the active chat.
 
-To enable auto-scroll behavior pass the `enableSmartScroll` prop to the [`<MessageBox>`](/patternfly-ai/chatbot/ui#message-box) component.
+To enable auto-scroll behavior pass the `enableSmartScroll` prop to the [`<MessageBox>`](/extensions/chatbot/ui#message-box) component.
 
 When enabled:
 
@@ -88,11 +88,11 @@ When using `ref`, the `<MessageBox>` component exposes the following methods:
 
 This demo includes broader ChatBot features, including:
 
-1. A [`<ChatbotToggle>`](/patternfly-ai/chatbot/ui#toggle) that controls the [`<Chatbot>`](/patternfly-ai/chatbot/ui#container) container.
-2. A `<ChatbotContent>` and [`<MessageBox>`](/patternfly-ai/chatbot/ui#content-and-message-box) with:
+1. A [`<ChatbotToggle>`](/extensions/chatbot/ui#toggle) that controls the [`<Chatbot>`](/extensions/chatbot/ui#container) container.
+2. A `<ChatbotContent>` and [`<MessageBox>`](/extensions/chatbot/ui#content-and-message-box) with:
    - A `<ChatbotWelcomePrompt>`
    - An initial user message and initial bot message
-3. A [`<ChatbotFooter>`](/patternfly-ai/chatbot/ui#footer) with a [`<ChatbotFootnote>`](/patternfly-ai/chatbot/ui#footnote-with-popover) and a `<MessageBar>`
+3. A [`<ChatbotFooter>`](/extensions/chatbot/ui#footer) with a [`<ChatbotFootnote>`](/extensions/chatbot/ui#footnote-with-popover) and a `<MessageBar>`
 
 ```js file="./ChatbotScrolling.tsx" isFullscreen
 
@@ -102,24 +102,24 @@ This demo includes broader ChatBot features, including:
 
 This demo displays unique attachment features, including:
 
-1. [`<ChatbotContent>` and `<MessageBox>`](/patternfly-ai/chatbot/ui#content-and-message-box) components that contain:
-   - An initial [user `<Message>`](/patternfly-ai/chatbot/messages#user-messages) with an attachment.
-   - The ability to preview or edit the attachment using the [`<PreviewAttachment>` and `<AttachmentEdit>` components.](/patternfly-ai/chatbot/messages##file-attachments)
+1. [`<ChatbotContent>` and `<MessageBox>`](/extensions/chatbot/ui#content-and-message-box) components that contain:
+   - An initial [user `<Message>`](/extensions/chatbot/messages#user-messages) with an attachment.
+   - The ability to preview or edit the attachment using the [`<PreviewAttachment>` and `<AttachmentEdit>` components.](/extensions/chatbot/messages##file-attachments)
    - A [PatternFly `<Alert>`](/components/alert), customized to be sticky within the ChatBot window, which provides success or error messages for attachments.
 2. `<ChatbotContent>` and `<ChatbotFooter>`, wrapped in a `<FileDropZone>` component to support drag and drop attachments. The footer also:
-   - Displays attached files, using a [`<FileDetailsLabel>`](/patternfly-ai/chatbot/messages#attachment-label) component.
+   - Displays attached files, using a [`<FileDetailsLabel>`](/extensions/chatbot/messages#attachment-label) component.
    - Demonstrates custom handling of file uploads, using the `handleAttach` in `<MessageBar>` and `handleFileDrop` in `<FileDropZone>`.
 
 This demo includes broader ChatBot features, including:
 
-1. A [`<ChatbotToggle>`](/patternfly-ai/chatbot/ui#toggle) that controls the [`<Chatbot>`](/patternfly-ai/chatbot/ui#container) container.
-2. A [`<ChatbotHeader>`](/patternfly-ai/chatbot/ui#header) that updates based on the display mode, with sub-components (including a `<ChatbotHeaderTitle>`).
+1. A [`<ChatbotToggle>`](/extensions/chatbot/ui#toggle) that controls the [`<Chatbot>`](/extensions/chatbot/ui#container) container.
+2. A [`<ChatbotHeader>`](/extensions/chatbot/ui#header) that updates based on the display mode, with sub-components (including a `<ChatbotHeaderTitle>`).
 3. The ability to swap display modes via the `<ChatbotHeaderOptionsDropdown>`
-4. A `<ChatbotContent>` and [`<MessageBox>`](/patternfly-ai/chatbot/uir#content-and-message-box) with:
+4. A `<ChatbotContent>` and [`<MessageBox>`](/extensions/chatbot/uir#content-and-message-box) with:
    - A `<ChatbotWelcomePrompt>`
    - The ability to preview or edit the attachment.
    - An initial bot message
-5. A [`<ChatbotFooter>`](/patternfly-ai/chatbot/ui#footer) with a [`<ChatbotFootnote>`](/patternfly-ai/chatbot/ui#footnote-with-popover) and a `<MessageBar>`
+5. A [`<ChatbotFooter>`](/extensions/chatbot/ui#footer) with a [`<ChatbotFootnote>`](/extensions/chatbot/ui#footnote-with-popover) and a `<MessageBar>`
 
 ```js file="./ChatbotAttachment.tsx" isFullscreen
 
@@ -129,21 +129,21 @@ This demo includes broader ChatBot features, including:
 
 This demo displays unique attachment features, including:
 
-1. [`<ChatbotContent>` and `<MessageBox>`](/patternfly-ai/chatbot/ui#content-and-message-box) components that contain:
+1. [`<ChatbotContent>` and `<MessageBox>`](/extensions/chatbot/ui#content-and-message-box) components that contain:
    - A PatternFly [`<Alert>`](/components/alert) to provide success or error messages for attachments.
 2. `<ChatbotContent>` and `<ChatbotFooter>`, wrapped in a `<FileDropZone>` component to support drag and drop attachments. The footer also:
 
-   - Displays attached files, using a [`<FileDetailsLabel>`](/patternfly-ai/chatbot/ui#attachment-label) component.
+   - Displays attached files, using a [`<FileDetailsLabel>`](/extensions/chatbot/ui#attachment-label) component.
    - Demonstrates custom handling of file uploads, using the `handleAttach` in `<MessageBar>` and `handleFileDrop` in `<FileDropZone>`.
    - Demonstrates how to define the `attachMenuProps` in the `<MessageBar>` to create a menu that allows users to select the source of an item they're attaching.
 
 This demo includes broader ChatBot features, including:
 
-1. A [`<ChatbotToggle>`](/patternfly-ai/chatbot/ui#toggle) that controls the [`<Chatbot>`](/patternfly-ai/chatbot/ui#container) container.
-2. A `<ChatbotContent>` and [`<MessageBox>`](/patternfly-ai/chatbot/ui#content-and-message-box) with:
+1. A [`<ChatbotToggle>`](/extensions/chatbot/ui#toggle) that controls the [`<Chatbot>`](/extensions/chatbot/ui#container) container.
+2. A `<ChatbotContent>` and [`<MessageBox>`](/extensions/chatbot/ui#content-and-message-box) with:
    - A `<ChatbotWelcomePrompt>`
    - An initial user message and initial bot message
-3. A [`<ChatbotFooter>`](/patternfly-ai/chatbot/ui#footer) with a [`<ChatbotFootnote>`](/patternfly-ai/chatbot/ui#footnote-with-popover) and a `<MessageBar>`
+3. A [`<ChatbotFooter>`](/extensions/chatbot/ui#footer) with a [`<ChatbotFootnote>`](/extensions/chatbot/ui#footnote-with-popover) and a `<MessageBar>`
 
 ```js file="./ChatbotAttachmentMenu.tsx" isFullscreen
 

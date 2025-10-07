@@ -1,5 +1,5 @@
 ---
-section: PatternFly-AI
+section: Extensions
 subsection: ChatBot
 id: Overview
 sortValue: 1
@@ -15,30 +15,30 @@ _Only use this ChatBot when it adds value to your users' experiences._ Don't use
 ## ChatBot demos
 
 To illustrate the capabilities of the ChatBot, including more complex interaction patterns, we've created these demos: 
-- [Basic ChatBot](/patternfly-ai/chatbot/overview/demo#basic-chatbot)
-- [Embedded ChatBot](/patternfly-ai/chatbot/overview/demo#embedded-chatbot)
-- [Comparing ChatBots](/patternfly-ai/chatbot/overview/demo/#comparing-chatbots)
-- [Message feedback](/patternfly-ai/chatbot/messages/demo#message-feedback)
-- [ChatBot attachments via file upload](/patternfly-ai/chatbot/messages/demo#attach-via-upload-button-in-message-bar)
-- [ChatBot attachments via built-in menu](/patternfly-ai/chatbot/messages/demo#attach-via-menu-of-options-in-message-bar)
+- [Basic ChatBot](/extensions/chatbot/overview/demo#basic-chatbot)
+- [Embedded ChatBot](/extensions/chatbot/overview/demo#embedded-chatbot)
+- [Comparing ChatBots](/extensions/chatbot/overview/demo/#comparing-chatbots)
+- [Message feedback](/extensions/chatbot/messages/demo#message-feedback)
+- [ChatBot attachments via file upload](/extensions/chatbot/messages/demo#attach-via-upload-button-in-message-bar)
+- [ChatBot attachments via built-in menu](/extensions/chatbot/messages/demo#attach-via-menu-of-options-in-message-bar)
 
 To learn how to write for ChatBot experiences, refer to our [conversation design guidelines](/patternfly-ai/conversation-design/#writing-for-chatbots).
 
-To learn how to design ChatBot experiences, [refer to the design guidelines](/patternfly-ai/chatbot/overview/design-guidelines).
+To learn how to design ChatBot experiences, [refer to the design guidelines](/extensions/chatbot/overview/design-guidelines).
 
 Explore our documentation, which covers both ChatBot UI components and message-related components:
 - UI
-    - [Structural elements](/patternfly-ai/chatbot/ui#structure)
-    - [Toggle](/patternfly-ai/chatbot/ui#toggle)
-    - [Header](/patternfly-ai/chatbot/ui#header)
-    - [Footer](/patternfly-ai/chatbot/ui#footer)
-    - [Navigation](/patternfly-ai/chatbot/ui#navigation)
-    - [Modals](/patternfly-ai/chatbot/ui#modals)
+    - [Structural elements](/extensions/chatbot/ui#structure)
+    - [Toggle](/extensions/chatbot/ui#toggle)
+    - [Header](/extensions/chatbot/ui#header)
+    - [Footer](/extensions/chatbot/ui#footer)
+    - [Navigation](/extensions/chatbot/ui#navigation)
+    - [Modals](/extensions/chatbot/ui#modals)
 - Messages
-    - [Bot and user messages](/patternfly-ai/chatbot/messages)
-    - [File attachments](/patternfly-ai/chatbot/messages#attachments)
+    - [Bot and user messages](/extensions/chatbot/messages)
+    - [File attachments](/extensions/chatbot/messages#attachments)
 - Analytics support
-    - [Overview](/patternfly-ai/chatbot/analytics)
+    - [Overview](/extensions/chatbot/analytics)
   
 
 We will continue to grow and evolve our ChatBot. If you notice a bug or have any suggestions, feel free to file an issue in our [GitHub repository!](https://github.com/patternfly/chatbot/issues) Make sure to check if there is already a pre-existing issue before creating a new one.

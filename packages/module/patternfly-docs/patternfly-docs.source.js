@@ -8,7 +8,7 @@ module.exports = (sourceMD, sourceProps) => {
 
   // Parse md files
   const contentBase = path.join(__dirname, './content');
-  sourceMD(path.join(contentBase, 'extensions/**/*.md'), 'PatternFly-AI');
+  sourceMD(path.join(contentBase, 'extensions/**/*.md'), 'Extensions');
 
   /**
     If you want to parse content from node_modules instead of providing a relative/absolute path,
