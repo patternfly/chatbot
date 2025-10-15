@@ -1,7 +1,15 @@
 import type { ChangeEvent, FunctionComponent, KeyboardEvent as ReactKeyboardEvent, Ref } from 'react';
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { Accept, DropEvent, DropzoneOptions, FileError, FileRejection } from 'react-dropzone';
-import { ButtonProps, TextArea, TextAreaProps, TooltipProps } from '@patternfly/react-core';
+import {
+  ButtonProps,
+  MenuSearchInputProps,
+  MenuSearchProps,
+  SearchInputProps,
+  TextArea,
+  TextAreaProps,
+  TooltipProps
+} from '@patternfly/react-core';
 
 // Import Chatbot components
 import SendButton from './SendButton';
@@ -30,6 +38,12 @@ export interface MessageBarWithAttachMenuProps {
   onAttachMenuOnOpenChangeKeys?: string[];
   /** Callback to change the open state of the menu. Triggered by clicking outside of the menu. */
   onAttachMenuOpenChange?: (isOpen: boolean) => void;
+  /** Additional props passed to MenuSearch component in attach menu */
+  menuSearchProps?: Omit<MenuSearchProps, 'ref'>;
+  /** Additional props passed to MenuSearchInput component in attach menu */
+  menuSearchInputProps?: Omit<MenuSearchInputProps, 'ref'>;
+  /** Additional props passed to SearchInput component in attach menu */
+  searchInputProps?: SearchInputProps;
 }
 
 export interface MessageBarProps extends Omit<TextAreaProps, 'innerRef'> {
@@ -449,6 +463,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
         {...(attachMenuProps && { handleTextInputChange: attachMenuProps.onAttachMenuInputChange })}
         popperProps={{ direction: 'up', distance: 8 }}
         searchInputPlaceholder={attachMenuProps?.attachMenuInputPlaceholder}
+        {...attachMenuProps}
       />
     );
   }

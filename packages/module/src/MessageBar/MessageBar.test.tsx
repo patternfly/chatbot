@@ -218,6 +218,23 @@ describe('Message bar', () => {
     await userEvent.click(attachButton);
     expect(attachToggleClickSpy).toHaveBeenCalledTimes(1);
   });
+  it('can pass props to search input in AttachMenu', () => {
+    render(
+      <MessageBar
+        onSendMessage={jest.fn}
+        value="test"
+        attachMenuProps={{
+          isAttachMenuOpen: true,
+          setIsAttachMenuOpen: jest.fn(),
+          onAttachMenuToggleClick: jest.fn(),
+          onAttachMenuInputChange: jest.fn(),
+          attachMenuItems: ATTACH_MENU_ITEMS,
+          searchInputProps: { isDisabled: true }
+        }}
+      />
+    );
+    expect(screen.getByRole('textbox', { name: /Filter menu items/i })).toBeDisabled();
+  });
   it('can hide attach button', () => {
     render(<MessageBar onSendMessage={jest.fn} hasAttachButton={false} />);
     expect(screen.queryByRole('button', { name: 'Attach' })).toBeFalsy();
