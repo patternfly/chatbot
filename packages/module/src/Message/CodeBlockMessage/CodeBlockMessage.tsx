@@ -37,7 +37,7 @@ export interface CodeBlockMessageProps {
   expandedText?: string;
   /** Link text applied to expandable toggle when collapsed */
   collapsedText?: string;
-  /** Custom actions added to header of code block */
+  /** Custom actions added to header of code block, after any default actions such as the "copy" action.  */
   customActions?: React.ReactNode;
 }
 
