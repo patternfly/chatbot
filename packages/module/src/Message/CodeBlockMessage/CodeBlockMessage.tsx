@@ -37,6 +37,8 @@ export interface CodeBlockMessageProps {
   expandedText?: string;
   /** Link text applied to expandable toggle when collapsed */
   collapsedText?: string;
+  /** Custom actions added to header of code block */
+  customActions?: React.ReactNode;
 }
 
 const DEFAULT_EXPANDED_TEXT = 'Show less';
@@ -51,6 +53,7 @@ const CodeBlockMessage = ({
   expandableSectionToggleProps,
   expandedText = DEFAULT_EXPANDED_TEXT,
   collapsedText = DEFAULT_COLLAPSED_TEXT,
+  customActions,
   ...props
 }: CodeBlockMessageProps) => {
   const [copied, setCopied] = useState(false);
@@ -114,7 +117,7 @@ const CodeBlockMessage = ({
   // Setup code block header
   const actions = (
     <>
-      <CodeBlockAction>
+      <CodeBlockAction className="pf-chatbot__message-code-block-default-action">
         {language && <div className="pf-chatbot__message-code-block-language">{language}</div>}
         <Button
           ref={buttonRef}
@@ -127,6 +130,7 @@ const CodeBlockMessage = ({
         </Button>
         <Tooltip id={tooltipID} content="Copy" position="top" triggerRef={buttonRef} />
       </CodeBlockAction>
+      {customActions}
     </>
   );
 
