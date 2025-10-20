@@ -1,5 +1,11 @@
 import '@testing-library/jest-dom';
-import { DropdownGroup, DropdownItem, DropdownList } from '@patternfly/react-core';
+import {
+  DropdownGroup,
+  DropdownItem,
+  DropdownList,
+  MenuSearchInputProps,
+  MenuSearchProps
+} from '@patternfly/react-core';
 import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon } from '@patternfly/react-icons';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -217,6 +223,57 @@ describe('Message bar', () => {
     const attachButton = screen.getByRole('button', { name: 'Attach' });
     await userEvent.click(attachButton);
     expect(attachToggleClickSpy).toHaveBeenCalledTimes(1);
+  });
+  it('can pass searchInputProps to search input in AttachMenu', () => {
+    render(
+      <MessageBar
+        onSendMessage={jest.fn}
+        value="test"
+        attachMenuProps={{
+          isAttachMenuOpen: true,
+          setIsAttachMenuOpen: jest.fn(),
+          onAttachMenuToggleClick: jest.fn(),
+          onAttachMenuInputChange: jest.fn(),
+          attachMenuItems: ATTACH_MENU_ITEMS,
+          searchInputProps: { isDisabled: true }
+        }}
+      />
+    );
+    expect(screen.getByRole('textbox', { name: /Filter menu items/i })).toBeDisabled();
+  });
+  it('can pass menuSearchProps to search input in AttachMenu', () => {
+    render(
+      <MessageBar
+        onSendMessage={jest.fn}
+        value="test"
+        attachMenuProps={{
+          isAttachMenuOpen: true,
+          setIsAttachMenuOpen: jest.fn(),
+          onAttachMenuToggleClick: jest.fn(),
+          onAttachMenuInputChange: jest.fn(),
+          attachMenuItems: ATTACH_MENU_ITEMS,
+          menuSearchProps: { 'data-testid': 'menu-search' } as MenuSearchProps
+        }}
+      />
+    );
+    expect(screen.getByTestId('menu-search')).toBeTruthy();
+  });
+  it('can pass menuSearchInputProps to search input in AttachMenu', () => {
+    render(
+      <MessageBar
+        onSendMessage={jest.fn}
+        value="test"
+        attachMenuProps={{
+          isAttachMenuOpen: true,
+          setIsAttachMenuOpen: jest.fn(),
+          onAttachMenuToggleClick: jest.fn(),
+          onAttachMenuInputChange: jest.fn(),
+          attachMenuItems: ATTACH_MENU_ITEMS,
+          menuSearchInputProps: { 'data-testid': 'menu-search-input' } as MenuSearchInputProps
+        }}
+      />
+    );
+    expect(screen.getByTestId('menu-search-input')).toBeTruthy();
   });
   it('can hide attach button', () => {
     render(<MessageBar onSendMessage={jest.fn} hasAttachButton={false} />);

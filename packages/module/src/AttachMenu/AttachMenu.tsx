@@ -11,7 +11,10 @@ import {
   DropdownProps,
   Dropdown,
   DropdownToggleProps,
-  PopperOptions
+  PopperOptions,
+  MenuSearchInputProps,
+  SearchInputProps,
+  MenuSearchProps
 } from '@patternfly/react-core';
 
 export interface AttachMenuProps extends DropdownProps {
@@ -35,6 +38,12 @@ export interface AttachMenuProps extends DropdownProps {
   searchInputAriaLabel?: string;
   /** Toggle to be rendered */
   toggle: DropdownToggleProps | ((toggleRef: React.RefObject<any>) => React.ReactNode);
+  /** Additional props passed to MenuSearch component */
+  menuSearchProps?: Omit<MenuSearchProps, 'ref'>;
+  /** Additional props passed to MenuSearchInput component */
+  menuSearchInputProps?: Omit<MenuSearchInputProps, 'ref'>;
+  /** Additional props passed to SearchInput component */
+  searchInputProps?: SearchInputProps;
 }
 
 export const AttachMenu: FunctionComponent<AttachMenuProps> = ({
@@ -49,6 +58,9 @@ export const AttachMenu: FunctionComponent<AttachMenuProps> = ({
   searchInputPlaceholder,
   searchInputAriaLabel = 'Filter menu items',
   toggle,
+  menuSearchProps,
+  menuSearchInputProps,
+  searchInputProps,
   ...props
 }: AttachMenuProps) => (
   <Dropdown
@@ -61,12 +73,13 @@ export const AttachMenu: FunctionComponent<AttachMenuProps> = ({
     onSelect={onSelect}
     {...props}
   >
-    <MenuSearch>
-      <MenuSearchInput>
+    <MenuSearch {...menuSearchProps}>
+      <MenuSearchInput {...menuSearchInputProps}>
         <SearchInput
           aria-label={searchInputAriaLabel}
           onChange={(_event, value) => handleTextInputChange(value)}
           placeholder={searchInputPlaceholder}
+          {...searchInputProps}
         />
       </MenuSearchInput>
     </MenuSearch>
