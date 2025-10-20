@@ -118,6 +118,8 @@ export interface MessageBarProps extends Omit<TextAreaProps, 'innerRef'> {
   isCompact?: boolean;
   /** Ref applied to message bar textarea, for use with focus or other custom behaviors  */
   innerRef?: React.Ref<HTMLTextAreaElement>;
+  /** Sets background color to primary */
+  isPrimary?: boolean;
 }
 
 export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
@@ -148,6 +150,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
   validator,
   dropzoneProps,
   innerRef,
+  isPrimary,
   ...props
 }: MessageBarProps) => {
   // Text Input
@@ -468,7 +471,11 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
     );
   }
 
-  return <div className={`pf-chatbot__message-bar ${className ?? ''}`}>{messageBarContents}</div>;
+  return (
+    <div className={`pf-chatbot__message-bar ${isPrimary ? 'pf-m-primary' : ''} ${className ?? ''}`}>
+      {messageBarContents}
+    </div>
+  );
 };
 
 const MessageBar = forwardRef((props: MessageBarProps, ref: Ref<HTMLTextAreaElement>) => (

@@ -11,6 +11,10 @@
   flex-direction: column;
   row-gap: var(--pf-chatbot__footer--RowGap);
   position: relative; // this is so focus ring on parent chatbot doesn't include footer
+
+  &.pf-m-primary {
+    background-color: var(--pf-t--global--background--color--primary--default);
+  }
 }
 .pf-chatbot__footer-container {
   padding: 0 var(--pf-t--global--spacer--lg) var(--pf-t--global--spacer--lg) var(--pf-t--global--spacer--lg);
