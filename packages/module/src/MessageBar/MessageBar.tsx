@@ -447,7 +447,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
         onOpenChangeKeys={attachMenuProps?.onAttachMenuOnOpenChangeKeys}
         onSelect={attachMenuProps?.onAttachMenuSelect}
         {...(attachMenuProps && { handleTextInputChange: attachMenuProps.onAttachMenuInputChange })}
-        popperProps={{ direction: 'up', distance: '8' }}
+        popperProps={{ direction: 'up', distance: 8 }}
         searchInputPlaceholder={attachMenuProps?.attachMenuInputPlaceholder}
       />
     );
