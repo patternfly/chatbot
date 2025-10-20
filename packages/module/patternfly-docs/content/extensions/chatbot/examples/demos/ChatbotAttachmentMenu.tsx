@@ -20,7 +20,7 @@ import '@patternfly/chatbot/dist/css/main.css';
 import { cloneElement, FunctionComponent, isValidElement, ReactNode, useState, Children } from 'react';
 
 const initialMenuItems = [
-  <DropdownList key="list-1">
+  <DropdownList key="attachment-menu-example-initial-menu-items">
     <DropdownItem value="auth-operator Pod" id="0" className="pf-chatbot-source-details-dropdown-item">
       <SourceDetailsMenuItem
         icon={
@@ -47,7 +47,7 @@ const initialMenuItems = [
       />
     </DropdownItem>
   </DropdownList>,
-  <DropdownGroup key="group2">
+  <DropdownGroup key="attachment-menu-example-initial-group">
     <DropdownList>
       <DropdownItem value="Alerts" id="1" icon={<BellIcon />}>
         Alerts

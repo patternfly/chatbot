@@ -230,7 +230,7 @@ export const ChatbotDemo: FunctionComponent = () => {
         id: '1',
         text: 'Hello, can you give me an example of what you can do?',
         menuItems: (
-          <DropdownList key={`list-1`}>
+          <DropdownList key="transcript-example-initial-menu-items">
             <DropdownItem
               value="Download"
               id={`Download-1`}
