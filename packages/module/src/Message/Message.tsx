@@ -11,8 +11,6 @@ import {
   AvatarProps,
   ButtonProps,
   ContentVariants,
-  ExpandableSectionProps,
-  ExpandableSectionToggleProps,
   FormProps,
   Label,
   LabelGroupProps,
@@ -20,7 +18,7 @@ import {
   Truncate
 } from '@patternfly/react-core';
 import MessageLoading from './MessageLoading';
-import CodeBlockMessage from './CodeBlockMessage/CodeBlockMessage';
+import CodeBlockMessage, { CodeBlockMessageProps } from './CodeBlockMessage/CodeBlockMessage';
 import TextMessage from './TextMessage/TextMessage';
 import FileDetailsLabel from '../FileDetailsLabel/FileDetailsLabel';
 import ResponseActions, { ActionProps } from '../ResponseActions/ResponseActions';
@@ -114,24 +112,7 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   /** Label for the English "Loading message," displayed to screenreaders when loading a message */
   loadingWord?: string;
   /** Props for code blocks */
-  codeBlockProps?: {
-    /** Aria label applied to code blocks */
-    'aria-label'?: string;
-    /** Class name applied to code blocks */
-    className?: string;
-    /** Whether code blocks are expandable */
-    isExpandable?: boolean;
-    /** Length of text initially shown in expandable code blocks; defaults to 10 characters */
-    maxLength?: number;
-    /** Additional props passed to expandable section if isExpandable is applied */
-    expandableSectionProps?: Omit<ExpandableSectionProps, 'ref'>;
-    /** Additional props passed to expandable toggle if isExpandable is applied */
-    expandableSectionToggleProps?: ExpandableSectionToggleProps;
-    /** Link text applied to expandable toggle when expanded */
-    expandedText?: string;
-    /** Link text applied to expandable toggle when collapsed */
-    collapsedText?: string;
-  };
+  codeBlockProps?: CodeBlockMessageProps;
   /** Props for quick responses */
   quickResponses?: QuickResponse[];
   /** Props for quick responses container */

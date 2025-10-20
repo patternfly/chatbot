@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { monitorSampleAppQuickStart } from './QuickStarts/monitor-sampleapp-quickstart';
 import { monitorSampleAppQuickStartWithImage } from './QuickStarts/monitor-sampleapp-quickstart-with-image';
 import rehypeExternalLinks from '../__mocks__/rehype-external-links';
-import { AlertActionLink } from '@patternfly/react-core';
+import { AlertActionLink, Button, CodeBlockAction } from '@patternfly/react-core';
 import { DeepThinkingProps } from '../DeepThinking';
 
 const ALL_ACTIONS = [
@@ -611,6 +611,24 @@ describe('Message', () => {
       />
     );
     expect(screen.getByRole('button', { name: 'test' })).toBeTruthy();
+  });
+  it('should be able to add custom actions to CodeMessage', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="user"
+        name="User"
+        content={CODE_MESSAGE}
+        codeBlockProps={{
+          customActions: (
+            <CodeBlockAction>
+              <Button>New custom action</Button>
+            </CodeBlockAction>
+          )
+        }}
+      />
+    );
+    expect(screen.getByRole('button', { name: /New custom action/i })).toBeTruthy();
   });
   it('should handle hasRoundAvatar correctly when it is true', () => {
     render(<Message avatar="./img" role="user" name="User" content="Hi" hasRoundAvatar />);
