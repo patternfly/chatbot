@@ -11,12 +11,8 @@ import {
   DropdownProps,
   Dropdown,
   DropdownToggleProps,
-  DropdownPopperProps
+  PopperOptions
 } from '@patternfly/react-core';
-
-export interface ExtendedDropdownPopperProps extends DropdownPopperProps {
-  distance: string;
-}
 
 export interface AttachMenuProps extends DropdownProps {
   /** Items in menu */
@@ -26,7 +22,7 @@ export interface AttachMenuProps extends DropdownProps {
   /** Flag to indicate if menu is opened. */
   isOpen: boolean;
   /** Additional properties to pass to the Popper */
-  popperProps?: ExtendedDropdownPopperProps;
+  popperProps?: PopperOptions;
   /** Callback to change the open state of the menu. Triggered by clicking outside of the menu. */
   onOpenChange: (isOpen: boolean) => void;
   /** Keys that trigger onOpenChange, defaults to tab and escape. It is highly recommended to include Escape in the array, while Tab may be omitted if the menu contains non-menu items that are focusable. */
