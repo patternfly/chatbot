@@ -180,7 +180,7 @@ export const SettingsDemo: FunctionComponent = () => {
     },
     {
       id: 'archive-all',
-      label: 'Archive all chat',
+      label: 'Archive all chats',
       field: (
         // We want to add the id property here as well so the label is coupled
         // with the button on screen readers.
