@@ -1,6 +1,6 @@
 .pf-chatbot__tool-call {
-  --pf-v6-c-card--BorderColor: var(--pf-t--global--border--color--control--read-only);
   --pf-v6-c-card--BorderRadius: var(--pf-t--global--border--radius--small);
+  --pf-v6-c-card--BorderColor: var(--pf-t--global--border--color--control--read-only);
 
   overflow: unset;
   row-gap: var(--pf-t--global--spacer--sm);
@@ -33,5 +33,11 @@
 
   .pf-chatbot__tool-call-action-list {
     justify-content: flex-end;
+  }
+}
+
+:root:where(.pf-v6-theme-high-contrast) {
+  .pf-chatbot__tool-call {
+    --pf-v6-c-card--BorderColor: var(--pf-t--global--border--color--high-contrast);
   }
 }

@@ -22,3 +22,9 @@
 .pf-chatbot__deep-thinking-body {
   color: var(--pf-t--global--text--color--subtle);
 }
+
+:root:where(.pf-v6-theme-high-contrast) {
+  .pf-chatbot__deep-thinking {
+    --pf-v6-c-card--BorderColor: var(--pf-t--global--border--color--high-contrast);
+  }
+}
