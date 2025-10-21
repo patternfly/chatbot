@@ -34,3 +34,14 @@
     --pf-v6-c-divider--Color: var(--pf-t--global--border--color--control--read-only);
   }
 }
+
+:root:where(.pf-v6-theme-high-contrast) {
+  .pf-chatbot__tool-response,
+  .pf-chatbot__tool-response-card {
+    --pf-v6-c-card--BorderColor: var(--pf-t--global--border--color--high-contrast);
+
+    .pf-v6-c-divider {
+      --pf-v6-c-divider--Color: var(--pf-t--global--border--color--high-contrast);
+    }
+  }
+}
