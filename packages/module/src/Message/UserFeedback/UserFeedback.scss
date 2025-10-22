@@ -1,7 +1,8 @@
 // shared
 .pf-chatbot__feedback-card {
   box-shadow: var(--pf-t--global--box-shadow--sm);
-  --pf-v6-c-card--BorderWidth: 0;
+  // we want to override to 0 usually and assume the default border for high contrast support
+  --pf-v6-c-card--BorderWidth: var(--pf-t--global--border--width--high-contrast--regular);
   max-width: 27.5rem; // fixme address mobile vs desktop
 }
 
