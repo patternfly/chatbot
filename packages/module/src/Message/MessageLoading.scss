@@ -6,6 +6,9 @@
   padding: var(--pf-t--global--spacer--sm);
   background-color: var(--pf-t--global--background--color--tertiary--default);
   border-radius: var(--pf-t--global--border--radius--small);
+  // for high contrast support
+  border: var(--pf-t--global--border--width--high-contrast--regular) solid
+    var(--pf-t--global--border--color--high-contrast);
 
   &-dots {
     position: relative;
