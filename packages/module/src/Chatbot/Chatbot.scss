@@ -138,12 +138,16 @@
   box-shadow: none;
   border-left: var(--pf-t--global--border--width--divider--default) solid;
   border-color: var(--pf-t--global--border--color--default);
-  // for high contrast support
-  border-left: var(--pf-t--global--border--width--high-contrast--regular) solid
-    var(--pf-t--global--border--color--high-contrast);
 
   .pf-chatbot-container {
     border-radius: var(--pf-t--global--border--radius--sharp);
+  }
+}
+
+// for high contrast support
+:root:where(.pf-v6-theme-high-contrast) {
+  .pf-chatbot--drawer {
+    border: unset;
   }
 }
 
