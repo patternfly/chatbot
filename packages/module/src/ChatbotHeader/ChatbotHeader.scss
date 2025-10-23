@@ -162,3 +162,18 @@
 .pf-chatbot__header .pf-chatbot__actions .pf-v6-c-menu-toggle.pf-m-secondary.pf-m-compact {
   width: initial;
 }
+
+// ============================================================================
+// High contrast
+// ============================================================================
+:root:where(.pf-v6-theme-high-contrast) {
+  // Chatbot Display Mode - Fullscreen and Embedded
+  @media screen and (min-width: 64rem) {
+    .pf-chatbot--fullscreen,
+    .pf-chatbot--embedded {
+      .pf-chatbot__header__divider {
+        display: var(--pf-v6-hidden-visible--Display);
+      }
+    }
+  }
+}
