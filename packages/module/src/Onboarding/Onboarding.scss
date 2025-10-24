@@ -1,0 +1,74 @@
+.pf-chatbot__onboarding-modal {
+  .pf-v6-c-content {
+    font-size: var(--pf-t--global--font--size--body--lg);
+  }
+
+  .pf-chatbot__onboarding--header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: var(--pf-t--global--spacer--xl);
+    margin-block-start: var(--pf-t--global--spacer--xl);
+  }
+
+  .pf-chatbot__onboarding--title {
+    font-size: var(--pf-t--global--font--size--heading--h1);
+    font-family: var(--pf-t--global--font--family--heading);
+    font-weight: var(--pf-t--global--font--weight--heading--bold);
+  }
+
+  .pf-chatbot__onboarding--footer {
+    margin-block-start: var(--pf-t--global--spacer--md);
+  }
+
+  .pf-chatbot__onboarding--section {
+    height: 100%;
+    width: 100%;
+  }
+
+  // for handling zoom conditions; zoom to 125% or higher to see this
+  @media screen and (max-height: 620px) {
+    .pf-v6-c-modal-box__body {
+      --pf-v6-c-modal-box__body--MinHeight: auto;
+      overflow: visible;
+    }
+  }
+}
+
+.pf-chatbot__chatbot-modal.pf-chatbot__chatbot-modal--docked.pf-chatbot__onboarding-modal.pf-chatbot__onboarding-modal--docked {
+  .pf-chatbot__onboarding--section {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.pf-chatbot__chatbot-modal.pf-chatbot__chatbot-modal--fullscreen.pf-chatbot__onboarding-modal.pf-chatbot__onboarding-modal--fullscreen,
+.pf-chatbot__chatbot-modal.pf-chatbot__chatbot-modal--embedded.pf-chatbot__onboarding-modal.pf-chatbot__onboarding-modal--embedded {
+  // override parent modal style
+  height: inherit !important;
+
+  .pf-chatbot__onboarding--title {
+    font-size: var(--pf-t--global--font--size--heading--2xl);
+  }
+}
+
+.pf-chatbot__onboarding-modal.pf-m-compact {
+  .pf-chatbot__onboarding--header {
+    gap: var(--pf-t--global--spacer--md);
+    align-items: flex-start;
+    margin-block-start: var(--pf-t--global--spacer--lg);
+  }
+
+  .pf-chatbot__onboarding--modal-header {
+    --pf-v6-c-modal-box__header--PaddingBlockStart: var(--pf-t--global--spacer--md);
+    --pf-v6-c-modal-box__header--PaddingBlockEnd: var(--pf-t--global--spacer--md);
+    --pf-v6-c-modal-box__header--PaddingInlineStart: var(--pf-t--global--spacer--md);
+    --pf-v6-c-modal-box__header--PaddingInlineEnd: var(--pf-t--global--spacer--md);
+  }
+
+  .pf-chatbot__onboarding--modal-body {
+    --pf-v6-c-modal-box__body--PaddingInlineStart: var(--pf-t--global--spacer--md);
+    --pf-v6-c-modal-box__body--PaddingInlineEnd: var(--pf-t--global--spacer--md);
+  }
+}

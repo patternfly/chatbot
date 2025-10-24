@@ -53,6 +53,7 @@ import FileDropZone from '@patternfly/chatbot/dist/dynamic/FileDropZone';
 import { PreviewAttachment } from '@patternfly/chatbot/dist/dynamic/PreviewAttachment';
 import ChatbotAlert from '@patternfly/chatbot/dist/dynamic/ChatbotAlert';
 import TermsOfUse from '@patternfly/chatbot/dist/dynamic/TermsOfUse';
+import Onboarding from '@patternfly/chatbot/dist/dynamic/Onboarding';
 import {
 ChatbotHeader,
 ChatbotHeaderCloseButton,
@@ -85,6 +86,7 @@ import PFHorizontalLogoReverse from './PF-HorizontalLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import termsAndConditionsHeader from './PF-TermsAndConditionsHeader.svg';
+import onboardingHeader from './RH-Hat-Image.svg';
 import { CloseIcon, SearchIcon, OutlinedCommentsIcon } from '@patternfly/react-icons';
 import { FunctionComponent, FormEvent, useState, useRef, MouseEvent, isValidElement, cloneElement, Children, ReactNode, Ref, MouseEvent as ReactMouseEvent, CSSProperties, useEffect} from 'react';
 import FilePreview from '@patternfly/chatbot/dist/dynamic/FilePreview';
@@ -457,6 +459,12 @@ In this demo, you can toggle the settings page by clicking the "Settings" button
 To make the settings menu compact, with less spacing between the menu contents, pass `isCompact` to the `<SettingsForm>`.
 
 ```js file="./CompactSettings.tsx" isFullscreen
+
+```
+
+### Onboarding
+
+```js file="./Onboarding.tsx" isFullscreen
 
 ```
 
