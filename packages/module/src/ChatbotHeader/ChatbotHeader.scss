@@ -91,6 +91,10 @@
   align-items: center;
   justify-content: center;
 
+  &::before {
+    border-radius: var(--pf-t--global--border--radius--pill);
+  }
+
   .pf-v6-c-button__icon,
   .pf-v6-c-menu-toggle__icon,
   .pf-v6-c-icon__content {
