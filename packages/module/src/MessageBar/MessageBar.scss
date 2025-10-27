@@ -133,3 +133,16 @@
     padding-block-end: var(--pf-t--global--spacer--md);
   }
 }
+
+// ============================================================================
+// High contrast styles
+// ============================================================================
+:root:where(.pf-v6-theme-high-contrast) {
+  .pf-chatbot__message-bar {
+    box-shadow: inset 0 0 0 1px var(--pf-t--global--border--color--default);
+
+    &:focus-within {
+      box-shadow: inset 0 0 0 2px var(--pf-t--global--color--brand--default);
+    }
+  }
+}
