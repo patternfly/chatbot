@@ -102,10 +102,8 @@ li[id*='user-content-fn-']:has(> span > span > .pf-chatbot__message-text + .pf-c
     }
   }
 
-  .footnotes {
-    blockquote {
-      border-inline-start-color: var(--pf-t--global--border--color--alt);
-    }
+  blockquote {
+    border-inline-start-color: var(--pf-t--global--border--color--alt);
   }
 
   .pf-chatbot__message-text > .pf-chatbot__message-text {
