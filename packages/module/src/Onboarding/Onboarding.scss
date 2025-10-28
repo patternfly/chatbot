@@ -22,11 +22,6 @@
     margin-block-start: var(--pf-t--global--spacer--md);
   }
 
-  .pf-chatbot__onboarding--section {
-    height: 100%;
-    width: 100%;
-  }
-
   // for handling zoom conditions; zoom to 125% or higher to see this
   @media screen and (max-height: 620px) {
     .pf-v6-c-modal-box__body {
@@ -40,6 +35,8 @@
   .pf-chatbot__onboarding--section {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    height: 100%;
   }
 }
 

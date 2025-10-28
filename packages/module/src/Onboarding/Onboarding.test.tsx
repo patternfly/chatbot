@@ -129,4 +129,20 @@ describe('Onboarding', () => {
     expect(onSecondaryAction).toHaveBeenCalledTimes(1);
     expect(handleModalToggle).not.toHaveBeenCalled();
   });
+  it('should handle isCompact prop', () => {
+    render(
+      <Onboarding
+        isModalOpen
+        onSecondaryAction={onSecondaryAction}
+        handleModalToggle={handleModalToggle}
+        isCompact={true}
+        image="./image.png"
+        altText="Test image"
+      >
+        {body}
+      </Onboarding>
+    );
+    expect(screen.getByRole('dialog')).toHaveClass('pf-m-compact');
+    expect(screen.queryByRole('img')).toBeFalsy();
+  });
 });
