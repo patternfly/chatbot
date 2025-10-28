@@ -73,6 +73,7 @@ export const OnboardingBase: FunctionComponent<OnboardingProps> = ({
       aria-describedby="onboarding-modal"
       className={`pf-chatbot__onboarding-modal pf-chatbot__onboarding-modal--${displayMode} ${isCompact ? 'pf-m-compact' : ''} ${className ? className : ''}`}
       displayMode={displayMode}
+      onClose={handleModalToggle}
       {...props}
     >
       {/* This is a workaround since the PatternFly modal doesn't have ref forwarding */}
