@@ -108,6 +108,20 @@ Once the component has rendered, user interactions will take precedence over the
 
 ```
 
+### Message actions selection options
+
+By default, message actions will automatically deselect when clicking outside the component or clicking a different action button. You can opt-in to persist the selection by setting `persistActionSelection` to `true`.
+
+When `persistActionSelection` is `true`:
+
+- The selected action will remain selected even when clicking outside the component
+- Clicking the same button again will toggle the selection off, though you will have to move your focus elsewhere to see a visual state change
+- Clicking a different button will switch the selection to that button
+
+```js file="./MessageWithPersistedActions.tsx"
+
+```
+
 ### Custom message actions
 
 Beyond the standard message actions (good response, bad response, copy, share, or listen), you can add custom actions to a bot message by passing an `actions` object to the `<Message>` component. This object can contain the following customizations:
