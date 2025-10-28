@@ -464,7 +464,17 @@ To make the settings menu compact, with less spacing between the menu contents, 
 
 ### Onboarding
 
+You can use the onboarding modal to introduce users to your ChatBot and provide necessary information. The title, image, and body text are customizable.
+
 ```js file="./Onboarding.tsx" isFullscreen
+
+```
+
+### Compact onboarding
+
+To make the onboarding modal compact, with less spacing, pass `isCompact` to the `<Onboarding>` component.
+
+```js file="./CompactOnboarding.tsx" isFullscreen
 
 ```
 
