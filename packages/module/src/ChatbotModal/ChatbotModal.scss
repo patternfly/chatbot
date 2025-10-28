@@ -18,7 +18,10 @@
   .pf-v6-c-modal-box__footer {
     padding-block-start: var(--pf-t--global--spacer--xl);
     padding-block-end: var(--pf-t--global--spacer--xl);
+    border-top: var(--pf-t--global--border--width--high-contrast--regular) solid
+      var(--pf-t--global--border--color--high-contrast);
   }
+
   .pf-v6-c-modal-box__header {
     padding-block-end: var(--pf-t--global--spacer--sm);
   }
