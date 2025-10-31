@@ -29,7 +29,7 @@ export interface MessageBarWithAttachMenuProps {
   /** A callback for when the attachment menu toggle is clicked */
   onAttachMenuToggleClick: () => void;
   /** A callback for when the input value in the menu changes. */
-  onAttachMenuInputChange: (value: string) => void;
+  onAttachMenuInputChange?: (value: string) => void;
   /** Function callback called when user selects item in menu. */
   onAttachMenuSelect?: (event?: React.MouseEvent<Element, MouseEvent>, value?: string | number) => void;
   /** Placeholder for search input */

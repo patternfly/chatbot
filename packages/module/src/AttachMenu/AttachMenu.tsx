@@ -21,7 +21,7 @@ export interface AttachMenuProps extends DropdownProps {
   /** Items in menu */
   filteredItems: React.ReactNode;
   /** A callback for when the input value changes. */
-  handleTextInputChange: (value: string) => void;
+  handleTextInputChange?: (value: string) => void;
   /** Flag to indicate if menu is opened. */
   isOpen: boolean;
   /** Additional properties to pass to the Popper */
@@ -73,16 +73,18 @@ export const AttachMenu: FunctionComponent<AttachMenuProps> = ({
     onSelect={onSelect}
     {...props}
   >
-    <MenuSearch {...menuSearchProps}>
-      <MenuSearchInput {...menuSearchInputProps}>
-        <SearchInput
-          aria-label={searchInputAriaLabel}
-          onChange={(_event, value) => handleTextInputChange(value)}
-          placeholder={searchInputPlaceholder}
-          {...searchInputProps}
-        />
-      </MenuSearchInput>
-    </MenuSearch>
+    {handleTextInputChange && (
+      <MenuSearch {...menuSearchProps}>
+        <MenuSearchInput {...menuSearchInputProps}>
+          <SearchInput
+            aria-label={searchInputAriaLabel}
+            onChange={(_event, value) => handleTextInputChange(value)}
+            placeholder={searchInputPlaceholder}
+            {...searchInputProps}
+          />
+        </MenuSearchInput>
+      </MenuSearch>
+    )}
     {filteredItems}
   </Dropdown>
 );

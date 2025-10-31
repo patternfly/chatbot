@@ -275,6 +275,20 @@ describe('Message bar', () => {
     );
     expect(screen.getByTestId('menu-search-input')).toBeTruthy();
   });
+  it('can remove input from attach menu', async () => {
+    render(
+      <MessageBar
+        onSendMessage={jest.fn}
+        attachMenuProps={{
+          isAttachMenuOpen: true,
+          setIsAttachMenuOpen: jest.fn(),
+          onAttachMenuToggleClick: jest.fn(),
+          attachMenuItems: ATTACH_MENU_ITEMS
+        }}
+      />
+    );
+    expect(screen.queryByRole('textbox', { name: /Filter menu items/i })).not.toBeInTheDocument();
+  });
   it('can hide attach button', () => {
     render(<MessageBar onSendMessage={jest.fn} hasAttachButton={false} />);
     expect(screen.queryByRole('button', { name: 'Attach' })).toBeFalsy();
