@@ -17,7 +17,7 @@
     }
     &:focus {
       --pf-v6-c-button__icon--Color: var(--pf-t--global--icon--color--regular);
-      background-color: var(--pf-v6-c-button--hover--BackgroundColor);
+      --pf-v6-c-button--BackgroundColor: var(--pf-v6-c-button--hover--BackgroundColor);
     }
   }
 }
