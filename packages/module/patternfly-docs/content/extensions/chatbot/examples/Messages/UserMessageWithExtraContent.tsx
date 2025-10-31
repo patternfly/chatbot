@@ -366,7 +366,9 @@ Setting up cluster console...`;
                       <FlexItem>{stage.name}</FlexItem>
                     </Flex>
                   </AccordionToggle>
-                  <AccordionContent id={stage.id.replace('-toggle', '')}>{renderCodeBlock(stage)}</AccordionContent>
+                  <AccordionContent id={stage.id.replace('-toggle', '')} style={{ border: '0px' }}>
+                    {renderCodeBlock(stage)}
+                  </AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
