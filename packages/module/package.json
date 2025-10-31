@@ -39,6 +39,7 @@
     "@patternfly/react-table": "^6.1.0",
     "@segment/analytics-next": "^1.76.0",
     "clsx": "^2.1.0",
+    "monaco-editor": "^0.54.0",
     "path-browserify": "^1.0.1",
     "posthog-js": "^1.194.4",
     "react-markdown": "^9.0.1",

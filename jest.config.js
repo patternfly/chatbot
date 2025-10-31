@@ -38,7 +38,8 @@ module.exports = {
     customReact: 'react',
     reactRedux: 'react-redux',
     PFReactCore: '@patternfly/react-core',
-    PFReactTable: '@patternfly/react-table'
+    PFReactTable: '@patternfly/react-table',
+    '^monaco-editor$': '<rootDir>/packages/module/src/__mocks__/monaco-editor.ts'
   },
   globalSetup: '<rootDir>/config/globalSetup.js',
   transform: {

@@ -5,7 +5,8 @@
 import type { FunctionComponent, MouseEvent } from 'react';
 import { useState, useEffect, useRef } from 'react';
 import path from 'path-browserify';
-import type monaco from 'monaco-editor';
+import * as monaco from 'monaco-editor';
+import { loader } from '@monaco-editor/react';
 
 // Import PatternFly components
 import { CodeEditor } from '@patternfly/react-code-editor';
@@ -21,6 +22,9 @@ import {
 import FileDetails, { extensionToLanguage } from '../FileDetails';
 import { ChatbotDisplayMode } from '../Chatbot';
 import ChatbotModal from '../ChatbotModal/ChatbotModal';
+
+// Configure Monaco loader to use the npm package instead of CDN
+loader.config({ monaco });
 
 export interface CodeModalProps {
   /** Class applied to code editor */
