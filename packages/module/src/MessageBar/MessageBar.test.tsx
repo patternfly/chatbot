@@ -332,12 +332,12 @@ describe('Message bar', () => {
         hasAttachButton
         buttonProps={{
           attach: {
-            icon: <img alt="test-icon" src="" data-testid="new-icon" />
+            icon: <img alt="" src="" />
           }
         }}
       />
     );
-    expect(screen.getByTestId('new-icon')).toBeTruthy();
+    expect(screen.getByRole('img')).toBeVisible();
   });
 
   // Stop button

@@ -174,7 +174,7 @@ describe('Attach button', () => {
     expect(onAttachRejected).toHaveBeenCalled();
   });
   it('should handle icon prop', () => {
-    render(<AttachButton icon={<img alt="test-icon" src="" data-testid="new-icon" />} />);
-    expect(screen.getByTestId('new-icon')).toBeTruthy();
+    render(<AttachButton icon={<img alt="" src="" />} />);
+    expect(screen.getByRole('img')).toBeVisible();
   });
 });
