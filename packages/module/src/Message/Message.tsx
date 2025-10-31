@@ -97,7 +97,7 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   /** Name of the user */
   name?: string;
   /** Avatar src for the user */
-  avatar: string;
+  avatar?: string;
   /** Timestamp for the message */
   timestamp?: string;
   /** Set this to true if message is being loaded */
@@ -459,12 +459,14 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
       {...props}
     >
       {/* We are using an empty alt tag intentionally in order to reduce noise on screen readers */}
-      <Avatar
-        className={`pf-chatbot__message-avatar ${hasRoundAvatar ? 'pf-chatbot__message-avatar--round' : ''} ${avatarClassName ? avatarClassName : ''}`}
-        src={avatar}
-        alt=""
-        {...avatarProps}
-      />
+      {avatar && (
+        <Avatar
+          className={`pf-chatbot__message-avatar ${hasRoundAvatar ? 'pf-chatbot__message-avatar--round' : ''} ${avatarClassName ? avatarClassName : ''}`}
+          src={avatar}
+          alt=""
+          {...avatarProps}
+        />
+      )}
       <div className="pf-chatbot__message-contents">
         <div className="pf-chatbot__message-meta">
           {name && (

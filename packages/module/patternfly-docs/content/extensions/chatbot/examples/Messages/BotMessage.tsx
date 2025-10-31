@@ -318,6 +318,7 @@ _Italic text, formatted with single underscores_
         content="This bot has a square avatar. You can further customize the avatar by applying an additional class or passing [PatternFly avatar props](/components/avatar) to the `<Message>` component via `avatarProps`."
         hasRoundAvatar={false}
       />
+      <Message name="Bot" role="bot" content="This is a message from a bot with no avatar." />
       <Select
         id="single-select"
         isOpen={isOpen}

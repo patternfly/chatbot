@@ -228,6 +228,10 @@ describe('Message', () => {
     render(<Message avatar="./testImg" role="bot" name="Bot" content="Hi" />);
     expect(screen.getByRole('img')).toHaveAttribute('src', './testImg');
   });
+  it('should not render avatar if no avatar prop is passed', () => {
+    render(<Message role="bot" name="Bot" content="Hi" />);
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
+  });
   it('should render botWord correctly', () => {
     render(<Message avatar="./img" role="bot" name="Bot" content="Hi" botWord="人工知能" />);
     expect(screen.getByText('Bot')).toBeTruthy();
