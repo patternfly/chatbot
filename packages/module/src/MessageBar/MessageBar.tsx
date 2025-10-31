@@ -121,9 +121,9 @@ export interface MessageBarProps extends Omit<TextAreaProps, 'innerRef'> {
   innerRef?: React.Ref<HTMLTextAreaElement>;
   /** Sets background color to primary */
   isPrimary?: boolean;
-  /** Flag indicating whether the message bar has an AI indicator border. */
+  /** @beta Flag indicating whether the message bar has an AI indicator border. */
   hasAiIndicator?: boolean;
-  /** Flag indicating whether the chatbot is thinking in response to a query, adding an animation to the message bar. */
+  /** @beta Flag indicating whether the chatbot is thinking in response to a query, adding an animation to the message bar. */
   isThinking?: boolean;
 }
 

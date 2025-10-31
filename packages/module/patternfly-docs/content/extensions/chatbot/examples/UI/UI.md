@@ -320,7 +320,7 @@ You can pass the `hasAiIndicator` property to the `<MessageBar>` to give it a mo
 
 The following example shows a simplified way of how you might hanbdle the "thinking" animation: when you send a message, the `isThinking` property is set to `true`, then after 10 seconds it is set back to false to disable the animation again.
 
-```ts file="./ChatbotMessageBarIndicatorThinking.tsx"
+```ts file="./ChatbotMessageBarIndicatorThinking.tsx" isBeta
 
 ```
 
