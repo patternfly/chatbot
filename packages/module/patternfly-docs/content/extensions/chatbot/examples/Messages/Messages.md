@@ -108,15 +108,15 @@ Once the component has rendered, user interactions will take precedence over the
 
 ```
 
-### Message actions selection options
+### Message actions persistent selections
 
-By default, message actions will automatically deselect when clicking outside the component or clicking a different action button. You can opt-in to persist the selection by setting `persistActionSelection` to `true`.
+By default, message actions will automatically deselect when you click outside the component or on a different action button. To persist the selection instead, set `persistActionSelection` to `true`.
 
 When `persistActionSelection` is `true`:
 
-- The selected action will remain selected even when clicking outside the component
-- Clicking the same button again will toggle the selection off, though you will have to move your focus elsewhere to see a visual state change
-- Clicking a different button will switch the selection to that button
+- The selected action will remain selected even when you click outside the component.
+- Clicking a different button will still switch the selection to that button.
+- Clicking the same action button again will toggle the selection off, though you will have to move your focus elsewhere to see the visual state change.
 
 ```js file="./MessageWithPersistedActions.tsx"
 
