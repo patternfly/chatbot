@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "@octokit/rest": "^18.0.0",
-    "@patternfly/documentation-framework": "6.28.6",
+    "@patternfly/documentation-framework": "6.28.9",
     "@patternfly/patternfly": "^6.1.0",
     "@patternfly/patternfly-a11y": "^5.0.0",
     "@types/dom-speech-recognition": "^0.0.4",
