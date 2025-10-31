@@ -14,7 +14,7 @@ import {
 // Import Chatbot components
 import SendButton from './SendButton';
 import MicrophoneButton from './MicrophoneButton';
-import { AttachButton } from './AttachButton';
+import { AttachButton, AttachButtonProps } from './AttachButton';
 import AttachMenu from '../AttachMenu';
 import StopButton from './StopButton';
 import { ChatbotDisplayMode } from '../Chatbot';
@@ -95,12 +95,7 @@ export interface MessageBarProps extends Omit<TextAreaProps, 'innerRef'> {
   isSendButtonDisabled?: boolean;
   /** Prop to allow passage of additional props to buttons */
   buttonProps?: {
-    attach?: {
-      tooltipContent?: string;
-      props?: ButtonProps;
-      inputTestId?: string;
-      tooltipProps?: Omit<TooltipProps, 'content'>;
-    };
+    attach?: AttachButtonProps & { props?: ButtonProps };
     stop?: { tooltipContent?: string; props?: ButtonProps; tooltipProps?: Omit<TooltipProps, 'content'> };
     send?: { tooltipContent?: string; props?: ButtonProps; tooltipProps?: Omit<TooltipProps, 'content'> };
     microphone?: {
@@ -376,7 +371,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
             onAttachRejected={onAttachRejected}
             validator={validator}
             dropzoneProps={dropzoneProps}
-            {...buttonProps?.attach?.props}
+            {...buttonProps?.attach}
           />
         )}
         {!attachMenuProps && hasAttachButton && (
@@ -396,6 +391,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
             onAttachRejected={onAttachRejected}
             validator={validator}
             dropzoneProps={dropzoneProps}
+            {...buttonProps?.attach}
             {...buttonProps?.attach?.props}
           />
         )}
