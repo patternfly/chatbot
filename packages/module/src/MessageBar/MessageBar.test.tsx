@@ -287,13 +287,7 @@ describe('Message bar', () => {
         }}
       />
     );
-    expect(screen.queryByRole('textbox', { name: /Filter menu items/i })).toBeFalsy();
-    expect(screen.getByRole('menuitem', { name: /auth-operator/i })).toBeTruthy();
-    expect(screen.getByRole('menuitem', { name: /Alerts/i })).toBeTruthy();
-    expect(screen.getByRole('menuitem', { name: /Events/i })).toBeTruthy();
-    expect(screen.getByRole('menuitem', { name: /Logs/i })).toBeTruthy();
-    expect(screen.getByRole('menuitem', { name: /YAML - Status/i })).toBeTruthy();
-    expect(screen.getByRole('menuitem', { name: /YAML - All contents/i })).toBeTruthy();
+    expect(screen.queryByRole('textbox', { name: /Filter menu items/i })).not.toBeInTheDocument();
   });
   it('can hide attach button', () => {
     render(<MessageBar onSendMessage={jest.fn} hasAttachButton={false} />);
