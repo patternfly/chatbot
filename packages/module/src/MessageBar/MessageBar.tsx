@@ -10,6 +10,7 @@ import {
   TextAreaProps,
   TooltipProps
 } from '@patternfly/react-core';
+import { css } from '@patternfly/react-styles';
 
 // Import Chatbot components
 import SendButton from './SendButton';
@@ -115,6 +116,10 @@ export interface MessageBarProps extends Omit<TextAreaProps, 'innerRef'> {
   innerRef?: React.Ref<HTMLTextAreaElement>;
   /** Sets background color to primary */
   isPrimary?: boolean;
+  /** @beta Flag indicating whether the message bar has an AI indicator border. */
+  hasAiIndicator?: boolean;
+  /** @beta Flag indicating whether the chatbot is thinking in response to a query, adding an animation to the message bar. */
+  isThinking?: boolean;
 }
 
 export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
@@ -146,6 +151,8 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
   dropzoneProps,
   innerRef,
   isPrimary,
+  hasAiIndicator,
+  isThinking,
   ...props
 }: MessageBarProps) => {
   // Text Input
@@ -468,7 +475,15 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
   }
 
   return (
-    <div className={`pf-chatbot__message-bar ${isPrimary ? 'pf-m-primary' : ''} ${className ?? ''}`}>
+    <div
+      className={css(
+        'pf-chatbot__message-bar',
+        isPrimary && 'pf-m-primary',
+        hasAiIndicator && 'pf-v6-m-ai-indicator',
+        isThinking && 'pf-v6-m-thinking',
+        className
+      )}
+    >
       {messageBarContents}
     </div>
   );
