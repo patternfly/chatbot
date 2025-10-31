@@ -37,6 +37,7 @@
     "@patternfly/react-core": "^6.1.0",
     "@patternfly/react-icons": "^6.1.0",
     "@patternfly/react-table": "^6.1.0",
+    "@patternfly/react-styles": "^6.1.0",
     "@segment/analytics-next": "^1.76.0",
     "clsx": "^2.1.0",
     "path-browserify": "^1.0.1",

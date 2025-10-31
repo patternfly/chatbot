@@ -10,7 +10,7 @@ import {
   TextAreaProps,
   TooltipProps
 } from '@patternfly/react-core';
-import { css } from '../utils/css';
+import { css } from '@patternfly/react-styles';
 
 // Import Chatbot components
 import SendButton from './SendButton';
