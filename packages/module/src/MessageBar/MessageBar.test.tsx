@@ -325,6 +325,20 @@ describe('Message bar', () => {
     );
     await userEvent.click(screen.getByRole('button', { name: 'Test' }));
   });
+  it('can change attach button icon', () => {
+    render(
+      <MessageBar
+        onSendMessage={jest.fn}
+        hasAttachButton
+        buttonProps={{
+          attach: {
+            icon: <img alt="test-icon" src="" data-testid="new-icon" />
+          }
+        }}
+      />
+    );
+    expect(screen.getByTestId('new-icon')).toBeTruthy();
+  });
 
   // Stop button
   // --------------------------------------------------------------------------
