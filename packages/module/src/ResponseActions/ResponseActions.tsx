@@ -157,7 +157,6 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           ref={positive.ref}
           aria-expanded={positive['aria-expanded']}
           aria-controls={positive['aria-controls']}
-          aria-pressed={persistActionSelection ? activeButton === 'positive' : undefined}
         ></ResponseActionButton>
       )}
       {negative && (
@@ -176,7 +175,6 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           ref={negative.ref}
           aria-expanded={negative['aria-expanded']}
           aria-controls={negative['aria-controls']}
-          aria-pressed={persistActionSelection ? activeButton === 'negative' : undefined}
         ></ResponseActionButton>
       )}
       {copy && (
@@ -195,7 +193,6 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           ref={copy.ref}
           aria-expanded={copy['aria-expanded']}
           aria-controls={copy['aria-controls']}
-          aria-pressed={persistActionSelection ? activeButton === 'copy' : undefined}
         ></ResponseActionButton>
       )}
       {edit && (
@@ -214,7 +211,6 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           ref={edit.ref}
           aria-expanded={edit['aria-expanded']}
           aria-controls={edit['aria-controls']}
-          aria-pressed={persistActionSelection ? activeButton === 'edit' : undefined}
         ></ResponseActionButton>
       )}
       {share && (
@@ -233,7 +229,6 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           ref={share.ref}
           aria-expanded={share['aria-expanded']}
           aria-controls={share['aria-controls']}
-          aria-pressed={persistActionSelection ? activeButton === 'share' : undefined}
         ></ResponseActionButton>
       )}
       {download && (
@@ -252,7 +247,6 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           ref={download.ref}
           aria-expanded={download['aria-expanded']}
           aria-controls={download['aria-controls']}
-          aria-pressed={persistActionSelection ? activeButton === 'download' : undefined}
         ></ResponseActionButton>
       )}
       {listen && (
@@ -271,7 +265,6 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           ref={listen.ref}
           aria-expanded={listen['aria-expanded']}
           aria-controls={listen['aria-controls']}
-          aria-pressed={persistActionSelection ? activeButton === 'listen' : undefined}
         ></ResponseActionButton>
       )}
 
@@ -292,7 +285,6 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           ref={additionalActions[action]?.ref}
           aria-expanded={additionalActions[action]?.['aria-expanded']}
           aria-controls={additionalActions[action]?.['aria-controls']}
-          aria-pressed={persistActionSelection ? activeButton === action : undefined}
         />
       ))}
     </div>
