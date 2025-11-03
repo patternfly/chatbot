@@ -21,22 +21,40 @@
   justify-content: flex-end;
   background-color: var(--pf-t--global--background--color--primary--default);
   border-radius: calc(var(--pf-t--global--border--radius--medium) * 2);
-  transition: box-shadow var(--pf-t--global--motion--timing-function--accelerate)
+  transition: border-color var(--pf-t--global--motion--timing-function--accelerate)
     var(--pf-t--global--motion--duration--sm);
+  position: relative;
+  border: 1px solid transparent;
 
   overflow: hidden;
 
-  &:not(.pf-v6-m-thinking) {
-    &.pf-m-primary {
-      box-shadow: inset 0 0 0 1px var(--pf-t--global--border--color--default);
-    }
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 1px solid transparent;
+    pointer-events: none;
+    transition: border-color var(--pf-t--global--motion--timing-function--accelerate)
+      var(--pf-t--global--motion--duration--sm);
+  }
 
-    &:hover {
-      box-shadow: inset 0 0 0 1px var(--pf-t--global--border--color--default);
+  &.pf-m-primary {
+    &::after {
+      border-color: var(--pf-t--global--border--color--default);
     }
+  }
 
-    &:focus-within {
-      box-shadow: inset 0 0 0 2px var(--pf-t--global--color--brand--default);
+  &:hover {
+    &::after {
+      border-color: var(--pf-t--global--border--color--default);
+    }
+  }
+
+  &:focus-within {
+    &::after {
+      border-width: 2px;
+      border-color: var(--pf-t--global--color--brand--default);
     }
   }
 
@@ -139,10 +157,8 @@
 // ============================================================================
 :root:where(.pf-v6-theme-high-contrast) {
   .pf-chatbot__message-bar {
-    box-shadow: inset 0 0 0 1px var(--pf-t--global--border--color--default);
-
-    &:focus-within {
-      box-shadow: inset 0 0 0 2px var(--pf-t--global--color--brand--default);
+    &::after {
+      border-color: var(--pf-t--global--border--color--default);
     }
   }
 }
