@@ -1,5 +1,5 @@
 .pf-chatbot__tool-response {
-  --pf-v6-c-card--BorderColor: var(--pf-t--global--border--color--control--read-only);
+  --pf-v6-c-card--BorderColor: var(--pf-t--global--border--color--default);
   overflow: unset;
 }
 
@@ -25,23 +25,12 @@
 }
 
 .pf-chatbot__tool-response-card {
-  --pf-v6-c-card--BorderColor: var(--pf-t--global--border--color--control--read-only);
+  --pf-v6-c-card--BorderColor: var(--pf-t--global--border--color--default);
   --pf-v6-c-card--first-child--PaddingBlockStart: var(--pf-t--global--spacer--sm);
   --pf-v6-c-card__title--not--last-child--PaddingBlockEnd: var(--pf-t--global--spacer--sm);
   --pf-v6-c-card--c-divider--child--PaddingBlockStart: var(--pf-t--global--spacer--sm);
 
   .pf-v6-c-divider {
-    --pf-v6-c-divider--Color: var(--pf-t--global--border--color--control--read-only);
-  }
-}
-
-:root:where(.pf-v6-theme-high-contrast) {
-  .pf-chatbot__tool-response,
-  .pf-chatbot__tool-response-card {
-    --pf-v6-c-card--BorderColor: var(--pf-t--global--border--color--high-contrast);
-
-    .pf-v6-c-divider {
-      --pf-v6-c-divider--Color: var(--pf-t--global--border--color--high-contrast);
-    }
+    --pf-v6-c-divider--Color: var(--pf-t--global--border--color--default);
   }
 }
