@@ -3,7 +3,7 @@
 // ============================================================================
 import type { FunctionComponent, MouseEvent as ReactMouseEvent, Ref } from 'react';
 import { forwardRef } from 'react';
-import { Button, Content, ModalBody, ModalFooter, ModalHeader, ModalProps } from '@patternfly/react-core';
+import { Button, Content, ModalBody, ModalFooter, ModalProps } from '@patternfly/react-core';
 import { ChatbotDisplayMode } from '../Chatbot';
 import ChatbotModal from '../ChatbotModal/ChatbotModal';
 
@@ -78,38 +78,40 @@ export const OnboardingBase: FunctionComponent<OnboardingProps> = ({
     >
       {/* This is a workaround since the PatternFly modal doesn't have ref forwarding */}
       <section className={`pf-chatbot__onboarding--section`} aria-label={title} tabIndex={-1} ref={innerRef}>
-        <ModalHeader className="pf-chatbot__onboarding--modal-header">
-          <div className="pf-chatbot__onboarding--header">
+        <>
+          <ModalBody className="pf-chatbot__onboarding--modal-body">
             {!isCompact && image && altText && (
-              <img src={image} className="pf-chatbot__onboarding--image" alt={altText} />
+              <div className="pf-chatbot__onboarding--header">
+                <img src={image} className="pf-chatbot__onboarding--image" alt={altText} />
+              </div>
             )}
-            <h1 className="pf-chatbot__onboarding--title">{title}</h1>
-          </div>
-        </ModalHeader>
-        <ModalBody className="pf-chatbot__onboarding--modal-body">
-          <Content>{children}</Content>
-        </ModalBody>
-        <ModalFooter className="pf-chatbot__onboarding--footer">
-          <Button
-            isBlock
-            key="onboarding-modal-primary"
-            variant="primary"
-            onClick={handlePrimaryAction}
-            form="onboarding-form"
-            size="lg"
-          >
-            {primaryActionBtn}
-          </Button>
-          <Button
-            isBlock
-            key="onboarding-modal-secondary"
-            variant="secondary"
-            onClick={handleSecondaryAction}
-            size="lg"
-          >
-            {secondaryActionBtn}
-          </Button>
-        </ModalFooter>
+            <div className="pf-chatbot__onboarding--modal-text">
+              <h1 className="pf-chatbot__onboarding--title">{title}</h1>
+              <Content>{children}</Content>
+            </div>
+          </ModalBody>
+          <ModalFooter className="pf-chatbot__onboarding--footer">
+            <Button
+              isBlock
+              key="onboarding-modal-primary"
+              variant="primary"
+              onClick={handlePrimaryAction}
+              form="onboarding-form"
+              size="lg"
+            >
+              {primaryActionBtn}
+            </Button>
+            <Button
+              isBlock
+              key="onboarding-modal-secondary"
+              variant="secondary"
+              onClick={handleSecondaryAction}
+              size="lg"
+            >
+              {secondaryActionBtn}
+            </Button>
+          </ModalFooter>
+        </>
       </section>
     </ChatbotModal>
   );
