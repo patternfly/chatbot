@@ -1,6 +1,6 @@
 .pf-chatbot__tool-call {
-  --pf-v6-c-card--BorderColor: var(--pf-t--global--border--color--control--read-only);
   --pf-v6-c-card--BorderRadius: var(--pf-t--global--border--radius--small);
+  --pf-v6-c-card--BorderColor: var(--pf-t--global--border--color--default);
 
   overflow: unset;
   row-gap: var(--pf-t--global--spacer--sm);
