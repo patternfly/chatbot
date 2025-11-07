@@ -5,7 +5,7 @@
   display: flex;
   align-items: flex-start;
   gap: var(--pf-t--global--spacer--lg);
-  padding-bottom: var(--pf-t--global--spacer--xl);
+  padding-bottom: var(--pf-t--global--spacer--lg);
 
   // Avatar
   // --------------------------------------------------------------------------
@@ -156,8 +156,8 @@
 // ============================================================================
 .pf-chatbot.pf-m-compact {
   .pf-chatbot__message {
-    gap: var(--pf-t--global--spacer--md);
-    padding-bottom: var(--pf-t--global--spacer--sm);
+    gap: var(--pf-t--global--spacer--sm);
+    padding-bottom: var(--pf-t--global--spacer--md);
 
     .pf-chatbot__message-contents  {
       gap: var(--pf-t--global--spacer--xs);
