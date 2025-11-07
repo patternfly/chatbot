@@ -18,8 +18,10 @@
   }
 
   &-avatar.pf-chatbot__message-avatar--round.pf-v6-c-avatar {
-    --pf-v6-c-avatar--Width: 3rem;
-    --pf-v6-c-avatar--Height: 3rem;
+    &:not(.pf-m-xl, .pf-m-lg, .pf-m-md, .pf-m-sm) {
+      --pf-v6-c-avatar--Width: 3rem;
+      --pf-v6-c-avatar--Height: 3rem;
+    }
     --pf-v6-c-avatar--BorderRadius: var(--pf-t--global--border--radius--pill);
   }
 
@@ -169,8 +171,10 @@
   }
 
   .pf-chatbot__message-avatar.pf-chatbot__message-avatar--round.pf-v6-c-avatar {
-    --pf-v6-c-avatar--Width: 2rem;
-    --pf-v6-c-avatar--Height: 2rem;
+    &:not(.pf-m-xl, .pf-m-lg, .pf-m-md, .pf-m-sm) {
+      --pf-v6-c-avatar--Width: 1.5rem;
+      --pf-v6-c-avatar--Height: 1.5rem;
+    }
   }
 
   .pf-chatbot__message-contents {
