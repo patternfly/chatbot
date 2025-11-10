@@ -108,6 +108,9 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   actions?: {
     [key: string]: ActionProps;
   };
+  /** When true, the selected action will persist even when clicking outside the component.
+   * When false (default), clicking outside or clicking another action will deselect the current selection. */
+  persistActionSelection?: boolean;
   /** Sources for message */
   sources?: SourcesCardProps;
   /** Label for the English word "AI," used to tag messages with role "bot" */
@@ -202,6 +205,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   timestamp,
   isLoading,
   actions,
+  persistActionSelection,
   sources,
   botWord = 'AI',
   loadingWord = 'Loading message',
@@ -501,7 +505,9 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
                 isCompact={isCompact}
               />
             )}
-            {!isLoading && !isEditable && actions && <ResponseActions actions={actions} />}
+            {!isLoading && !isEditable && actions && (
+              <ResponseActions actions={actions} persistActionSelection={persistActionSelection} />
+            )}
             {userFeedbackForm && <UserFeedback {...userFeedbackForm} timestamp={dateString} isCompact={isCompact} />}
             {userFeedbackComplete && (
               <UserFeedbackComplete {...userFeedbackComplete} timestamp={dateString} isCompact={isCompact} />
