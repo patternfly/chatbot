@@ -90,8 +90,7 @@ export const OnboardingExample: FunctionComponent = () => {
     </MenuToggle>
   );
 
-  const body =
-    'Experience personalized assistance and seamless problem-solving, simplifying your journey with Red Hat every step of the way.';
+  const body = 'Simplify your Red Hat journey with personalized assistance and seamless problem-solving.';
 
   return (
     <>
