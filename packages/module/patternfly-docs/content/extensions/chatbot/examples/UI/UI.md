@@ -314,6 +314,16 @@ To enable the stop button, set `hasStopButton` to `true` and pass in a `handleSt
 
 ```
 
+### Message bar with AI indicator styles
+
+To add a more pronounced AI indicator style to the message bar, pass `hasAiIndicator` to the `<MessageBar>` component. You can also enable a "thinking" animation by passing in `isThinking`.
+
+This example shows a simplified method of handling the "thinking" animation: after a user sends a message, the `isThinking` property is set to `true` to trigger the animation, then returns to `false` after 10 seconds to halt the animation.
+
+```ts file="./ChatbotMessageBarIndicatorThinking.tsx" isBeta
+
+```
+
 ## Navigation
 
 ### Side nav in a drawer

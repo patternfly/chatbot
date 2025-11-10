@@ -30,7 +30,8 @@
       font-family: var(--pf-t--global--font--family--body);
     }
 
-    .pf-v6-c-code-block__actions-item {
+    // we are overriding some default PatternFly positioning here - it's only necessary for the first two items
+    .pf-chatbot__message-code-block-default-action {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -39,7 +40,7 @@
       font-weight: var(--pf-t--global--font--weight--body--bold);
     }
 
-    .pf-chatbot__button--copy.pf-v6-c-button {
+    .pf-v6-c-code-block__actions-item > .pf-v6-c-button.pf-m-plain {
       color: var(--pf-t--color--white); // same in light + dark theme
 
       &:hover,
@@ -80,6 +81,10 @@
   --pf-chatbot-message-text-inline-code-font-size: var(--pf-t--global--font--size--body--default);
   background-color: var(--pf-t--global--background--color--tertiary--default);
   font-size: var(--pf-chatbot-message-text-inline-code-font-size);
+
+  &.pf-m-primary {
+    background-color: var(--pf-t--global--background--color--secondary--default);
+  }
 }
 
 .pf-chatbot__message-code-toggle {

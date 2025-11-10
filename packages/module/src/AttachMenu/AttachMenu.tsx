@@ -11,22 +11,21 @@ import {
   DropdownProps,
   Dropdown,
   DropdownToggleProps,
-  DropdownPopperProps
+  PopperOptions,
+  MenuSearchInputProps,
+  SearchInputProps,
+  MenuSearchProps
 } from '@patternfly/react-core';
-
-export interface ExtendedDropdownPopperProps extends DropdownPopperProps {
-  distance: string;
-}
 
 export interface AttachMenuProps extends DropdownProps {
   /** Items in menu */
   filteredItems: React.ReactNode;
   /** A callback for when the input value changes. */
-  handleTextInputChange: (value: string) => void;
+  handleTextInputChange?: (value: string) => void;
   /** Flag to indicate if menu is opened. */
   isOpen: boolean;
   /** Additional properties to pass to the Popper */
-  popperProps?: ExtendedDropdownPopperProps;
+  popperProps?: PopperOptions;
   /** Callback to change the open state of the menu. Triggered by clicking outside of the menu. */
   onOpenChange: (isOpen: boolean) => void;
   /** Keys that trigger onOpenChange, defaults to tab and escape. It is highly recommended to include Escape in the array, while Tab may be omitted if the menu contains non-menu items that are focusable. */
@@ -39,6 +38,12 @@ export interface AttachMenuProps extends DropdownProps {
   searchInputAriaLabel?: string;
   /** Toggle to be rendered */
   toggle: DropdownToggleProps | ((toggleRef: React.RefObject<any>) => React.ReactNode);
+  /** Additional props passed to MenuSearch component */
+  menuSearchProps?: Omit<MenuSearchProps, 'ref'>;
+  /** Additional props passed to MenuSearchInput component */
+  menuSearchInputProps?: Omit<MenuSearchInputProps, 'ref'>;
+  /** Additional props passed to SearchInput component */
+  searchInputProps?: SearchInputProps;
 }
 
 export const AttachMenu: FunctionComponent<AttachMenuProps> = ({
@@ -53,6 +58,9 @@ export const AttachMenu: FunctionComponent<AttachMenuProps> = ({
   searchInputPlaceholder,
   searchInputAriaLabel = 'Filter menu items',
   toggle,
+  menuSearchProps,
+  menuSearchInputProps,
+  searchInputProps,
   ...props
 }: AttachMenuProps) => (
   <Dropdown
@@ -65,15 +73,18 @@ export const AttachMenu: FunctionComponent<AttachMenuProps> = ({
     onSelect={onSelect}
     {...props}
   >
-    <MenuSearch>
-      <MenuSearchInput>
-        <SearchInput
-          aria-label={searchInputAriaLabel}
-          onChange={(_event, value) => handleTextInputChange(value)}
-          placeholder={searchInputPlaceholder}
-        />
-      </MenuSearchInput>
-    </MenuSearch>
+    {handleTextInputChange && (
+      <MenuSearch {...menuSearchProps}>
+        <MenuSearchInput {...menuSearchInputProps}>
+          <SearchInput
+            aria-label={searchInputAriaLabel}
+            onChange={(_event, value) => handleTextInputChange(value)}
+            placeholder={searchInputPlaceholder}
+            {...searchInputProps}
+          />
+        </MenuSearchInput>
+      </MenuSearch>
+    )}
     {filteredItems}
   </Dropdown>
 );

@@ -53,11 +53,20 @@ export interface ResponseActionProps {
     listen?: ActionProps;
     edit?: ActionProps;
   };
+  /** When true, the selected action will persist even when clicking outside the component.
+   * When false (default), clicking outside or clicking another action will deselect the current selection. */
+  persistActionSelection?: boolean;
 }
 
-export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ actions }) => {
+export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
+  actions,
+  persistActionSelection = false
+}) => {
   const [activeButton, setActiveButton] = useState<string>();
   const [clickStatePersisted, setClickStatePersisted] = useState<boolean>(false);
+
+  const { positive, negative, copy, edit, share, download, listen, ...additionalActions } = actions;
+
   useEffect(() => {
     // Define the order of precedence for checking initial `isClicked`
     const actionPrecedence = ['positive', 'negative', 'copy', 'edit', 'share', 'download', 'listen'];
@@ -82,13 +91,21 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ action
       // Click state is explicitly controlled by consumer.
       setClickStatePersisted(true);
     }
+    // If persistActionSelection is true, all selections are persisted
+    if (persistActionSelection) {
+      setClickStatePersisted(true);
+    }
     setActiveButton(initialActive);
-  }, [actions]);
+  }, [actions, persistActionSelection]);
 
-  const { positive, negative, copy, edit, share, download, listen, ...additionalActions } = actions;
   const responseActions = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Only add click outside listener if not persisting selection
+    if (persistActionSelection) {
+      return;
+    }
+
     const handleClickOutside = (e) => {
       if (responseActions.current && !responseActions.current.contains(e.target) && !clickStatePersisted) {
         setActiveButton(undefined);
@@ -99,15 +116,26 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ action
     return () => {
       window.removeEventListener('click', handleClickOutside);
     };
-  }, [clickStatePersisted]);
+  }, [clickStatePersisted, persistActionSelection]);
 
   const handleClick = (
     e: MouseEvent | MouseEvent<Element, MouseEvent> | KeyboardEvent,
     id: string,
     onClick?: (event: MouseEvent | MouseEvent<Element, MouseEvent> | KeyboardEvent) => void
   ) => {
-    setClickStatePersisted(false);
-    setActiveButton(id);
+    if (persistActionSelection) {
+      if (activeButton === id) {
+        // Toggle off if clicking the same button
+        setActiveButton(undefined);
+      } else {
+        // Set new active button
+        setActiveButton(id);
+      }
+      setClickStatePersisted(true);
+    } else {
+      setClickStatePersisted(false);
+      setActiveButton(id);
+    }
     onClick && onClick(e);
   };
 
@@ -117,12 +145,12 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ action
         <ResponseActionButton
           {...positive}
           ariaLabel={positive.ariaLabel ?? 'Good response'}
-          clickedAriaLabel={positive.ariaLabel ?? 'Response recorded'}
+          clickedAriaLabel={positive.ariaLabel ?? 'Good response recorded'}
           onClick={(e) => handleClick(e, 'positive', positive.onClick)}
           className={positive.className}
           isDisabled={positive.isDisabled}
           tooltipContent={positive.tooltipContent ?? 'Good response'}
-          clickedTooltipContent={positive.clickedTooltipContent ?? 'Response recorded'}
+          clickedTooltipContent={positive.clickedTooltipContent ?? 'Good response recorded'}
           tooltipProps={positive.tooltipProps}
           icon={<OutlinedThumbsUpIcon />}
           isClicked={activeButton === 'positive'}
@@ -135,12 +163,12 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({ action
         <ResponseActionButton
           {...negative}
           ariaLabel={negative.ariaLabel ?? 'Bad response'}
-          clickedAriaLabel={negative.ariaLabel ?? 'Response recorded'}
+          clickedAriaLabel={negative.ariaLabel ?? 'Bad response recorded'}
           onClick={(e) => handleClick(e, 'negative', negative.onClick)}
           className={negative.className}
           isDisabled={negative.isDisabled}
           tooltipContent={negative.tooltipContent ?? 'Bad response'}
-          clickedTooltipContent={negative.clickedTooltipContent ?? 'Response recorded'}
+          clickedTooltipContent={negative.clickedTooltipContent ?? 'Bad response recorded'}
           tooltipProps={negative.tooltipProps}
           icon={<OutlinedThumbsDownIcon />}
           isClicked={activeButton === 'negative'}

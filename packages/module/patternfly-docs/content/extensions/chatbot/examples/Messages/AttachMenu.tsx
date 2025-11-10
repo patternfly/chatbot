@@ -125,7 +125,7 @@ export const AttachmentMenuExample: FunctionComponent = () => {
       // eslint-disable-next-line no-console
       onSelect={(_ev, value) => console.log('selected', value)}
       handleTextInputChange={onTextChange}
-      popperProps={{ direction: 'up', distance: '8' }}
+      popperProps={{ direction: 'up', distance: 8 }}
       searchInputPlaceholder="Search cluster resources..."
       toggle={(toggleRef) => (
         <Button

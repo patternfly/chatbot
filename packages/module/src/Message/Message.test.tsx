@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { monitorSampleAppQuickStart } from './QuickStarts/monitor-sampleapp-quickstart';
 import { monitorSampleAppQuickStartWithImage } from './QuickStarts/monitor-sampleapp-quickstart-with-image';
 import rehypeExternalLinks from '../__mocks__/rehype-external-links';
-import { AlertActionLink } from '@patternfly/react-core';
+import { AlertActionLink, Button, CodeBlockAction } from '@patternfly/react-core';
 import { DeepThinkingProps } from '../DeepThinking';
 
 const ALL_ACTIONS = [
@@ -227,6 +227,10 @@ describe('Message', () => {
   it('should render avatar correctly', () => {
     render(<Message avatar="./testImg" role="bot" name="Bot" content="Hi" />);
     expect(screen.getByRole('img')).toHaveAttribute('src', './testImg');
+  });
+  it('should not render avatar if no avatar prop is passed', () => {
+    render(<Message role="bot" name="Bot" content="Hi" />);
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
   });
   it('should render botWord correctly', () => {
     render(<Message avatar="./img" role="bot" name="Bot" content="Hi" botWord="人工知能" />);
@@ -612,6 +616,24 @@ describe('Message', () => {
     );
     expect(screen.getByRole('button', { name: 'test' })).toBeTruthy();
   });
+  it('should be able to add custom actions to CodeMessage', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="user"
+        name="User"
+        content={CODE_MESSAGE}
+        codeBlockProps={{
+          customActions: (
+            <CodeBlockAction>
+              <Button>New custom action</Button>
+            </CodeBlockAction>
+          )
+        }}
+      />
+    );
+    expect(screen.getByRole('button', { name: /New custom action/i })).toBeTruthy();
+  });
   it('should handle hasRoundAvatar correctly when it is true', () => {
     render(<Message avatar="./img" role="user" name="User" content="Hi" hasRoundAvatar />);
     expect(screen.getByRole('img')).toBeTruthy();
@@ -919,12 +941,16 @@ describe('Message', () => {
     expect(screen.getByTestId('after-main-content')).toContainHTML('<strong>Bold after content</strong>');
     expect(screen.getByTestId('end-main-content')).toContainHTML('<strong>Bold end content</strong>');
   });
-  it('should handle image correctly', () => {
+  it('should handle image correctly for user', () => {
     render(<Message avatar="./img" role="user" name="User" content={IMAGE} />);
+    expect(screen.queryByRole('img', { name: /Multi-colored wavy lines on a black background/i })).toBeFalsy();
+  });
+  it('should handle image correctly for bot', () => {
+    render(<Message avatar="./img" role="bot" name="Bot" content={IMAGE} />);
     expect(screen.getByRole('img', { name: /Multi-colored wavy lines on a black background/i })).toBeTruthy();
   });
   it('inline image parent should have class pf-chatbot__message-and-actions', () => {
-    render(<Message avatar="./img" role="user" name="User" content={INLINE_IMAGE} />);
+    render(<Message avatar="./img" role="bot" name="Bot" content={INLINE_IMAGE} />);
     expect(screen.getByRole('img', { name: /Multi-colored wavy lines on a black background/i })).toBeTruthy();
     expect(
       screen.getByRole('img', { name: /Multi-colored wavy lines on a black background/i }).parentElement
@@ -1046,10 +1072,66 @@ describe('Message', () => {
     // code block isn't rendering
     expect(screen.queryByRole('button', { name: 'Copy code' })).toBeFalsy();
   });
+  it('should disable images and additional tags for user messages', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="user"
+        name="User"
+        content={`${IMAGE} ${CODE_MESSAGE}`}
+        reactMarkdownProps={{ disallowedElements: ['code'] }}
+      />
+    );
+    expect(screen.getByText('Here is some YAML code:')).toBeTruthy();
+    // code block isn't rendering
+    expect(screen.queryByRole('button', { name: 'Copy code' })).toBeFalsy();
+    expect(screen.queryByRole('img', { name: /Multi-colored wavy lines on a black background/i })).toBeFalsy();
+  });
+  it('can override image tag removal default for user messages', () => {
+    render(<Message avatar="./img" role="user" name="User" content={IMAGE} hasNoImagesInUserMessages={false} />);
+    expect(screen.getByRole('img', { name: /Multi-colored wavy lines on a black background/i })).toBeTruthy();
+  });
   it('should render deep thinking section correctly', () => {
     render(<Message avatar="./img" role="user" name="User" content="" deepThinking={DEEP_THINKING} />);
     expect(screen.getByRole('button', { name: /Show thinking/i })).toBeTruthy();
     expect(screen.getByText('Thought for 3 seconds')).toBeTruthy();
     expect(screen.getByText("Here's why I said this.")).toBeTruthy();
+  });
+  it('should handle isPrimary correctly for inline code when it is true', () => {
+    const { container } = render(<Message avatar="./img" role="user" name="User" content={INLINE_CODE} isPrimary />);
+    expect(container.querySelector('.pf-m-primary')).toBeTruthy();
+  });
+  it('should handle isPrimary correctly for inline code when it is false', () => {
+    const { container } = render(<Message avatar="./img" role="user" name="User" content={INLINE_CODE} />);
+    expect(container.querySelector('.pf-m-primary')).toBeFalsy();
+  });
+  it('should handle isPrimary correctly for table when it is true', () => {
+    const { container } = render(<Message avatar="./img" role="user" name="User" content={TABLE} isPrimary />);
+    expect(container.querySelector('.pf-m-primary')).toBeTruthy();
+  });
+  it('should handle isPrimary correctly for table when it is false', () => {
+    const { container } = render(<Message avatar="./img" role="user" name="User" content={TABLE} />);
+    expect(container.querySelector('.pf-m-primary')).toBeFalsy();
+  });
+  it('should handle isPrimary correctly for loading when it is true', () => {
+    const { container } = render(<Message avatar="./img" role="user" name="User" content="" isPrimary isLoading />);
+    expect(container.querySelector('.pf-m-primary')).toBeTruthy();
+  });
+  it('should handle isPrimary correctly for loading when it is false', () => {
+    const { container } = render(<Message avatar="./img" role="user" name="User" content="" isLoading />);
+
+    expect(container.querySelector('.pf-m-primary')).toBeFalsy();
+  });
+  it('should handle isPrimary correctly for attachments when it is true', () => {
+    const { container } = render(
+      <Message avatar="./img" role="user" name="User" content="" isPrimary attachments={[{ name: 'testAttachment' }]} />
+    );
+    expect(container.querySelector('.pf-m-outline')).toBeTruthy();
+  });
+  it('should handle isPrimary correctly for attachments when it is false', () => {
+    const { container } = render(
+      <Message avatar="./img" role="user" name="User" content="" attachments={[{ name: 'testAttachment' }]} />
+    );
+    expect(container.querySelector('.pf-m-outline')).toBeFalsy();
   });
 });

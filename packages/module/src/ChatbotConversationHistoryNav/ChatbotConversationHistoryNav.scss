@@ -33,6 +33,8 @@
   .pf-v6-c-menu {
     --pf-v6-c-menu--PaddingBlockStart: 0;
     --pf-v6-c-menu--BackgroundColor: var(--pf-t--global--background--color--floating--default);
+    // override high contrast style
+    --pf-v6-c-menu--BorderWidth: 0;
     overflow: initial;
     position: relative;
   }
@@ -56,6 +58,8 @@
   .pf-chatbot__menu-item {
     --pf-v6-c-menu__item--PaddingInlineStart: var(--pf-t--global--spacer--sm);
     --pf-v6-c-menu__item--PaddingInlineEnd: var(--pf-t--global--spacer--sm);
+    // override high contrast style
+    --pf-v6-c-menu__list-item--BorderWidth: 0;
     padding-block-start: var(--pf-t--global--spacer--xs);
     padding-block-end: var(--pf-t--global--spacer--xs);
     color: var(--pf-t--global--text--color--regular);
@@ -63,6 +67,17 @@
     font-weight: var(--pf-t--global--font--weight--body--default);
     border-radius: var(--pf-t--global--border--radius--small);
   }
+
+  li.pf-chatbot__menu-item:hover::after {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    content: '';
+    border: var(--pf-t--global--border--width--action--plain--hover) solid
+      var(--pf-t--global--border--color--high-contrast);
+    border-radius: inherit;
+  }
+
   // allows focus state to have border radius
   .pf-v6-c-menu__list-item.pf-chatbot__menu-item {
     overflow: hidden;
@@ -74,6 +89,16 @@
 
   .pf-chatbot__menu-item--active {
     background-color: var(--pf-t--global--background--color--action--plain--clicked);
+  }
+
+  li.pf-chatbot__menu-item--active::after {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    content: '';
+    border: var(--pf-t--global--border--width--action--plain--clicked) solid
+      var(--pf-t--global--border--color--high-contrast);
+    border-radius: inherit;
   }
 
   button.pf-chatbot__menu-item--active {

@@ -173,4 +173,8 @@ describe('Attach button', () => {
     expect(validator).toHaveBeenCalledWith(file);
     expect(onAttachRejected).toHaveBeenCalled();
   });
+  it('should handle icon prop', () => {
+    render(<AttachButton icon={<img alt="" src="" />} />);
+    expect(screen.getByRole('img')).toBeVisible();
+  });
 });

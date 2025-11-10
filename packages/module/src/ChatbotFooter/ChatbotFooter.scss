@@ -11,6 +11,10 @@
   flex-direction: column;
   row-gap: var(--pf-chatbot__footer--RowGap);
   position: relative; // this is so focus ring on parent chatbot doesn't include footer
+
+  &.pf-m-primary {
+    background-color: var(--pf-t--global--background--color--primary--default);
+  }
 }
 .pf-chatbot__footer-container {
   padding: 0 var(--pf-t--global--spacer--lg) var(--pf-t--global--spacer--lg) var(--pf-t--global--spacer--lg);
@@ -61,4 +65,21 @@
 .pf-chatbot__footer.pf-m-compact .pf-chatbot__footer-container {
   padding: 0 var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--sm);
   row-gap: var(--pf-t--global--spacer--sm);
+}
+
+// ============================================================================
+// High contrast
+// ============================================================================
+:root:where(.pf-v6-theme-high-contrast) {
+  // Chatbot Display Mode - Fullscreen and Embedded
+  @media screen and (min-width: 64rem) {
+    .pf-chatbot--embedded,
+    .pf-chatbot--fullscreen {
+      .pf-chatbot__footer {
+        .pf-v6-c-divider {
+          display: var(--pf-v6-hidden-visible--Display);
+        }
+      }
+    }
+  }
 }

@@ -131,15 +131,23 @@ This demo displays a ChatBot in a static, inline drawer. This demo includes:
 
 ```
 
+### Primary color background
+
+This demo displays an embedded ChatBot with a [primary background color](/design-foundations/colors#background-colors). This example includes the same features as the [Embedded ChatBot demo](/patternfly-ai/chatbot/overview/demo/#embedded-chatbot)&mdash;the only differences are that the background color is adjusted via the `isPrimary` prop and some of the sample Messages have changed. You can use the same logic to adjust the background color in any ChatBot layout.
+
+```js file="./WhiteEmbeddedChatbot.tsx" isFullscreen
+
+```
+
 ### Display mode switcher
 
 This demo showcases how the ChatBot can be rendered in different display modes to suit various application layouts. It demonstrates how to dynamically change the page structure in response to the user's selection. This demo includes:
 
 1. The ability to switch between overlay, drawer, and fullscreen modes using the [`<ChatbotHeaderOptionsDropdown>`](/extensions/chatbot/ui#header-options) in the header.
 2. A conditional page layout that renders the ChatBot for each display mode option:
-    - **Overlay:** As a floating window on top of the page content.
-    - **Drawer:** Inside an inline PatternFly `<Drawer>` as a side panel.
-    - **Fullscreen:** As a top-level component that covers the entire screen for an embedded experience.
+   - **Overlay:** As a floating window on top of the page content.
+   - **Drawer:** Inside an inline PatternFly `<Drawer>` as a side panel.
+   - **Fullscreen:** As a top-level component that covers the entire screen for an embedded experience.
 3. Logic to show or hide the `<ChatbotToggle>` button, which is only present in the default overlay mode.
 4. A [basic ChatBot](#basic-chatbot) with a header, welcome prompt, and message bar to populate the different layouts.
 
@@ -170,7 +178,7 @@ Your code structure should look like this:
 
 ### Chat transcripts
 
-This demo illustrates how you could add downloadable transcripts to your ChatBot, which outline conversation details in a Markdown file. This approach allows users to easily share information from a conversation with others. 
+This demo illustrates how you could add downloadable transcripts to your ChatBot, which outline conversation details in a Markdown file. This approach allows users to easily share information from a conversation with others.
 
 A message transcript includes details from a single chat message. To download a sample message transcript in this demo, click the "Download" action under a bot message.
 

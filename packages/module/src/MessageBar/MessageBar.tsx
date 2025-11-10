@@ -1,12 +1,21 @@
 import type { ChangeEvent, FunctionComponent, KeyboardEvent as ReactKeyboardEvent, Ref } from 'react';
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { Accept, DropEvent, DropzoneOptions, FileError, FileRejection } from 'react-dropzone';
-import { ButtonProps, TextArea, TextAreaProps, TooltipProps } from '@patternfly/react-core';
+import {
+  ButtonProps,
+  MenuSearchInputProps,
+  MenuSearchProps,
+  SearchInputProps,
+  TextArea,
+  TextAreaProps,
+  TooltipProps
+} from '@patternfly/react-core';
+import { css } from '@patternfly/react-styles';
 
 // Import Chatbot components
 import SendButton from './SendButton';
 import MicrophoneButton from './MicrophoneButton';
-import { AttachButton } from './AttachButton';
+import { AttachButton, AttachButtonProps } from './AttachButton';
 import AttachMenu from '../AttachMenu';
 import StopButton from './StopButton';
 import { ChatbotDisplayMode } from '../Chatbot';
@@ -21,7 +30,7 @@ export interface MessageBarWithAttachMenuProps {
   /** A callback for when the attachment menu toggle is clicked */
   onAttachMenuToggleClick: () => void;
   /** A callback for when the input value in the menu changes. */
-  onAttachMenuInputChange: (value: string) => void;
+  onAttachMenuInputChange?: (value: string) => void;
   /** Function callback called when user selects item in menu. */
   onAttachMenuSelect?: (event?: React.MouseEvent<Element, MouseEvent>, value?: string | number) => void;
   /** Placeholder for search input */
@@ -30,6 +39,12 @@ export interface MessageBarWithAttachMenuProps {
   onAttachMenuOnOpenChangeKeys?: string[];
   /** Callback to change the open state of the menu. Triggered by clicking outside of the menu. */
   onAttachMenuOpenChange?: (isOpen: boolean) => void;
+  /** Additional props passed to MenuSearch component in attach menu */
+  menuSearchProps?: Omit<MenuSearchProps, 'ref'>;
+  /** Additional props passed to MenuSearchInput component in attach menu */
+  menuSearchInputProps?: Omit<MenuSearchInputProps, 'ref'>;
+  /** Additional props passed to SearchInput component in attach menu */
+  searchInputProps?: SearchInputProps;
 }
 
 export interface MessageBarProps extends Omit<TextAreaProps, 'innerRef'> {
@@ -81,12 +96,7 @@ export interface MessageBarProps extends Omit<TextAreaProps, 'innerRef'> {
   isSendButtonDisabled?: boolean;
   /** Prop to allow passage of additional props to buttons */
   buttonProps?: {
-    attach?: {
-      tooltipContent?: string;
-      props?: ButtonProps;
-      inputTestId?: string;
-      tooltipProps?: Omit<TooltipProps, 'content'>;
-    };
+    attach?: AttachButtonProps & { props?: ButtonProps };
     stop?: { tooltipContent?: string; props?: ButtonProps; tooltipProps?: Omit<TooltipProps, 'content'> };
     send?: { tooltipContent?: string; props?: ButtonProps; tooltipProps?: Omit<TooltipProps, 'content'> };
     microphone?: {
@@ -104,6 +114,12 @@ export interface MessageBarProps extends Omit<TextAreaProps, 'innerRef'> {
   isCompact?: boolean;
   /** Ref applied to message bar textarea, for use with focus or other custom behaviors  */
   innerRef?: React.Ref<HTMLTextAreaElement>;
+  /** Sets background color to primary */
+  isPrimary?: boolean;
+  /** @beta Flag indicating whether the message bar has an AI indicator border. */
+  hasAiIndicator?: boolean;
+  /** @beta Flag indicating whether the chatbot is thinking in response to a query, adding an animation to the message bar. */
+  isThinking?: boolean;
 }
 
 export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
@@ -134,6 +150,9 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
   validator,
   dropzoneProps,
   innerRef,
+  isPrimary,
+  hasAiIndicator,
+  isThinking,
   ...props
 }: MessageBarProps) => {
   // Text Input
@@ -359,7 +378,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
             onAttachRejected={onAttachRejected}
             validator={validator}
             dropzoneProps={dropzoneProps}
-            {...buttonProps?.attach?.props}
+            {...buttonProps?.attach}
           />
         )}
         {!attachMenuProps && hasAttachButton && (
@@ -379,6 +398,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
             onAttachRejected={onAttachRejected}
             validator={validator}
             dropzoneProps={dropzoneProps}
+            {...buttonProps?.attach}
             {...buttonProps?.attach?.props}
           />
         )}
@@ -447,13 +467,26 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
         onOpenChangeKeys={attachMenuProps?.onAttachMenuOnOpenChangeKeys}
         onSelect={attachMenuProps?.onAttachMenuSelect}
         {...(attachMenuProps && { handleTextInputChange: attachMenuProps.onAttachMenuInputChange })}
-        popperProps={{ direction: 'up', distance: '8' }}
+        popperProps={{ direction: 'up', distance: 8 }}
         searchInputPlaceholder={attachMenuProps?.attachMenuInputPlaceholder}
+        {...attachMenuProps}
       />
     );
   }
 
-  return <div className={`pf-chatbot__message-bar ${className ?? ''}`}>{messageBarContents}</div>;
+  return (
+    <div
+      className={css(
+        'pf-chatbot__message-bar',
+        isPrimary && 'pf-m-primary',
+        hasAiIndicator && 'pf-v6-m-ai-indicator',
+        isThinking && 'pf-v6-m-thinking',
+        className
+      )}
+    >
+      {messageBarContents}
+    </div>
+  );
 };
 
 const MessageBar = forwardRef((props: MessageBarProps, ref: Ref<HTMLTextAreaElement>) => (

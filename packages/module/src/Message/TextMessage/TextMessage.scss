@@ -47,6 +47,12 @@
     white-space: nowrap;
     width: 1px;
   }
+
+  &.pf-m-primary {
+    code {
+      background-color: var(--pf-t--global--background--color--secondary--default);
+    }
+  }
 }
 
 // ============================================================================
@@ -69,6 +75,12 @@ li[id*='user-content-fn-']:has(> span > span > .pf-chatbot__message-text + .pf-c
   > .pf-chatbot__message-text
   > p {
   margin-block-end: var(--pf-t--global--spacer--md);
+}
+
+.pf-chatbot__message-text.footnotes {
+  .data-footnote-backref {
+    width: fit-content;
+  }
 }
 
 .pf-chatbot__message--user {

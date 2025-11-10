@@ -1,5 +1,11 @@
 import '@testing-library/jest-dom';
-import { DropdownGroup, DropdownItem, DropdownList } from '@patternfly/react-core';
+import {
+  DropdownGroup,
+  DropdownItem,
+  DropdownList,
+  MenuSearchInputProps,
+  MenuSearchProps
+} from '@patternfly/react-core';
 import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon } from '@patternfly/react-icons';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -218,6 +224,71 @@ describe('Message bar', () => {
     await userEvent.click(attachButton);
     expect(attachToggleClickSpy).toHaveBeenCalledTimes(1);
   });
+  it('can pass searchInputProps to search input in AttachMenu', () => {
+    render(
+      <MessageBar
+        onSendMessage={jest.fn}
+        value="test"
+        attachMenuProps={{
+          isAttachMenuOpen: true,
+          setIsAttachMenuOpen: jest.fn(),
+          onAttachMenuToggleClick: jest.fn(),
+          onAttachMenuInputChange: jest.fn(),
+          attachMenuItems: ATTACH_MENU_ITEMS,
+          searchInputProps: { isDisabled: true }
+        }}
+      />
+    );
+    expect(screen.getByRole('textbox', { name: /Filter menu items/i })).toBeDisabled();
+  });
+  it('can pass menuSearchProps to search input in AttachMenu', () => {
+    render(
+      <MessageBar
+        onSendMessage={jest.fn}
+        value="test"
+        attachMenuProps={{
+          isAttachMenuOpen: true,
+          setIsAttachMenuOpen: jest.fn(),
+          onAttachMenuToggleClick: jest.fn(),
+          onAttachMenuInputChange: jest.fn(),
+          attachMenuItems: ATTACH_MENU_ITEMS,
+          menuSearchProps: { 'data-testid': 'menu-search' } as MenuSearchProps
+        }}
+      />
+    );
+    expect(screen.getByTestId('menu-search')).toBeTruthy();
+  });
+  it('can pass menuSearchInputProps to search input in AttachMenu', () => {
+    render(
+      <MessageBar
+        onSendMessage={jest.fn}
+        value="test"
+        attachMenuProps={{
+          isAttachMenuOpen: true,
+          setIsAttachMenuOpen: jest.fn(),
+          onAttachMenuToggleClick: jest.fn(),
+          onAttachMenuInputChange: jest.fn(),
+          attachMenuItems: ATTACH_MENU_ITEMS,
+          menuSearchInputProps: { 'data-testid': 'menu-search-input' } as MenuSearchInputProps
+        }}
+      />
+    );
+    expect(screen.getByTestId('menu-search-input')).toBeTruthy();
+  });
+  it('can remove input from attach menu', async () => {
+    render(
+      <MessageBar
+        onSendMessage={jest.fn}
+        attachMenuProps={{
+          isAttachMenuOpen: true,
+          setIsAttachMenuOpen: jest.fn(),
+          onAttachMenuToggleClick: jest.fn(),
+          attachMenuItems: ATTACH_MENU_ITEMS
+        }}
+      />
+    );
+    expect(screen.queryByRole('textbox', { name: /Filter menu items/i })).not.toBeInTheDocument();
+  });
   it('can hide attach button', () => {
     render(<MessageBar onSendMessage={jest.fn} hasAttachButton={false} />);
     expect(screen.queryByRole('button', { name: 'Attach' })).toBeFalsy();
@@ -267,6 +338,20 @@ describe('Message bar', () => {
       />
     );
     await userEvent.click(screen.getByRole('button', { name: 'Test' }));
+  });
+  it('can change attach button icon', () => {
+    render(
+      <MessageBar
+        onSendMessage={jest.fn}
+        hasAttachButton
+        buttonProps={{
+          attach: {
+            icon: <img alt="" src="" />
+          }
+        }}
+      />
+    );
+    expect(screen.getByRole('img')).toBeVisible();
   });
 
   // Stop button
@@ -386,5 +471,21 @@ describe('Message bar', () => {
     render(<MessageBar onSendMessage={jest.fn} innerRef={ref} />);
     ref.current?.focus();
     expect(document.activeElement).toBe(screen.getByRole('textbox'));
+  });
+  it('should handle isPrimary', () => {
+    const { container } = render(<MessageBar isPrimary onSendMessage={jest.fn} />);
+    expect(container.querySelector('.pf-m-primary')).toBeTruthy();
+  });
+
+  it('Renders with class pf-v6-m-ai-indicator when hasAiIndicator is true', () => {
+    render(<MessageBar onSendMessage={jest.fn} hasAiIndicator />);
+
+    expect(screen.getByRole('textbox').closest('.pf-chatbot__message-bar')).toHaveClass('pf-v6-m-ai-indicator');
+  });
+
+  it('Renders with class pf-v6-m-thinking when isThinking is true', () => {
+    render(<MessageBar onSendMessage={jest.fn} isThinking />);
+
+    expect(screen.getByRole('textbox').closest('.pf-chatbot__message-bar')).toHaveClass('pf-v6-m-thinking');
   });
 });

@@ -333,6 +333,7 @@ _Italic text, formatted with single underscores_
         avatar={userAvatar}
         avatarProps={{ isBordered: true }}
       />
+      <Message name="User" role="user" content="This is a user message with no avatar" />
       <Message
         name="User"
         role="user"
@@ -392,6 +393,7 @@ _Italic text, formatted with single underscores_
             clobberPrefix: 'user-message-'
           }
         }}
+        hasNoImagesInUserMessages={false}
       />
     </>
   );

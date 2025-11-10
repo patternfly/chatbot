@@ -1,16 +1,30 @@
 // ============================================================================
 // Code Modal - Chatbot Modal with Code Editor
 // ============================================================================
+
 import type { FunctionComponent, MouseEvent } from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import path from 'path-browserify';
+import * as monaco from 'monaco-editor';
+import { loader } from '@monaco-editor/react';
 
 // Import PatternFly components
 import { CodeEditor } from '@patternfly/react-code-editor';
-import { Button, ModalBody, ModalFooter, ModalHeader, Stack, StackItem } from '@patternfly/react-core';
+import {
+  Button,
+  getResizeObserver,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Stack,
+  StackItem
+} from '@patternfly/react-core';
 import FileDetails, { extensionToLanguage } from '../FileDetails';
 import { ChatbotDisplayMode } from '../Chatbot';
 import ChatbotModal from '../ChatbotModal/ChatbotModal';
+
+// Configure Monaco loader to use the npm package instead of CDN
+loader.config({ monaco });
 
 export interface CodeModalProps {
   /** Class applied to code editor */
@@ -73,6 +87,34 @@ export const CodeModal: FunctionComponent<CodeModalProps> = ({
   ...props
 }: CodeModalProps) => {
   const [newCode, setNewCode] = useState(code);
+  const [editorInstance, setEditorInstance] = useState<monaco.editor.IStandaloneCodeEditor | null>(null);
+  const [isEditorReady, setIsEditorReady] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isModalOpen || !isEditorReady || !editorInstance || !containerRef.current) {
+      return;
+    }
+
+    const handleResize = () => {
+      if (editorInstance && isEditorReady && isModalOpen) {
+        try {
+          window.requestAnimationFrame(() => {
+            editorInstance.layout();
+          });
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error('ChatBot code modal layout error:', error);
+        }
+      }
+    };
+
+    const observer = getResizeObserver(containerRef.current, handleResize);
+
+    return () => {
+      observer();
+    };
+  }, [editorInstance, isEditorReady, isModalOpen]);
 
   const handlePrimaryAction = (_event: MouseEvent | MouseEvent | KeyboardEvent) => {
     handleModalToggle(_event);
@@ -89,9 +131,15 @@ export const CodeModal: FunctionComponent<CodeModalProps> = ({
   };
 
   const onEditorDidMount = (editor, monaco) => {
-    editor.layout();
-    editor.focus();
+    setEditorInstance(editor);
+
     monaco.editor.getModels()[0].updateOptions({ tabSize: 5 });
+
+    if (containerRef.current) {
+      setIsEditorReady(true);
+      editor.layout();
+      editor.focus();
+    }
   };
 
   const onCodeChange = (value: string) => {
@@ -117,7 +165,7 @@ export const CodeModal: FunctionComponent<CodeModalProps> = ({
           <StackItem className="pf-chatbot__code-modal-file-details">
             <FileDetails fileName={fileName} />
           </StackItem>
-          <StackItem className="pf-chatbot__code-modal-editor">
+          <div className="pf-v6-l-stack__item pf-chatbot__code-modal-editor" ref={containerRef}>
             <CodeEditor
               isDarkTheme
               isLineNumbersVisible={isLineNumbersVisible}
@@ -132,11 +180,14 @@ export const CodeModal: FunctionComponent<CodeModalProps> = ({
               isFullHeight
               options={{
                 glyphMargin: false,
-                folding: false
+                folding: false,
+                // prevents Monaco from handling resizing itself
+                // was causing ResizeObserver issues
+                automaticLayout: false
               }}
               {...props}
             />
-          </StackItem>
+          </div>
         </Stack>
       </ModalBody>
       <ModalFooter className={modalFooterClassName}>

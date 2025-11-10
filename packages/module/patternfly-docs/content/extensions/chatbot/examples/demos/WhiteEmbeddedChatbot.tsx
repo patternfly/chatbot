@@ -1,7 +1,22 @@
 import { useEffect, useRef, useState, FunctionComponent, MouseEvent } from 'react';
-import { Bullseye, Brand, DropdownList, DropdownItem, DropdownGroup, SkipToContent } from '@patternfly/react-core';
 
-import ChatbotToggle from '@patternfly/chatbot/dist/dynamic/ChatbotToggle';
+import {
+  Bullseye,
+  Brand,
+  DropdownList,
+  DropdownItem,
+  Page,
+  Masthead,
+  MastheadMain,
+  MastheadBrand,
+  MastheadLogo,
+  PageSidebarBody,
+  PageSidebar,
+  MastheadToggle,
+  PageToggleButton,
+  SkipToContent
+} from '@patternfly/react-core';
+
 import Chatbot, { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
 import ChatbotContent from '@patternfly/chatbot/dist/dynamic/ChatbotContent';
 import ChatbotWelcomePrompt from '@patternfly/chatbot/dist/dynamic/ChatbotWelcomePrompt';
@@ -17,23 +32,16 @@ import ChatbotHeader, {
   ChatbotHeaderMain,
   ChatbotHeaderTitle,
   ChatbotHeaderActions,
-  ChatbotHeaderSelectorDropdown,
-  ChatbotHeaderOptionsDropdown
+  ChatbotHeaderSelectorDropdown
 } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
-
-import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
-import OpenDrawerRightIcon from '@patternfly/react-icons/dist/esm/icons/open-drawer-right-icon';
-import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/outlined-window-restore-icon';
 
 import PFHorizontalLogoColor from '../UI/PF-HorizontalLogo-Color.svg';
 import PFHorizontalLogoReverse from '../UI/PF-HorizontalLogo-Reverse.svg';
-import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
-import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
+import { BarsIcon } from '@patternfly/react-icons';
 import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
-import saveAs from 'file-saver';
 
 const footnoteProps = {
   label: 'ChatBot uses AI. Check for mistakes.',
@@ -89,85 +97,54 @@ const MessageLoading = () => (
 export default MessageLoading;
 
 ~~~
+
+Here is a table:
+
+ | Version | GA date | User role 
+ |-|-|-|
+ | 2.5 | September 30, 2024 | Administrator |
+ | 2.5 | June 27, 2023 | Editor |
+ | 3.0 | April 1, 2025 | Administrator
 `;
 
 // It's important to set a date and timestamp prop since the Message components re-render.
 // The timestamps re-render with them.
 const date = new Date();
 
-// Generate a file with individual message content
-const downloadMessageContent = (message: MessageProps, selectedModel: string) => {
-  const currentDate = new Date();
-  const dateStr = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD
-  const timeStr = currentDate.toTimeString().split(' ')[0]; // HH:MM:SS
-
-  const messageContent = `# AI Chat Transcript
-
-**Date:** ${dateStr}
-**Time:** ${timeStr}
-**Location:** PatternFly Chatbot Demo Platform
-
----
-
-## Participants:
-**User:** User
-**AI:** ${selectedModel}
-
----
-
-## Conversation Log
-
-${message.timestamp ? `**${message.timestamp?.toLocaleString()} AI:**` : `**AI:**`} ${message.content}
-
----
-
-## Notes:
-**Downloaded:** ${dateStr} at ${timeStr}
-`;
-
-  const blob = new Blob([messageContent], { type: 'text/plain;charset=utf-8' });
-  const fileName = `message-${message.role}-${message.id}-${dateStr}.md`;
-  saveAs(blob, fileName);
-};
-
-// Generate transcript for a specific conversation
-const generateConversationTranscript = (conversationText: string, selectedModel: string) => {
-  const currentDate = new Date();
-  const dateStr = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD
-  const timeStr = currentDate.toTimeString().split(' ')[0]; // HH:MM:SS
-
-  const transcript = `# AI Chat Transcript
-
-**Conversation Title:** ${conversationText}
-
-**Date:** ${dateStr}
-**Time:** ${timeStr}
-**Location:** PatternFly Chatbot Demo Platform
-
----
-
-## Participants:
-**User:** User
-**AI:** ${selectedModel}
-
----
-
-## Conversation Log
-
-**[${timeStr}] User:** ${conversationText}
-**[${timeStr}] AI:** ${markdown}
-
----
-
-## Notes:
-
-This is a sample conversation from your chat history. In a real implementation, this would contain the actual messages from this specific conversation.
-
-**Downloaded:** ${dateStr} at ${timeStr}
-`;
-
-  return transcript;
-};
+const initialMessages: MessageProps[] = [
+  {
+    id: '1',
+    role: 'user',
+    content: 'Hello, can you give me an example of what you can do?',
+    name: 'User',
+    avatar: userAvatar,
+    timestamp: date.toLocaleString(),
+    avatarProps: { isBordered: true },
+    isPrimary: true
+  },
+  {
+    id: '2',
+    role: 'bot',
+    content: markdown,
+    name: 'Bot',
+    avatar: patternflyAvatar,
+    timestamp: date.toLocaleString(),
+    actions: {
+      // eslint-disable-next-line no-console
+      positive: { onClick: () => console.log('Good response') },
+      // eslint-disable-next-line no-console
+      negative: { onClick: () => console.log('Bad response') },
+      // eslint-disable-next-line no-console
+      copy: { onClick: () => console.log('Copy') },
+      // eslint-disable-next-line no-console
+      download: { onClick: () => console.log('Download') },
+      // eslint-disable-next-line no-console
+      listen: { onClick: () => console.log('Listen') }
+    },
+    isPrimary: true,
+    attachments: [{ name: 'auth-operator.yml', id: '1' }]
+  }
+];
 
 const welcomePrompts = [
   {
@@ -180,87 +157,46 @@ const welcomePrompts = [
   }
 ];
 
-export const ChatbotDemo: FunctionComponent = () => {
-  const [chatbotVisible, setChatbotVisible] = useState<boolean>(true);
-  const [displayMode, setDisplayMode] = useState<ChatbotDisplayMode>(ChatbotDisplayMode.default);
-  const [selectedModel, setSelectedModel] = useState('Granite 7B');
-
-  const initialMessages: MessageProps[] = [
-    {
-      id: '1',
-      role: 'user',
-      content: 'Hello, can you give me an example of what you can do?',
-      name: 'User',
-      avatar: userAvatar,
-      timestamp: date.toLocaleString(),
-      avatarProps: { isBordered: true }
-    },
+const initialConversations = {
+  Today: [{ id: '1', text: 'Hello, can you give me an example of what you can do?' }],
+  'This month': [
     {
       id: '2',
-      role: 'bot',
-      content: markdown,
-      name: 'Bot',
-      avatar: patternflyAvatar,
-      timestamp: date.toLocaleString(),
-      actions: {
-        download: {
-          onClick: () =>
-            downloadMessageContent(
-              {
-                id: '2',
-                role: 'bot',
-                content: markdown,
-                name: 'Bot',
-                avatar: patternflyAvatar,
-                timestamp: date.toLocaleString()
-              },
-              selectedModel
-            )
-        }
-      }
-    }
-  ];
+      text: 'Enterprise Linux installation and setup'
+    },
+    { id: '3', text: 'Troubleshoot system crash' }
+  ],
+  March: [
+    { id: '4', text: 'Ansible security and updates' },
+    { id: '5', text: 'Red Hat certification' },
+    { id: '6', text: 'Lightspeed user documentation' }
+  ],
+  February: [
+    { id: '7', text: 'Crashing pod assistance' },
+    { id: '8', text: 'OpenShift AI pipelines' },
+    { id: '9', text: 'Updating subscription plan' },
+    { id: '10', text: 'Red Hat licensing options' }
+  ],
+  January: [
+    { id: '11', text: 'RHEL system performance' },
+    { id: '12', text: 'Manage user accounts' }
+  ]
+};
+
+export const EmbeddedChatbotDemo: FunctionComponent = () => {
   const [messages, setMessages] = useState<MessageProps[]>(initialMessages);
+  const [selectedModel, setSelectedModel] = useState('Granite 7B');
   const [isSendButtonDisabled, setIsSendButtonDisabled] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-  const initialConversations = {
-    Today: [
-      {
-        id: '1',
-        text: 'Hello, can you give me an example of what you can do?',
-        menuItems: (
-          <DropdownList key="transcript-example-initial-menu-items">
-            <DropdownItem
-              value="Download"
-              id={`Download-1`}
-              onClick={() => {
-                const transcriptContent = generateConversationTranscript(
-                  'Hello, can you give me an example of what you can do?',
-                  selectedModel
-                );
-                const blob = new Blob([transcriptContent], { type: 'text/plain;charset=utf-8' });
-                const fileName = `conversation-1-${new Date().toISOString().split('T')[0]}.md`;
-                saveAs(blob, fileName);
-              }}
-            >
-              Download transcript
-            </DropdownItem>
-          </DropdownList>
-        )
-      }
-    ]
-  };
-
   const [conversations, setConversations] = useState<Conversation[] | { [key: string]: Conversation[] }>(
     initialConversations
   );
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [announcement, setAnnouncement] = useState<string>();
   const scrollToBottomRef = useRef<HTMLDivElement>(null);
-  const toggleRef = useRef<HTMLButtonElement>(null);
-  const chatbotRef = useRef<HTMLDivElement>(null);
   const historyRef = useRef<HTMLButtonElement>(null);
 
+  const displayMode = ChatbotDisplayMode.embedded;
   // Auto-scrolls to the latest message
   useEffect(() => {
     // don't scroll the first load - in this demo, we know we start with two messages
@@ -271,13 +207,6 @@ export const ChatbotDemo: FunctionComponent = () => {
 
   const onSelectModel = (_event: MouseEvent<Element, MouseEvent> | undefined, value: string | number | undefined) => {
     setSelectedModel(value as string);
-  };
-
-  const onSelectDisplayMode = (
-    _event: MouseEvent<Element, MouseEvent> | undefined,
-    value: string | number | undefined
-  ) => {
-    setDisplayMode(value as ChatbotDisplayMode);
   };
 
   // you will likely want to come up with your own unique id function; this is for demo purposes only
@@ -302,16 +231,18 @@ export const ChatbotDemo: FunctionComponent = () => {
       name: 'User',
       avatar: userAvatar,
       timestamp: date.toLocaleString(),
-      avatarProps: { isBordered: true }
+      avatarProps: { isBordered: true },
+      isPrimary: true
     });
     newMessages.push({
       id: generateId(),
       role: 'bot',
       content: 'API response goes here',
       name: 'Bot',
-      isLoading: true,
       avatar: patternflyAvatar,
-      timestamp: date.toLocaleString()
+      isLoading: true,
+      timestamp: date.toLocaleString(),
+      isPrimary: true
     });
     setMessages(newMessages);
     // make announcement to assistive devices that new messages have been added
@@ -320,40 +251,31 @@ export const ChatbotDemo: FunctionComponent = () => {
     // this is for demo purposes only; in a real situation, there would be an API response we would wait for
     setTimeout(() => {
       const loadedMessages: MessageProps[] = [];
-      // We can't use structuredClone since messages contains functions, but we can't mutate
+      // we can't use structuredClone since messages contains functions, but we can't mutate
       // items that are going into state or the UI won't update correctly
       newMessages.forEach((message) => loadedMessages.push(message));
       loadedMessages.pop();
-      const id = generateId();
-      const timestamp = date.toLocaleString();
-      const avatar = patternflyAvatar;
-      const name = 'Bot';
-      const content = 'API response goes here';
-      const role = 'bot';
       loadedMessages.push({
-        id,
-        role,
-        content,
-        name,
+        id: generateId(),
+        role: 'bot',
+        content: 'API response goes here',
+        name: 'Bot',
+        avatar: patternflyAvatar,
         isLoading: false,
-        avatar,
-        timestamp,
         actions: {
-          download: {
-            onClick: () =>
-              downloadMessageContent(
-                {
-                  id,
-                  role,
-                  content,
-                  name,
-                  avatar,
-                  timestamp
-                },
-                selectedModel
-              )
-          }
-        }
+          // eslint-disable-next-line no-console
+          positive: { onClick: () => console.log('Good response') },
+          // eslint-disable-next-line no-console
+          negative: { onClick: () => console.log('Bad response') },
+          // eslint-disable-next-line no-console
+          copy: { onClick: () => console.log('Copy') },
+          // eslint-disable-next-line no-console
+          download: { onClick: () => console.log('Download') },
+          // eslint-disable-next-line no-console
+          listen: { onClick: () => console.log('Listen') }
+        },
+        timestamp: date.toLocaleString(),
+        isPrimary: true
       });
       setMessages(loadedMessages);
       // make announcement to assistive devices that new message has loaded
@@ -385,55 +307,52 @@ export const ChatbotDemo: FunctionComponent = () => {
     </Bullseye>
   );
 
-  const iconLogo = (
-    <>
-      <Brand className="show-light" src={PFIconLogoColor} alt="PatternFly" />
-      <Brand className="show-dark" src={PFIconLogoReverse} alt="PatternFly" />
-    </>
+  const masthead = (
+    <Masthead>
+      <MastheadMain>
+        <MastheadToggle>
+          <PageToggleButton
+            variant="plain"
+            aria-label="Global navigation"
+            isSidebarOpen={isSidebarOpen}
+            onSidebarToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+            id="fill-nav-toggle"
+          >
+            <BarsIcon />
+          </PageToggleButton>
+        </MastheadToggle>
+        <MastheadBrand>
+          <MastheadLogo href="https://patternfly.org" target="_blank">
+            Logo
+          </MastheadLogo>
+        </MastheadBrand>
+      </MastheadMain>
+    </Masthead>
   );
 
-  const handleSkipToContent = (e) => {
-    e.preventDefault();
-    /* eslint-disable indent */
-    switch (displayMode) {
-      case ChatbotDisplayMode.default:
-        if (!chatbotVisible && toggleRef.current) {
-          toggleRef.current.focus();
-        }
-        if (chatbotVisible && chatbotRef.current) {
-          chatbotRef.current.focus();
-        }
-        break;
+  const sidebar = (
+    <PageSidebar isSidebarOpen={isSidebarOpen} id="fill-sidebar">
+      <PageSidebarBody>Navigation</PageSidebarBody>
+    </PageSidebar>
+  );
 
-      case ChatbotDisplayMode.docked:
-        if (chatbotRef.current) {
-          chatbotRef.current.focus();
-        }
-        break;
-      default:
-        if (historyRef.current) {
-          historyRef.current.focus();
-        }
-        break;
+  const skipToChatbot = (event: MouseEvent) => {
+    event.preventDefault();
+    if (historyRef.current) {
+      historyRef.current.focus();
     }
-    /* eslint-enable indent */
   };
 
+  const skipToContent = (
+    /* You can also add a SkipToContent for your main content here */
+    <SkipToContent href="#" onClick={skipToChatbot}>
+      Skip to chatbot
+    </SkipToContent>
+  );
+
   return (
-    <>
-      <SkipToContent onClick={handleSkipToContent} href="#">
-        Skip to chatbot
-      </SkipToContent>
-      <ChatbotToggle
-        tooltipLabel="Chatbot"
-        isChatbotVisible={chatbotVisible}
-        onToggleChatbot={function () {
-          setChatbotVisible(!chatbotVisible);
-        }}
-        id="chatbot-toggle"
-        ref={toggleRef}
-      />
-      <Chatbot isVisible={chatbotVisible} displayMode={displayMode} ref={chatbotRef}>
+    <Page skipToContent={skipToContent} masthead={masthead} sidebar={sidebar} isContentFilled>
+      <Chatbot displayMode={displayMode}>
         <ChatbotConversationHistoryNav
           displayMode={displayMode}
           onDrawerToggle={() => {
@@ -469,11 +388,7 @@ export const ChatbotDemo: FunctionComponent = () => {
                     aria-expanded={isDrawerOpen}
                     onMenuToggle={() => setIsDrawerOpen(!isDrawerOpen)}
                   />
-                  <ChatbotHeaderTitle
-                    displayMode={displayMode}
-                    showOnFullScreen={horizontalLogo}
-                    showOnDefault={iconLogo}
-                  ></ChatbotHeaderTitle>
+                  <ChatbotHeaderTitle>{horizontalLogo}</ChatbotHeaderTitle>
                 </ChatbotHeaderMain>
                 <ChatbotHeaderActions>
                   <ChatbotHeaderSelectorDropdown value={selectedModel} onSelect={onSelectModel}>
@@ -489,39 +404,9 @@ export const ChatbotDemo: FunctionComponent = () => {
                       </DropdownItem>
                     </DropdownList>
                   </ChatbotHeaderSelectorDropdown>
-                  <ChatbotHeaderOptionsDropdown onSelect={onSelectDisplayMode}>
-                    <DropdownGroup label="Display mode">
-                      <DropdownList>
-                        <DropdownItem
-                          value={ChatbotDisplayMode.default}
-                          key="switchDisplayOverlay"
-                          icon={<OutlinedWindowRestoreIcon aria-hidden />}
-                          isSelected={displayMode === ChatbotDisplayMode.default}
-                        >
-                          <span>Overlay</span>
-                        </DropdownItem>
-                        <DropdownItem
-                          value={ChatbotDisplayMode.docked}
-                          key="switchDisplayDock"
-                          icon={<OpenDrawerRightIcon aria-hidden />}
-                          isSelected={displayMode === ChatbotDisplayMode.docked}
-                        >
-                          <span>Dock to window</span>
-                        </DropdownItem>
-                        <DropdownItem
-                          value={ChatbotDisplayMode.fullscreen}
-                          key="switchDisplayFullscreen"
-                          icon={<ExpandIcon aria-hidden />}
-                          isSelected={displayMode === ChatbotDisplayMode.fullscreen}
-                        >
-                          <span>Fullscreen</span>
-                        </DropdownItem>
-                      </DropdownList>
-                    </DropdownGroup>
-                  </ChatbotHeaderOptionsDropdown>
                 </ChatbotHeaderActions>
               </ChatbotHeader>
-              <ChatbotContent>
+              <ChatbotContent isPrimary>
                 {/* Update the announcement prop on MessageBox whenever a new message is sent
                  so that users of assistive devices receive sufficient context  */}
                 <MessageBox announcement={announcement}>
@@ -531,9 +416,9 @@ export const ChatbotDemo: FunctionComponent = () => {
                     prompts={welcomePrompts}
                   />
                   {/* This code block enables scrolling to the top of the last message.
-                  You can instead choose to move the div with scrollToBottomRef on it below
+                  You can instead choose to move the div with scrollToBottomRef on it below 
                   the map of messages, so that users are forced to scroll to the bottom.
-                  If you are using streaming, you will want to take a different approach;
+                  If you are using streaming, you will want to take a different approach; 
                   see: https://github.com/patternfly/chatbot/issues/201#issuecomment-2400725173 */}
                   {messages.map((message, index) => {
                     if (index === messages.length - 1) {
@@ -548,8 +433,9 @@ export const ChatbotDemo: FunctionComponent = () => {
                   })}
                 </MessageBox>
               </ChatbotContent>
-              <ChatbotFooter>
+              <ChatbotFooter isPrimary>
                 <MessageBar
+                  isPrimary
                   onSendMessage={handleSend}
                   hasMicrophoneButton
                   isSendButtonDisabled={isSendButtonDisabled}
@@ -560,6 +446,6 @@ export const ChatbotDemo: FunctionComponent = () => {
           }
         ></ChatbotConversationHistoryNav>
       </Chatbot>
-    </>
+    </Page>
   );
 };

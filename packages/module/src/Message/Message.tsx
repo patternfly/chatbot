@@ -11,8 +11,6 @@ import {
   AvatarProps,
   ButtonProps,
   ContentVariants,
-  ExpandableSectionProps,
-  ExpandableSectionToggleProps,
   FormProps,
   Label,
   LabelGroupProps,
@@ -20,7 +18,7 @@ import {
   Truncate
 } from '@patternfly/react-core';
 import MessageLoading from './MessageLoading';
-import CodeBlockMessage from './CodeBlockMessage/CodeBlockMessage';
+import CodeBlockMessage, { CodeBlockMessageProps } from './CodeBlockMessage/CodeBlockMessage';
 import TextMessage from './TextMessage/TextMessage';
 import FileDetailsLabel from '../FileDetailsLabel/FileDetailsLabel';
 import ResponseActions, { ActionProps } from '../ResponseActions/ResponseActions';
@@ -44,6 +42,9 @@ import ImageMessage from './ImageMessage/ImageMessage';
 import rehypeUnwrapImages from 'rehype-unwrap-images';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeSanitize from 'rehype-sanitize';
+import rehypeHighlight from 'rehype-highlight';
+// see the full list of styles here: https://highlightjs.org/examples
+import 'highlight.js/styles/vs2015.css';
 import { PluggableList } from 'unified';
 import LinkMessage from './LinkMessage/LinkMessage';
 import ErrorMessage from './ErrorMessage/ErrorMessage';
@@ -96,7 +97,7 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   /** Name of the user */
   name?: string;
   /** Avatar src for the user */
-  avatar: string;
+  avatar?: string;
   /** Timestamp for the message */
   timestamp?: string;
   /** Set this to true if message is being loaded */
@@ -107,6 +108,9 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   actions?: {
     [key: string]: ActionProps;
   };
+  /** When true, the selected action will persist even when clicking outside the component.
+   * When false (default), clicking outside or clicking another action will deselect the current selection. */
+  persistActionSelection?: boolean;
   /** Sources for message */
   sources?: SourcesCardProps;
   /** Label for the English word "AI," used to tag messages with role "bot" */
@@ -114,24 +118,7 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   /** Label for the English "Loading message," displayed to screenreaders when loading a message */
   loadingWord?: string;
   /** Props for code blocks */
-  codeBlockProps?: {
-    /** Aria label applied to code blocks */
-    'aria-label'?: string;
-    /** Class name applied to code blocks */
-    className?: string;
-    /** Whether code blocks are expandable */
-    isExpandable?: boolean;
-    /** Length of text initially shown in expandable code blocks; defaults to 10 characters */
-    maxLength?: number;
-    /** Additional props passed to expandable section if isExpandable is applied */
-    expandableSectionProps?: Omit<ExpandableSectionProps, 'ref'>;
-    /** Additional props passed to expandable toggle if isExpandable is applied */
-    expandableSectionToggleProps?: ExpandableSectionToggleProps;
-    /** Link text applied to expandable toggle when expanded */
-    expandedText?: string;
-    /** Link text applied to expandable toggle when collapsed */
-    collapsedText?: string;
-  };
+  codeBlockProps?: CodeBlockMessageProps;
   /** Props for quick responses */
   quickResponses?: QuickResponse[];
   /** Props for quick responses container */
@@ -203,6 +190,10 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   remarkGfmProps?: Options;
   /** Props for a tool call message */
   toolCall?: ToolCallProps;
+  /** Whether user messages default to stripping out images in markdown */
+  hasNoImagesInUserMessages?: boolean;
+  /** Sets background colors to be appropriate on primary chatbot background */
+  isPrimary?: boolean;
 }
 
 export const MessageBase: FunctionComponent<MessageProps> = ({
@@ -214,6 +205,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   timestamp,
   isLoading,
   actions,
+  persistActionSelection,
   sources,
   botWord = 'AI',
   loadingWord = 'Loading message',
@@ -249,6 +241,8 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   deepThinking,
   remarkGfmProps,
   toolCall,
+  hasNoImagesInUserMessages = true,
+  isPrimary,
   ...props
 }: MessageProps) => {
   const [messageText, setMessageText] = useState(content);
@@ -258,7 +252,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   }, [content]);
 
   const { beforeMainContent, afterMainContent, endContent } = extraContent || {};
-  let rehypePlugins: PluggableList = [rehypeUnwrapImages, rehypeMoveImagesOutOfParagraphs];
+  let rehypePlugins: PluggableList = [rehypeUnwrapImages, rehypeMoveImagesOutOfParagraphs, rehypeHighlight];
   if (openLinkInNewTab) {
     rehypePlugins = rehypePlugins.concat([[rehypeExternalLinks, { target: '_blank' }, rehypeSanitize]]);
   }
@@ -274,6 +268,11 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   // Keep timestamps consistent between Timestamp component and aria-label
   const date = new Date();
   const dateString = timestamp ?? `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+
+  const disallowedElements = role === 'user' && hasNoImagesInUserMessages ? ['img'] : [];
+  if (reactMarkdownProps && reactMarkdownProps.disallowedElements) {
+    disallowedElements.push(...reactMarkdownProps.disallowedElements);
+  }
 
   const handleMarkdown = () => {
     if (isMarkdownDisabled) {
@@ -294,13 +293,13 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
           p: (props) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { node, ...rest } = props;
-            return <TextMessage component={ContentVariants.p} {...rest} />;
+            return <TextMessage component={ContentVariants.p} {...rest} isPrimary={isPrimary} />;
           },
           code: ({ children, ...props }) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { node, ...codeProps } = props;
             return (
-              <CodeBlockMessage {...codeProps} {...codeBlockProps}>
+              <CodeBlockMessage {...codeProps} {...codeBlockProps} isPrimary={isPrimary}>
                 {children}
               </CodeBlockMessage>
             );
@@ -356,7 +355,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
             return <ListItemMessage {...rest} />;
           },
           // table requires node attribute for calculating headers for mobile breakpoint
-          table: (props) => <TableMessage {...props} {...tableProps} />,
+          table: (props) => <TableMessage {...props} {...tableProps} isPrimary={isPrimary} />,
           tbody: (props) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { node, ...rest } = props;
@@ -415,6 +414,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
           footnoteLabelProperties: { className: [''] },
           ...reactMarkdownProps?.remarkRehypeOptions
         }}
+        disallowedElements={disallowedElements}
       >
         {messageText}
       </Markdown>
@@ -423,7 +423,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
 
   const renderMessage = () => {
     if (isLoading) {
-      return <MessageLoading loadingWord={loadingWord} />;
+      return <MessageLoading loadingWord={loadingWord} isPrimary={isPrimary} />;
     }
     if (isEditable) {
       return (
@@ -463,12 +463,14 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
       {...props}
     >
       {/* We are using an empty alt tag intentionally in order to reduce noise on screen readers */}
-      <Avatar
-        className={`pf-chatbot__message-avatar ${hasRoundAvatar ? 'pf-chatbot__message-avatar--round' : ''} ${avatarClassName ? avatarClassName : ''}`}
-        src={avatar}
-        alt=""
-        {...avatarProps}
-      />
+      {avatar && (
+        <Avatar
+          className={`pf-chatbot__message-avatar ${hasRoundAvatar ? 'pf-chatbot__message-avatar--round' : ''} ${avatarClassName ? avatarClassName : ''}`}
+          src={avatar}
+          alt=""
+          {...avatarProps}
+        />
+      )}
       <div className="pf-chatbot__message-contents">
         <div className="pf-chatbot__message-meta">
           {name && (
@@ -503,7 +505,9 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
                 isCompact={isCompact}
               />
             )}
-            {!isLoading && !isEditable && actions && <ResponseActions actions={actions} />}
+            {!isLoading && !isEditable && actions && (
+              <ResponseActions actions={actions} persistActionSelection={persistActionSelection} />
+            )}
             {userFeedbackForm && <UserFeedback {...userFeedbackForm} timestamp={dateString} isCompact={isCompact} />}
             {userFeedbackComplete && (
               <UserFeedbackComplete {...userFeedbackComplete} timestamp={dateString} isCompact={isCompact} />
@@ -529,6 +533,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
                     closeButtonAriaLabel={attachment.closeButtonAriaLabel}
                     languageTestId={attachment.languageTestId}
                     spinnerTestId={attachment.spinnerTestId}
+                    variant={isPrimary ? 'outline' : undefined}
                   />
                 </div>
               ))}

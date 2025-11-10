@@ -51,6 +51,8 @@ export interface AttachButtonProps extends ButtonProps {
   validator?: <T extends File>(file: T) => FileError | readonly FileError[] | null;
   /** Additional props passed to react-dropzone */
   dropzoneProps?: DropzoneOptions;
+  /** Icon displayed in attach button */
+  icon?: React.ReactNode;
 }
 
 const AttachButtonBase: FunctionComponent<AttachButtonProps> = ({
@@ -72,6 +74,7 @@ const AttachButtonBase: FunctionComponent<AttachButtonProps> = ({
   onAttachRejected,
   validator,
   dropzoneProps,
+  icon = <PaperclipIcon />,
   ...props
 }: AttachButtonProps) => {
   const { open, getInputProps } = useDropzone({
@@ -113,7 +116,7 @@ const AttachButtonBase: FunctionComponent<AttachButtonProps> = ({
           onClick={onClick ?? open}
           icon={
             <Icon iconSize={isCompact ? 'lg' : 'xl'} isInline>
-              <PaperclipIcon />
+              {icon}
             </Icon>
           }
           size={isCompact ? 'sm' : undefined}

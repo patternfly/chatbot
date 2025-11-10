@@ -6,8 +6,8 @@ import { DownloadIcon, InfoCircleIcon, RedoIcon } from '@patternfly/react-icons'
 import Message from '../Message';
 
 const ALL_ACTIONS = [
-  { type: 'positive', label: 'Good response', clickedLabel: 'Response recorded' },
-  { type: 'negative', label: 'Bad response', clickedLabel: 'Response recorded' },
+  { type: 'positive', label: 'Good response', clickedLabel: 'Good response recorded' },
+  { type: 'negative', label: 'Bad response', clickedLabel: 'Bad response recorded' },
   { type: 'copy', label: 'Copy', clickedLabel: 'Copied' },
   { type: 'edit', label: 'Edit', clickedLabel: 'Editing' },
   { type: 'share', label: 'Share', clickedLabel: 'Shared' },
@@ -81,7 +81,7 @@ describe('ResponseActions', () => {
       expect(button).toBeTruthy();
     });
     await userEvent.click(goodBtn);
-    expect(screen.getByRole('button', { name: 'Response recorded' })).toHaveClass(
+    expect(screen.getByRole('button', { name: 'Good response recorded' })).toHaveClass(
       'pf-chatbot__button--response-action-clicked'
     );
     let unclickedButtons = buttons.filter((button) => button !== goodBtn);
@@ -89,7 +89,7 @@ describe('ResponseActions', () => {
       expect(button).not.toHaveClass('pf-chatbot__button--response-action-clicked');
     });
     await userEvent.click(badBtn);
-    expect(screen.getByRole('button', { name: 'Response recorded' })).toHaveClass(
+    expect(screen.getByRole('button', { name: 'Bad response recorded' })).toHaveClass(
       'pf-chatbot__button--response-action-clicked'
     );
     unclickedButtons = buttons.filter((button) => button !== badBtn);
@@ -117,13 +117,13 @@ describe('ResponseActions', () => {
     expect(badBtn).toBeTruthy();
 
     await userEvent.click(goodBtn);
-    expect(screen.getByRole('button', { name: 'Response recorded' })).toHaveClass(
+    expect(screen.getByRole('button', { name: 'Good response recorded' })).toHaveClass(
       'pf-chatbot__button--response-action-clicked'
     );
     expect(badBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
 
     await userEvent.click(badBtn);
-    expect(screen.getByRole('button', { name: 'Response recorded' })).toHaveClass(
+    expect(screen.getByRole('button', { name: 'Bad response recorded' })).toHaveClass(
       'pf-chatbot__button--response-action-clicked'
     );
     expect(goodBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
@@ -238,30 +238,30 @@ describe('ResponseActions', () => {
   });
 
   it('should be able to call onClick correctly', async () => {
-    ALL_ACTIONS.forEach(async ({ type, label }) => {
+    for (const { type, label } of ALL_ACTIONS) {
       const spy = jest.fn();
       render(<ResponseActions actions={{ [type]: { onClick: spy } }} />);
       await userEvent.click(screen.getByRole('button', { name: label }));
       expect(spy).toHaveBeenCalledTimes(1);
-    });
+    }
   });
 
   it('should swap clicked and non-clicked aria labels on click', async () => {
-    ALL_ACTIONS.forEach(async ({ type, label, clickedLabel }) => {
+    for (const { type, label, clickedLabel } of ALL_ACTIONS) {
       render(<ResponseActions actions={{ [type]: { onClick: jest.fn() } }} />);
       expect(screen.getByRole('button', { name: label })).toBeTruthy();
       await userEvent.click(screen.getByRole('button', { name: label }));
       expect(screen.getByRole('button', { name: clickedLabel })).toBeTruthy();
-    });
+    }
   });
 
   it('should swap clicked and non-clicked tooltips on click', async () => {
-    ALL_ACTIONS.forEach(async ({ type, label, clickedLabel }) => {
+    for (const { type, label, clickedLabel } of ALL_ACTIONS) {
       render(<ResponseActions actions={{ [type]: { onClick: jest.fn() } }} />);
       expect(screen.getByRole('button', { name: label })).toBeTruthy();
       await userEvent.click(screen.getByRole('button', { name: label }));
       expect(screen.getByRole('tooltip', { name: clickedLabel })).toBeTruthy();
-    });
+    }
   });
 
   it('should be able to change aria labels', () => {
@@ -321,5 +321,104 @@ describe('ResponseActions', () => {
       expect(screen.getByRole('button', { name: key })).toBeTruthy();
       expect(screen.getByTestId(action[key])).toBeTruthy();
     });
+  });
+
+  // we are testing for the reverse case already above
+  it('should not deselect when clicking outside when persistActionSelection is true', async () => {
+    render(
+      <Message
+        name="Bot"
+        role="bot"
+        avatar=""
+        content="Test content"
+        actions={{
+          positive: {},
+          negative: {}
+        }}
+        persistActionSelection
+      />
+    );
+    const goodBtn = screen.getByRole('button', { name: 'Good response' });
+
+    await userEvent.click(goodBtn);
+    expect(screen.getByRole('button', { name: 'Good response recorded' })).toHaveClass(
+      'pf-chatbot__button--response-action-clicked'
+    );
+
+    await userEvent.click(screen.getByText('Test content'));
+
+    expect(screen.getByRole('button', { name: 'Good response recorded' })).toHaveClass(
+      'pf-chatbot__button--response-action-clicked'
+    );
+  });
+
+  it('should switch selection to another button when persistActionSelection is true', async () => {
+    render(
+      <Message
+        name="Bot"
+        role="bot"
+        avatar=""
+        content="Test content"
+        actions={{
+          positive: {},
+          negative: {}
+        }}
+        persistActionSelection
+      />
+    );
+    const goodBtn = screen.getByRole('button', { name: 'Good response' });
+    const badBtn = screen.getByRole('button', { name: 'Bad response' });
+
+    await userEvent.click(goodBtn);
+    expect(goodBtn).toHaveClass('pf-chatbot__button--response-action-clicked');
+
+    await userEvent.click(badBtn);
+    expect(badBtn).toHaveClass('pf-chatbot__button--response-action-clicked');
+    expect(goodBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
+  });
+
+  it('should toggle off when clicking the same button when persistActionSelection is true', async () => {
+    render(
+      <Message
+        name="Bot"
+        role="bot"
+        avatar=""
+        content="Test content"
+        actions={{
+          positive: {},
+          negative: {}
+        }}
+        persistActionSelection
+      />
+    );
+    const goodBtn = screen.getByRole('button', { name: 'Good response' });
+
+    await userEvent.click(goodBtn);
+    expect(goodBtn).toHaveClass('pf-chatbot__button--response-action-clicked');
+
+    await userEvent.click(goodBtn);
+    expect(goodBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
+  });
+
+  it('should work with custom actions when persistActionSelection is true', async () => {
+    const actions = {
+      positive: { 'data-testid': 'positive', onClick: jest.fn() },
+      negative: { 'data-testid': 'negative', onClick: jest.fn() },
+      custom: {
+        'data-testid': 'custom',
+        onClick: jest.fn(),
+        ariaLabel: 'Custom',
+        tooltipContent: 'Custom action',
+        icon: <DownloadIcon />
+      }
+    };
+    render(<ResponseActions actions={actions} persistActionSelection />);
+
+    const customBtn = screen.getByTestId('custom');
+    await userEvent.click(customBtn);
+    expect(customBtn).toHaveClass('pf-chatbot__button--response-action-clicked');
+
+    await userEvent.click(customBtn);
+    expect(customBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
   });
 });

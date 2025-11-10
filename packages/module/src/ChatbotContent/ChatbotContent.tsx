@@ -8,14 +8,17 @@ export interface ChatbotContentProps extends HTMLProps<HTMLDivElement> {
   children: React.ReactNode;
   /** Custom classname for the ChatbotContent component */
   className?: string;
+  /** Sets background color to primary */
+  isPrimary?: boolean;
 }
 
 export const ChatbotContent: FunctionComponent<ChatbotContentProps> = ({
   children,
   className,
+  isPrimary,
   ...props
 }: ChatbotContentProps) => (
-  <div className={`pf-chatbot__content ${className ?? ''}`} {...props}>
+  <div className={`pf-chatbot__content ${isPrimary ? 'pf-m-primary' : ''} ${className ?? ''}`} {...props}>
     {children}
   </div>
 );
