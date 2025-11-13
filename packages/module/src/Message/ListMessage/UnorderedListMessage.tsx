@@ -15,12 +15,10 @@ export interface UnrderedListMessageProps {
 const UnorderedListMessage = ({
   children,
   shouldRetainStyles
-}: UnrderedListMessageProps & JSX.IntrinsicElements['ul'] & ExtraProps) => {
-  return (
-    <div className={css('pf-chatbot__message-unordered-list', shouldRetainStyles && 'pf-m-markdown')}>
-      <List>{children}</List>
-    </div>
-  );
-};
+}: UnrderedListMessageProps & JSX.IntrinsicElements['ul'] & ExtraProps) => (
+  <div className={css('pf-chatbot__message-unordered-list', shouldRetainStyles && 'pf-m-markdown')}>
+    <List>{children}</List>
+  </div>
+);
 
 export default UnorderedListMessage;
