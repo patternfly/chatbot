@@ -29,6 +29,7 @@ import LinkMessage from '../Message/LinkMessage/LinkMessage';
 import { rehypeMoveImagesOutOfParagraphs } from '../Message/Plugins/rehypeMoveImagesOutOfParagraphs';
 import SuperscriptMessage from '../Message/SuperscriptMessage/SuperscriptMessage';
 import { ButtonProps } from '@patternfly/react-core';
+import { css } from '@patternfly/react-styles';
 
 export interface MarkdownContentProps {
   /** The markdown content to render */
@@ -57,6 +58,8 @@ export interface MarkdownContentProps {
   isPrimary?: boolean;
   /** Custom component to render when markdown is disabled */
   textComponent?: ReactNode;
+  /** Flag indicating whether content should retain various styles of its context (typically font-size and text color). */
+  shouldRetainStyles?: boolean;
 }
 
 export const MarkdownContent: FunctionComponent<MarkdownContentProps> = ({
@@ -72,7 +75,8 @@ export const MarkdownContent: FunctionComponent<MarkdownContentProps> = ({
   remarkGfmProps,
   hasNoImages = false,
   isPrimary,
-  textComponent
+  textComponent,
+  shouldRetainStyles
 }: MarkdownContentProps) => {
   let rehypePlugins: PluggableList = [rehypeUnwrapImages, rehypeMoveImagesOutOfParagraphs, rehypeHighlight];
   if (openLinkInNewTab) {
@@ -104,18 +108,36 @@ export const MarkdownContent: FunctionComponent<MarkdownContentProps> = ({
         section: (props) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { node, ...rest } = props;
-          return <section {...rest} className={`pf-chatbot__message-text ${rest?.className}`} />;
+          return (
+            <section
+              {...rest}
+              className={css('pf-chatbot__message-text', shouldRetainStyles && 'pf-m-markdown', rest?.className)}
+            />
+          );
         },
         p: (props) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { node, ...rest } = props;
-          return <TextMessage component={ContentVariants.p} {...rest} isPrimary={isPrimary} />;
+          return (
+            <TextMessage
+              shouldRetainStyles={shouldRetainStyles}
+              component={ContentVariants.p}
+              {...rest}
+              isPrimary={isPrimary}
+            />
+          );
         },
         code: ({ children, ...props }) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { node, ...codeProps } = props;
           return (
-            <CodeBlockMessage {...codeProps} {...codeBlockProps} isPrimary={isPrimary}>
+            <CodeBlockMessage
+              {...codeProps}
+              {...codeBlockProps}
+              isPrimary={isPrimary}
+              shouldRetainStyles={shouldRetainStyles}
+              // className={css('pf-m-markdown', codeBlockProps?.className)}
+            >
               {children}
             </CodeBlockMessage>
           );
@@ -123,47 +145,49 @@ export const MarkdownContent: FunctionComponent<MarkdownContentProps> = ({
         h1: (props) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { node, ...rest } = props;
-          return <TextMessage component={ContentVariants.h1} {...rest} />;
+          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h1} {...rest} />;
         },
         h2: (props) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { node, ...rest } = props;
-          return <TextMessage component={ContentVariants.h2} {...rest} />;
+          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h2} {...rest} />;
         },
         h3: (props) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { node, ...rest } = props;
-          return <TextMessage component={ContentVariants.h3} {...rest} />;
+          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h3} {...rest} />;
         },
         h4: (props) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { node, ...rest } = props;
-          return <TextMessage component={ContentVariants.h4} {...rest} />;
+          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h4} {...rest} />;
         },
         h5: (props) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { node, ...rest } = props;
-          return <TextMessage component={ContentVariants.h5} {...rest} />;
+          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h5} {...rest} />;
         },
         h6: (props) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { node, ...rest } = props;
-          return <TextMessage component={ContentVariants.h6} {...rest} />;
+          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h6} {...rest} />;
         },
         blockquote: (props) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { node, ...rest } = props;
-          return <TextMessage component={ContentVariants.blockquote} {...rest} />;
+          return (
+            <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.blockquote} {...rest} />
+          );
         },
         ul: (props) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { node, ...rest } = props;
-          return <UnorderedListMessage {...rest} />;
+          return <UnorderedListMessage shouldRetainStyles={shouldRetainStyles} {...rest} />;
         },
         ol: (props) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { node, ...rest } = props;
-          return <OrderedListMessage {...rest} />;
+          return <OrderedListMessage shouldRetainStyles={shouldRetainStyles} {...rest} />;
         },
         li: (props) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -171,7 +195,9 @@ export const MarkdownContent: FunctionComponent<MarkdownContentProps> = ({
           return <ListItemMessage {...rest} />;
         },
         // table requires node attribute for calculating headers for mobile breakpoint
-        table: (props) => <TableMessage {...props} {...tableProps} isPrimary={isPrimary} />,
+        table: (props) => (
+          <TableMessage shouldRetainStyles={shouldRetainStyles} {...props} {...tableProps} isPrimary={isPrimary} />
+        ),
         tbody: (props) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { node, ...rest } = props;
@@ -210,7 +236,7 @@ export const MarkdownContent: FunctionComponent<MarkdownContentProps> = ({
           return (
             // some a types conflict with ButtonProps, but it's ok because we are using an a tag
             // there are too many to handle manually
-            <LinkMessage {...(rest as any)} {...linkProps}>
+            <LinkMessage shouldRetainStyles={shouldRetainStyles} {...(rest as any)} {...linkProps}>
               {props.children}
             </LinkMessage>
           );
