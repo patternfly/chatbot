@@ -36,11 +36,10 @@
     "@patternfly/react-code-editor": "^6.1.0",
     "@patternfly/react-core": "^6.1.0",
     "@patternfly/react-icons": "^6.1.0",
-    "@patternfly/react-table": "^6.1.0",
     "@patternfly/react-styles": "^6.1.0",
+    "@patternfly/react-table": "^6.1.0",
     "@segment/analytics-next": "^1.76.0",
     "clsx": "^2.1.0",
-    "monaco-editor": "^0.54.0",
     "path-browserify": "^1.0.1",
     "posthog-js": "^1.194.4",
     "react-markdown": "^9.0.1",
@@ -52,8 +51,18 @@
     "unist-util-visit": "^5.0.0"
   },
   "peerDependencies": {
+    "monaco-editor": "^0.54.0",
+    "@monaco-editor/react": "^4.7.0",
     "react": "^18 || ^19",
     "react-dom": "^18 || ^19"
+  },
+  "peerDependenciesMeta": {
+    "monaco-editor": {
+      "optional": false
+    },
+    "@monaco-editor/react": {
+      "optional": false
+    }
   },
   "devDependencies": {
     "@octokit/rest": "^18.0.0",

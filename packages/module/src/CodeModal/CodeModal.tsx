@@ -5,17 +5,17 @@
 import type { FunctionComponent, MouseEvent } from 'react';
 import { useState, useEffect, useRef } from 'react';
 import path from 'path-browserify';
-import * as monaco from 'monaco-editor';
-import { loader } from '@monaco-editor/react';
 
 // Import PatternFly components
 import { CodeEditor } from '@patternfly/react-code-editor';
 import {
+  Bullseye,
   Button,
   getResizeObserver,
   ModalBody,
   ModalFooter,
   ModalHeader,
+  Spinner,
   Stack,
   StackItem
 } from '@patternfly/react-core';
@@ -23,8 +23,16 @@ import FileDetails, { extensionToLanguage } from '../FileDetails';
 import { ChatbotDisplayMode } from '../Chatbot';
 import ChatbotModal from '../ChatbotModal/ChatbotModal';
 
-// Configure Monaco loader to use the npm package instead of CDN
-loader.config({ monaco });
+// Try to lazy load - some consumers need to be below a certain bundle size, but can't use the CDN and don't have webpack
+let monacoInstance: typeof import('monaco-editor') | null = null;
+const loadMonaco = async () => {
+  if (!monacoInstance) {
+    const [monaco, { loader }] = await Promise.all([import('monaco-editor'), import('@monaco-editor/react')]);
+    monacoInstance = monaco;
+    loader.config({ monaco });
+  }
+  return monacoInstance;
+};
 
 export interface CodeModalProps {
   /** Class applied to code editor */
@@ -63,6 +71,8 @@ export interface CodeModalProps {
   modalBodyClassName?: string;
   /** Class applied to modal footer */
   modalFooterClassName?: string;
+  /** Aria label applied to spinner when loading Monaco */
+  spinnerAriaLabel?: string;
 }
 
 export const CodeModal: FunctionComponent<CodeModalProps> = ({
@@ -84,12 +94,31 @@ export const CodeModal: FunctionComponent<CodeModalProps> = ({
   modalHeaderClassName,
   modalBodyClassName,
   modalFooterClassName,
+  spinnerAriaLabel = 'Loading',
   ...props
 }: CodeModalProps) => {
   const [newCode, setNewCode] = useState(code);
-  const [editorInstance, setEditorInstance] = useState<monaco.editor.IStandaloneCodeEditor | null>(null);
+  const [editorInstance, setEditorInstance] = useState<any>(null);
   const [isEditorReady, setIsEditorReady] = useState(false);
+  const [isMonacoLoading, setIsMonacoLoading] = useState(false);
+  const [isMonacoLoaded, setIsMonacoLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isModalOpen && !isMonacoLoaded && !isMonacoLoading) {
+      setIsMonacoLoading(true);
+      loadMonaco()
+        .then(() => {
+          setIsMonacoLoaded(true);
+          setIsMonacoLoading(false);
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error('Failed to load Monaco editor:', error);
+          setIsMonacoLoading(false);
+        });
+    }
+  }, [isModalOpen, isMonacoLoaded, isMonacoLoading]);
 
   useEffect(() => {
     if (!isModalOpen || !isEditorReady || !editorInstance || !containerRef.current) {
@@ -148,6 +177,42 @@ export const CodeModal: FunctionComponent<CodeModalProps> = ({
     }
   };
 
+  const renderMonacoEditor = () => {
+    if (isMonacoLoading) {
+      return (
+        <Bullseye>
+          <Spinner aria-label={spinnerAriaLabel} />
+        </Bullseye>
+      );
+    }
+    if (isMonacoLoaded) {
+      return (
+        <CodeEditor
+          isDarkTheme
+          isLineNumbersVisible={isLineNumbersVisible}
+          isLanguageLabelVisible
+          isCopyEnabled={isCopyEnabled}
+          isReadOnly={isReadOnly}
+          code={newCode}
+          language={extensionToLanguage[path.extname(fileName).slice(1)]}
+          onEditorDidMount={onEditorDidMount}
+          onCodeChange={onCodeChange}
+          className={codeEditorClassName}
+          isFullHeight
+          options={{
+            glyphMargin: false,
+            folding: false,
+            // prevents Monaco from handling resizing itself
+            // was causing ResizeObserver issues
+            automaticLayout: false
+          }}
+          {...props}
+        />
+      );
+    }
+    return null;
+  };
+
   const modal = (
     <ChatbotModal
       isOpen={isModalOpen}
@@ -166,27 +231,7 @@ export const CodeModal: FunctionComponent<CodeModalProps> = ({
             <FileDetails fileName={fileName} />
           </StackItem>
           <div className="pf-v6-l-stack__item pf-chatbot__code-modal-editor" ref={containerRef}>
-            <CodeEditor
-              isDarkTheme
-              isLineNumbersVisible={isLineNumbersVisible}
-              isLanguageLabelVisible
-              isCopyEnabled={isCopyEnabled}
-              isReadOnly={isReadOnly}
-              code={newCode}
-              language={extensionToLanguage[path.extname(fileName).slice(1)]}
-              onEditorDidMount={onEditorDidMount}
-              onCodeChange={onCodeChange}
-              className={codeEditorClassName}
-              isFullHeight
-              options={{
-                glyphMargin: false,
-                folding: false,
-                // prevents Monaco from handling resizing itself
-                // was causing ResizeObserver issues
-                automaticLayout: false
-              }}
-              {...props}
-            />
+            {renderMonacoEditor()}
           </div>
         </Stack>
       </ModalBody>
