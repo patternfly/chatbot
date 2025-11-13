@@ -84,7 +84,7 @@ export const ToolResponse: FunctionComponent<ToolResponseProps> = ({
 
   const renderToggleContent = () => {
     if (isToggleContentMarkdown && typeof toggleContent === 'string') {
-      return <MarkdownContent content={toggleContent} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles content={toggleContent} {...markdownContentProps} />;
     }
     return toggleContent;
   };
@@ -94,7 +94,7 @@ export const ToolResponse: FunctionComponent<ToolResponseProps> = ({
       return null;
     }
     if (isSubheadingMarkdown) {
-      return <MarkdownContent content={subheading} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles content={subheading} {...markdownContentProps} />;
     }
     return subheading;
   };
@@ -104,7 +104,7 @@ export const ToolResponse: FunctionComponent<ToolResponseProps> = ({
       return null;
     }
     if (isBodyMarkdown && typeof body === 'string') {
-      return <MarkdownContent content={body} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles content={body} {...markdownContentProps} />;
     }
     return body;
   };
@@ -114,7 +114,7 @@ export const ToolResponse: FunctionComponent<ToolResponseProps> = ({
       return null;
     }
     if (isCardTitleMarkdown && typeof cardTitle === 'string') {
-      return <MarkdownContent content={cardTitle} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles content={cardTitle} {...markdownContentProps} />;
     }
     return cardTitle;
   };
@@ -124,7 +124,7 @@ export const ToolResponse: FunctionComponent<ToolResponseProps> = ({
       return null;
     }
     if (isCardBodyMarkdown && typeof cardBody === 'string') {
-      return <MarkdownContent content={cardBody} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles content={cardBody} {...markdownContentProps} />;
     }
     return cardBody;
   };

@@ -25,4 +25,15 @@
   .pf-v6-c-table__tr:last-of-type {
     border-block-end: 0;
   }
+
+  &.pf-m-markdown {
+    table,
+    tbody,
+    td,
+    thead,
+    th,
+    tr {
+      font-size: inherit;
+    }
+  }
 }
