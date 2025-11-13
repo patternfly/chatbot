@@ -122,6 +122,24 @@ When `persistActionSelection` is `true`:
 
 ```
 
+### Multiple action groups
+
+You can display multiple groups of response actions by passing an array of action group objects to the `actions` prop. This allows you to organize related actions together and apply different persistence settings to each group.
+
+When using multiple action groups:
+
+- Pass an array of objects to `actions`, where each object contains:
+  - `actions`: An object containing the actions for that group (same format as single action object)
+  - `shouldSelectionPersist` (optional): A boolean to control whether selections persist for this specific group
+- Each group renders as a separate `<ResponseActions>` component wrapped in a PatternFly `<Flex>` layout component.
+- All action groups will render inline on the same row with consistent spacing.
+
+This is useful when you want to separate feedback actions (like thumbs up/down) from utility actions (like copy, download, regenerate) and have different selection behaviors for each group.
+
+```js file="./MessageWithMultipleActionGroups.tsx"
+
+```
+
 ### Custom message actions
 
 Beyond the standard message actions (good response, bad response, copy, share, or listen), you can add custom actions to a bot message by passing an `actions` object to the `<Message>` component. This object can contain the following customizations:
