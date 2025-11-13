@@ -124,17 +124,14 @@ When `persistActionSelection` is `true`:
 
 ### Multiple action groups
 
-You can display multiple groups of response actions by passing an array of action group objects to the `actions` prop. This allows you to organize related actions together and apply different persistence settings to each group.
+You can display multiple groups of response actions by passing an array of objects to the `actions` prop. This allows you to separate groups of actions, such as feedback actions (thumbs up/down) and utility actions (copy, download, and regenerate), and have different selection behaviors for each group.
 
-When using multiple action groups:
+When passing an array of objects to `actions`, you have two options depending on the level of flexibility you may need:
 
-- Pass an array of objects to `actions`, where each object contains:
-  - `actions`: An object containing the actions for that group (same format as single action object)
-  - `shouldSelectionPersist` (optional): A boolean to control whether selections persist for this specific group
-- Each group renders as a separate `<ResponseActions>` component wrapped in a PatternFly `<Flex>` layout component.
-- All action groups will render inline on the same row with consistent spacing.
-
-This is useful when you want to separate feedback actions (like thumbs up/down) from utility actions (like copy, download, regenerate) and have different selection behaviors for each group.
+- Pass an array of objects where each object contains:
+  - `actions`: An object containing the actions for that group (the same format as a single action object)
+  - `persistActionSelection` (optional): A boolean to control whether selections persists for this specific group
+- Pass an array of actions objects (the same format as a single action object), and optionally the `persistActionSelection` property to apply to all groups.
 
 ```js file="./MessageWithMultipleActionGroups.tsx"
 
