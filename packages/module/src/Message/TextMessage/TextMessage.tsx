@@ -41,20 +41,12 @@ const TextMessage = ({
   isPrimary,
   shouldRetainStyles,
   ...props
-}: Omit<ContentProps, 'ref'> & ExtraProps & TextMessageProps) => {
-  const Wrapper = (shouldRetainStyles && component) || 'div';
-
-  return (
-    <span className={css('pf-chatbot__message-text', isPrimary && 'pf-m-primary')}>
-      <Content
-        component={component}
-        {...props}
-        className={css(shouldRetainStyles && 'pf-m-markdown', props?.className)}
-      >
-        {children}
-      </Content>
-    </span>
-  );
-};
+}: Omit<ContentProps, 'ref'> & ExtraProps & TextMessageProps) => (
+  <span className={css('pf-chatbot__message-text', isPrimary && 'pf-m-primary')}>
+    <Content component={component} {...props} className={css(shouldRetainStyles && 'pf-m-markdown', props?.className)}>
+      {children}
+    </Content>
+  </span>
+);
 
 export default TextMessage;
