@@ -42,8 +42,8 @@ const TextMessage = ({
   shouldRetainStyles,
   ...props
 }: Omit<ContentProps, 'ref'> & ExtraProps & TextMessageProps) => (
-  <span className={css('pf-chatbot__message-text', isPrimary && 'pf-m-primary')}>
-    <Content component={component} {...props} className={css(shouldRetainStyles && 'pf-m-markdown', props?.className)}>
+  <span className={css('pf-chatbot__message-text', isPrimary && 'pf-m-primary', shouldRetainStyles && 'pf-m-markdown')}>
+    <Content component={component} {...props} className={css(props?.className)}>
       {children}
     </Content>
   </span>

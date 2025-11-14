@@ -136,7 +136,6 @@ export const MarkdownContent: FunctionComponent<MarkdownContentProps> = ({
               {...codeBlockProps}
               isPrimary={isPrimary}
               shouldRetainStyles={shouldRetainStyles}
-              // className={css('pf-m-markdown', codeBlockProps?.className)}
             >
               {children}
             </CodeBlockMessage>
