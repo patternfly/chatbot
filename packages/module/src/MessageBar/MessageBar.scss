@@ -35,8 +35,9 @@
     border-radius: inherit;
     border: var(--pf-t--global--border--width--control--default) solid transparent;
     pointer-events: none;
-    transition: border-color var(--pf-t--global--motion--timing-function--accelerate)
-      var(--pf-t--global--motion--duration--sm);
+    transition:
+      border-color var(--pf-t--global--motion--timing-function--accelerate) var(--pf-t--global--motion--duration--sm),
+      border-width var(--pf-t--global--motion--timing-function--accelerate) var(--pf-t--global--motion--duration--sm);
   }
 
   &.pf-m-primary {
@@ -48,13 +49,14 @@
   &:hover {
     &::after {
       border-color: var(--pf-t--global--border--color--default);
+      border-width: var(--pf-t--global--border--width--control--hover);
     }
   }
 
   &:focus-within {
     &::after {
-      border-width: var(--pf-t--global--border--width--control--clicked);
       border-color: var(--pf-t--global--color--brand--default);
+      border-width: var(--pf-t--global--border--width--control--clicked);
     }
   }
 
