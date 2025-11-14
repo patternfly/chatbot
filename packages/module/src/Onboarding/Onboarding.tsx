@@ -47,7 +47,7 @@ export const OnboardingBase: FunctionComponent<OnboardingProps> = ({
   secondaryActionBtn = 'Skip',
   title = 'Onboarding',
   headerImage,
-  headerImageAltText,
+  headerImageAltText = '',
   displayMode = ChatbotDisplayMode.default,
   className,
   children,
