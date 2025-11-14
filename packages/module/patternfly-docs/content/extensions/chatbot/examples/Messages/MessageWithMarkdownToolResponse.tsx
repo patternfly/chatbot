@@ -14,7 +14,7 @@ import {
   FlexItem,
   Label
 } from '@patternfly/react-core';
-export const MessageWithToolResponseExample = () => {
+export const MessageWithToolResponseExample: FunctionComponent = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const onToggle = (_event: ReactMouseEvent, isExpanded: boolean) => {
     setIsExpanded(isExpanded);
