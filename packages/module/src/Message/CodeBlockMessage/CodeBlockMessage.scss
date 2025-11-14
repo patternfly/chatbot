@@ -79,8 +79,16 @@
 
 .pf-chatbot__message-inline-code {
   --pf-chatbot-message-text-inline-code-font-size: var(--pf-t--global--font--size--body--default);
+
   background-color: var(--pf-t--global--background--color--tertiary--default);
   font-size: var(--pf-chatbot-message-text-inline-code-font-size);
+  border: var(--pf-t--global--border--width--high-contrast--regular) solid
+    var(--pf-t--global--border--color--high-contrast);
+  border-radius: var(--pf-t--global--border--radius--small);
+  padding-block-start: var(--pf-t--global--spacer--xs);
+  padding-block-end: var(--pf-t--global--spacer--xs);
+  padding-inline-start: var(--pf-t--global--spacer--xs);
+  padding-inline-end: var(--pf-t--global--spacer--xs);
 
   &.pf-m-primary {
     background-color: var(--pf-t--global--background--color--secondary--default);
