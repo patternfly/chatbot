@@ -142,9 +142,9 @@ const CodeBlockMessage = ({
   );
 
   return (
-    <div className={css('pf-chatbot__message-code-block')} ref={codeBlockRef}>
+    <div className={css('pf-chatbot__message-code-block', shouldRetainStyles && 'pf-m-markdown')} ref={codeBlockRef}>
       <CodeBlock actions={actions}>
-        <CodeBlockCode className={css(shouldRetainStyles && 'pf-m-markdown')}>
+        <CodeBlockCode className={css()}>
           <>
             {isExpandable ? (
               <ExpandableSection
