@@ -9,7 +9,6 @@ import {
 } from 'react';
 import {
   Button,
-  Checkbox,
   SkipToContent,
   MenuToggle,
   MenuToggleElement,
@@ -20,12 +19,10 @@ import {
 } from '@patternfly/react-core';
 import Onboarding from '@patternfly/chatbot/dist/dynamic/Onboarding';
 import Chatbot, { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
-import onboardingHeader from './RH-Hat-Image.svg';
 
 export const OnboardingExample: FunctionComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [displayMode, setDisplayMode] = useState(ChatbotDisplayMode.default);
-  const [hasImage, setHasImage] = useState(true);
   const chatbotRef = useRef<HTMLDivElement>(null);
   const termsRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -85,6 +82,7 @@ export const OnboardingExample: FunctionComponent = () => {
           width: '200px'
         } as CSSProperties
       }
+      aria-label={selected === 'Select display mode' ? 'Select display mode' : `Display mode, ${selected}`}
     >
       {selected}
     </MenuToggle>
@@ -122,15 +120,7 @@ export const OnboardingExample: FunctionComponent = () => {
               <SelectOption value="Embedded">Embedded</SelectOption>
             </SelectList>
           </Select>
-          <Checkbox
-            isChecked={hasImage}
-            aria-label="Toggle whether terms and conditions has a header image"
-            id="toggle-header-image"
-            name="toggle-header-image"
-            label="Has image in header"
-            onChange={(_event, checked) => setHasImage(checked)}
-          ></Checkbox>
-          <Button onClick={handleModalToggle}>Launch modal</Button>
+          <Button onClick={handleModalToggle}>Toggle modal</Button>
         </Stack>
       </div>
       <Chatbot ref={chatbotRef} displayMode={displayMode} isVisible isCompact></Chatbot>
@@ -141,8 +131,6 @@ export const OnboardingExample: FunctionComponent = () => {
         handleModalToggle={handleModalToggle}
         onPrimaryAction={onPrimaryAction}
         onSecondaryAction={onSecondaryAction}
-        image={hasImage ? onboardingHeader : undefined}
-        altText={hasImage ? 'Open book' : undefined}
         title="Redefine work in the age of AI"
         isCompact
       >

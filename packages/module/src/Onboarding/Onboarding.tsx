@@ -27,9 +27,9 @@ export interface OnboardingProps extends ModalProps {
   /** Display mode for the Chatbot parent; this influences the styles applied */
   displayMode?: ChatbotDisplayMode;
   /** Optional image displayed in header */
-  image?: string;
+  headerImage?: string;
   /** Alt text for optional image displayed in header */
-  altText?: string;
+  headerImageAltText?: string;
   /** Ref applied to modal */
   innerRef?: React.Ref<HTMLDivElement>;
   /** OuiaID applied to modal */
@@ -46,8 +46,8 @@ export const OnboardingBase: FunctionComponent<OnboardingProps> = ({
   primaryActionBtn = 'Continue',
   secondaryActionBtn = 'Skip',
   title = 'Onboarding',
-  image,
-  altText,
+  headerImage,
+  headerImageAltText,
   displayMode = ChatbotDisplayMode.default,
   className,
   children,
@@ -80,9 +80,9 @@ export const OnboardingBase: FunctionComponent<OnboardingProps> = ({
       <section className={`pf-chatbot__onboarding--section`} aria-label={title} tabIndex={-1} ref={innerRef}>
         <>
           <ModalBody className="pf-chatbot__onboarding--modal-body">
-            {!isCompact && image && altText && (
+            {!isCompact && headerImage && (
               <div className="pf-chatbot__onboarding--header">
-                <img src={image} className="pf-chatbot__onboarding--image" alt={altText} />
+                <img src={headerImage} className="pf-chatbot__onboarding--image" alt={headerImageAltText} />
               </div>
             )}
             <div className="pf-chatbot__onboarding--modal-text">

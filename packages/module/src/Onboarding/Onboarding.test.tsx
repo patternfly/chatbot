@@ -38,8 +38,8 @@ describe('Onboarding', () => {
         isModalOpen
         onSecondaryAction={onSecondaryAction}
         handleModalToggle={handleModalToggle}
-        image="./image.png"
-        altText="Test image"
+        headerImage="./image.png"
+        headerImageAltText="Test image"
       >
         {body}
       </Onboarding>
@@ -136,8 +136,8 @@ describe('Onboarding', () => {
         onSecondaryAction={onSecondaryAction}
         handleModalToggle={handleModalToggle}
         isCompact={true}
-        image="./image.png"
-        altText="Test image"
+        headerImage="./image.png"
+        headerImageAltText="Test image"
       >
         {body}
       </Onboarding>
