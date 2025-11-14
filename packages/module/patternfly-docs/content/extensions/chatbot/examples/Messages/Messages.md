@@ -122,16 +122,19 @@ When `persistActionSelection` is `true`:
 
 ```
 
-### Multiple action groups
+### Multiple messsage action groups
 
-You can display multiple groups of response actions by passing an array of objects to the `actions` prop. This allows you to separate groups of actions, such as feedback actions (thumbs up/down) and utility actions (copy, download, and regenerate), and have different selection behaviors for each group.
+To maintain finer control over message action selection behavior, you can create groups of actions by passing an array of objects to the `actions` prop. This allows you to separate actions into conceptually or functionally different groups and implement different behavior for each group as needed. For example, you could separate feedback actions (thumbs up/down) form utility actions (copy and download), and have different selection behaviors for each group.
 
-When passing an array of objects to `actions`, you have two options depending on the level of flexibility you may need:
+To provide flexibility for your use case, there are 2 approaches you can take to pass an array of objects to `actions`:
 
-- Pass an array of objects where each object contains:
-  - `actions`: An object containing the actions for that group (the same format as a single action object)
-  - `persistActionSelection` (optional): A boolean to control whether selections persists for this specific group
-- Pass an array of actions objects (the same format as a single action object), and optionally the `persistActionSelection` property to apply to all groups.
+1. Pass an array of objects, where each object contains:
+
+   - `actions`: An `action` object containing the actions for that group (the same format as a single `action` object)
+
+   - `persistActionSelection` (optional): A boolean to control whether selections persists for this specific group
+
+2. Pass an array of `action` objects (the same format as a single `action` object) and (optionally) a value for the `persistActionSelection` property that will apply to all groups.
 
 ```js file="./MessageWithMultipleActionGroups.tsx"
 

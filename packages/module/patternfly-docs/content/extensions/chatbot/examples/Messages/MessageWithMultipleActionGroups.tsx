@@ -9,7 +9,7 @@ export const MessageWithMultipleActionGroups: FunctionComponent = () => (
       name="Bot"
       role="bot"
       avatar={patternflyAvatar}
-      content="This message contains multiple action groups, each with their own selection persistence. The first group contains feedback actions with persistent selections, the second group contains utility actions with non-persistent selections, and the third has a listen action with persistent selection."
+      content="This message contains multiple action groups, each with their own selection persistence. \n1. Feedback actions (thumbs up/down) with persistent selections \n2. Utility actions (copy, download) with non-persistent selections \n3. Listen action with persistent selection."
       actions={[
         {
           actions: {
@@ -42,7 +42,7 @@ export const MessageWithMultipleActionGroups: FunctionComponent = () => (
       name="Bot"
       role="bot"
       avatar={patternflyAvatar}
-      content="This message contains multiple action groups with the same selection persistence applied to each group."
+      content="This message contains multiple action groups, both of which persist selections."
       actions={[
         {
           // eslint-disable-next-line no-console
