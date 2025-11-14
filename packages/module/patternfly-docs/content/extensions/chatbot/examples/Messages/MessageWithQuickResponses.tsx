@@ -1,6 +1,7 @@
 import { FunctionComponent } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import patternflyAvatar from './patternfly_avatar.jpg';
+import { CopyIcon, WrenchIcon } from '@patternfly/react-icons';
 
 export const MessageWithQuickResponsesExample: FunctionComponent = () => (
   <>
@@ -73,6 +74,16 @@ export const MessageWithQuickResponsesExample: FunctionComponent = () => (
         { id: '2', content: 'No', onClick: () => alert('Clicked id 2') }
       ]}
       isCompact
+    />
+    <Message
+      name="Bot"
+      role="bot"
+      avatar={patternflyAvatar}
+      content="Example with icons"
+      quickResponses={[
+        { id: '1', content: 'Update your settings', onClick: () => alert('Clicked yes'), icon: <WrenchIcon /> },
+        { id: '2', content: 'Copy', onClick: () => alert('Clicked no'), icon: <CopyIcon /> }
+      ]}
     />
   </>
 );
