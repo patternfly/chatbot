@@ -1,5 +1,5 @@
 ---
-section: PatternFly-AI
+section: Extensions
 subsection: ChatBot
 id: Overview
 sortValue: 1
@@ -22,7 +22,7 @@ import "./images.css"
 1. **Attachments:** Details about files that a user has uploaded to the ChatBot.
 1. **Footer:** A persistent region at the bottom of the ChatBot window that contains the message bar and the footnote.
 1. **Footnote (optional):** A persistent, short message that contains any legal disclaimers or important information about the ChatBot. Footnotes are optional, but strongly recommended. More details can be found in the [footnote guidelines](#footnotes).
-1. **Toggle:** The button that allows users to open and close the ChatBot window. When the ChatBot is opened, the toggle should appear below the ChatBot window. The toggle shape and icon can be customized as needed, as shown in these [ChatBot toggle examples](/patternfly-ai/chatbot/ui#custom-toggle-icon). More details can be found in the [guidelines for accessing a ChatBot](#accessing-a-chatbot).
+1. **Toggle:** The button that allows users to open and close the ChatBot window. When the ChatBot is opened, the toggle should appear below the ChatBot window. The toggle shape and icon can be customized as needed, as shown in these [ChatBot toggle examples](/extensions/chatbot/ui#custom-toggle-icon). More details can be found in the [guidelines for accessing a ChatBot](#accessing-a-chatbot).
 
 ### Messages
 
@@ -37,7 +37,7 @@ import "./images.css"
 1. **Timestamp:** The relative or absolute time that a message was sent.
 1. **Label:** Labels ChatBot messages as "AI."
 1. **Quick responses:** Programmable, clickable actions that allow users to quickly answer questions from the ChatBot.
-1. **Message actions:** Actions that allow users to interact with a bot message. These typically include providing feedback, copying, sharing, or reading aloud, but [custom message actions](/patternfly-ai/chatbot/messages#custom-message-actions) are also supported. More details for the feedback actions can be found in the [message feedback](#message-feedback) section.
+1. **Message actions:** Actions that allow users to interact with a bot message. These typically include providing feedback, copying, sharing, or reading aloud, but [custom message actions](/extensions/chatbot/messages#custom-message-actions) are also supported. More details for the feedback actions can be found in the [message feedback](#message-feedback) section.
 
 #### Welcome message
 
@@ -77,7 +77,7 @@ Selecting the quick start title, or the "Start" link can be configured to launch
 
 ### Message actions 
 
-To allow users to interact with bot messages, utilize message actions. Refer to [the message actions React example](/patternfly-ai/chatbot/messages#message-actions) for an interactive visual.
+To allow users to interact with bot messages, utilize message actions. Refer to [the message actions React example](/extensions/chatbot/messages#message-actions) for an interactive visual.
 
 The following actions can be used for some of the most common interactions:
 
@@ -91,7 +91,7 @@ The following actions can be used for some of the most common interactions:
 1. **Download:** Downloads the chat message. [Learn more about downloading chat transcripts](#downloading-chat-transcripts).
 1. **Listen:** Reads the message content out loud.
 
-You can also use [custom message actions](/patternfly-ai/chatbot/messages#custom-message-actions) as needed for your particular use case. When using custom actions, be sure to add a tooltip that describes the effect that the action will have. For more information, view [our tooltips guidelines](/ux-writing/tooltips). 
+You can also use [custom message actions](/extensions/chatbot/messages#custom-message-actions) as needed for your particular use case. When using custom actions, be sure to add a tooltip that describes the effect that the action will have. For more information, view [our tooltips guidelines](/ux-writing/tooltips). 
 
 #### Message feedback
 
@@ -133,7 +133,7 @@ To message the ChatBot, users can type directly into the message bar in the foot
 1. **Use microphone button:** Supports speech recognition to allow users to use voice input. This feature is currently only available in Chrome and Safari.
 1. **Send button:** Allows users to send a typed message. This button should be disabled until a user has input text.
 
-When a user chooses to use speech input via the microphone button, the button will display a pulsing animation to indicate that the ChatBot is listening to the user (as shown in [this speech recognition example](/patternfly-ai/chatbot/ui#message-bar-with-speech-recognition-and-file-attachment)).
+When a user chooses to use speech input via the microphone button, the button will display a pulsing animation to indicate that the ChatBot is listening to the user (as shown in [this speech recognition example](/extensions/chatbot/ui#message-bar-with-speech-recognition-and-file-attachment)).
 
 <div class="ws-docs-content-img">
 ![Animation phases of the listening button in the message bar.](./img/listening-pulse.svg)
@@ -266,7 +266,7 @@ As much as possible, the suggested prompts should consider the user’s location
 
 Instead of automatically initiating what sounds like a request from a user, the ChatBot should ask users to confirm or deny their intent. This differentiates moments where users are simply asking about feasibility, rather than actually making a request.
 
-This can be done using the [quick response](/patternfly-ai/chatbot/messages#messages-with-quick-responses) buttons:
+This can be done using the [quick response](/extensions/chatbot/messages#messages-with-quick-responses) buttons:
 
 <div class="ws-docs-content-img">
 ![Confirmation options from a bot in response to a user's request.](./img/quick-response-confirmation.svg)
@@ -310,7 +310,7 @@ Within the settings menu, users can select their preferences for a variety of Ch
 
 ### Attaching files
 
-Using [the attach button](/patternfly-ai/chatbot/overview/design-guidelines#message-bar) in the message bar, users can [attach files](/patternfly-ai/chatbot/messages#file-attachments) to their message to share with the ChatBot.
+Using [the attach button](/extensions/chatbot/overview/design-guidelines#message-bar) in the message bar, users can [attach files](/extensions/chatbot/messages#file-attachments) to their message to share with the ChatBot.
 
 The attach button can follow a couple of patterns, including:
 
@@ -333,7 +333,7 @@ If a message attachment is successful, a label with the file details will be dis
 ![File attached to user message.](./img/attached-file.svg)
 </div>
 
-Users can select the file label to either preview or edit their attachment, as shown in these [attachment examples](/patternfly-ai/chatbot/messages#attachment-preview).
+Users can select the file label to either preview or edit their attachment, as shown in these [attachment examples](/extensions/chatbot/messages#attachment-preview).
 
 If a message attachment fails, an error message should share the reason for failure:
 
@@ -415,7 +415,7 @@ There are a few display modes that users can choose when interacting with a Chat
 
 ### Layouts
 
-ChatBot supports a side-by-side [comparison layout](/patternfly-ai/chatbot/overview/demo#comparing-chatbots), which allows users to compare 2 chats at once. This can be helpful to let users understand how different models respond to the same prompt.
+ChatBot supports a side-by-side [comparison layout](/extensions/chatbot/overview/demo#comparing-chatbots), which allows users to compare 2 chats at once. This can be helpful to let users understand how different models respond to the same prompt.
 
 <div class="ws-docs-content-img">
 ![2 ChatBots in comparison mode.](./img/comparison.svg)

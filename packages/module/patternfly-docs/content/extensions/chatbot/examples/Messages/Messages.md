@@ -1,7 +1,7 @@
 ---
 # Sidenav top-level section
 # should be the same for all markdown files
-section: PatternFly-AI
+section: Extensions
 subsection: ChatBot
 # Sidenav secondary level section
 # should be the same for all markdown files
@@ -144,9 +144,9 @@ You can apply a `clickedAriaLabel` and `clickedTooltipContent` once a button is 
 
 ### Message feedback
 
-When a user selects a positive or negative [message action](#message-actions), you can display a message feedback card that acknowledges their response and provides space for additional written feedback. These cards can be manually dismissed via the close button and the thank-you card can be [configured to time out automatically](/patternfly-ai/chatbot/messages#message-feedback-with-timeouts).
+When a user selects a positive or negative [message action](#message-actions), you can display a message feedback card that acknowledges their response and provides space for additional written feedback. These cards can be manually dismissed via the close button and the thank-you card can be [configured to time out automatically](/extensions/chatbot/messages#message-feedback-with-timeouts).
 
-You can see the full feedback flow [in the message demos](/patternfly-ai/chatbot/messages/demo#message-feedback).
+You can see the full feedback flow [in the message demos](/extensions/chatbot/messages/demo#message-feedback).
 
 The message feedback cards will immediately receive focus by default, but you can remove this behavior by passing `focusOnLoad: false` to the `<Message>` (as shown in the following examples). For better usability, you should generally keep the default focus behavior.
 
@@ -257,7 +257,7 @@ You can add custom content to specific parts of a `<Message>` via the `extraCont
 
 ### Messages with attachments
 
-When [attachments](/patternfly-ai/chatbot/messages#file-attachments) are shared and displayed in the ChatBot window, users will see a selectable and dismissible message that contains file details in a label. Selecting the file label can open a preview modal, which allows users to view or make edits to the file contents.
+When [attachments](/extensions/chatbot/messages#file-attachments) are shared and displayed in the ChatBot window, users will see a selectable and dismissible message that contains file details in a label. Selecting the file label can open a preview modal, which allows users to view or make edits to the file contents.
 
 The `<PreviewAttachment>` component displays a modal with a read-only view of the attached file's contents. Selecting the "edit" button will open the `<AttachmentEdit>` component, which provides an interactive environment where users can make changes to the file.
 

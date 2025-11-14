@@ -1,6 +1,6 @@
 // This module is shared between NodeJS and babelled ES5
 module.exports = {
-  sideNavItems: [{ section: 'PatternFly-AI' }],
+  sideNavItems: [{ section: 'Extensions' }],
   topNavItems: [],
   hasThemeSwitcher: true,
   hasRTLSwitcher: true,
