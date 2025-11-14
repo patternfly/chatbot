@@ -6,10 +6,10 @@
 .pf-chatbot__tool-response-expandable-section {
   --pf-v6-c-expandable-section--Gap: var(--pf-t--global--spacer--xs);
 
-  .pf-m-markdown {
-    font-size: inherit;
-    color: inherit;
-  }
+  // .pf-m-markdown {
+  //   font-size: inherit;
+  //   color: inherit;
+  // }
 }
 
 .pf-chatbot__tool-response-section {
@@ -23,18 +23,18 @@
   font-weight: var(--pf-t--global--font--weight--body--default);
   color: var(--pf-t--global--text--color--subtle);
 
-  .pf-m-markdown {
-    font-size: var(--pf-t--global--font--size--body--sm);
-  }
+  // .pf-m-markdown {
+  //   font-size: var(--pf-t--global--font--size--body--sm);
+  // }
 }
 
 .pf-chatbot__tool-response-body {
   color: var(--pf-t--global--text--color--subtle);
   margin-block-end: var(--pf-t--global--spacer--xs);
 
-  .pf-m-markdown {
-    font-size: inherit;
-  }
+  // .pf-m-markdown {
+  //   font-size: inherit;
+  // }
 }
 
 .pf-chatbot__tool-response-card {
@@ -47,7 +47,7 @@
     --pf-v6-c-divider--Color: var(--pf-t--global--border--color--default);
   }
 
-  .pf-m-markdown {
-    font-size: inherit;
-  }
+  // .pf-m-markdown {
+  //   font-size: inherit;
+  // }
 }

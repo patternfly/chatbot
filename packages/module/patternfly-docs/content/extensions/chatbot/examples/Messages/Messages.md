@@ -221,6 +221,12 @@ If you are using [model context protocol (MCP)](https://www.redhat.com/en/blog/m
 
 ```
 
+### Messages with Markdown in tool response
+
+```ts file="./MessageWithMarkdownToolResponse.tsx"
+
+```
+
 ### Messages with deep thinking
 
 You can share details about the "thought process" behind an LLM's response, also known as deep thinking. To display a customizable, expandable card with these details, pass `deepThinking` to `<Message>` and provide a subheading (optional) and content body.

@@ -53,6 +53,17 @@
       background-color: var(--pf-t--global--background--color--secondary--default);
     }
   }
+
+  &.pf-m-markdown {
+    display: block;
+  }
+  &.pf-m-markdown > [class^='pf-v6-c-content'] {
+    font-size: inherit;
+  }
+
+  // &.pf-m-markdown + & {
+  // margin-top: 10px;
+  // }
 }
 
 // ============================================================================
