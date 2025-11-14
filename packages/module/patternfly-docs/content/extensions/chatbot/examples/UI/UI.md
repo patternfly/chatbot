@@ -53,6 +53,7 @@ import FileDropZone from '@patternfly/chatbot/dist/dynamic/FileDropZone';
 import { PreviewAttachment } from '@patternfly/chatbot/dist/dynamic/PreviewAttachment';
 import ChatbotAlert from '@patternfly/chatbot/dist/dynamic/ChatbotAlert';
 import TermsOfUse from '@patternfly/chatbot/dist/dynamic/TermsOfUse';
+import Onboarding from '@patternfly/chatbot/dist/dynamic/Onboarding';
 import {
 ChatbotHeader,
 ChatbotHeaderCloseButton,
@@ -85,6 +86,7 @@ import PFHorizontalLogoReverse from './PF-HorizontalLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import termsAndConditionsHeader from './PF-TermsAndConditionsHeader.svg';
+import onboardingHeader from './RH-Hat-Image.svg';
 import { CloseIcon, SearchIcon, OutlinedCommentsIcon } from '@patternfly/react-icons';
 import { FunctionComponent, FormEvent, useState, useRef, MouseEvent, isValidElement, cloneElement, Children, ReactNode, Ref, MouseEvent as ReactMouseEvent, CSSProperties, useEffect} from 'react';
 import FilePreview from '@patternfly/chatbot/dist/dynamic/FilePreview';
@@ -424,24 +426,6 @@ The drawer can also be used to display a list of basic menu items.
 
 ```
 
-### Terms of use
-
-Based on the [PatternFly modal](/components/modal), this modal adapts to the ChatBot display mode and is meant to display terms and conditions for using a ChatBot in your project. The image in the header can be toggled on or off depending on whether the `image` and `altText` props are provided.
-
-This example also includes an example of how to use [skip to content](/extensions/chatbot/ui#skip-to-content). When the terms of use modal is open, focus is placed on the terms of use container. When it is closed, focus is placed on the ChatBot. In a real example with a functioning ChatBot toggle, you would also want to place focus on the toggle when appropriate.
-
-```js file="./TermsOfUse.tsx" isFullscreen
-
-```
-
-### Compact terms of use
-
-To apply compact styling to the terms of use modal, pass `isCompact` to `<TermsOfUse>`. This will remove the header image and adjust the spacing of text, so that there is less white space in the modal.
-
-```js file="./TermsOfUseCompact.tsx" isFullscreen
-
-```
-
 ### Settings
 
 To contain user preference controls and other ChatBot setting options, you can create a separate settings page that can accept any number of buttons, dropdown menus, toggles, labels, and so on. This settings page will render all components appropriately within all 4 display modes.
@@ -467,5 +451,39 @@ To make the settings menu compact, with less spacing between the menu contents, 
 Based on the [PatternFly modal](/components/modal), this modal adapts to the ChatBot display mode and accepts components typically used in a modal. It is primarily used and tested in the context of the attachment modals, but you can customize this modal to adapt it to other use cases as needed. The modal will overlay the ChatBot in default and docked modes, and will behave more like a traditional PatternFly modal in fullscreen and embedded modes.
 
 ```js file="./ChatbotModal.tsx" isFullscreen
+
+```
+
+### Onboarding
+
+You can use the onboarding modal to introduce users to your ChatBot and provide necessary information. The title, image, and body text are customizable.
+
+```js file="./Onboarding.tsx" isFullscreen
+
+```
+
+### Compact onboarding
+
+To make the onboarding modal compact, with less spacing, pass `isCompact` to the `<Onboarding>` component.
+
+```js file="./CompactOnboarding.tsx" isFullscreen
+
+```
+
+### Terms of use
+
+Based on the [PatternFly modal](/components/modal), this modal adapts to the ChatBot display mode and is meant to display terms and conditions for using a ChatBot in your project. The image in the header can be toggled on or off depending on whether the `image` and `altText` props are provided.
+
+This example also includes an example of how to use [skip to content](/patternfly-ai/chatbot/ui#skip-to-content). When the terms of use modal is open, focus is placed on the terms of use container. When it is closed, focus is placed on the ChatBot. In a real example with a functioning ChatBot toggle, you would also want to place focus on the toggle when appropriate.
+
+```js file="./TermsOfUse.tsx" isFullscreen
+
+```
+
+### Compact terms of use
+
+To apply compact styling to the terms of use modal, pass `isCompact` to `<TermsOfUse>`. This will remove the header image and adjust the spacing of text, so that there is less white space in the modal.
+
+```js file="./TermsOfUseCompact.tsx" isFullscreen
 
 ```
