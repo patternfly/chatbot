@@ -99,7 +99,7 @@ Note: You'll need to add any imports required in a component usage file example 
 ````
 ---
 section: extensions
-subsection: ChatBot
+subsection: chatbot
 id: MyComponent
 propComponents: ['MyComponent']
 ---

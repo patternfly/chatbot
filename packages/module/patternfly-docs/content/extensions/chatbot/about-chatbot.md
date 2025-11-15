@@ -1,6 +1,6 @@
 ---
-section: Extensions
-subsection: ChatBot
+section: extensions
+subsection: chatbot
 id: Overview
 sortValue: 1
 source: About
