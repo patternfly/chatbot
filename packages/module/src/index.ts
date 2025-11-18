@@ -75,6 +75,9 @@ export * from './MessageBox';
 export { default as MessageDivider } from './MessageDivider';
 export * from './MessageDivider';
 
+export { default as Onboarding } from './Onboarding';
+export * from './Onboarding';
+
 export { default as PreviewAttachment } from './PreviewAttachment';
 export * from './PreviewAttachment';
 
