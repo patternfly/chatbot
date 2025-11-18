@@ -2,7 +2,7 @@
 # Sidenav top-level section
 # should be the same for all markdown files
 section: extensions
-subsection: chatbot
+subsection: ChatBot
 # Sidenav secondary level section
 # should be the same for all markdown files
 id: Customizing messages

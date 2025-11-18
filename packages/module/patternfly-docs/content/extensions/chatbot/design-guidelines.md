@@ -1,6 +1,6 @@
 ---
 section: extensions
-subsection: chatbot
+subsection: ChatBot
 id: Overview
 sortValue: 1
 source: design-guidelines
@@ -351,7 +351,7 @@ Choose the download action location that best works for your ChatBot:
 
 #### Download via conversation history drawer
 
-If your ChatBot uses a conversation history drawer, you can provide a download option in the [actions menu linked to a previous conversation](/patternfly-ai/chatbot/ui#drawer-with-conversation-actions).
+If your ChatBot uses a conversation history drawer, you can provide a download option in the [actions menu linked to a previous conversation](/extensions/chatbot/ui#drawer-with-conversation-actions).
 
 <div class="ws-docs-content-img">
 ![Expanded menu for previous chat in the history window, which shows a download option.](./img/download-chat-history.svg)
@@ -429,7 +429,7 @@ Refer to the additional guidelines for [accessing a ChatBot](#accessing-a-chatbo
 
 ## Content considerations
 
-For guidance on writing ChatBot content, refer to our [conversation design guidelines](/patternfly-ai/conversation-design).
+For guidance on writing ChatBot content, refer to our [conversation design guidelines](/ai/conversation-design).
 
 ## Accessibility
 

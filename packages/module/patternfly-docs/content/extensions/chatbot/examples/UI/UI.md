@@ -2,7 +2,7 @@
 # Sidenav top-level section
 # should be the same for all markdown files
 section: extensions
-subsection: chatbot
+subsection: ChatBot
 # Sidenav secondary level section
 # should be the same for all markdown files
 id: UI
@@ -129,7 +129,7 @@ Your code structure should look like this:
 
 ### Welcome message
 
-To introduce users to the ChatBot experience, display a welcome message before they input their first message. This brief message should follow our [conversation design guidelines](/patternfly-ai/conversation-design) to welcome users to the ChatBot experience and encourage them to interact.
+To introduce users to the ChatBot experience, display a welcome message before they input their first message. This brief message should follow our [conversation design guidelines](/ai/conversation-design) to welcome users to the ChatBot experience and encourage them to interact.
 
 This message can be dismissed once a user sends their first message. To change the arrangement of the message within the message box, specify the `position` in the `<MessageBox>` component.
 
@@ -474,7 +474,7 @@ To make the onboarding modal compact, with less spacing, pass `isCompact` to the
 
 Based on the [PatternFly modal](/components/modal), this modal adapts to the ChatBot display mode and is meant to display terms and conditions for using a ChatBot in your project. The image in the header can be toggled on or off depending on whether the `image` and `altText` props are provided.
 
-This example also includes an example of how to use [skip to content](/patternfly-ai/chatbot/ui#skip-to-content). When the terms of use modal is open, focus is placed on the terms of use container. When it is closed, focus is placed on the ChatBot. In a real example with a functioning ChatBot toggle, you would also want to place focus on the toggle when appropriate.
+This example also includes an example of how to use [skip to content](/extensions/chatbot/ui#skip-to-content). When the terms of use modal is open, focus is placed on the terms of use container. When it is closed, focus is placed on the ChatBot. In a real example with a functioning ChatBot toggle, you would also want to place focus on the toggle when appropriate.
 
 ```js file="./TermsOfUse.tsx" isFullscreen
 

@@ -2,7 +2,7 @@
 # Sidenav top-level section
 # should be the same for all markdown files
 section: extensions
-subsection: chatbot
+subsection: ChatBot
 # Sidenav secondary level section
 # should be the same for all markdown files
 id: Overview
@@ -133,7 +133,7 @@ This demo displays a ChatBot in a static, inline drawer. This demo includes:
 
 ### Primary color background
 
-This demo displays an embedded ChatBot with a [primary background color](/design-foundations/colors#background-colors). This example includes the same features as the [Embedded ChatBot demo](/patternfly-ai/chatbot/overview/demo/#embedded-chatbot)&mdash;the only differences are that the background color is adjusted via the `isPrimary` prop and some of the sample Messages have changed. You can use the same logic to adjust the background color in any ChatBot layout.
+This demo displays an embedded ChatBot with a [primary background color](/design-foundations/colors#background-colors). This example includes the same features as the [Embedded ChatBot demo](/extensions/chatbot/overview/demo/#embedded-chatbot)&mdash;the only differences are that the background color is adjusted via the `isPrimary` prop and some of the sample Messages have changed. You can use the same logic to adjust the background color in any ChatBot layout.
 
 ```js file="./WhiteEmbeddedChatbot.tsx" isFullscreen
 
