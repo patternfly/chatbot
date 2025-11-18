@@ -1,5 +1,5 @@
 import type { Ref, FunctionComponent } from 'react';
-import { forwardRef } from 'react';
+import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Button, ButtonProps, Icon, Tooltip, TooltipProps } from '@patternfly/react-core';
 import BarsIcon from '@patternfly/react-icons/dist/esm/icons/bars-icon';
@@ -30,21 +30,43 @@ const ChatbotHeaderMenuBase: FunctionComponent<ChatbotHeaderMenuProps> = ({
   tooltipContent = 'Chat history menu',
   isCompact,
   ...props
-}: ChatbotHeaderMenuProps) => (
-  <div className={`pf-chatbot__menu ${className}`}>
-    <Tooltip
-      content={tooltipContent}
-      position="bottom"
-      // prevents VO announcements of both aria label and tooltip
-      aria="none"
-      {...tooltipProps}
-    >
+}: ChatbotHeaderMenuProps) => {
+  const [isDrawerAnimating, setIsDrawerAnimating] = useState(false);
+  // I'd like to use a prop here later if this works
+  const drawerState = props['aria-expanded'];
+  const isDrawerOpen = drawerState === true;
+  const prevDrawerStateRef = useRef<boolean | undefined>(isDrawerOpen);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    if (drawerState !== undefined) {
+      const wasDrawerOpen = prevDrawerStateRef.current === true;
+      const isDrawerClosing = wasDrawerOpen && !isDrawerOpen;
+
+      setIsDrawerAnimating(true);
+      const timeout = setTimeout(() => {
+        setIsDrawerAnimating(false);
+
+        if (isDrawerClosing) {
+          requestAnimationFrame(() => {
+            buttonRef.current?.focus();
+          });
+        }
+      }, 350);
+
+      prevDrawerStateRef.current = isDrawerOpen;
+      return () => clearTimeout(timeout);
+    }
+  }, [drawerState, isDrawerOpen]);
+
+  const button = useMemo(
+    () => (
       <Button
         className={`pf-chatbot__button--toggle-menu ${isCompact ? 'pf-m-compact' : ''}`}
         variant="plain"
         onClick={onMenuToggle}
         aria-label={menuAriaLabel}
-        ref={innerRef}
+        ref={innerRef ?? buttonRef}
         icon={
           <Icon size={isCompact ? 'lg' : 'xl'} isInline>
             <BarsIcon />
@@ -53,9 +75,29 @@ const ChatbotHeaderMenuBase: FunctionComponent<ChatbotHeaderMenuProps> = ({
         size={isCompact ? 'sm' : undefined}
         {...props}
       />
-    </Tooltip>
-  </div>
-);
+    ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isCompact, menuAriaLabel, onMenuToggle, innerRef, buttonRef]
+  );
+
+  return (
+    <div className={`pf-chatbot__menu ${className}`}>
+      {isDrawerAnimating ? (
+        button
+      ) : (
+        <Tooltip
+          content={tooltipContent}
+          position="bottom"
+          // prevents VO announcements of both aria label and tooltip
+          aria="none"
+          {...tooltipProps}
+        >
+          {button}
+        </Tooltip>
+      )}
+    </div>
+  );
+};
 
 export const ChatbotHeaderMenu = forwardRef((props: ChatbotHeaderMenuProps, ref: Ref<HTMLButtonElement>) => (
   <ChatbotHeaderMenuBase innerRef={ref} {...props} />
