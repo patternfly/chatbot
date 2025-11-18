@@ -108,7 +108,9 @@ describe('ToolResponse', () => {
 
   it('should render toggleContent as markdown when isToggleContentMarkdown is true', () => {
     const toggleContent = '**Bold toggle**';
-    const { container } = render(<ToolResponse {...defaultProps} toggleContent={toggleContent} isToggleContentMarkdown />);
+    const { container } = render(
+      <ToolResponse {...defaultProps} toggleContent={toggleContent} isToggleContentMarkdown />
+    );
     expect(container.querySelector('strong')).toBeTruthy();
     expect(screen.getByText('Bold toggle')).toBeTruthy();
   });
