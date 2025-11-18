@@ -232,4 +232,44 @@ describe('ToolCall', () => {
     expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
     expect(screen.queryByText('Expandable Content')).not.toBeVisible();
   });
+
+  it('should render titleText as markdown when isTitleMarkdown is true', () => {
+    const titleText = '**Bold title**';
+    const { container } = render(<ToolCall titleText={titleText} isTitleMarkdown />);
+    expect(container.querySelector('strong')).toBeTruthy();
+    expect(screen.getByText('Bold title')).toBeTruthy();
+  });
+
+  it('should not render titleText as markdown when isTitleMarkdown is false', () => {
+    const titleText = '**Bold title**';
+    render(<ToolCall titleText={titleText} />);
+    expect(screen.getByText('**Bold title**')).toBeTruthy();
+  });
+
+  it('should render expandableContent as markdown when isExpandableContentMarkdown is true', async () => {
+    const user = userEvent.setup();
+    const expandableContent = '**Bold expandable content**';
+    const { container } = render(
+      <ToolCall {...defaultProps} expandableContent={expandableContent} isExpandableContentMarkdown />
+    );
+    await user.click(screen.getByRole('button', { name: defaultProps.titleText }));
+    expect(container.querySelector('strong')).toBeTruthy();
+    expect(screen.getByText('Bold expandable content')).toBeTruthy();
+  });
+
+  it('should not render expandableContent as markdown when isExpandableContentMarkdown is false', async () => {
+    const user = userEvent.setup();
+    const expandableContent = '**Bold expandable content**';
+    render(<ToolCall {...defaultProps} expandableContent={expandableContent} />);
+    await user.click(screen.getByRole('button', { name: defaultProps.titleText }));
+    expect(screen.getByText('**Bold expandable content**')).toBeTruthy();
+  });
+
+  it('should pass markdownContentProps to MarkdownContent component', () => {
+    const titleText = '**Bold title**';
+    const { container } = render(
+      <ToolCall titleText={titleText} isTitleMarkdown markdownContentProps={{ isPrimary: true }} />
+    );
+    expect(container.querySelector('.pf-m-primary')).toBeTruthy();
+  });
 });
