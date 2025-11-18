@@ -8,7 +8,7 @@ source: About
 
 **Note:** The PatternFly ChatBot extension lives in its own package [`@patternfly/chatbot`](https://www.npmjs.com/package/@patternfly/chatbot)
 
-It is important to leverage AI in a way that improves the experiences of your users. In alignment with our [AI principles](/patternfly-ai/about-ai#ai-principles) and [ethical design guidelines,](/patternfly-ai/ai-guidelines) we've created this ChatBot extension. The PatternFly ChatBot contains a React implementation of an AI ChatBot, to provide your users with access to convenient and persistent help.
+It is important to leverage AI in a way that improves the experiences of your users. In alignment with our [AI principles](/ai/about-ai#ai-principles) and [ethical design guidelines,](/ai/ai-guidelines) we've created this ChatBot extension. The PatternFly ChatBot contains a React implementation of an AI ChatBot, to provide your users with access to convenient and persistent help.
 
 _Only use this ChatBot when it adds value to your users' experiences._ Don't use it simply for the sake of novelty&mdash;your users will only be excited to interact with a new ChatBot feature if it directly helps them reach their goals.
 
@@ -22,7 +22,7 @@ To illustrate the capabilities of the ChatBot, including more complex interactio
 - [ChatBot attachments via file upload](/extensions/chatbot/messages/demo#attach-via-upload-button-in-message-bar)
 - [ChatBot attachments via built-in menu](/extensions/chatbot/messages/demo#attach-via-menu-of-options-in-message-bar)
 
-To learn how to write for ChatBot experiences, refer to our [conversation design guidelines](/patternfly-ai/conversation-design/#writing-for-chatbots).
+To learn how to write for ChatBot experiences, refer to our [conversation design guidelines](/ai/conversation-design/#writing-for-chatbots).
 
 To learn how to design ChatBot experiences, [refer to the design guidelines](/extensions/chatbot/overview/design-guidelines).
 

@@ -51,16 +51,16 @@
     "unist-util-visit": "^5.0.0"
   },
   "peerDependencies": {
-    "monaco-editor": "^0.54.0",
     "@monaco-editor/react": "^4.7.0",
+    "monaco-editor": "^0.54.0",
     "react": "^18 || ^19",
     "react-dom": "^18 || ^19"
   },
   "peerDependenciesMeta": {
-    "monaco-editor": {
+    "@monaco-editor/react": {
       "optional": false
     },
-    "@monaco-editor/react": {
+    "monaco-editor": {
       "optional": false
     }
   },
