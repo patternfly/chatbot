@@ -104,7 +104,7 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
 
   const renderTitle = () => {
     if (isTitleMarkdown) {
-      return <MarkdownContent content={titleText} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles content={titleText} {...markdownContentProps} />;
     }
     return titleText;
   };
@@ -124,7 +124,7 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
 
   const renderExpandableContent = () => {
     if (isExpandableContentMarkdown && typeof expandableContent === 'string') {
-      return <MarkdownContent content={expandableContent} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles content={expandableContent} {...markdownContentProps} />;
     }
     return expandableContent;
   };

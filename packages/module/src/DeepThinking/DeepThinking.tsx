@@ -59,7 +59,7 @@ export const DeepThinking: FunctionComponent<DeepThinkingProps> = ({
 
   const renderToggleContent = () => {
     if (isToggleContentMarkdown && typeof toggleContent === 'string') {
-      return <MarkdownContent content={toggleContent} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles content={toggleContent} {...markdownContentProps} />;
     }
     return toggleContent;
   };
@@ -69,7 +69,7 @@ export const DeepThinking: FunctionComponent<DeepThinkingProps> = ({
       return null;
     }
     if (isSubheadingMarkdown) {
-      return <MarkdownContent content={subheading} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles content={subheading} {...markdownContentProps} />;
     }
     return subheading;
   };
@@ -79,7 +79,7 @@ export const DeepThinking: FunctionComponent<DeepThinkingProps> = ({
       return null;
     }
     if (isBodyMarkdown && typeof body === 'string') {
-      return <MarkdownContent content={body} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles content={body} {...markdownContentProps} />;
     }
     return body;
   };
