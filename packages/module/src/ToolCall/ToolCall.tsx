@@ -67,6 +67,8 @@ export interface ToolCallProps {
   isExpandableContentMarkdown?: boolean;
   /** Props passed to MarkdownContent component when markdown is enabled */
   markdownContentProps?: Omit<MarkdownContentProps, 'content'>;
+  /** Whether to retain styles in the MarkdownContent component. Defaults to false. */
+  shouldRetainStyles?: boolean;
 }
 
 export const ToolCall: FunctionComponent<ToolCallProps> = ({
@@ -91,11 +93,12 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
   spinnerProps,
   isTitleMarkdown,
   isExpandableContentMarkdown,
-  markdownContentProps
+  markdownContentProps,
+  shouldRetainStyles = false
 }: ToolCallProps) => {
   const renderTitle = () => {
     if (isTitleMarkdown) {
-      return <MarkdownContent shouldRetainStyles content={titleText} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles={shouldRetainStyles} content={titleText} {...markdownContentProps} />;
     }
     return titleText;
   };
@@ -115,7 +118,7 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
 
   const renderExpandableContent = () => {
     if (isExpandableContentMarkdown && typeof expandableContent === 'string') {
-      return <MarkdownContent shouldRetainStyles content={expandableContent} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles={shouldRetainStyles} content={expandableContent} {...markdownContentProps} />;
     }
     return expandableContent;
   };
