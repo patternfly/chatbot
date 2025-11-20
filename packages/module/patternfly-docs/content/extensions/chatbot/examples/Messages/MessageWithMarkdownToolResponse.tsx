@@ -149,6 +149,7 @@ This is some text that has a short footnote[^1] and this is text with a longer f
       avatar={patternflyAvatar}
       content="This example demonstrates a tool response with a comprehensive markdown body showing all formatting options:"
       toolResponse={{
+        shouldRetainStyles: true,
         isToggleContentMarkdown: true,
         toggleContent: '# Tool response: toolName',
         isSubheadingMarkdown: true,

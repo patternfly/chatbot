@@ -56,8 +56,10 @@ describe('MarkdownContent', () => {
 
   it('should render code blocks correctly', () => {
     render(<MarkdownContent content={CODE_BLOCK} />);
-    expect(screen.getByText(/function hello/)).toBeTruthy();
-    expect(screen.getByText(/console.log/)).toBeTruthy();
+
+    expect(screen.getByText(/function hello/)).toBeVisible();
+    expect(screen.getByText(/console.log/)).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Copy code' })).toBeVisible();
   });
 
   it('should render headings correctly', () => {
@@ -97,7 +99,10 @@ describe('MarkdownContent', () => {
 
   it('should render blockquotes correctly', () => {
     render(<MarkdownContent content={BLOCKQUOTE} />);
-    expect(screen.getByText(/This is a blockquote/)).toBeTruthy();
+
+    const quote = screen.getByText(/This is a blockquote/);
+    expect(quote).toBeVisible();
+    expect(quote.closest('.pf-v6-c-content--blockquote')?.tagName).toBe('BLOCKQUOTE');
   });
 
   it('should render images when hasNoImages is false', () => {
