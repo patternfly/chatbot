@@ -90,7 +90,9 @@ export const ToolResponse: FunctionComponent<ToolResponseProps> = ({
 
   const renderToggleContent = () => {
     if (isToggleContentMarkdown && typeof toggleContent === 'string') {
-      return <MarkdownContent shouldRetainStyles={shouldRetainStyles} content={toggleContent} {...markdownContentProps} />;
+      return (
+        <MarkdownContent shouldRetainStyles={shouldRetainStyles} content={toggleContent} {...markdownContentProps} />
+      );
     }
     return toggleContent;
   };
