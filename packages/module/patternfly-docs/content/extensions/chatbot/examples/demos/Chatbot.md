@@ -52,6 +52,20 @@ import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
 import OpenDrawerRightIcon from '@patternfly/react-icons/dist/esm/icons/open-drawer-right-icon';
 import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/outlined-window-restore-icon';
 import { BarsIcon } from '@patternfly/react-icons/dist/esm/icons/bars-icon';
+import { CopyIcon } from '@patternfly/react-icons/dist/esm/icons/copy-icon';
+import { WrenchIcon } from '@patternfly/react-icons/dist/esm/icons/wrench-icon';
+import {
+Button,
+DescriptionList,
+DescriptionListDescription,
+DescriptionListGroup,
+DescriptionListTerm,
+ExpandableSection,
+ExpandableSectionVariant,
+Flex,
+FlexItem,
+Label
+} from '@patternfly/react-core';
 import PFHorizontalLogoColor from '../UI/PF-HorizontalLogo-Color.svg';
 import PFHorizontalLogoReverse from '../UI/PF-HorizontalLogo-Reverse.svg';
 import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
@@ -59,7 +73,7 @@ import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import { getTrackingProviders } from "@patternfly/chatbot/dist/dynamic/tracking";
-import { useEffect,useCallback, useRef, useState, FunctionComponent, MouseEvent } from 'react';
+import { useEffect,useCallback, useRef, useState, FunctionComponent, MouseEvent, MouseEvent as ReactMouseEvent } from 'react';
 import saveAs from 'file-saver';
 
 ### Basic ChatBot
@@ -187,5 +201,23 @@ A conversation transcript includes details from the entirety of a ChatBot conver
 In this example, file download is implemented with [file-saver](https://www.npmjs.com/package/file-saver).
 
 ```js file="./ChatbotTranscripts.tsx" isFullscreen
+
+```
+
+### ChatBot with markdown tool response
+
+This demo displays a ChatBot in overlay mode with a comprehensive markdown tool response example. This demo includes:
+
+1. The [`<ChatbotToggle>`](/extensions/chatbot/ui#toggle) that controls the [`<Chatbot>` container.](/extensions/chatbot/ui#container)
+2. A [`<ChatbotHeader>`](/extensions/chatbot/ui#header) with display mode switching capabilities.
+3. A message with a [`<ToolResponse>`](/extensions/chatbot/messages#tool-response) component that demonstrates:
+   - Markdown-formatted toggle content, subheading, and body
+   - Comprehensive markdown formatting examples (headings, code blocks, lists, tables, images, footnotes, etc.)
+   - Custom card title and card body with tool response details
+   - The `shouldRetainStyles` prop set to `true` to preserve markdown styles
+
+This example showcases how tool responses with rich markdown content render within an overlay ChatBot context.
+
+```js file="./ChatbotWithMarkdownToolResponse.tsx" isFullscreen
 
 ```

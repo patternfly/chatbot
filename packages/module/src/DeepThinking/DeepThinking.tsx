@@ -10,6 +10,8 @@ import {
   ExpandableSectionProps
 } from '@patternfly/react-core';
 import { useState, type FunctionComponent } from 'react';
+import MarkdownContent from '../MarkdownContent';
+import type { MarkdownContentProps } from '../MarkdownContent';
 
 export interface DeepThinkingProps {
   /** Toggle content shown for expandable section  */
@@ -24,6 +26,16 @@ export interface DeepThinkingProps {
   cardProps?: CardProps;
   /** Additional props passed to main card body */
   cardBodyProps?: CardBodyProps;
+  /** Whether to enable markdown rendering for toggleContent. When true and toggleContent is a string, it will be parsed as markdown. */
+  isToggleContentMarkdown?: boolean;
+  /** Whether to enable markdown rendering for subheading. When true, subheading will be parsed as markdown. */
+  isSubheadingMarkdown?: boolean;
+  /** Whether to enable markdown rendering for body. When true and body is a string, it will be parsed as markdown. */
+  isBodyMarkdown?: boolean;
+  /** Props passed to MarkdownContent component when markdown is enabled */
+  markdownContentProps?: Omit<MarkdownContentProps, 'content'>;
+  /** Whether to retain styles in the MarkdownContent component. Defaults to false. */
+  shouldRetainStyles?: boolean;
 }
 
 export const DeepThinking: FunctionComponent<DeepThinkingProps> = ({
@@ -32,7 +44,12 @@ export const DeepThinking: FunctionComponent<DeepThinkingProps> = ({
   expandableSectionProps,
   subheading,
   toggleContent,
-  cardBodyProps
+  cardBodyProps,
+  isToggleContentMarkdown,
+  isSubheadingMarkdown,
+  isBodyMarkdown,
+  markdownContentProps,
+  shouldRetainStyles = false
 }: DeepThinkingProps) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -40,11 +57,40 @@ export const DeepThinking: FunctionComponent<DeepThinkingProps> = ({
     setIsExpanded(isExpanded);
   };
 
+  const renderToggleContent = () => {
+    if (isToggleContentMarkdown && typeof toggleContent === 'string') {
+      return (
+        <MarkdownContent shouldRetainStyles={shouldRetainStyles} content={toggleContent} {...markdownContentProps} />
+      );
+    }
+    return toggleContent;
+  };
+
+  const renderSubheading = () => {
+    if (!subheading) {
+      return null;
+    }
+    if (isSubheadingMarkdown) {
+      return <MarkdownContent shouldRetainStyles={shouldRetainStyles} content={subheading} {...markdownContentProps} />;
+    }
+    return subheading;
+  };
+
+  const renderBody = () => {
+    if (!body) {
+      return null;
+    }
+    if (isBodyMarkdown && typeof body === 'string') {
+      return <MarkdownContent shouldRetainStyles={shouldRetainStyles} content={body} {...markdownContentProps} />;
+    }
+    return body;
+  };
+
   return (
     <Card isCompact className="pf-chatbot__deep-thinking" {...cardProps}>
       <CardBody {...cardBodyProps}>
         <ExpandableSection
-          toggleContent={toggleContent}
+          toggleContent={renderToggleContent()}
           onToggle={onToggle}
           isExpanded={isExpanded}
           isIndented
@@ -54,10 +100,10 @@ export const DeepThinking: FunctionComponent<DeepThinkingProps> = ({
           <div className="pf-chatbot__deep-thinking-section">
             {subheading && (
               <div className="pf-chatbot__deep-thinking-subheading">
-                <span>{subheading}</span>
+                <span>{renderSubheading()}</span>
               </div>
             )}
-            {body && <div className="pf-chatbot__deep-thinking-body">{body}</div>}
+            {body && <div className="pf-chatbot__deep-thinking-body">{renderBody()}</div>}
           </div>
         </ExpandableSection>
       </CardBody>

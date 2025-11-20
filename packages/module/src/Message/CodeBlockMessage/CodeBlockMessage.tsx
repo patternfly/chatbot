@@ -19,6 +19,7 @@ import {
 
 import { CheckIcon } from '@patternfly/react-icons/dist/esm/icons/check-icon';
 import { CopyIcon } from '@patternfly/react-icons/dist/esm/icons/copy-icon';
+import { css } from '@patternfly/react-styles';
 
 export interface CodeBlockMessageProps {
   /** Content rendered in code block */
@@ -41,6 +42,8 @@ export interface CodeBlockMessageProps {
   customActions?: React.ReactNode;
   /** Sets background colors to be appropriate on primary chatbot background */
   isPrimary?: boolean;
+  /** Flag indicating that the content should retain message styles when using Markdown. */
+  shouldRetainStyles?: boolean;
 }
 
 const DEFAULT_EXPANDED_TEXT = 'Show less';
@@ -57,6 +60,7 @@ const CodeBlockMessage = ({
   collapsedText = DEFAULT_COLLAPSED_TEXT,
   customActions,
   isPrimary,
+  shouldRetainStyles,
   ...props
 }: CodeBlockMessageProps) => {
   const [copied, setCopied] = useState(false);
@@ -138,7 +142,7 @@ const CodeBlockMessage = ({
   );
 
   return (
-    <div className="pf-chatbot__message-code-block" ref={codeBlockRef}>
+    <div className={css('pf-chatbot__message-code-block', shouldRetainStyles && 'pf-m-markdown')} ref={codeBlockRef}>
       <CodeBlock actions={actions}>
         <CodeBlockCode>
           <>
