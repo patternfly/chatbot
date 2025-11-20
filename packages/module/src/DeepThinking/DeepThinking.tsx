@@ -36,6 +36,8 @@ export interface DeepThinkingProps {
   isBodyMarkdown?: boolean;
   /** Props passed to MarkdownContent component when markdown is enabled */
   markdownContentProps?: Omit<MarkdownContentProps, 'content'>;
+  /** Whether to retain styles in the MarkdownContent component. Defaults to false. */
+  shouldRetainStyles?: boolean;
 }
 
 export const DeepThinking: FunctionComponent<DeepThinkingProps> = ({
@@ -49,7 +51,8 @@ export const DeepThinking: FunctionComponent<DeepThinkingProps> = ({
   isToggleContentMarkdown,
   isSubheadingMarkdown,
   isBodyMarkdown,
-  markdownContentProps
+  markdownContentProps,
+  shouldRetainStyles = false
 }: DeepThinkingProps) => {
   const [isExpanded, setIsExpanded] = useState(isDefaultExpanded);
 
@@ -59,7 +62,7 @@ export const DeepThinking: FunctionComponent<DeepThinkingProps> = ({
 
   const renderToggleContent = () => {
     if (isToggleContentMarkdown && typeof toggleContent === 'string') {
-      return <MarkdownContent shouldRetainStyles content={toggleContent} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles={shouldRetainStyles} content={toggleContent} {...markdownContentProps} />;
     }
     return toggleContent;
   };
@@ -69,7 +72,7 @@ export const DeepThinking: FunctionComponent<DeepThinkingProps> = ({
       return null;
     }
     if (isSubheadingMarkdown) {
-      return <MarkdownContent shouldRetainStyles content={subheading} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles={shouldRetainStyles} content={subheading} {...markdownContentProps} />;
     }
     return subheading;
   };
@@ -79,7 +82,7 @@ export const DeepThinking: FunctionComponent<DeepThinkingProps> = ({
       return null;
     }
     if (isBodyMarkdown && typeof body === 'string') {
-      return <MarkdownContent shouldRetainStyles content={body} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles={shouldRetainStyles} content={body} {...markdownContentProps} />;
     }
     return body;
   };

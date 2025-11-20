@@ -56,6 +56,8 @@ export interface ToolResponseProps {
   isCardTitleMarkdown?: boolean;
   /** Props passed to MarkdownContent component when markdown is enabled */
   markdownContentProps?: Omit<MarkdownContentProps, 'content'>;
+  /** Whether to retain styles in the MarkdownContent component. Defaults to false. */
+  shouldRetainStyles?: boolean;
 }
 
 export const ToolResponse: FunctionComponent<ToolResponseProps> = ({
@@ -77,7 +79,8 @@ export const ToolResponse: FunctionComponent<ToolResponseProps> = ({
   isBodyMarkdown,
   isCardBodyMarkdown,
   isCardTitleMarkdown,
-  markdownContentProps
+  markdownContentProps,
+  shouldRetainStyles = false
 }: ToolResponseProps) => {
   const [isExpanded, setIsExpanded] = useState(isDefaultExpanded);
 
@@ -87,7 +90,7 @@ export const ToolResponse: FunctionComponent<ToolResponseProps> = ({
 
   const renderToggleContent = () => {
     if (isToggleContentMarkdown && typeof toggleContent === 'string') {
-      return <MarkdownContent shouldRetainStyles content={toggleContent} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles={shouldRetainStyles} content={toggleContent} {...markdownContentProps} />;
     }
     return toggleContent;
   };
@@ -97,7 +100,7 @@ export const ToolResponse: FunctionComponent<ToolResponseProps> = ({
       return null;
     }
     if (isSubheadingMarkdown) {
-      return <MarkdownContent shouldRetainStyles content={subheading} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles={shouldRetainStyles} content={subheading} {...markdownContentProps} />;
     }
     return subheading;
   };
@@ -107,7 +110,7 @@ export const ToolResponse: FunctionComponent<ToolResponseProps> = ({
       return null;
     }
     if (isBodyMarkdown && typeof body === 'string') {
-      return <MarkdownContent shouldRetainStyles content={body} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles={shouldRetainStyles} content={body} {...markdownContentProps} />;
     }
     return body;
   };
@@ -117,7 +120,7 @@ export const ToolResponse: FunctionComponent<ToolResponseProps> = ({
       return null;
     }
     if (isCardTitleMarkdown && typeof cardTitle === 'string') {
-      return <MarkdownContent shouldRetainStyles content={cardTitle} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles={shouldRetainStyles} content={cardTitle} {...markdownContentProps} />;
     }
     return cardTitle;
   };
@@ -127,7 +130,7 @@ export const ToolResponse: FunctionComponent<ToolResponseProps> = ({
       return null;
     }
     if (isCardBodyMarkdown && typeof cardBody === 'string') {
-      return <MarkdownContent shouldRetainStyles content={cardBody} {...markdownContentProps} />;
+      return <MarkdownContent shouldRetainStyles={shouldRetainStyles} content={cardBody} {...markdownContentProps} />;
     }
     return cardBody;
   };
