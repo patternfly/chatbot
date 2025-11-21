@@ -524,7 +524,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
             {!isLoading && !isEditable && actions && (
               <>
                 {Array.isArray(actions) ? (
-                  <Flex gap={{ default: 'gapXs' }}>
+                  <div className="pf-chatbot__response-actions-groups">
                     {actions.map((actionGroup, index) => (
                       <ResponseActions
                         key={index}
@@ -532,7 +532,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
                         persistActionSelection={persistActionSelection || actionGroup.persistActionSelection}
                       />
                     ))}
-                  </Flex>
+                  </div>
                 ) : (
                   <ResponseActions actions={actions} persistActionSelection={persistActionSelection} />
                 )}

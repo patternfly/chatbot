@@ -22,6 +22,17 @@
   }
 }
 
+.pf-chatbot__response-actions-groups {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  gap: var(--pf-t--global--spacer--xs);
+
+  .pf-chatbot__response-actions {
+    display: flex;
+  }
+}
+
 .pf-v6-c-button.pf-chatbot__button--response-action-clicked.pf-v6-c-button.pf-m-plain.pf-m-small {
   --pf-v6-c-button--m-plain--BackgroundColor: var(--pf-t--global--background--color--action--plain--alt--clicked);
   --pf-v6-c-button__icon--Color: var(--pf-t--global--icon--color--regular);
