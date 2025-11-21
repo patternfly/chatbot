@@ -10,8 +10,7 @@ export const MessageWithFeedbackExample: FunctionComponent = () => {
   const [hasPrivacyStatement, setHasPrivacyStatement] = useState(false);
 
   const children = <>Do not share any personal or other sensitive information in your feedback.</>;
-  const privacyStatement =
-    'By submitting this, you agree to share this feedback. Do not include any personal or confidential information.';
+  const privacyStatement = 'This is a privacy statement text content.';
 
   return (
     <>
