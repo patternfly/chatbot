@@ -1,6 +1,8 @@
 .pf-chatbot__message-quick-response {
   .pf-v6-c-label {
-    --pf-v6-c-label--FontSize: var(--pf-t--global--font--size--md);
+    &:not(.pf-m-compact) {
+      --pf-v6-c-label--FontSize: var(--pf-t--global--font--size--md);
+    }
 
     @media screen and (min-width: 401px) and (max-width: 600px) {
       --pf-v6-c-label__text--MaxWidth: 20ch;
