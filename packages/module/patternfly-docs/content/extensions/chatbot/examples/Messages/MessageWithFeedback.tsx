@@ -51,7 +51,7 @@ export const MessageWithFeedbackExample: FunctionComponent = () => {
             name="Bot"
             role="bot"
             avatar={patternflyAvatar}
-            content="This is a message with the feedback card lol haaa:"
+            content="This is a message with the feedback card"
             userFeedbackForm={{
               quickResponses: [
                 { id: '1', content: 'Helpful information' },
