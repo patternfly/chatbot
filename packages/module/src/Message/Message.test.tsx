@@ -437,7 +437,7 @@ describe('Message', () => {
     expect(screen.queryByRole('button', { name: /No/i })).toBeFalsy();
     expect(screen.getByRole('button', { name: /1 more/i }));
   });
-  it('should be able to show actions', async () => {
+  it('Renders response actions when a single actions object is passed', async () => {
     render(
       <Message
         avatar="./img"
@@ -463,9 +463,204 @@ describe('Message', () => {
       />
     );
     ALL_ACTIONS.forEach(({ label }) => {
-      expect(screen.getByRole('button', { name: label })).toBeTruthy();
+      expect(screen.getByRole('button', { name: label })).toBeVisible();
     });
   });
+  it('Renders response actions when an array of actions objects is passed', async () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        actions={[
+          {
+            // eslint-disable-next-line no-console
+            positive: { onClick: () => console.log('Good response') },
+            // eslint-disable-next-line no-console
+            negative: { onClick: () => console.log('Bad response') }
+          },
+          {
+            // eslint-disable-next-line no-console
+            copy: { onClick: () => console.log('Copy') },
+            // eslint-disable-next-line no-console
+            edit: { onClick: () => console.log('Edit') },
+            // eslint-disable-next-line no-console
+            share: { onClick: () => console.log('Share') },
+            // eslint-disable-next-line no-console
+            download: { onClick: () => console.log('Download') }
+          },
+          {
+            // eslint-disable-next-line no-console
+            listen: { onClick: () => console.log('Listen') }
+          }
+        ]}
+      />
+    );
+    ALL_ACTIONS.forEach(({ label }) => {
+      expect(screen.getByRole('button', { name: label })).toBeVisible();
+    });
+  });
+  it('Renders response actions when an array of objects containing actions objects is passed', async () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        actions={[
+          {
+            actions: {
+              // eslint-disable-next-line no-console
+              positive: { onClick: () => console.log('Good response') },
+              // eslint-disable-next-line no-console
+              negative: { onClick: () => console.log('Bad response') }
+            }
+          },
+          {
+            actions: {
+              // eslint-disable-next-line no-console
+              copy: { onClick: () => console.log('Copy') },
+              // eslint-disable-next-line no-console
+              edit: { onClick: () => console.log('Edit') },
+              // eslint-disable-next-line no-console
+              share: { onClick: () => console.log('Share') },
+              // eslint-disable-next-line no-console
+              download: { onClick: () => console.log('Download') }
+            }
+          },
+          {
+            actions: {
+              // eslint-disable-next-line no-console
+              listen: { onClick: () => console.log('Listen') }
+            }
+          }
+        ]}
+      />
+    );
+    ALL_ACTIONS.forEach(({ label }) => {
+      expect(screen.getByRole('button', { name: label })).toBeVisible();
+    });
+  });
+
+  it('should handle persistActionSelection correctly when a single actions object is passed', async () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Test message"
+        persistActionSelection
+        actions={{
+          positive: { onClick: jest.fn() },
+          negative: { onClick: jest.fn() }
+        }}
+      />
+    );
+    const goodBtn = screen.getByRole('button', { name: /Good response/i });
+    const badBtn = screen.getByRole('button', { name: /Bad response/i });
+
+    await userEvent.click(goodBtn);
+    expect(screen.getByRole('button', { name: /Good response recorded/i })).toHaveClass(
+      'pf-chatbot__button--response-action-clicked'
+    );
+
+    await userEvent.click(screen.getByText('Test message'));
+    expect(screen.getByRole('button', { name: /Good response recorded/i })).toHaveClass(
+      'pf-chatbot__button--response-action-clicked'
+    );
+
+    await userEvent.click(badBtn);
+    expect(screen.getByRole('button', { name: /Bad response recorded/i })).toHaveClass(
+      'pf-chatbot__button--response-action-clicked'
+    );
+    expect(goodBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
+  });
+
+  it('should handle persistActionSelection correctly when an array of actions objects is passed', async () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Test message"
+        persistActionSelection
+        actions={[
+          {
+            positive: { onClick: jest.fn() },
+            negative: { onClick: jest.fn() }
+          },
+          {
+            copy: { onClick: jest.fn() }
+          }
+        ]}
+      />
+    );
+    const goodBtn = screen.getByRole('button', { name: /Good response/i });
+    const copyBtn = screen.getByRole('button', { name: /Copy/i });
+
+    await userEvent.click(goodBtn);
+    expect(screen.getByRole('button', { name: /Good response recorded/i })).toHaveClass(
+      'pf-chatbot__button--response-action-clicked'
+    );
+
+    await userEvent.click(screen.getByText('Test message'));
+    expect(screen.getByRole('button', { name: /Good response recorded/i })).toHaveClass(
+      'pf-chatbot__button--response-action-clicked'
+    );
+
+    await userEvent.click(copyBtn);
+    expect(screen.getByRole('button', { name: /Copied/i })).toHaveClass('pf-chatbot__button--response-action-clicked');
+
+    await userEvent.click(screen.getByText('Test message'));
+    expect(screen.getByRole('button', { name: /Good response recorded/i })).toHaveClass(
+      'pf-chatbot__button--response-action-clicked'
+    );
+    expect(screen.getByRole('button', { name: /Copied/i })).toHaveClass('pf-chatbot__button--response-action-clicked');
+  });
+
+  it('should handle persistActionSelection correctly when an array of objects containing actions objects is passed', async () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Test message"
+        actions={[
+          {
+            actions: {
+              positive: { onClick: jest.fn() },
+              negative: { onClick: jest.fn() }
+            },
+            persistActionSelection: true
+          },
+          {
+            actions: {
+              copy: { onClick: jest.fn() }
+            },
+            persistActionSelection: false
+          }
+        ]}
+      />
+    );
+    const goodBtn = screen.getByRole('button', { name: /Good response/i });
+    const copyBtn = screen.getByRole('button', { name: /Copy/i });
+
+    await userEvent.click(goodBtn);
+    expect(screen.getByRole('button', { name: /Good response recorded/i })).toHaveClass(
+      'pf-chatbot__button--response-action-clicked'
+    );
+
+    await userEvent.click(copyBtn);
+    expect(screen.getByRole('button', { name: /Copied/i })).toHaveClass('pf-chatbot__button--response-action-clicked');
+
+    await userEvent.click(screen.getByText('Test message'));
+    expect(screen.getByRole('button', { name: /Good response recorded/i })).toHaveClass(
+      'pf-chatbot__button--response-action-clicked'
+    );
+    expect(copyBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
+  });
+
   it('should not show actions if loading', async () => {
     render(
       <Message
@@ -527,6 +722,7 @@ describe('Message', () => {
       expect(screen.queryByRole('button', { name: label })).toBeFalsy();
     });
   });
+
   it('should render unordered lists correctly', () => {
     render(<Message avatar="./img" role="user" name="User" content={UNORDERED_LIST} />);
     expect(screen.getByText('Here is an unordered list:')).toBeTruthy();
