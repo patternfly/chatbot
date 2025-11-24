@@ -45,6 +45,10 @@ Explore our documentation, which covers both the components you'll need to build
 - Messages: Components that customize features related to the conversation  
     - [Bot and user messages](/extensions/chatbot/messages)
     - [File attachments](/extensions/chatbot/messages#file-attachments)
+- Patterns: More opinionated implementation solutions for common use cases
+    - [Primary color background](/extensions/chatbot/overview/demo#primary-color-background)
+    - [Display mode switcher](/extensions/chatbot/overview/demo#display-mode-switcher)
+    - [Chat transcripts](/extensions/chatbot/overview/demo#chat-transcripts)
 - [Analytics](/extensions/chatbot/analytics): Tracking for ChatBot interactions
 - [Customizing messages](/extensions/chatbot/customizing-messages): Details for the implementation of custom messages
 
