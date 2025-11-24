@@ -10,7 +10,7 @@ export const MessageWithFeedbackExample: FunctionComponent = () => {
   const [hasPrivacyStatement, setHasPrivacyStatement] = useState(false);
 
   const children = <>This is additional content.</>;
-  const privacyStatement = 'This is a privacy statement text content.';
+  const privacyStatement = 'Do not share any personal or other sensitive information in your feedback.';
 
   return (
     <>
@@ -51,7 +51,7 @@ export const MessageWithFeedbackExample: FunctionComponent = () => {
             name="Bot"
             role="bot"
             avatar={patternflyAvatar}
-            content="This is a message with the feedback card"
+            content="This is a message with the feedback card:"
             userFeedbackForm={{
               quickResponses: [
                 { id: '1', content: 'Helpful information' },
