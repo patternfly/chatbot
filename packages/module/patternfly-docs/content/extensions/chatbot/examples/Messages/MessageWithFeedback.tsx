@@ -9,7 +9,7 @@ export const MessageWithFeedbackExample: FunctionComponent = () => {
   const [hasChildren, setHasChildren] = useState(false);
   const [hasPrivacyStatement, setHasPrivacyStatement] = useState(false);
 
-  const children = <>Do not share any personal or other sensitive information in your feedback.</>;
+  const children = <>This is additional content.</>;
   const privacyStatement = 'This is a privacy statement text content.';
 
   return (
