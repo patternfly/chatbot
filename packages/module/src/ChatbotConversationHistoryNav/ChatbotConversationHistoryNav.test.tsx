@@ -681,8 +681,6 @@ describe('ChatbotConversationHistoryNav', () => {
       />
     );
 
-    const searchInput = screen.queryByPlaceholderText(/Search/i);
-
     expect(screen.queryByPlaceholderText(/Search/i)).not.toBeInTheDocument();
     expect(screen.queryByText('Search action start test')).not.toBeInTheDocument();
     expect(screen.queryByText('Search action end test')).not.toBeInTheDocument();
