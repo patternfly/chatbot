@@ -59,7 +59,10 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
     'alphabetical-desc': 'Name (Z-A)'
   };
 
-  const onSortSelect = (_event: React.MouseEvent<Element, MouseEvent> | undefined, value: string | number | undefined) => {
+  const onSortSelect = (
+    _event: React.MouseEvent<Element, MouseEvent> | undefined,
+    value: string | number | undefined
+  ) => {
     setSelectedSort(value as string);
     setIsSortSelectOpen(false);
   };
@@ -156,7 +159,8 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
                   icon={
                     <SortAmountDownIcon
                       style={{
-                        transform: selectedSort === 'oldest' || selectedSort === 'alphabetical-asc' ? 'scaleY(-1)' : 'none'
+                        transform:
+                          selectedSort === 'oldest' || selectedSort === 'alphabetical-asc' ? 'scaleY(-1)' : 'none'
                       }}
                     />
                   }
