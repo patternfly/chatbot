@@ -592,6 +592,74 @@ describe('ChatbotConversationHistoryNav', () => {
     expect(screen.getByRole('dialog', { name: /Chat history I am a sample search/i })).toBeInTheDocument();
   });
 
+  it('Does not render search actions by default', () => {
+    const handleSearch = jest.fn();
+    const groupedConversations: { [key: string]: Conversation[] } = {
+      Today: [...initialConversations, { id: '2', text: 'Chatbot extension' }]
+    };
+
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        reverseButtonOrder={false}
+        conversations={groupedConversations}
+        handleTextInputChange={handleSearch}
+      />
+    );
+
+    const searchInput = screen.getByPlaceholderText(/Search/i);
+
+    expect(searchInput.parentElement?.previousElementSibling).toBeNull();
+    expect(searchInput.parentElement?.nextElementSibling).toBeNull();
+  })
+
+  it('Renders with action at start when searchActionStart is passed', () => {
+    const handleSearch = jest.fn();
+    const groupedConversations: { [key: string]: Conversation[] } = {
+      Today: [...initialConversations, { id: '2', text: 'Chatbot extension' }]
+    };
+
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        reverseButtonOrder={false}
+        conversations={groupedConversations}
+        handleTextInputChange={handleSearch}
+        searchActionStart={<div>Search action start test</div>}
+      />
+    );
+
+    expect(screen.getByText("Search action start test")).toBeVisible();
+  })
+
+  it('Renders with action at end when searchActionEnd is passed', () => {
+    const handleSearch = jest.fn();
+    const groupedConversations: { [key: string]: Conversation[] } = {
+      Today: [...initialConversations, { id: '2', text: 'Chatbot extension' }]
+    };
+
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        reverseButtonOrder={false}
+        handleTextInputChange={handleSearch}
+        conversations={groupedConversations}
+        searchActionEnd={<div>Search action end test</div>}
+      />
+    );
+
+    expect(screen.getByText("Search action end test")).toBeVisible();
+  })
+
   it('overrides nav title heading level when navTitleProps.headingLevel is passed', () => {
     render(
       <ChatbotConversationHistoryNav

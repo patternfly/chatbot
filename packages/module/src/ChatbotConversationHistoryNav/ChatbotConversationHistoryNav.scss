@@ -7,6 +7,11 @@
     border-radius: var(--pf-t--global--border--radius--medium);
   }
 
+  .pf-chatbot__heading-divider {
+    padding-inline-start: var(--pf-t--global--spacer--lg);
+    padding-inline-end: var(--pf-t--global--spacer--lg);
+  }
+
   // Drawer title
   // ----------------------------------------------------------------------------
   .pf-chatbot__heading-container {
@@ -28,6 +33,12 @@
     justify-content: flex-start;
     gap: var(--pf-t--global--spacer--gap--text-to-element--default);
   }
+
+  // Drawer search and actions
+  .pf-chatbot__input {
+    width: 100%;
+  }
+
   // Drawer menu
   // ----------------------------------------------------------------------------
   .pf-v6-c-menu {
