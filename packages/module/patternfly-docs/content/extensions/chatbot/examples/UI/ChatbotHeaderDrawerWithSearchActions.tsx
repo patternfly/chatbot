@@ -86,35 +86,35 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
         label="Display drawer"
         isChecked={isDrawerOpen}
         onChange={() => setIsDrawerOpen(!isDrawerOpen)}
-        id="drawer-visible"
+        id="search-actions-drawer-visible"
         name="drawer-visible"
       />
       <Checkbox
         label="Show drawer head divider"
         isChecked={hasDrawerHeadDivider}
         onChange={() => setHasDrawerHeadDivider(!hasDrawerHeadDivider)}
-        id="drawer-head-divider"
+        id="search-actions-drawer-head-divider"
         name="drawer-head-divider"
       />
       <Checkbox
         label="Show search action start"
         isChecked={showSearchActionStart}
         onChange={() => setShowSearchActionStart(!showSearchActionStart)}
-        id="show-search-action-start"
+        id="search-actions-show-search-action-start"
         name="show-search-action-start"
       />
       <Checkbox
         label="Show search action end"
         isChecked={showSearchActionEnd}
         onChange={() => setShowSearchActionEnd(!showSearchActionEnd)}
-        id="show-search-action-end"
+        id="search-actions-show-search-action-end"
         name="show-search-action-end"
       />
       <Checkbox
         label="Show loading state"
         isChecked={isLoading}
         onChange={() => setIsLoading(!isLoading)}
-        id="drawer-is-loading"
+        id="search-actions-drawer-is-loading"
         name="drawer-is-loading"
       />
       <ChatbotConversationHistoryNav
