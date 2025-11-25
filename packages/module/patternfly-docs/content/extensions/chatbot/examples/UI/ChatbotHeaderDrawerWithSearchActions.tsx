@@ -45,6 +45,7 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
   const [hasDrawerHeadDivider, setHasDrawerHeadDivider] = useState(false);
   const [showSearchActionStart, setShowSearchActionStart] = useState(false);
   const [showSearchActionEnd, setShowSearchActionEnd] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isSortSelectOpen, setIsSortSelectOpen] = useState(false);
   const [selectedSort, setSelectedSort] = useState<string>('newest');
   const [conversations, setConversations] = useState<Conversation[] | { [key: string]: Conversation[] }>(
@@ -109,6 +110,13 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
         id="show-search-action-end"
         name="show-search-action-end"
       />
+      <Checkbox
+        label="Show loading state"
+        isChecked={isLoading}
+        onChange={() => setIsLoading(!isLoading)}
+        id="drawer-is-loading"
+        name="drawer-is-loading"
+      />
       <ChatbotConversationHistoryNav
         displayMode={displayMode}
         onDrawerToggle={() => setIsDrawerOpen(!isDrawerOpen)}
@@ -130,6 +138,7 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
         }}
         drawerContent={<div>Drawer content</div>}
         hasDrawerHeadDivider={hasDrawerHeadDivider}
+        isLoading={isLoading}
         searchActionStart={
           showSearchActionStart ? (
             <Button
