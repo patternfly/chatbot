@@ -73,8 +73,8 @@ import SettingsForm from '@patternfly/chatbot/dist/dynamic/Settings';
 import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, ThumbtackIcon, UploadIcon } from '@patternfly/react-icons';
 import { useDropzone } from 'react-dropzone';
 
-import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
-import { DropdownItem, DropdownList, Checkbox } from '@patternfly/react-core';
+import ChatbotConversationHistoryNav, { Conversation } from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
+import { Button, DropdownItem, DropdownList, Checkbox, MenuToggle, MenuToggleElement, Select, SelectList, SelectOption } from '@patternfly/react-core';
 
 import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/outlined-window-restore-icon';
 import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
@@ -87,7 +87,7 @@ import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import termsAndConditionsHeader from './PF-TermsAndConditionsHeader.svg';
 import onboardingHeader from './RH-Hat-Image.svg';
-import { CloseIcon, SearchIcon, OutlinedCommentsIcon } from '@patternfly/react-icons';
+import { CloseIcon, SearchIcon, OutlinedCommentsIcon, FilterIcon, SortAmountDownIcon } from '@patternfly/react-icons';
 import { FunctionComponent, FormEvent, useState, useRef, MouseEvent, isValidElement, cloneElement, Children, ReactNode, Ref, MouseEvent as ReactMouseEvent, CSSProperties, useEffect} from 'react';
 import FilePreview from '@patternfly/chatbot/dist/dynamic/FilePreview';
 
@@ -368,6 +368,16 @@ They can also start new conversations via a "New chat" button. To customize the 
 Both the search input field and "New chat" buttons are optional. The `reverseButtonOrder` prop allows you to invert the positions of the Close and "New chat" buttons within the drawer when set to `true`.
 
 ```js file="./ChatbotHeaderDrawer.tsx"
+
+```
+
+### Drawer with search actions
+
+The conversation history drawer supports additional customization through `searchActionStart` and `searchActionEnd` props, which allow you to add controls before and after the search input field. These props are useful for adding filtering, sorting, or other search-related functionality.
+
+You can also add a visual divider between the drawer head and the title by setting `hasDrawerHeadDivider` to `true`.
+
+```ts file="./ChatbotHeaderDrawerWithSearchActions.tsx"
 
 ```
 
