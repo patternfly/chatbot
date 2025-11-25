@@ -373,7 +373,7 @@ Both the search input field and "New chat" buttons are optional. The `reverseBut
 
 ### Drawer with search actions
 
-The conversation history drawer supports additional customization through `searchActionStart` and `searchActionEnd` props, which allow you to add controls before and after the search input field. These props are useful for adding filtering, sorting, or other search-related functionality.
+You can customize the search experience within the conversation history drawer via the `searchActionStart` and `searchActionEnd` props, which provide additional search controls before and after the input field. These props are useful for adding filtering, sorting, or other search-related functionality.
 
 You can also add a visual divider between the drawer head and the title by setting `hasDrawerHeadDivider` to `true`.
 
