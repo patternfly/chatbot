@@ -352,11 +352,11 @@ An attachment dropzone allows users to upload files via drag and drop.
 
 ## Examples with Markdown
 
-The ChatBot supports Markdown formatting in several message components, allowing you to display rich, formatted content. This is particularly useful when you need to include code snippets, lists, emphasis, or other formatted text.
+The ChatBot supports Markdown formatting in several message components, allowing you to display rich, formatted content. This is particularly useful when you need to include code snippets, lists, emphasis, or other formatted text. The following examples demonstrate different ways you can use Markdown in a few of the ChatBot components, but this is not an exhaustive list of all Markdown customizations you can make.
 
 To enable Markdown rendering, use the appropriate Markdown flag prop (such as `isBodyMarkdown`, `isSubheadingMarkdown`, or `isExpandableContentMarkdown`) depending on the component and content you're formatting.
 
-**Important:** When using Markdown in these components, set `shouldRetainStyles: true` to retain the styling of the context the Markdown is used in. This ensures that Markdown content maintains the proper font sizes, colors, and other styling properties of its parent component. For example, Markdown passed into a toggle will retain the ChatBot toggle styling, while Markdown in a card body will maintain the appropriate card body styling. Without this prop, the Markdown may override the contextual styles and appear inconsistent with the rest of the ChatBot interface.
+**Important:** When using Markdown in these components, set `shouldRetainStyles: true` to retain the styling of the context the Markdown is used in. This ensures that Markdown content maintains the proper font sizes, colors, and other styling properties of its parent component. For example, Markdown passed into a toggle will retain the ChatBot toggle styling, while Markdown in a card body will maintain the appropriate card body styling. Without this prop, the Markdown may override the contextual styles and create inconsistencies with the rest of the ChatBot interface.
 
 ### Tool calls with Markdown
 
@@ -376,7 +376,7 @@ Deep thinking content can include Markdown formatting in both the subheading and
 
 ### Tool responses with Markdown
 
-Tool response cards support Markdown in multiple areas including the toggle content, subheading, and body. Use `shouldRetainStyles: true` along with the appropriate Markdown flag props to ensure proper formatting and spacing:
+Tool response cards support Markdown in multiple areas, including the toggle content, subheading, and body. Use `shouldRetainStyles: true` along with the appropriate Markdown flag props to ensure proper formatting and spacing.
 
 ```ts file="./MessageWithMarkdownToolResponse.tsx"
 
