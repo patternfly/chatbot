@@ -660,6 +660,35 @@ describe('ChatbotConversationHistoryNav', () => {
     expect(screen.getByText('Search action end test')).toBeVisible();
   });
 
+  it('Overrides default search input and actions when searchToolbar is passed', () => {
+    const handleSearch = jest.fn();
+    const groupedConversations: { [key: string]: Conversation[] } = {
+      Today: [...initialConversations, { id: '2', text: 'Chatbot extension' }]
+    };
+
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        reverseButtonOrder={false}
+        conversations={groupedConversations}
+        handleTextInputChange={handleSearch}
+        searchActionStart={<div>Search action start test</div>}
+        searchActionEnd={<div>Search action end test</div>}
+        searchToolbar={<div>Custom toolbar</div>}
+      />
+    );
+
+    const searchInput = screen.queryByPlaceholderText(/Search/i);
+
+    expect(screen.queryByPlaceholderText(/Search/i)).not.toBeInTheDocument();
+    expect(screen.queryByText('Search action start test')).not.toBeInTheDocument();
+    expect(screen.queryByText('Search action end test')).not.toBeInTheDocument();
+    expect(screen.getByText('Custom toolbar')).toBeInTheDocument();
+  });
+
   it('overrides nav title heading level when navTitleProps.headingLevel is passed', () => {
     render(
       <ChatbotConversationHistoryNav

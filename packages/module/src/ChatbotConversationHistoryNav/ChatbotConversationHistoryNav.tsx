@@ -154,6 +154,8 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   searchActionStart?: React.ReactNode;
   /** Custom action rendered after the search input. */
   searchActionEnd?: React.ReactNode;
+  /** A custom search toolbar to render below the title. This will override the default search actions and/or search input. */
+  searchToolbar?: React.ReactNode;
   /** Additional props passed to MenuContent */
   menuContentProps?: Omit<MenuContentProps, 'ref'>;
 }
@@ -197,6 +199,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   searchInputScreenReaderText,
   searchActionStart,
   searchActionEnd,
+  searchToolbar,
   menuProps,
   menuGroupProps,
   menuContentProps,
@@ -313,8 +316,12 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
     </div>
   );
 
-  const renderSearchAndActions = () =>
-    searchActionStart || searchActionEnd ? (
+  const renderSearchAndActions = () => {
+    if (searchToolbar) {
+      return searchToolbar;
+    }
+
+    return searchActionStart || searchActionEnd ? (
       <InputGroup>
         {searchActionStart && <InputGroupItem>{searchActionStart}</InputGroupItem>}
         {searchInputContainer && <InputGroupItem isFill>{searchInputContainer}</InputGroupItem>}
@@ -323,6 +330,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
     ) : (
       searchInputContainer
     );
+  };
 
   const renderPanelContent = () => {
     const drawer = (
