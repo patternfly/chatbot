@@ -221,12 +221,6 @@ If you are using [model context protocol (MCP)](https://www.redhat.com/en/blog/m
 
 ```
 
-### Messages with Markdown in tool response
-
-```ts file="./MessageWithMarkdownToolResponse.tsx"
-
-```
-
 ### Messages with deep thinking
 
 You can share details about the "thought process" behind an LLM's response, also known as deep thinking. To display a customizable, expandable card with these details, pass `deepThinking` to `<Message>` and provide a subheading (optional) and content body.
@@ -353,5 +347,37 @@ When an attachment upload fails, a [danger alert](/components/alert) is displaye
 An attachment dropzone allows users to upload files via drag and drop.
 
 ```js file="./FileDropZone.tsx"
+
+```
+
+## Examples with Markdown
+
+The ChatBot supports Markdown formatting in several message components, allowing you to display rich, formatted content. This is particularly useful when you need to include code snippets, lists, emphasis, or other formatted text.
+
+To enable Markdown rendering, use the appropriate Markdown flag prop (such as `isBodyMarkdown`, `isSubheadingMarkdown`, or `isExpandableContentMarkdown`) depending on the component and content you're formatting.
+
+**Important:** When using Markdown in these components, set `shouldRetainStyles: true` to retain the styling of the context the Markdown is used in. This ensures that Markdown content maintains the proper font sizes, colors, and other styling properties of its parent component. For example, Markdown passed into a toggle will retain the ChatBot toggle styling, while Markdown in a card body will maintain the appropriate card body styling. Without this prop, the Markdown may override the contextual styles and appear inconsistent with the rest of the ChatBot interface.
+
+### Tool calls with Markdown
+
+When displaying tool call information, you can use Markdown in the expandable content to provide formatted details about what the tool is processing. This is useful for showing structured data, code snippets, or formatted lists.
+
+```ts file="./MessageWithMarkdownToolCall.tsx"
+
+```
+
+### Deep thinking with Markdown
+
+Deep thinking content can include Markdown formatting in both the subheading and body to better communicate the LLM's reasoning process. This allows you to emphasize key points, structure thought processes with lists, or include other formatting.
+
+```ts file="./MessageWithMarkdownDeepThinking.tsx"
+
+```
+
+### Tool responses with Markdown
+
+Tool response cards support Markdown in multiple areas including the toggle content, subheading, and body. Use `shouldRetainStyles: true` along with the appropriate Markdown flag props to ensure proper formatting and spacing:
+
+```ts file="./MessageWithMarkdownToolResponse.tsx"
 
 ```

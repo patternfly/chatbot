@@ -19,142 +19,31 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
   const onToggle = (_event: ReactMouseEvent, isExpanded: boolean) => {
     setIsExpanded(isExpanded);
   };
-  const comprehensiveMarkdownBody = `Here's a comprehensive markdown example with various formatting options:
+  const toolResponseBody = `The tool processed **3 database queries** and returned the following results:
 
-# h1 Heading
+1. User data - *42 records*
+2. Transaction history - *128 records*
+3. Analytics metrics - *15 data points*
 
-## h2 Heading
-
-### h3 Heading
-
-#### h4 Heading
-
-##### h5 Heading
-
-###### h6 Heading
-
-## Text Emphasis
-
-**Bold text, formatted with double asterisks**
-
-__Bold text, formatted with double underscores__
-
-*Italic text, formatted with single asterisks*
-
-_Italic text, formatted with single underscores_
-
-~~Strikethrough~~
-
-## Inline Code
-
-Here is an inline code example - \`() => void\`
-
-## Code Blocks
-
-Here is some YAML code:
-
-~~~yaml
-apiVersion: helm.openshift.io/v1beta1/
-kind: HelmChartRepository
-metadata:
-  name: azure-sample-repo0oooo00ooo
-spec:
-  connectionConfig:
-  url: https://raw.githubusercontent.com/Azure-Samples/helm-charts/master/docs
-~~~
-
-Here is some JavaScript code:
-
-~~~js
-const MessageLoading = () => (
-  <div className="pf-chatbot__message-loading">
-    <span className="pf-chatbot__message-loading-dots">
-      <span className="pf-v6-screen-reader">Loading message</span>
-    </span>
-  </div>
-);
-
-export default MessageLoading;
-~~~
-
-## Block Quotes
-
-> Blockquotes can also be nested...
->> ...by using additional greater-than signs (>) right next to each other...
-> > > ...or with spaces between each sign.
-
-## Lists
-
-### Ordered List
-
-1. Item 1
-2. Item 2
-3. Item 3
-
-### Unordered List
-
-* Item 1
-* Item 2
-* Item 3
-
-### More Complex List
-
-You may be wondering whether you can display more complex lists with formatting. In response to your question, I will explain how to spread butter on toast.
-
-1. **Using a \`toaster\`:**
-
-  - Place \`bread\` in a \`toaster\`
-  - Once \`bread\` is lightly browned, remove from \`toaster\`
-
-2. **Using a \`knife\`:**
-
-  - Acquire 1 tablespoon of room temperature \`butter\`. Use \`knife\` to spread butter on \`toast\`. Bon appétit!
-
-## Links
-
-A paragraph with a URL: https://reactjs.org.
-
-## Tables
-
-To customize your table, you can use [PatternFly TableProps](/components/table#table)
-
-| Version | GA date | User role 
-|-|-|-|
-| 2.5 | September 30, 2024 | Administrator |
-| 2.5 | June 27, 2023 | Editor |
-| 3.0 | April 1, 2025 | Administrator
-
-## Images
-
-![Multi-colored wavy lines on a black background](https://cdn.dribbble.com/userupload/10651749/file/original-8a07b8e39d9e8bf002358c66fce1223e.gif)
-
-## Footnotes
-
-This is some text that has a short footnote[^1] and this is text with a longer footnote.[^bignote]
-
-[^1]: This is a short footnote. To return the highlight to the original message, click the arrow. 
-
-[^bignote]: This is a long footnote with multiple paragraphs and formatting.
-
-    To break long footnotes into paragraphs, indent the text. 
-
-    Add as many paragraphs as you like. You can include *italic text*, **bold text**, and \`code\`.
-
-    > You can even include blockquotes in footnotes!
-`;
+\`\`\`json
+{
+  "status": "success",
+  "execution_time": "0.12s"
+}
+\`\`\``;
   return (
     <Message
       name="Bot"
       role="bot"
       avatar={patternflyAvatar}
-      content="This example demonstrates a tool response with a comprehensive markdown body showing all formatting options:"
+      content="This example shows how to use Markdown formatting in tool response content. Note the use of shouldRetainStyles to maintain proper formatting:"
       toolResponse={{
         shouldRetainStyles: true,
         isToggleContentMarkdown: true,
-        toggleContent: '# Tool response: toolName',
+        toggleContent: '**Tool response:** data_query_tool',
         isSubheadingMarkdown: true,
-        subheading: '> Thought for 3 seconds',
-        body: comprehensiveMarkdownBody,
+        subheading: '> Completed in 0.12 seconds',
+        body: toolResponseBody,
         isBodyMarkdown: true,
         cardTitle: (
           <Flex

@@ -1,6 +1,6 @@
 // ============================================================================
 // Markdown Content - Shared component for rendering markdown
-// With aid from Jean-Claude Van Code
+// This was aided by Claude code
 // ============================================================================
 import { type FunctionComponent, ReactNode } from 'react';
 import Markdown, { Options } from 'react-markdown';
