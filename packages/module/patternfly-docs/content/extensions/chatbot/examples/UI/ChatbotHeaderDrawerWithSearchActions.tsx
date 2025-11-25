@@ -134,9 +134,8 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
               aria-label="Filter options"
               // eslint-disable-next-line no-console
               onClick={() => console.log('Filter button clicked')}
-            >
-              <FilterIcon />
-            </Button>
+              icon={<FilterIcon />}
+            />
           ) : undefined
         }
         searchActionEnd={
@@ -154,13 +153,14 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
                   isExpanded={isSortSelectOpen}
                   variant="plain"
                   aria-label={`${sortLabels[selectedSort]}, Sort conversations`}
-                >
-                  <SortAmountDownIcon
-                    style={{
-                      transform: selectedSort === 'oldest' || selectedSort === 'alphabetical-asc' ? 'rotate(180deg)' : 'none'
-                    }}
-                  />
-                </MenuToggle>
+                  icon={
+                    <SortAmountDownIcon
+                      style={{
+                        transform: selectedSort === 'oldest' || selectedSort === 'alphabetical-asc' ? 'scaleY(-1)' : 'none'
+                      }}
+                    />
+                  }
+                />
               )}
             >
               <SelectList>
