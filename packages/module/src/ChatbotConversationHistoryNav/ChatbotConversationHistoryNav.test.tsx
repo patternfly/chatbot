@@ -614,7 +614,7 @@ describe('ChatbotConversationHistoryNav', () => {
 
     expect(searchInput.parentElement?.previousElementSibling).toBeNull();
     expect(searchInput.parentElement?.nextElementSibling).toBeNull();
-  })
+  });
 
   it('Renders with action at start when searchActionStart is passed', () => {
     const handleSearch = jest.fn();
@@ -635,8 +635,8 @@ describe('ChatbotConversationHistoryNav', () => {
       />
     );
 
-    expect(screen.getByText("Search action start test")).toBeVisible();
-  })
+    expect(screen.getByText('Search action start test')).toBeVisible();
+  });
 
   it('Renders with action at end when searchActionEnd is passed', () => {
     const handleSearch = jest.fn();
@@ -657,8 +657,8 @@ describe('ChatbotConversationHistoryNav', () => {
       />
     );
 
-    expect(screen.getByText("Search action end test")).toBeVisible();
-  })
+    expect(screen.getByText('Search action end test')).toBeVisible();
+  });
 
   it('overrides nav title heading level when navTitleProps.headingLevel is passed', () => {
     render(
