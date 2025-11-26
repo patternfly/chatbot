@@ -73,8 +73,8 @@ import SettingsForm from '@patternfly/chatbot/dist/dynamic/Settings';
 import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, ThumbtackIcon, UploadIcon } from '@patternfly/react-icons';
 import { useDropzone } from 'react-dropzone';
 
-import ChatbotConversationHistoryNav, { Conversation } from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
-import { Button, DropdownItem, DropdownList, Checkbox, MenuToggle, MenuToggleElement, Select, SelectList, SelectOption } from '@patternfly/react-core';
+import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
+import { Button, DropdownItem, DropdownList, Checkbox, MenuToggle, Select, SelectList, SelectOption } from '@patternfly/react-core';
 
 import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/outlined-window-restore-icon';
 import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
