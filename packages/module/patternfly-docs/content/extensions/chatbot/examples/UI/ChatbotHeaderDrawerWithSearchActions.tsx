@@ -10,7 +10,8 @@ import {
   MenuToggleElement,
   Select,
   SelectList,
-  SelectOption
+  SelectOption,
+  Tooltip
 } from '@patternfly/react-core';
 import { FilterIcon, SortAmountDownIcon } from '@patternfly/react-icons';
 
@@ -141,13 +142,15 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
         isLoading={isLoading}
         searchActionStart={
           showSearchActionStart ? (
-            <Button
-              variant="control"
-              aria-label="Filter options"
-              // eslint-disable-next-line no-console
-              onClick={() => console.log('Filter button clicked')}
-              icon={<FilterIcon />}
-            />
+            <Tooltip content="Filter options" aria="none" aria-live="off">
+              <Button
+                variant="control"
+                aria-label="Filter options"
+                // eslint-disable-next-line no-console
+                onClick={() => console.log('Filter button clicked')}
+                icon={<FilterIcon />}
+              />
+            </Tooltip>
           ) : undefined
         }
         searchActionEnd={
@@ -157,23 +160,26 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
               isOpen={isSortSelectOpen}
               selected={selectedSort}
               onSelect={onSortSelect}
+              shouldFocusToggleOnSelect
               onOpenChange={(isOpen) => setIsSortSelectOpen(isOpen)}
               toggle={(toggleRef: React.Ref<MenuToggleElement>) => (
-                <MenuToggle
-                  ref={toggleRef}
-                  onClick={() => setIsSortSelectOpen(!isSortSelectOpen)}
-                  isExpanded={isSortSelectOpen}
-                  variant="plain"
-                  aria-label={`${sortLabels[selectedSort]}, Sort conversations`}
-                  icon={
-                    <SortAmountDownIcon
-                      style={{
-                        transform:
-                          selectedSort === 'oldest' || selectedSort === 'alphabetical-asc' ? 'scaleY(-1)' : 'none'
-                      }}
-                    />
-                  }
-                />
+                <Tooltip aria="none" aria-live="off" content={`Sort - ${sortLabels[selectedSort]}`}>
+                  <MenuToggle
+                    ref={toggleRef}
+                    onClick={() => setIsSortSelectOpen(!isSortSelectOpen)}
+                    isExpanded={isSortSelectOpen}
+                    variant="plain"
+                    aria-label={`${sortLabels[selectedSort]}, Sort conversations`}
+                    icon={
+                      <SortAmountDownIcon
+                        style={{
+                          transform:
+                            selectedSort === 'oldest' || selectedSort === 'alphabetical-asc' ? 'scaleY(-1)' : 'none'
+                        }}
+                      />
+                    }
+                  />
+                </Tooltip>
               )}
             >
               <SelectList>
