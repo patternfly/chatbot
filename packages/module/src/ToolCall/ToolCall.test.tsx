@@ -181,4 +181,55 @@ describe('ToolCall', () => {
     render(<ToolCall {...defaultProps} cardFooterProps={{ id: 'card-footer-test-id' }} />);
     expect(screen.getByRole('button', { name: 'Run tool' }).closest('#card-footer-test-id')).toBeVisible();
   });
+
+  it('Renders collapsed by default when expandableContent is provided', () => {
+    render(<ToolCall {...defaultProps} expandableContent="Expandable Content" />);
+
+    expect(screen.getByRole('button', { name: defaultProps.titleText })).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByText('Expandable Content')).not.toBeVisible();
+  });
+
+  it('Renders expanded when isDefaultExpanded is true', () => {
+    render(<ToolCall {...defaultProps} isDefaultExpanded expandableContent="Expandable Content" />);
+
+    expect(screen.getByRole('button', { name: defaultProps.titleText })).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText('Expandable Content')).toBeVisible();
+  });
+
+  it('expandableSectionProps.isExpanded overrides isDefaultExpanded', () => {
+    render(
+      <ToolCall
+        {...defaultProps}
+        isDefaultExpanded={false}
+        expandableContent="Expandable Content"
+        expandableSectionProps={{ isExpanded: true }}
+      />
+    );
+
+    expect(screen.getByRole('button', { name: defaultProps.titleText })).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText('Expandable Content')).toBeVisible();
+  });
+
+  it('expandableSectionProps.onToggle overrides internal onToggle behavior', async () => {
+    const user = userEvent.setup();
+    const customOnToggle = jest.fn();
+
+    render(
+      <ToolCall
+        {...defaultProps}
+        isDefaultExpanded={false}
+        expandableContent="Expandable Content"
+        expandableSectionProps={{ onToggle: customOnToggle }}
+      />
+    );
+
+    const toggleButton = screen.getByRole('button', { name: defaultProps.titleText });
+    expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
+
+    await user.click(toggleButton);
+
+    expect(customOnToggle).toHaveBeenCalledTimes(1);
+    expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByText('Expandable Content')).not.toBeVisible();
+  });
 });
