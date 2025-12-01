@@ -203,21 +203,3 @@ In this example, file download is implemented with [file-saver](https://www.npmj
 ```js file="./ChatbotTranscripts.tsx" isFullscreen
 
 ```
-
-### ChatBot with markdown tool response
-
-This demo displays a ChatBot in overlay mode with a comprehensive markdown tool response example. This demo includes:
-
-1. The [`<ChatbotToggle>`](/extensions/chatbot/ui#toggle) that controls the [`<Chatbot>` container.](/extensions/chatbot/ui#container)
-2. A [`<ChatbotHeader>`](/extensions/chatbot/ui#header) with display mode switching capabilities.
-3. A message with a [`<ToolResponse>`](/extensions/chatbot/messages#tool-response) component that demonstrates:
-   - Markdown-formatted toggle content, subheading, and body
-   - Comprehensive markdown formatting examples (headings, code blocks, lists, tables, images, footnotes, etc.)
-   - Custom card title and card body with tool response details
-   - The `shouldRetainStyles` prop set to `true` to preserve markdown styles
-
-This example showcases how tool responses with rich markdown content render within an overlay ChatBot context.
-
-```js file="./ChatbotWithMarkdownToolResponse.tsx" isFullscreen
-
-```
