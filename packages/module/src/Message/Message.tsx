@@ -104,12 +104,27 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   isLoading?: boolean;
   /** Array of attachments attached to a message */
   attachments?: MessageAttachment[];
-  /** Props for message actions, such as feedback (positive or negative), copy button, edit message, share, and listen */
-  actions?: {
-    [key: string]: ActionProps;
-  };
+  /** Props for message actions, such as feedback (positive or negative), copy button, edit message, share, and listen.
+   * Can be a single actions object or an array of action group objects. When passing an array, you can pass an object of actions or
+   * an object that contains an actions property for finer control of selection persistence.
+   */
+  actions?:
+    | {
+        [key: string]: ActionProps;
+      }
+    | {
+        [key: string]: ActionProps;
+      }[]
+    | {
+        actions: {
+          [key: string]: ActionProps;
+        };
+        persistActionSelection?: boolean;
+      }[];
   /** When true, the selected action will persist even when clicking outside the component.
-   * When false (default), clicking outside or clicking another action will deselect the current selection. */
+   * When false (default), clicking outside or clicking another action will deselect the current selection.
+   * For finer control of multiple action groups, use persistActionSelection on each group.
+   */
   persistActionSelection?: boolean;
   /** Sources for message */
   sources?: SourcesCardProps;
@@ -506,7 +521,21 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
               />
             )}
             {!isLoading && !isEditable && actions && (
-              <ResponseActions actions={actions} persistActionSelection={persistActionSelection} />
+              <>
+                {Array.isArray(actions) ? (
+                  <div className="pf-chatbot__response-actions-groups">
+                    {actions.map((actionGroup, index) => (
+                      <ResponseActions
+                        key={index}
+                        actions={actionGroup.actions || actionGroup}
+                        persistActionSelection={persistActionSelection || actionGroup.persistActionSelection}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <ResponseActions actions={actions} persistActionSelection={persistActionSelection} />
+                )}
+              </>
             )}
             {userFeedbackForm && <UserFeedback {...userFeedbackForm} timestamp={dateString} isCompact={isCompact} />}
             {userFeedbackComplete && (
