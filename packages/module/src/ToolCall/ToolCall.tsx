@@ -1,4 +1,4 @@
-import { type FunctionComponent } from 'react';
+import { useState, type FunctionComponent } from 'react';
 import {
   ActionList,
   ActionListProps,
@@ -31,6 +31,8 @@ export interface ToolCallProps {
   spinnerProps?: SpinnerProps;
   /** Content to render within an expandable section. */
   expandableContent?: React.ReactNode;
+  /** Flag indicating whether the expandable content is expanded by default. */
+  isDefaultExpanded?: boolean;
   /** Text content for the "run" action button. */
   runButtonText?: string;
   /** Additional props for the "run" action button. */
@@ -66,6 +68,7 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
   loadingText,
   isLoading,
   expandableContent,
+  isDefaultExpanded = false,
   runButtonText = 'Run tool',
   runButtonProps,
   runActionItemProps,
@@ -82,6 +85,12 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
   expandableSectionProps,
   spinnerProps
 }: ToolCallProps) => {
+  const [isExpanded, setIsExpanded] = useState(isDefaultExpanded);
+
+  const onToggle = (_event: React.MouseEvent, isExpanded: boolean) => {
+    setIsExpanded(isExpanded);
+  };
+
   const titleContent = (
     <span className={`pf-chatbot__tool-call-title-content`}>
       {isLoading ? (
@@ -124,6 +133,8 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
           <ExpandableSection
             className="pf-chatbot__tool-call-expandable-section"
             toggleContent={titleContent}
+            onToggle={onToggle}
+            isExpanded={isExpanded}
             isIndented
             {...expandableSectionProps}
           >

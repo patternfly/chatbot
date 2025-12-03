@@ -18,6 +18,8 @@ import { useState, type FunctionComponent } from 'react';
 export interface ToolResponseProps {
   /** Toggle content shown for expandable section */
   toggleContent: React.ReactNode;
+  /** Flag indicating whether the expandable content is expanded by default. */
+  isDefaultExpanded?: boolean;
   /** Additional props passed to expandable section */
   expandableSectionProps?: Omit<ExpandableSectionProps, 'ref'>;
   /** Subheading rendered inside expandable section */
@@ -51,12 +53,13 @@ export const ToolResponse: FunctionComponent<ToolResponseProps> = ({
   cardTitle,
   cardBodyProps,
   toggleContent,
+  isDefaultExpanded = true,
   toolResponseCardBodyProps,
   toolResponseCardDividerProps,
   toolResponseCardProps,
   toolResponseCardTitleProps
 }: ToolResponseProps) => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(isDefaultExpanded);
 
   const onToggle = (_event: React.MouseEvent, isExpanded: boolean) => {
     setIsExpanded(isExpanded);

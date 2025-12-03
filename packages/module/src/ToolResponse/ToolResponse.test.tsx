@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import ToolResponse from './ToolResponse';
 
@@ -104,5 +105,48 @@ describe('ToolResponse', () => {
   it('should not render divider when only cardTitle is provided', () => {
     const { container } = render(<ToolResponse {...defaultProps} cardBody={undefined} />);
     expect(container.querySelector('.pf-v6-c-divider')).toBeFalsy();
+  });
+
+  it('Renders expanded by default', () => {
+    render(<ToolResponse {...defaultProps} />);
+
+    expect(screen.getByRole('button', { name: defaultProps.toggleContent })).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText(defaultProps.cardTitle)).toBeVisible();
+    expect(screen.getByText(defaultProps.cardBody)).toBeVisible();
+  });
+
+  it('Renders collapsed when isDefaultExpanded is false', () => {
+    render(<ToolResponse isDefaultExpanded={false} {...defaultProps} />);
+
+    expect(screen.getByRole('button', { name: defaultProps.toggleContent })).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByText(defaultProps.cardTitle)).not.toBeVisible();
+    expect(screen.getByText(defaultProps.cardBody)).not.toBeVisible();
+  });
+
+  it('expandableSectionProps.isExpanded overrides isDefaultExpanded', () => {
+    render(<ToolResponse {...defaultProps} isDefaultExpanded={false} expandableSectionProps={{ isExpanded: true }} />);
+
+    expect(screen.getByRole('button', { name: defaultProps.toggleContent })).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText(defaultProps.cardTitle)).toBeVisible();
+    expect(screen.getByText(defaultProps.cardBody)).toBeVisible();
+  });
+
+  it('expandableSectionProps.onToggle overrides internal onToggle behavior', async () => {
+    const user = userEvent.setup();
+    const customOnToggle = jest.fn();
+
+    render(
+      <ToolResponse {...defaultProps} isDefaultExpanded={false} expandableSectionProps={{ onToggle: customOnToggle }} />
+    );
+
+    const toggleButton = screen.getByRole('button', { name: defaultProps.toggleContent });
+    expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
+
+    await user.click(toggleButton);
+
+    expect(customOnToggle).toHaveBeenCalledTimes(1);
+    expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByText(defaultProps.cardTitle)).not.toBeVisible();
+    expect(screen.getByText(defaultProps.cardBody)).not.toBeVisible();
   });
 });
