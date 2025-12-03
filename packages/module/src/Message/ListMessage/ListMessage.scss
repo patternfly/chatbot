@@ -13,6 +13,14 @@
   li {
     font-size: var(--pf-t--global--font--size--md);
   }
+
+  &.pf-m-markdown {
+    .pf-v6-c-list,
+    ul,
+    li {
+      font-size: inherit;
+    }
+  }
 }
 
 .pf-chatbot__message--user {

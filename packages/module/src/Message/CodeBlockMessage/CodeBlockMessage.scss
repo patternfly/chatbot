@@ -75,6 +75,10 @@
       overflow: hidden !important;
     }
   }
+
+  &.pf-m-markdown .pf-v6-c-code-block__code {
+    font-size: inherit;
+  }
 }
 
 .pf-chatbot__message-inline-code {

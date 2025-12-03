@@ -119,4 +119,52 @@ describe('DeepThinking', () => {
     expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
     expect(screen.getByText('Thinking content')).not.toBeVisible();
   });
+
+  it('should render toggleContent as markdown when isToggleContentMarkdown is true', () => {
+    const toggleContent = '**Bold thinking**';
+    const { container } = render(<DeepThinking toggleContent={toggleContent} isToggleContentMarkdown />);
+    expect(container.querySelector('strong')).toBeTruthy();
+    expect(screen.getByText('Bold thinking')).toBeTruthy();
+  });
+
+  it('should not render toggleContent as markdown when isToggleContentMarkdown is false', () => {
+    const toggleContent = '**Bold thinking**';
+    const { container } = render(<DeepThinking toggleContent={toggleContent} />);
+    expect(container.querySelector('strong')).toBeFalsy();
+    expect(screen.getByText('**Bold thinking**')).toBeTruthy();
+  });
+
+  it('should render subheading as markdown when isSubheadingMarkdown is true', () => {
+    const subheading = '**Bold subheading**';
+    const { container } = render(<DeepThinking {...defaultProps} subheading={subheading} isSubheadingMarkdown />);
+    expect(container.querySelector('strong')).toBeTruthy();
+    expect(screen.getByText('Bold subheading')).toBeTruthy();
+  });
+
+  it('should not render subheading as markdown when isSubheadingMarkdown is false', () => {
+    const subheading = '**Bold subheading**';
+    render(<DeepThinking {...defaultProps} subheading={subheading} />);
+    expect(screen.getByText('**Bold subheading**')).toBeTruthy();
+  });
+
+  it('should render body as markdown when isBodyMarkdown is true', () => {
+    const body = '**Bold body**';
+    const { container } = render(<DeepThinking {...defaultProps} body={body} isBodyMarkdown />);
+    expect(container.querySelector('strong')).toBeTruthy();
+    expect(screen.getByText('Bold body')).toBeTruthy();
+  });
+
+  it('should not render body as markdown when isBodyMarkdown is false', () => {
+    const body = '**Bold body**';
+    render(<DeepThinking {...defaultProps} body={body} />);
+    expect(screen.getByText('**Bold body**')).toBeTruthy();
+  });
+
+  it('should pass markdownContentProps to MarkdownContent component', () => {
+    const body = '**Bold body**';
+    const { container } = render(
+      <DeepThinking {...defaultProps} body={body} isBodyMarkdown markdownContentProps={{ isPrimary: true }} />
+    );
+    expect(container.querySelector('.pf-m-primary')).toBeTruthy();
+  });
 });
