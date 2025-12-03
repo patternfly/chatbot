@@ -36,6 +36,11 @@
 }
 
 // feedback card
+.pf-chatbot__feedback-card-complete-header {
+  .pf-v6-c-card__actions {
+    --pf-v6-c-card__actions--MarginBlockEnd: calc(var(--pf-t--global--spacer--xl) * -1);
+  }
+}
 .pf-chatbot__feedback-card-title {
   font-family: var(--pf-t--global--font--family--heading);
   font-size: var(--pf-t--global--font--size--md);
