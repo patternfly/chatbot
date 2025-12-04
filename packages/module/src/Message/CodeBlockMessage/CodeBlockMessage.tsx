@@ -92,13 +92,22 @@ const CodeBlockMessage = ({
     );
   }
 
-  const onToggle = (isExpanded) => {
+  const onToggle = (isExpanded: boolean) => {
     setIsExpanded(isExpanded);
   };
 
   // Handle clicking copy button
-  const handleCopy = useCallback((event, text) => {
-    navigator.clipboard.writeText(text.toString());
+  const handleCopy = useCallback((_event: React.MouseEvent, text: React.ReactNode) => {
+    let textToCopy = '';
+    if (typeof text === 'string') {
+      textToCopy = text;
+    } else {
+      if (codeBlockRef.current) {
+        const codeElement = codeBlockRef.current.querySelector('code');
+        textToCopy = codeElement?.textContent || '';
+      }
+    }
+    navigator.clipboard.writeText(textToCopy);
     setCopied(true);
   }, []);
 
