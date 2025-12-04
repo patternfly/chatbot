@@ -153,14 +153,10 @@ describe('CodeBlockMessage', () => {
 
   it('should prioritize data-expanded-text over expandedText prop', () => {
     const code = 'const x = 5;\nconst y = 10;';
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(jest.fn());
 
     render(
-      <CodeBlockMessage
-        isExpandable
-        expandedText="Custom Expanded"
-        data-expanded-text="Data Expanded"
-      >
+      <CodeBlockMessage isExpandable expandedText="Custom Expanded" data-expanded-text="Data Expanded">
         {code}
       </CodeBlockMessage>
     );
