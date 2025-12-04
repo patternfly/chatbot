@@ -322,11 +322,13 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
     }
 
     return searchActionStart || searchActionEnd ? (
-      <InputGroup>
-        {searchActionStart && <InputGroupItem>{searchActionStart}</InputGroupItem>}
-        {searchInputContainer && <InputGroupItem isFill>{searchInputContainer}</InputGroupItem>}
-        {searchActionEnd && <InputGroupItem>{searchActionEnd}</InputGroupItem>}
-      </InputGroup>
+      <div className="pf-chatbot__history-search-actions">
+        <InputGroup>
+          {searchActionStart && <InputGroupItem>{searchActionStart}</InputGroupItem>}
+          {searchInputContainer && <InputGroupItem isFill>{searchInputContainer}</InputGroupItem>}
+          {searchActionEnd && <InputGroupItem>{searchActionEnd}</InputGroupItem>}
+        </InputGroup>
+      </div>
     ) : (
       searchInputContainer
     );
