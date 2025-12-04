@@ -35,6 +35,13 @@
   }
 
   // Drawer search and actions
+  .pf-chatbot__history-search-actions {
+    .pf-v6-c-button.pf-m-control {
+      --pf-v6-c-button--m-control--PaddingInlineStart: var(--pf-t--global--spacer--control--horizontal--compact);
+      --pf-v6-c-button--m-control--PaddingInlineEnd: var(--pf-t--global--spacer--control--horizontal--compact);
+    }
+  }
+
   .pf-chatbot__input {
     width: 100%;
   }
