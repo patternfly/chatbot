@@ -8,6 +8,7 @@ import { useRef, Fragment } from 'react';
 import {
   Button,
   ButtonProps,
+  Divider,
   Drawer,
   DrawerPanelContent,
   DrawerContent,
@@ -17,6 +18,8 @@ import {
   DrawerActions,
   DrawerCloseButton,
   DrawerContentBody,
+  InputGroup,
+  InputGroupItem,
   SearchInput,
   Title,
   DrawerPanelContentProps,
@@ -28,10 +31,10 @@ import {
   DrawerPanelBodyProps,
   SkeletonProps,
   Icon,
-  MenuProps,
   TitleProps,
-  MenuListProps,
   SearchInputProps,
+  MenuProps,
+  MenuListProps,
   MenuList,
   MenuGroup,
   MenuItem,
@@ -125,6 +128,8 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   drawerCloseButtonProps?: DrawerCloseButtonProps;
   /** Additional props appleid to drawer panel body */
   drawerPanelBodyProps?: DrawerPanelBodyProps;
+  /** Flag indicating whether a divider should render between the drawer head and title. */
+  hasDrawerHeadDivider?: boolean;
   /** Whether to show drawer loading state */
   isLoading?: boolean;
   /** Additional props for loading state */
@@ -145,6 +150,12 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   navTitleProps?: Partial<TitleProps>;
   /** Visually hidden text that gets announced by assistive technologies. Should be used to convey the result count when the search input value changes. */
   searchInputScreenReaderText?: string;
+  /** Custom action rendered before the search input. */
+  searchActionStart?: React.ReactNode;
+  /** Custom action rendered after the search input. */
+  searchActionEnd?: React.ReactNode;
+  /** A custom search toolbar to render below the title. This will override the default search actions and/or search input. */
+  searchToolbar?: React.ReactNode;
   /** Additional props passed to MenuContent */
   menuContentProps?: Omit<MenuContentProps, 'ref'>;
 }
@@ -175,6 +186,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   drawerActionsProps,
   drawerCloseButtonProps,
   drawerPanelBodyProps,
+  hasDrawerHeadDivider,
   isLoading,
   loadingState,
   errorState,
@@ -185,6 +197,9 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   navTitleProps,
   navTitleIcon = <OutlinedClockIcon />,
   searchInputScreenReaderText,
+  searchActionStart,
+  searchActionEnd,
+  searchToolbar,
   menuProps,
   menuGroupProps,
   menuContentProps,
@@ -287,6 +302,38 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
     </>
   );
 
+  const searchInputContainer = handleTextInputChange && (
+    <div className="pf-chatbot__input">
+      <SearchInput
+        aria-label={searchInputAriaLabel}
+        onChange={(_event, value) => handleTextInputChange(value)}
+        placeholder={searchInputPlaceholder}
+        {...searchInputProps}
+      />
+      {searchInputScreenReaderText && (
+        <div className="pf-chatbot__filter-announcement pf-chatbot-m-hidden">{searchInputScreenReaderText}</div>
+      )}
+    </div>
+  );
+
+  const renderSearchAndActions = () => {
+    if (searchToolbar) {
+      return searchToolbar;
+    }
+
+    return searchActionStart || searchActionEnd ? (
+      <div className="pf-chatbot__history-search-actions">
+        <InputGroup>
+          {searchActionStart && <InputGroupItem>{searchActionStart}</InputGroupItem>}
+          {searchInputContainer && <InputGroupItem isFill>{searchInputContainer}</InputGroupItem>}
+          {searchActionEnd && <InputGroupItem>{searchActionEnd}</InputGroupItem>}
+        </InputGroup>
+      </div>
+    ) : (
+      searchInputContainer
+    );
+  };
+
   const renderPanelContent = () => {
     const drawer = (
       <>
@@ -309,6 +356,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
             )}
           </DrawerActions>
         </DrawerHead>
+        {hasDrawerHeadDivider && <Divider className="pf-chatbot__heading-divider" />}
         <div className="pf-chatbot__heading-container">
           <div className="pf-chatbot__title-container">
             <Icon size="lg" className="pf-chatbot__title-icon">
@@ -318,19 +366,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
               {title}
             </Title>
           </div>
-          {!isLoading && handleTextInputChange && (
-            <div className="pf-chatbot__input">
-              <SearchInput
-                aria-label={searchInputAriaLabel}
-                onChange={(_event, value) => handleTextInputChange(value)}
-                placeholder={searchInputPlaceholder}
-                {...searchInputProps}
-              />
-              {searchInputScreenReaderText && (
-                <div className="pf-chatbot__filter-announcement pf-chatbot-m-hidden">{searchInputScreenReaderText}</div>
-              )}
-            </div>
-          )}
+          {!isLoading && renderSearchAndActions()}
         </div>
         {isLoading ? <LoadingState {...loadingState} /> : renderDrawerContent()}
       </>
