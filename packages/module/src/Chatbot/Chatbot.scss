@@ -45,6 +45,61 @@
   }
 }
 
+// Glass tokens from core
+:root {
+  // Glass theme off base. These are reused.
+  --pf-t--global--background--color--glass--filter--base: none;
+  --pf-t--global--background--color--glass--opacity--base: 1;
+  --pf-t--global--background--color--glass--default--base: var(--pf-t--global--background--color--primary--default);
+
+  // Glass theme on. In the root scope so they can be themed on :root
+  --pf-t--global--light--glass--background--color--glass--color: #ffffff;
+  --pf-t--global--light--glass--background--color--glass--filter: blur(12.5px);
+  --pf-t--global--light--glass--background--color--glass--opacity: 85%;
+  --pf-t--global--light--glass--background--color--glass--default: color-mix(in srgb, var(--pf-t--global--light--glass--background--color--glass--color) var(--pf-t--global--light--glass--background--color--glass--opacity), transparent );
+  --pf-t--global--dark--glass--background--color--glass--color: #1d1d1d;
+  --pf-t--global--dark--glass--background--color--glass--filter: blur(12.5px);
+  --pf-t--global--dark--glass--background--color--glass--opacity: 85%;
+  --pf-t--global--dark--glass--background--color--glass--default: color-mix(in srgb, var(--pf-t--global--dark--glass--background--color--glass--color) var(--pf-t--global--dark--glass--background--color--glass--opacity), transparent );
+
+  // Glass light theme
+  --pf-t--global--background--color--glass--filter: var(--pf-t--global--light--glass--background--color--glass--filter);
+  --pf-t--global--background--color--glass--opacity: var(--pf-t--global--light--glass--background--color--glass--opacity);
+  --pf-t--global--background--color--glass--default: var(--pf-t--global--light--glass--background--color--glass--default);
+
+  // Glass dark theme
+  &:where(.pf-v6-theme-dark) {
+    --pf-t--global--background--color--glass--filter: var(--pf-t--global--dark--glass--background--color--glass--filter);
+    --pf-t--global--background--color--glass--opacity: var(--pf-t--global--dark--glass--background--color--glass--opacity);
+    --pf-t--global--background--color--glass--default: var(--pf-t--global--dark--glass--background--color--glass--default);
+  }
+}
+
+// Glass chatbot styles
+.pf-chatbot {
+  background-color: var(--pf-t--global--background--color--glass--default);
+  backdrop-filter: var(--pf-t--global--background--color--glass--filter);
+  border: var(--pf-t--global--border--width--box--default) solid var(--pf-t--global--border--color--alt);
+
+  #{&} {
+    &__content,
+    &__header,
+    &__footer {
+      background-color: transparent;
+    }
+  }
+}
+
+#ws-demo-e-overview-basic-chatbot {
+  background-size: cover;
+  background-image: url(https://staging.patternfly.org/assets/images/compass--wallpaper-light.png);
+
+  .pf-v6-theme-dark & {
+    background-image: url(https://staging.patternfly.org/assets/images/compass--wallpaper-dark.png);
+  }
+}
+// End Glass style stuff
+
 // ============================================================================
 // Chatbot Display Mode - Docked
 // ============================================================================
