@@ -1,6 +1,3 @@
-// ============================================================================
-// Message And Actions - Container for message content and actions
-// ============================================================================
 import { FunctionComponent, HTMLProps, ReactNode } from 'react';
 import { css } from '@patternfly/react-styles';
 

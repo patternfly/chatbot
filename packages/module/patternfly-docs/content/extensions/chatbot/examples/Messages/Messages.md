@@ -12,24 +12,35 @@ source: react
 # These are found through the sourceProps function provided in patternfly-docs.source.js
 propComponents:
   [
+    'ActionProps',
     'AttachMenu',
     'AttachmentEdit',
     'FileDetailsProps',
     'FileDetailsLabelProps',
     'FileDropZone',
-    'PreviewAttachment',
     'Message',
-    'MessageAndActionsProps',
-    'MessageAttachmentsContainerProps',
-    'MessageAttachmentProps',
-    'ResponseActionsGroupsProps',
+    'MessageAndActions',
+    'ResponseActionsGroups',
+    'ResponseActions',
+    'MessageAttachmentsContainer',
+    'MessageAttachmentItem',
     'MessageExtraContent',
+    'MessageInput',
+    'MessageLoading',
+    'ErrorMessage',
     'PreviewAttachment',
-    'ActionProps',
-    'SourcesCardProps',
+    'QuickResponse',
+    'QuickStartTile',
+    'QuickStart',
+    'QuickStartAction',
+    'DeepThinking',
+    'ToolCall',
+    'ToolResponse',
+    'SourcesCard',
+    'UserFeedback',
+    'UserFeedbackComplete',
     'UserFeedbackProps',
-    'UserFeedbackCompleteProps',
-    'QuickResponseProps'
+    'UserFeedbackCompleteProps'
   ]
 sortValue: 3
 ---

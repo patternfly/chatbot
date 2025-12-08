@@ -1,6 +1,3 @@
-// ============================================================================
-// Message Attachments Container - Container for message attachments
-// ============================================================================
 import { FunctionComponent, HTMLProps, ReactNode } from 'react';
 import { css } from '@patternfly/react-styles';
 
