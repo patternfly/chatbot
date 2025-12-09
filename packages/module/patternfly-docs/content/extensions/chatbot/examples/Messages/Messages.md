@@ -12,41 +12,42 @@ source: react
 # These are found through the sourceProps function provided in patternfly-docs.source.js
 propComponents:
   [
-    'ActionProps',
     'AttachMenu',
     'AttachmentEdit',
-    'FileDetailsProps',
-    'FileDetailsLabelProps',
     'FileDropZone',
     'Message',
-    'MessageAndActions',
-    'ResponseActionsGroups',
-    'ResponseActions',
-    'MessageAttachmentsContainer',
-    'MessageAttachmentItem',
-    'MessageExtraContent',
-    'MessageInput',
-    'MessageLoading',
     'ErrorMessage',
-    'PreviewAttachment',
-    'QuickResponse',
-    'QuickStartTile',
-    'QuickStart',
-    'QuickStartAction',
+    'MessageLoadingProps',
+    'MessageInputProps',
+    'MessageAndActionsProps',
+    'MarkdownContent',
+    'QuickResponseProps',
+    'QuickStartTileProps',
+    'UserFeedback',
+    'UserFeedbackComplete',
     'DeepThinking',
     'ToolCall',
     'ToolResponse',
     'SourcesCard',
-    'UserFeedback',
-    'UserFeedbackComplete',
-    'UserFeedbackProps',
-    'UserFeedbackCompleteProps'
+    'ResponseActionsGroupsProps',
+    'ResponseActionProps',
+    'ActionProps',
+    'MessageAttachmentsContainerProps',
+    'MessageAttachmentItemProps',
+    'FileDetailsProps',
+    'FileDetailsLabelProps',
+    'MessageExtraContent',
+    'PreviewAttachment'
   ]
 sortValue: 3
 ---
 
-import Message from '@patternfly/chatbot/dist/dynamic/Message';
+import Message, { ErrorMessage, MessageAndActions, MessageLoading, MessageAttachmentItem, MessageAttachmentsContainer } from '@patternfly/chatbot/dist/dynamic/Message';
+import MarkdownContent from '@patternfly/chatbot/dist/dynamic/MarkdownContent';
 import MessageDivider from '@patternfly/chatbot/dist/dynamic/MessageDivider';
+import ToolCall from '@patternfly/chatbot/dist/dynamic/ToolCall';
+import ResponseActions, { ResponseActionsGroups } from '@patternfly/chatbot/dist/dynamic/ResponseActions';
+import ToolResponse from '@patternfly/chatbot/dist/dynamic/ToolResponse';
 import { rehypeCodeBlockToggle } from '@patternfly/chatbot/dist/esm/Message/Plugins/rehypeCodeBlockToggle';
 import SourcesCard from '@patternfly/chatbot/dist/dynamic/SourcesCard';
 import { ArrowCircleDownIcon, ArrowRightIcon, CheckCircleIcon, CopyIcon, CubeIcon, CubesIcon, DownloadIcon, InfoCircleIcon, OutlinedQuestionCircleIcon, RedoIcon, RobotIcon, WrenchIcon } from '@patternfly/react-icons';
@@ -283,6 +284,35 @@ User messages can also be made editable by passing an "edit" object to the `acti
 You can add custom content to specific parts of a `<Message>` via the `extraContent` prop, including additional components (like timestamps, badges, or custom elements). This prop allows you to create dynamic and reusable elements for various use cases, without changing the default message layout.
 
 ```js file="./UserMessageWithExtraContent.tsx"
+
+```
+
+### Custom message structure
+
+For more advanced use cases, you can build completely custom message structures by passing children directly to `<Message>`. This approach is useful when you need to customize the order or structure of message elements beyond what the standard props allow.
+
+When creating custom message structures, you must follow an intended composable structure:
+
+1. **Message content and actions** must be wrapped in `<MessageAndActions>`. This includes, but is not limited to:
+
+   - `<MarkdownContent>` - For rendering markdown or plain text content
+   - `<ErrorMessage>`
+   - `<MessageLoading>`
+   - `<MessageInput>`
+   - `<ToolCall>`
+   - `<ToolResponse>`
+   - `<DeepThinking>`
+   - `<QuickResponse>`
+   - `<QuickStartTile>`
+   - `<UserFeedback>` and `<UserFeedbackComplete>`
+   - `<SourcesCard>`
+   - `<ResponseActionsGroups>` and `<ResponseActions>`
+
+2. **File attachments** must be placed outside `<MessageAndActions>`, wrapped in attachment containers:
+   - `<MessageAttachmentsContainer>` - Container for all attachments
+   - `<MessageAttachmentItem>` - Individual attachment wrapper (contains `<FileDetailsLabel>` or other attachment components)
+
+```ts file="./MessageWithCustomStructure.tsx"
 
 ```
 

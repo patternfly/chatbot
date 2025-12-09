@@ -78,7 +78,7 @@ export interface UserFeedbackProps extends Omit<CardProps, 'onSubmit'>, OUIAProp
   privacyStatement?: string;
 }
 
-const UserFeedback: FunctionComponent<UserFeedbackProps> = ({
+export const UserFeedback: FunctionComponent<UserFeedbackProps> = ({
   className,
   timestamp,
   title = 'Why did you choose this rating?',

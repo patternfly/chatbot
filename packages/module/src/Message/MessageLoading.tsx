@@ -17,7 +17,7 @@ export interface MessageLoadingProps extends HTMLProps<HTMLDivElement> {
   isPrimary?: boolean;
 }
 
-const MessageLoading: FunctionComponent<MessageLoadingProps> = ({ loadingWord, isPrimary, ...props }) => (
+export const MessageLoading: FunctionComponent<MessageLoadingProps> = ({ loadingWord, isPrimary, ...props }) => (
   <div className={css('pf-chatbot__message-loading', isPrimary && 'pf-m-primary')} {...props}>
     <span className="pf-chatbot__message-loading-dots">
       <span className="pf-v6-screen-reader">{loadingWord}</span>
