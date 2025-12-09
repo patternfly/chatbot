@@ -14,6 +14,26 @@ import ResponseActions, { ResponseActionsGroups } from '@patternfly/chatbot/dist
 import patternflyAvatar from './patternfly_avatar.jpg';
 import userAvatar from './user_avatar.svg';
 
+const handlePositiveResponse = () => {
+  // Handle positive response
+};
+
+const handleNegativeResponse = () => {
+  // Handle negative response
+};
+
+const handleCopy = () => {
+  // Handle copy action
+};
+
+const handleDownload = () => {
+  // Handle download action
+};
+
+const handleListen = () => {
+  // Handle listen action
+};
+
 export const MessageWithCustomStructure: FunctionComponent = () => (
   <>
     <Message name="Bot" role="bot" avatar={patternflyAvatar}>
@@ -43,21 +63,21 @@ export const MessageWithCustomStructure: FunctionComponent = () => (
         <ResponseActionsGroups>
           <ResponseActions
             actions={{
-              positive: { onClick: () => console.log('Good response'), ariaLabel: 'Good response' },
-              negative: { onClick: () => console.log('Bad response'), ariaLabel: 'Bad response' }
+              positive: { onClick: handlePositiveResponse, ariaLabel: 'Good response' },
+              negative: { onClick: handleNegativeResponse, ariaLabel: 'Bad response' }
             }}
             persistActionSelection={true}
           />
           <ResponseActions
             actions={{
-              copy: { onClick: () => console.log('Copied!'), ariaLabel: 'Copy' },
-              download: { onClick: () => console.log('Downloaded!'), ariaLabel: 'Download' }
+              copy: { onClick: handleCopy, ariaLabel: 'Copy' },
+              download: { onClick: handleDownload, ariaLabel: 'Download' }
             }}
             persistActionSelection={false}
           />
           <ResponseActions
             actions={{
-              listen: { onClick: () => console.log('Listening'), ariaLabel: 'Listen' }
+              listen: { onClick: handleListen, ariaLabel: 'Listen' }
             }}
             persistActionSelection={true}
           />
