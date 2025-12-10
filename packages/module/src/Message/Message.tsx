@@ -67,6 +67,8 @@ export interface MessageExtraContent {
 }
 
 export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
+  /** Children to render instead of the default message structure, allowing more fine-tuned message control. When provided, this will override the default rendering of content, toolResponse, deepThinking, toolCall, sources, quickStarts, actions, etc. */
+  children?: ReactNode;
   /** Unique id for message */
   id?: string;
   /** Role of the user sending the message */
@@ -193,6 +195,7 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
 }
 
 export const MessageBase: FunctionComponent<MessageProps> = ({
+  children,
   role,
   content,
   extraContent,
@@ -341,74 +344,82 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
           <Timestamp date={date}>{timestamp}</Timestamp>
         </div>
         <div className="pf-chatbot__message-response">
-          <div className="pf-chatbot__message-and-actions">
-            {renderMessage()}
-            {afterMainContent && <>{afterMainContent}</>}
-            {toolResponse && <ToolResponse {...toolResponse} />}
-            {deepThinking && <DeepThinking {...deepThinking} />}
-            {toolCall && <ToolCall {...toolCall} />}
-            {!isLoading && sources && <SourcesCard {...sources} isCompact={isCompact} />}
-            {quickStarts && quickStarts.quickStart && (
-              <QuickStartTile
-                quickStart={quickStarts.quickStart}
-                onSelectQuickStart={quickStarts.onSelectQuickStart}
-                minuteWord={quickStarts.minuteWord}
-                minuteWordPlural={quickStarts.minuteWordPlural}
-                prerequisiteWord={quickStarts.prerequisiteWord}
-                prerequisiteWordPlural={quickStarts.prerequisiteWordPlural}
-                quickStartButtonAriaLabel={quickStarts.quickStartButtonAriaLabel}
-                isCompact={isCompact}
-              />
-            )}
-            {!isLoading && !isEditable && actions && (
-              <>
-                {Array.isArray(actions) ? (
-                  <div className="pf-chatbot__response-actions-groups">
-                    {actions.map((actionGroup, index) => (
-                      <ResponseActions
-                        key={index}
-                        actions={actionGroup.actions || actionGroup}
-                        persistActionSelection={persistActionSelection || actionGroup.persistActionSelection}
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <ResponseActions actions={actions} persistActionSelection={persistActionSelection} />
-                )}
-              </>
-            )}
-            {userFeedbackForm && <UserFeedback {...userFeedbackForm} timestamp={dateString} isCompact={isCompact} />}
-            {userFeedbackComplete && (
-              <UserFeedbackComplete {...userFeedbackComplete} timestamp={dateString} isCompact={isCompact} />
-            )}
-            {!isLoading && quickResponses && (
-              <QuickResponse
-                quickResponses={quickResponses}
-                quickResponseContainerProps={quickResponseContainerProps}
-                isCompact={isCompact}
-              />
-            )}
-          </div>
-          {attachments && (
-            <div className="pf-chatbot__message-attachments-container">
-              {attachments.map((attachment) => (
-                <div key={attachment.id ?? attachment.name} className="pf-chatbot__message-attachment">
-                  <FileDetailsLabel
-                    fileName={attachment.name}
-                    fileId={attachment.id}
-                    onClose={attachment.onClose}
-                    onClick={attachment.onClick}
-                    isLoading={attachment.isLoading}
-                    closeButtonAriaLabel={attachment.closeButtonAriaLabel}
-                    languageTestId={attachment.languageTestId}
-                    spinnerTestId={attachment.spinnerTestId}
-                    variant={isPrimary ? 'outline' : undefined}
+          {children ? (
+            <>{children}</>
+          ) : (
+            <>
+              <div className="pf-chatbot__message-and-actions">
+                {renderMessage()}
+                {afterMainContent && <>{afterMainContent}</>}
+                {toolResponse && <ToolResponse {...toolResponse} />}
+                {deepThinking && <DeepThinking {...deepThinking} />}
+                {toolCall && <ToolCall {...toolCall} />}
+                {!isLoading && sources && <SourcesCard {...sources} isCompact={isCompact} />}
+                {quickStarts && quickStarts.quickStart && (
+                  <QuickStartTile
+                    quickStart={quickStarts.quickStart}
+                    onSelectQuickStart={quickStarts.onSelectQuickStart}
+                    minuteWord={quickStarts.minuteWord}
+                    minuteWordPlural={quickStarts.minuteWordPlural}
+                    prerequisiteWord={quickStarts.prerequisiteWord}
+                    prerequisiteWordPlural={quickStarts.prerequisiteWordPlural}
+                    quickStartButtonAriaLabel={quickStarts.quickStartButtonAriaLabel}
+                    isCompact={isCompact}
                   />
+                )}
+                {!isLoading && !isEditable && actions && (
+                  <>
+                    {Array.isArray(actions) ? (
+                      <div className="pf-chatbot__response-actions-groups">
+                        {actions.map((actionGroup, index) => (
+                          <ResponseActions
+                            key={index}
+                            actions={actionGroup.actions || actionGroup}
+                            persistActionSelection={persistActionSelection || actionGroup.persistActionSelection}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <ResponseActions actions={actions} persistActionSelection={persistActionSelection} />
+                    )}
+                  </>
+                )}
+                {userFeedbackForm && (
+                  <UserFeedback {...userFeedbackForm} timestamp={dateString} isCompact={isCompact} />
+                )}
+                {userFeedbackComplete && (
+                  <UserFeedbackComplete {...userFeedbackComplete} timestamp={dateString} isCompact={isCompact} />
+                )}
+                {!isLoading && quickResponses && (
+                  <QuickResponse
+                    quickResponses={quickResponses}
+                    quickResponseContainerProps={quickResponseContainerProps}
+                    isCompact={isCompact}
+                  />
+                )}
+              </div>
+              {attachments && (
+                <div className="pf-chatbot__message-attachments-container">
+                  {attachments.map((attachment) => (
+                    <div key={attachment.id ?? attachment.name} className="pf-chatbot__message-attachment">
+                      <FileDetailsLabel
+                        fileName={attachment.name}
+                        fileId={attachment.id}
+                        onClose={attachment.onClose}
+                        onClick={attachment.onClick}
+                        isLoading={attachment.isLoading}
+                        closeButtonAriaLabel={attachment.closeButtonAriaLabel}
+                        languageTestId={attachment.languageTestId}
+                        spinnerTestId={attachment.spinnerTestId}
+                        variant={isPrimary ? 'outline' : undefined}
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              )}
+              {!isLoading && endContent && <>{endContent}</>}
+            </>
           )}
-          {!isLoading && endContent && <>{endContent}</>}
         </div>
       </div>
     </section>

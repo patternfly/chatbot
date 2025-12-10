@@ -30,10 +30,15 @@ import SuperscriptMessage from '../Message/SuperscriptMessage/SuperscriptMessage
 import { ButtonProps } from '@patternfly/react-core';
 import { css } from '@patternfly/react-styles';
 
+/**
+ * MarkdownContent renders content either as plain text or with content with markdown support.
+ *
+ * Use this component when passing children to Message to customize its structure.
+ */
 export interface MarkdownContentProps {
-  /** The markdown content to render */
+  /** The content to render. Supports markdown formatting by default, or plain text when isMarkdownDisabled is true. */
   content?: string;
-  /** Disables markdown parsing, allowing only text input */
+  /** Disables markdown parsing, allowing only plain text input */
   isMarkdownDisabled?: boolean;
   /** Props for code blocks */
   codeBlockProps?: CodeBlockMessageProps;
