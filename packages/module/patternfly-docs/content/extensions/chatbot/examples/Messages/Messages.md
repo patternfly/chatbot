@@ -291,11 +291,11 @@ You can add custom content to specific parts of a `<Message>` via the `extraCont
 
 For more advanced use cases, you can build completely custom message structures by passing children directly to `<Message>`. This approach is useful when you need to customize the order or structure of message elements beyond what the standard props allow.
 
-When creating custom message structures, you must follow an intended composable structure:
+When creating custom message structures, you must follow an intended composable structure.
 
-1. **Message content and actions** must be wrapped in `<MessageAndActions>`. This includes, but is not limited to:
+1. **Message content and actions:** Wrap in `<MessageAndActions>`. This includes, but is not limited to:
 
-   - `<MarkdownContent>` - For rendering markdown or plain text content
+   - `<MarkdownContent>`: For rendering markdown or plain text content
    - `<ErrorMessage>`
    - `<MessageLoading>`
    - `<MessageInput>`
@@ -308,9 +308,9 @@ When creating custom message structures, you must follow an intended composable 
    - `<SourcesCard>`
    - `<ResponseActionsGroups>` and `<ResponseActions>`
 
-2. **File attachments** must be placed outside `<MessageAndActions>`, wrapped in attachment containers:
-   - `<MessageAttachmentsContainer>` - Container for all attachments
-   - `<MessageAttachmentItem>` - Individual attachment wrapper (contains `<FileDetailsLabel>` or other attachment components)
+2. **File attachments:** Placed outside `<MessageAndActions>` and wrapped in attachment containers:
+   - `<MessageAttachmentsContainer>`: Container for all attachments
+   - `<MessageAttachmentItem>`: Individual attachment wrapper (contains `<FileDetailsLabel>` or other attachment components)
 
 ```ts file="./MessageWithCustomStructure.tsx"
 

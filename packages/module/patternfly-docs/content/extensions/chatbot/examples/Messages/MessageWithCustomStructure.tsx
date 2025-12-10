@@ -56,10 +56,8 @@ export const MessageWithCustomStructure: FunctionComponent = () => (
         />
         <ToolCall titleText="Calling 'more_awesome_tool'" loadingText="Loading 'more_awesome_tool'" isLoading={true} />
         <ToolCall titleText="Calling 'even_more_awesome_tool'" loadingText="Loading 'even_more_awesome_tool'" />
+        <MarkdownContent content={`You can even place a message loading state in the middle of a message:`} />
         <MessageLoading loadingWord="Loading something in the middle of a custom structured message" />
-        <MarkdownContent
-          content={`You can even place a message loading state in the middle of a message, as seen above.`}
-        />
         <ResponseActionsGroups>
           <ResponseActions
             actions={{
