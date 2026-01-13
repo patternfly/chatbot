@@ -24,6 +24,7 @@ export const ChatbotMessageBarCustomActionsExample: FunctionComponent = () => {
 
   const { open, getInputProps } = useDropzone({
     multiple: true,
+    // eslint-disable-next-line no-console
     onDropAccepted: () => console.log('fileUploaded')
   });
 
@@ -99,6 +100,7 @@ export const ChatbotMessageBarCustomActionsExample: FunctionComponent = () => {
             setIsAttachMenuOpen: setIsFirstMenuOpen,
             attachMenuItems: firstMenuItems,
             onAttachMenuSelect: (_ev, value) => {
+              // eslint-disable-next-line no-console
               console.log('selected', value);
               setIsFirstMenuOpen(false);
             },
@@ -127,6 +129,7 @@ export const ChatbotMessageBarCustomActionsExample: FunctionComponent = () => {
             attachMenuItems: secondMenuItems,
             onAttachMenuOnOpenChangeKeys: ['Escape', 'Tab'],
             onAttachMenuSelect: (_ev, value) => {
+              // eslint-disable-next-line no-console
               console.log('selected', value);
               if (value === 'canvas') {
                 setShowCanvasLabel(!showCanvasLabel);
