@@ -70,11 +70,11 @@ import { MessageBar } from '@patternfly/chatbot/dist/dynamic/MessageBar';
 import SourceDetailsMenuItem from '@patternfly/chatbot/dist/dynamic/SourceDetailsMenuItem';
 import { ChatbotModal } from '@patternfly/chatbot/dist/dynamic/ChatbotModal';
 import SettingsForm from '@patternfly/chatbot/dist/dynamic/Settings';
-import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, ThumbtackIcon, UploadIcon } from '@patternfly/react-icons';
+import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, PlusIcon, ThumbtackIcon, UploadIcon } from '@patternfly/react-icons';
 import { useDropzone } from 'react-dropzone';
 
 import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
-import { Button, DropdownItem, DropdownList, Checkbox, MenuToggle, Select, SelectList, SelectOption } from '@patternfly/react-core';
+import { Button, Label, DropdownItem, DropdownList, Checkbox, MenuToggle, Select, SelectList, SelectOption } from '@patternfly/react-core';
 
 import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/outlined-window-restore-icon';
 import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
@@ -288,6 +288,19 @@ You can change the behavior of the attach button to open a menu, rather than the
 Attachments can also be added to the ChatBot via [drag and drop.](/extensions/chatbot/messages#attachment-dropzone)
 
 ```js file="./ChatbotMessageBarAttach.tsx"
+
+```
+
+### Message bar with custom attach menu and additional actions
+
+You can position the attach button at the start of the message bar and customize it with a different icon (like a Plus icon). Additionally, you can use the `additionalActions` prop to add custom controls such as a model selector or dismissable labels.
+
+This example shows two variations:
+
+1. A message bar with a custom attach menu using a Plus icon positioned at the start
+2. A message bar with the same attach menu plus additional actions including a model selector and a dismissable "Canvas" label
+
+```js file="./ChatbotMessageBarCustomActions.tsx"
 
 ```
 
