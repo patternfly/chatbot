@@ -34,3 +34,13 @@
     --pf-v6-c-divider--Color: var(--pf-t--global--border--color--default);
   }
 }
+
+.pf-chatbot__tool-response-expandable-section .pf-v6-c-expandable-section__toggle .pf-m-markdown {
+  padding: inherit;
+}
+
+.pf-chatbot__tool-response {
+  .pf-chatbot__message-image {
+    max-width: 100%;
+  }
+}

@@ -2,6 +2,7 @@ import type { FunctionComponent } from 'react';
 import { useState } from 'react';
 import { Label, LabelGroup, LabelGroupProps, LabelProps } from '@patternfly/react-core';
 import { CheckIcon } from '@patternfly/react-icons';
+import { css } from '@patternfly/react-styles';
 
 export interface QuickResponse extends Omit<LabelProps, 'children'> {
   content: string;
@@ -35,7 +36,7 @@ export const QuickResponse: FunctionComponent<QuickResponseProps> = ({
   };
   return (
     <LabelGroup
-      className={`pf-chatbot__message-quick-response ${quickResponseContainerProps?.className ? quickResponseContainerProps?.className : ''}`}
+      className={css('pf-chatbot__message-quick-response', quickResponseContainerProps?.className)}
       {...quickResponseContainerProps}
     >
       {quickResponses.map(({ id, onClick, content, className, ...props }: QuickResponse) => (
@@ -45,7 +46,7 @@ export const QuickResponse: FunctionComponent<QuickResponseProps> = ({
           color="blue"
           key={id}
           onClick={() => handleQuickResponseClick(id, onClick)}
-          className={`${id === selectedQuickResponse ? 'pf-chatbot__message-quick-response--selected' : ''} ${className ? className : ''}`}
+          className={css(id === selectedQuickResponse && 'pf-chatbot__message-quick-response--selected', className)}
           isCompact={isCompact}
           {...props}
         >

@@ -3,14 +3,12 @@
 // ============================================================================
 import { forwardRef, ReactNode, useEffect, useState } from 'react';
 import type { FunctionComponent, HTMLProps, MouseEvent as ReactMouseEvent, Ref } from 'react';
-import Markdown, { Options } from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import { Options } from 'react-markdown';
 import {
   AlertProps,
   Avatar,
   AvatarProps,
   ButtonProps,
-  ContentVariants,
   FormProps,
   Label,
   LabelGroupProps,
@@ -18,42 +16,25 @@ import {
   Truncate
 } from '@patternfly/react-core';
 import MessageLoading from './MessageLoading';
-import CodeBlockMessage, { CodeBlockMessageProps } from './CodeBlockMessage/CodeBlockMessage';
-import TextMessage from './TextMessage/TextMessage';
+import { CodeBlockMessageProps } from './CodeBlockMessage/CodeBlockMessage';
 import FileDetailsLabel from '../FileDetailsLabel/FileDetailsLabel';
 import ResponseActions, { ActionProps } from '../ResponseActions/ResponseActions';
 import SourcesCard, { SourcesCardProps } from '../SourcesCard';
-import ListItemMessage from './ListMessage/ListItemMessage';
-import UnorderedListMessage from './ListMessage/UnorderedListMessage';
-import OrderedListMessage from './ListMessage/OrderedListMessage';
 import QuickStartTile from './QuickStarts/QuickStartTile';
 import { QuickStart, QuickstartAction } from './QuickStarts/types';
 import QuickResponse from './QuickResponse/QuickResponse';
 import UserFeedback, { UserFeedbackProps } from './UserFeedback/UserFeedback';
 import UserFeedbackComplete, { UserFeedbackCompleteProps } from './UserFeedback/UserFeedbackComplete';
-import TableMessage from './TableMessage/TableMessage';
-import TrMessage from './TableMessage/TrMessage';
-import TdMessage from './TableMessage/TdMessage';
-import TbodyMessage from './TableMessage/TbodyMessage';
-import TheadMessage from './TableMessage/TheadMessage';
-import ThMessage from './TableMessage/ThMessage';
 import { TableProps } from '@patternfly/react-table';
-import ImageMessage from './ImageMessage/ImageMessage';
-import rehypeUnwrapImages from 'rehype-unwrap-images';
-import rehypeExternalLinks from 'rehype-external-links';
-import rehypeSanitize from 'rehype-sanitize';
-import rehypeHighlight from 'rehype-highlight';
 // see the full list of styles here: https://highlightjs.org/examples
 import 'highlight.js/styles/vs2015.css';
 import { PluggableList } from 'unified';
-import LinkMessage from './LinkMessage/LinkMessage';
 import ErrorMessage from './ErrorMessage/ErrorMessage';
 import MessageInput from './MessageInput';
-import { rehypeMoveImagesOutOfParagraphs } from './Plugins/rehypeMoveImagesOutOfParagraphs';
 import ToolResponse, { ToolResponseProps } from '../ToolResponse';
 import DeepThinking, { DeepThinkingProps } from '../DeepThinking';
-import SuperscriptMessage from './SuperscriptMessage/SuperscriptMessage';
 import ToolCall, { ToolCallProps } from '../ToolCall';
+import MarkdownContent from '../MarkdownContent';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -86,6 +67,8 @@ export interface MessageExtraContent {
 }
 
 export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
+  /** Children to render instead of the default message structure, allowing more fine-tuned message control. When provided, this will override the default rendering of content, toolResponse, deepThinking, toolCall, sources, quickStarts, actions, etc. */
+  children?: ReactNode;
   /** Unique id for message */
   id?: string;
   /** Role of the user sending the message */
@@ -104,12 +87,27 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   isLoading?: boolean;
   /** Array of attachments attached to a message */
   attachments?: MessageAttachment[];
-  /** Props for message actions, such as feedback (positive or negative), copy button, edit message, share, and listen */
-  actions?: {
-    [key: string]: ActionProps;
-  };
+  /** Props for message actions, such as feedback (positive or negative), copy button, edit message, share, and listen.
+   * Can be a single actions object or an array of action group objects. When passing an array, you can pass an object of actions or
+   * an object that contains an actions property for finer control of selection persistence.
+   */
+  actions?:
+    | {
+        [key: string]: ActionProps;
+      }
+    | {
+        [key: string]: ActionProps;
+      }[]
+    | {
+        actions: {
+          [key: string]: ActionProps;
+        };
+        persistActionSelection?: boolean;
+      }[];
   /** When true, the selected action will persist even when clicking outside the component.
-   * When false (default), clicking outside or clicking another action will deselect the current selection. */
+   * When false (default), clicking outside or clicking another action will deselect the current selection.
+   * For finer control of multiple action groups, use persistActionSelection on each group.
+   */
   persistActionSelection?: boolean;
   /** Sources for message */
   sources?: SourcesCardProps;
@@ -197,6 +195,7 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
 }
 
 export const MessageBase: FunctionComponent<MessageProps> = ({
+  children,
   role,
   content,
   extraContent,
@@ -252,14 +251,8 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   }, [content]);
 
   const { beforeMainContent, afterMainContent, endContent } = extraContent || {};
-  let rehypePlugins: PluggableList = [rehypeUnwrapImages, rehypeMoveImagesOutOfParagraphs, rehypeHighlight];
-  if (openLinkInNewTab) {
-    rehypePlugins = rehypePlugins.concat([[rehypeExternalLinks, { target: '_blank' }, rehypeSanitize]]);
-  }
-  if (additionalRehypePlugins) {
-    rehypePlugins.push(...additionalRehypePlugins);
-  }
-  let avatarClassName;
+
+  let avatarClassName: string | undefined;
   if (avatarProps && 'className' in avatarProps) {
     const { className, ...rest } = avatarProps;
     avatarClassName = className;
@@ -269,157 +262,22 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   const date = new Date();
   const dateString = timestamp ?? `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 
-  const disallowedElements = role === 'user' && hasNoImagesInUserMessages ? ['img'] : [];
-  if (reactMarkdownProps && reactMarkdownProps.disallowedElements) {
-    disallowedElements.push(...reactMarkdownProps.disallowedElements);
-  }
-
-  const handleMarkdown = () => {
-    if (isMarkdownDisabled) {
-      return (
-        <TextMessage component={ContentVariants.p} {...props}>
-          {messageText}
-        </TextMessage>
-      );
-    }
-    return (
-      <Markdown
-        components={{
-          section: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <section {...rest} className={`pf-chatbot__message-text ${rest?.className}`} />;
-          },
-          p: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <TextMessage component={ContentVariants.p} {...rest} isPrimary={isPrimary} />;
-          },
-          code: ({ children, ...props }) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...codeProps } = props;
-            return (
-              <CodeBlockMessage {...codeProps} {...codeBlockProps} isPrimary={isPrimary}>
-                {children}
-              </CodeBlockMessage>
-            );
-          },
-          h1: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <TextMessage component={ContentVariants.h1} {...rest} />;
-          },
-          h2: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <TextMessage component={ContentVariants.h2} {...rest} />;
-          },
-          h3: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <TextMessage component={ContentVariants.h3} {...rest} />;
-          },
-          h4: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <TextMessage component={ContentVariants.h4} {...rest} />;
-          },
-          h5: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <TextMessage component={ContentVariants.h5} {...rest} />;
-          },
-          h6: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <TextMessage component={ContentVariants.h6} {...rest} />;
-          },
-          blockquote: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <TextMessage component={ContentVariants.blockquote} {...rest} />;
-          },
-          ul: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <UnorderedListMessage {...rest} />;
-          },
-          ol: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <OrderedListMessage {...rest} />;
-          },
-          li: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <ListItemMessage {...rest} />;
-          },
-          // table requires node attribute for calculating headers for mobile breakpoint
-          table: (props) => <TableMessage {...props} {...tableProps} isPrimary={isPrimary} />,
-          tbody: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <TbodyMessage {...rest} />;
-          },
-          thead: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <TheadMessage {...rest} />;
-          },
-          tr: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <TrMessage {...rest} />;
-          },
-          td: (props) => {
-            // Conflicts with Td type
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, width, ...rest } = props;
-            return <TdMessage {...rest} />;
-          },
-          th: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <ThMessage {...rest} />;
-          },
-          img: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <ImageMessage {...rest} />;
-          },
-          a: (props) => {
-            // node is just the details of the document structure - not needed
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return (
-              // some a types conflict with ButtonProps, but it's ok because we are using an a tag
-              // there are too many to handle manually
-              <LinkMessage {...(rest as any)} {...linkProps}>
-                {props.children}
-              </LinkMessage>
-            );
-          },
-          // used for footnotes
-          sup: (props) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { node, ...rest } = props;
-            return <SuperscriptMessage {...rest} />;
-          }
-        }}
-        remarkPlugins={[[remarkGfm, { ...remarkGfmProps }], ...additionalRemarkPlugins]}
-        rehypePlugins={rehypePlugins}
-        {...reactMarkdownProps}
-        remarkRehypeOptions={{
-          // removes sr-only class from footnote labels applied by default
-          footnoteLabelProperties: { className: [''] },
-          ...reactMarkdownProps?.remarkRehypeOptions
-        }}
-        disallowedElements={disallowedElements}
-      >
-        {messageText}
-      </Markdown>
-    );
-  };
+  const handleMarkdown = () => (
+    <MarkdownContent
+      content={messageText}
+      isMarkdownDisabled={isMarkdownDisabled}
+      codeBlockProps={codeBlockProps}
+      tableProps={tableProps}
+      openLinkInNewTab={openLinkInNewTab}
+      additionalRehypePlugins={additionalRehypePlugins}
+      additionalRemarkPlugins={additionalRemarkPlugins}
+      linkProps={linkProps}
+      reactMarkdownProps={reactMarkdownProps}
+      remarkGfmProps={remarkGfmProps}
+      hasNoImages={role === 'user' && hasNoImagesInUserMessages}
+      isPrimary={isPrimary}
+    />
+  );
 
   const renderMessage = () => {
     if (isLoading) {
@@ -486,60 +344,82 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
           <Timestamp date={date}>{timestamp}</Timestamp>
         </div>
         <div className="pf-chatbot__message-response">
-          <div className="pf-chatbot__message-and-actions">
-            {renderMessage()}
-            {afterMainContent && <>{afterMainContent}</>}
-            {toolResponse && <ToolResponse {...toolResponse} />}
-            {deepThinking && <DeepThinking {...deepThinking} />}
-            {toolCall && <ToolCall {...toolCall} />}
-            {!isLoading && sources && <SourcesCard {...sources} isCompact={isCompact} />}
-            {quickStarts && quickStarts.quickStart && (
-              <QuickStartTile
-                quickStart={quickStarts.quickStart}
-                onSelectQuickStart={quickStarts.onSelectQuickStart}
-                minuteWord={quickStarts.minuteWord}
-                minuteWordPlural={quickStarts.minuteWordPlural}
-                prerequisiteWord={quickStarts.prerequisiteWord}
-                prerequisiteWordPlural={quickStarts.prerequisiteWordPlural}
-                quickStartButtonAriaLabel={quickStarts.quickStartButtonAriaLabel}
-                isCompact={isCompact}
-              />
-            )}
-            {!isLoading && !isEditable && actions && (
-              <ResponseActions actions={actions} persistActionSelection={persistActionSelection} />
-            )}
-            {userFeedbackForm && <UserFeedback {...userFeedbackForm} timestamp={dateString} isCompact={isCompact} />}
-            {userFeedbackComplete && (
-              <UserFeedbackComplete {...userFeedbackComplete} timestamp={dateString} isCompact={isCompact} />
-            )}
-            {!isLoading && quickResponses && (
-              <QuickResponse
-                quickResponses={quickResponses}
-                quickResponseContainerProps={quickResponseContainerProps}
-                isCompact={isCompact}
-              />
-            )}
-          </div>
-          {attachments && (
-            <div className="pf-chatbot__message-attachments-container">
-              {attachments.map((attachment) => (
-                <div key={attachment.id ?? attachment.name} className="pf-chatbot__message-attachment">
-                  <FileDetailsLabel
-                    fileName={attachment.name}
-                    fileId={attachment.id}
-                    onClose={attachment.onClose}
-                    onClick={attachment.onClick}
-                    isLoading={attachment.isLoading}
-                    closeButtonAriaLabel={attachment.closeButtonAriaLabel}
-                    languageTestId={attachment.languageTestId}
-                    spinnerTestId={attachment.spinnerTestId}
-                    variant={isPrimary ? 'outline' : undefined}
+          {children ? (
+            <>{children}</>
+          ) : (
+            <>
+              <div className="pf-chatbot__message-and-actions">
+                {renderMessage()}
+                {afterMainContent && <>{afterMainContent}</>}
+                {toolResponse && <ToolResponse {...toolResponse} />}
+                {deepThinking && <DeepThinking {...deepThinking} />}
+                {toolCall && <ToolCall {...toolCall} />}
+                {!isLoading && sources && <SourcesCard {...sources} isCompact={isCompact} />}
+                {quickStarts && quickStarts.quickStart && (
+                  <QuickStartTile
+                    quickStart={quickStarts.quickStart}
+                    onSelectQuickStart={quickStarts.onSelectQuickStart}
+                    minuteWord={quickStarts.minuteWord}
+                    minuteWordPlural={quickStarts.minuteWordPlural}
+                    prerequisiteWord={quickStarts.prerequisiteWord}
+                    prerequisiteWordPlural={quickStarts.prerequisiteWordPlural}
+                    quickStartButtonAriaLabel={quickStarts.quickStartButtonAriaLabel}
+                    isCompact={isCompact}
                   />
+                )}
+                {!isLoading && !isEditable && actions && (
+                  <>
+                    {Array.isArray(actions) ? (
+                      <div className="pf-chatbot__response-actions-groups">
+                        {actions.map((actionGroup, index) => (
+                          <ResponseActions
+                            key={index}
+                            actions={actionGroup.actions || actionGroup}
+                            persistActionSelection={persistActionSelection || actionGroup.persistActionSelection}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <ResponseActions actions={actions} persistActionSelection={persistActionSelection} />
+                    )}
+                  </>
+                )}
+                {userFeedbackForm && (
+                  <UserFeedback {...userFeedbackForm} timestamp={dateString} isCompact={isCompact} />
+                )}
+                {userFeedbackComplete && (
+                  <UserFeedbackComplete {...userFeedbackComplete} timestamp={dateString} isCompact={isCompact} />
+                )}
+                {!isLoading && quickResponses && (
+                  <QuickResponse
+                    quickResponses={quickResponses}
+                    quickResponseContainerProps={quickResponseContainerProps}
+                    isCompact={isCompact}
+                  />
+                )}
+              </div>
+              {attachments && (
+                <div className="pf-chatbot__message-attachments-container">
+                  {attachments.map((attachment) => (
+                    <div key={attachment.id ?? attachment.name} className="pf-chatbot__message-attachment">
+                      <FileDetailsLabel
+                        fileName={attachment.name}
+                        fileId={attachment.id}
+                        onClose={attachment.onClose}
+                        onClick={attachment.onClick}
+                        isLoading={attachment.isLoading}
+                        closeButtonAriaLabel={attachment.closeButtonAriaLabel}
+                        languageTestId={attachment.languageTestId}
+                        spinnerTestId={attachment.spinnerTestId}
+                        variant={isPrimary ? 'outline' : undefined}
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              )}
+              {!isLoading && endContent && <>{endContent}</>}
+            </>
           )}
-          {!isLoading && endContent && <>{endContent}</>}
         </div>
       </div>
     </section>

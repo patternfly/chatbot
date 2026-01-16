@@ -74,9 +74,11 @@ export interface UserFeedbackProps extends Omit<CardProps, 'onSubmit'>, OUIAProp
   textAreaProps?: TextAreaProps;
   /** Additional props passed to action group */
   actionGroupProps?: ActionGroupProps;
+  /** Optional privacy statement text displayed under text area */
+  privacyStatement?: string;
 }
 
-const UserFeedback: FunctionComponent<UserFeedbackProps> = ({
+export const UserFeedback: FunctionComponent<UserFeedbackProps> = ({
   className,
   timestamp,
   title = 'Why did you choose this rating?',
@@ -102,6 +104,7 @@ const UserFeedback: FunctionComponent<UserFeedbackProps> = ({
   textAreaProps,
   actionGroupProps,
   submitButtonProps,
+  privacyStatement,
   ...props
 }: UserFeedbackProps) => {
   const [selectedResponse, setSelectedResponse] = useState<string>();
@@ -139,21 +142,28 @@ const UserFeedback: FunctionComponent<UserFeedbackProps> = ({
               />
             )}
             {hasTextArea && (
-              <TextArea
-                value={value}
-                onChange={(_event, value) => {
-                  setValue(value);
-                  onTextAreaChange && onTextAreaChange(_event, value);
-                }}
-                placeholder={textAreaPlaceholder}
-                aria-label={textAreaAriaLabel}
-                resizeOrientation="vertical"
-                {...textAreaProps}
-              />
+              <>
+                <TextArea
+                  value={value}
+                  onChange={(_event, value) => {
+                    setValue(value);
+                    onTextAreaChange && onTextAreaChange(_event, value);
+                  }}
+                  placeholder={textAreaPlaceholder}
+                  aria-label={textAreaAriaLabel}
+                  resizeOrientation="vertical"
+                  {...textAreaProps}
+                />
+              </>
             )}
+            {privacyStatement && <div className="pf-chatbot__feedback-card-privacy">{privacyStatement}</div>}
             {children}
             <ActionGroup {...actionGroupProps}>
-              <Button onClick={() => onSubmit(selectedResponse, value)} {...submitButtonProps}>
+              <Button
+                onClick={() => onSubmit(selectedResponse, value)}
+                size={isCompact ? 'sm' : undefined}
+                {...submitButtonProps}
+              >
                 {submitWord}
               </Button>
             </ActionGroup>

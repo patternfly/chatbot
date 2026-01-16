@@ -5,6 +5,7 @@
 import { Children, cloneElement } from 'react';
 import { ExtraProps } from 'react-markdown';
 import { Table, TableProps } from '@patternfly/react-table';
+import { css } from '@patternfly/react-styles';
 
 interface Properties {
   line: number;
@@ -20,10 +21,20 @@ export interface TableNode {
 }
 
 export interface TableMessageProps {
+  /** Content of the table */
+  children?: React.ReactNode;
+  /** Flag indicating whether primary styles should be applied. */
   isPrimary?: boolean;
+  /** Flag indicating that the content should retain message styles when using Markdown. */
+  shouldRetainStyles?: boolean;
 }
 
-const TableMessage = ({ children, isPrimary, ...props }: Omit<TableProps, 'ref'> & ExtraProps & TableMessageProps) => {
+const TableMessage = ({
+  children,
+  isPrimary,
+  shouldRetainStyles,
+  ...props
+}: Omit<TableProps, 'ref'> & ExtraProps & TableMessageProps) => {
   const { className, ...rest } = props;
 
   // This allows us to parse the nested data we get back from the 3rd party Markdown parser
@@ -76,7 +87,12 @@ const TableMessage = ({ children, isPrimary, ...props }: Omit<TableProps, 'ref'>
     <Table
       aria-label={props['aria-label']}
       gridBreakPoint="grid"
-      className={`pf-chatbot__message-table ${isPrimary ? 'pf-m-primary' : ''} ${className ? className : ''}`}
+      className={css(
+        'pf-chatbot__message-table',
+        isPrimary && 'pf-m-primary',
+        shouldRetainStyles && 'pf-m-markdown',
+        className
+      )}
       {...rest}
     >
       {modifyChildren(children)}

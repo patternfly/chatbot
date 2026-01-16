@@ -42,6 +42,12 @@ export interface ActionProps extends Omit<ButtonProps, 'ref'> {
 type ExtendedActionProps = ActionProps & {
   [key: string]: any;
 };
+
+/**
+ * The various actions that can be attached to a bot message for users to interact with.
+ * Use this component when passing children to Message to customize its structure.
+ */
+
 export interface ResponseActionProps {
   /** Props for message actions, such as feedback (positive or negative), copy button, share, and listen */
   actions: Record<string, ExtendedActionProps | undefined> & {

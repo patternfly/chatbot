@@ -161,6 +161,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
   const [isListeningMessage, setIsListeningMessage] = useState<boolean>(false);
   const [hasSentMessage, setHasSentMessage] = useState(false);
   const [isComposing, setIsComposing] = useState(false);
+  const [isMultiline, setIsMultiline] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const textareaRef = (innerRef as React.RefObject<HTMLTextAreaElement>) ?? inputRef;
   const attachButtonRef = useRef<HTMLButtonElement>(null);
@@ -208,6 +209,19 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
     const lines = field.scrollHeight / lineHeight;
     return lines > 2;
   };
+
+  const checkIfMultiline = useCallback(
+    (field: HTMLTextAreaElement) => {
+      const parent = field.parentElement;
+      const grandparent = parent?.parentElement;
+      if (grandparent) {
+        const containerHeight = grandparent.offsetHeight;
+        const threshold = isCompact ? 56 : 70;
+        setIsMultiline(containerHeight > threshold);
+      }
+    },
+    [isCompact]
+  );
 
   const setAutoWidth = useCallback((field: HTMLTextAreaElement) => {
     const parent = field.parentElement;
@@ -263,12 +277,14 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
     if (field) {
       if (field.value === '') {
         setInitialLineHeight(field);
+        setIsMultiline(false);
       } else {
         setAutoHeight(field);
         setAutoWidth(field);
+        checkIfMultiline(field);
       }
     }
-  }, [displayMode, message, setAutoWidth]);
+  }, [displayMode, message, setAutoWidth, checkIfMultiline]);
 
   useEffect(() => {
     const field = textareaRef.current;
@@ -284,13 +300,15 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
       if (textareaRef.current) {
         if (event.target.value === '') {
           setInitialLineHeight(textareaRef.current);
+          setIsMultiline(false);
         } else {
           setAutoHeight(textareaRef.current);
+          checkIfMultiline(textareaRef.current);
         }
       }
       setMessage(event.target.value);
     },
-    [onChange]
+    [onChange, checkIfMultiline]
   );
 
   // Handle sending message
@@ -453,7 +471,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
     return (
       <AttachMenu
         toggle={(toggleRef) => (
-          <div ref={toggleRef} className={`pf-chatbot__message-bar ${className ?? ''}`}>
+          <div ref={toggleRef} className={css('pf-chatbot__message-bar', isMultiline && 'pf-m-multiline', className)}>
             {messageBarContents}
           </div>
         )}
@@ -481,6 +499,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
         isPrimary && 'pf-m-primary',
         hasAiIndicator && 'pf-v6-m-ai-indicator',
         isThinking && 'pf-v6-m-thinking',
+        isMultiline && 'pf-m-multiline',
         className
       )}
     >

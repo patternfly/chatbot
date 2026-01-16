@@ -5,8 +5,21 @@
 import { Button, ButtonProps } from '@patternfly/react-core';
 import { ExternalLinkSquareAltIcon } from '@patternfly/react-icons';
 import { ExtraProps } from 'react-markdown';
+import { css } from '@patternfly/react-styles';
 
-const LinkMessage = ({ children, target, href, id, ...props }: ButtonProps & ExtraProps) => {
+export interface LinkMessageProps {
+  /** Flag indicating that the content should retain message styles when using Markdown. */
+  shouldRetainStyles?: boolean;
+}
+
+const LinkMessage = ({
+  children,
+  target,
+  href,
+  id,
+  shouldRetainStyles,
+  ...props
+}: LinkMessageProps & ButtonProps & ExtraProps) => {
   if (target === '_blank') {
     return (
       <Button
@@ -20,6 +33,7 @@ const LinkMessage = ({ children, target, href, id, ...props }: ButtonProps & Ext
         // need to explicitly call this out or id doesn't seem to get passed - required for footnotes
         id={id}
         {...props}
+        className={css(shouldRetainStyles && 'pf-m-markdown', props?.className)}
       >
         {children}
       </Button>
@@ -28,7 +42,15 @@ const LinkMessage = ({ children, target, href, id, ...props }: ButtonProps & Ext
 
   return (
     // need to explicitly call this out or id doesn't seem to get passed - required for footnotes
-    <Button isInline component="a" href={href} variant="link" id={id} {...props}>
+    <Button
+      isInline
+      component="a"
+      href={href}
+      variant="link"
+      id={id}
+      {...props}
+      className={css(shouldRetainStyles && 'pf-m-markdown', props?.className)}
+    >
       {children}
     </Button>
   );
