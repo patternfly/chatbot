@@ -74,7 +74,7 @@ import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, PlusIcon, Thumbtack
 import { useDropzone } from 'react-dropzone';
 
 import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
-import { Button, Label, DropdownItem, DropdownList, Checkbox, MenuToggle, Select, SelectList, SelectOption } from '@patternfly/react-core';
+import { Button, DropdownItem, DropdownList, Checkbox, Label, LabelGroup, Menu, MenuContent, MenuItem, MenuList, MenuToggle, Popper, Select, SelectList, SelectOption } from '@patternfly/react-core';
 
 import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/outlined-window-restore-icon';
 import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
@@ -301,6 +301,23 @@ This example shows two message bar variations:
 2. The same custom attach menu with additional actions, including a model selector menu and a dismissable "Canvas" label
 
 ```js file="./ChatbotMessageBarCustomActions.tsx"
+
+```
+
+### Message bar with resource tagging
+
+You can implement custom keyboard logic to create a typeahead-style dropdown that opens when users type special characters. This example demonstrates a resource tagging feature where:
+
+1. Typing "#" opens a dropdown menu of available resources
+2. The menu automatically filters as you continue typing
+3. Selecting a resource autofills the name in the input
+4. A dismissable label appears above the message input showing the selected resource
+5. Multiple resources can be tagged in a single message
+6. Arrow keys navigate the menu (ArrowUp/ArrowDown), Enter selects, Escape closes
+
+This pattern is useful for mentioning resources, users, channels, or other entities within chat messages.
+
+```js file="./ChatbotMessageBarResourceTagging.tsx"
 
 ```
 
