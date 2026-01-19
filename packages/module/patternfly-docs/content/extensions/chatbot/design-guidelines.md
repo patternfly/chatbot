@@ -55,14 +55,29 @@ To help users get started quickly, it can also be helpful to include welcome pro
 ![Welcome message with prompts.](./img/welcome-elements.svg)
 </div>
 
-#### Source tiles
+#### Source cards
 
-A ChatBot can share relevant sources with users, like documentation that could provide the information a user is searching for. These sources will be contained in a single tile, which users can paginate through and select to navigate to other resources. 
-
-To provide users with enough context, sources should have descriptive titles and descriptions. The title is limited to 1 line and the body is limited to 2 lines.
+To share relevant resources with users, like documentation containing the answer to a user's question, you can use source cards. 
 
 <div class="ws-docs-content-img">
-![Bot message that include multiple source tiles.](./img/source-tile.svg)
+![A white card below a message from a ChatBot. In the card is blue text for the title and black text for a short description. There are four pink annotation markers pointing to major sections of the image.](./img/source-tile.svg)
+</div>
+
+1. **Source count:** Notes the number of sources shared in a card. 
+2. **Source card title:** Offers a concise, descriptive title of the source content to provide users with quick context about a source. Titles are limited to 1 line and should be truncated when the text overflows or wraps.
+3. **Source card description:** Offers a concise preview or summary of the source content. We recommend limiting the length to 2 lines to provide context without overcrowding the chat window.
+4. **Pagination:** Used to navigate through all options when there are multiple source cards provided. Not displayed when only 1 source is provided.
+
+Instead of a short preview of the linked source's content, you can choose to summarize the contents and use that summary as your description. This is helpful for in-depth resources where the context is not clear from the beginning snippet. You can also choose to elevate a quote from the resource that is most relevant to the user's question.
+
+<div class="ws-docs-content-img">
+![A single source card is show below a chatbot message.](./img/source-tile-summary.svg)
+</div>
+
+While we generally recommend staying within 2 lines for your source description, you can choose to provide a "show more" link that allows users to expand and view a longer description. When using expandable descriptions, it is recommended to end the description at the end of the sentence. Use your best UX judgment here&mdash;extremely lengthy descriptions can quickly fill out the chat window and obstruct previous conversation details.
+
+<div class="ws-docs-content-img">
+![A before and after image is shown. The before image shows a single source card below a chatbot message, with a blue link at the bottom that says "show more." In the after image, additional description lines are shown and the link now says "show less."](./img/source-tile-expanded.svg)
 </div>
 
 #### Quick start tiles
@@ -119,7 +134,7 @@ When users select either of these icons, you should present them with either:
     1. **Close button (optional):** Closes the feedback form. The original feedback response should still be collected.
     1. **Quick responses:** Options for users to provide more context around their rating. Customize these to make the most sense for your product. You can present positive and negative options based on the response type originally selected.
     1. **Text area (optional):** Allows users to provide additional written detail if they'd like.
-    1. **Submit button:** Submits the feedback form and triggers the   thank-you card.
+    1. **Submit button:** Submits the feedback form and triggers the thank-you card.
 
 ### Message bar
 
@@ -205,7 +220,7 @@ To help users further identify the toggle, add a "Launch ChatBot" tooltip. You c
 ![Tooltips for ChatBot toggle.](./img/toggle-tooltips.svg)
 </div>
 
-Whichever method you choose, it is critical to be consistent with the toggle location and refer to the following the additional guidelines for each. 
+Whichever method you choose, it is critical to be consistent with the toggle location and refer to the following additional guidelines for each. 
 
 #### Floating toggle
 When users click the toggle, the ChatBot window opens and the toggle will change to display an "angle down" icon to indicate that clicking the toggle again will minimize the ChatBot. Users can select the toggle at any point in their journey to open and close the ChatBot as needed.
@@ -250,7 +265,7 @@ If a UI element within the page content is an AI/ChatBot-supported feature, the 
 ![Menu item for an AI action that launches a ChatBot.](./img/ai-action-inpage.svg)
 </div>
 
-When a ChatBot is launches via an AI-supported action, the action should be sent as a user message once the ChatBot opens.  
+When a ChatBot is launched via an AI-supported action, the action should be sent as a user message once the ChatBot opens.
 
 <div class="ws-docs-content-img">
 ![User message in ChatBot for an AI action command.](./img/ai-action-message.svg)
@@ -274,7 +289,7 @@ This can be done using the [quick response](/extensions/chatbot/messages#message
 
 ### Using the conversation history menu
 
-The ChatBot history menu contains a log of a users' previous chats. Clicking the menu icon opens a side drawer in the ChatBot window.
+The ChatBot history menu contains a log of a user's previous chats. Clicking the menu icon opens a side drawer in the ChatBot window.
 
 By clicking into the history menu, users can search through previous conversations and perform additional actions, such as sharing a conversation with others.
 
