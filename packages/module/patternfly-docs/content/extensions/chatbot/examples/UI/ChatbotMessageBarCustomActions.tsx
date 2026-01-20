@@ -91,7 +91,7 @@ export const ChatbotMessageBarCustomActionsExample: FunctionComponent = () => {
       {/* This is required for react-dropzone to work in Safari and Firefox */}
       <input {...getInputProps()} hidden />
       <div style={{ marginBottom: '1rem' }}>
-        <h4 style={{ marginBottom: '0.5rem' }}>Custom attach menu with a PlusIcon at the start</h3>
+        <h4 style={{ marginBottom: '0.5rem' }}>Custom attach menu with a PlusIcon at the start</h4>
         <MessageBar
           onSendMessage={handleSend}
           attachButtonPosition="start"
@@ -119,7 +119,7 @@ export const ChatbotMessageBarCustomActionsExample: FunctionComponent = () => {
       </div>
 
       <div>
-        <h4 style={{ marginBottom: '0.5rem' }}>Custom attach menu with additional actions</h3>
+        <h4 style={{ marginBottom: '0.5rem' }}>Custom attach menu with additional actions</h4>
         <MessageBar
           onSendMessage={handleSend}
           attachButtonPosition="start"
