@@ -60,7 +60,7 @@ To help users get started quickly, it can also be helpful to include welcome pro
 To share relevant resources with users, like documentation containing the answer to a user's question, you can use source cards. 
 
 <div class="ws-docs-content-img">
-![A white card below a message from a ChatBot. In the card is blue text for the title and black text for a short description. There are four pink annotation markers pointing to major sections of the image.](./img/source-tile.svg)
+![A white card below a message from a ChatBot. In the card is blue text for the title and black text for a short description. There are four pink annotation markers pointing to major sections of the image.](./img/source-card.svg)
 </div>
 
 1. **Source count:** Notes the number of sources shared in a card. 
@@ -71,14 +71,27 @@ To share relevant resources with users, like documentation containing the answer
 Instead of a short preview of the linked source's content, you can choose to summarize the contents and use that summary as your description. This is helpful for in-depth resources where the context is not clear from the beginning snippet. You can also choose to elevate a quote from the resource that is most relevant to the user's question.
 
 <div class="ws-docs-content-img">
-![A single source card is show below a chatbot message.](./img/source-tile-summary.svg)
+![A single source card is show below a chatbot message.](./img/source-card-summary.svg)
 </div>
 
-While we generally recommend staying within 2 lines for your source description, you can choose to provide a "show more" link that allows users to expand and view a longer description. When using expandable descriptions, it is recommended to end the description at the end of the sentence. Use your best UX judgment here&mdash;extremely lengthy descriptions can quickly fill out the chat window and obstruct previous conversation details.
+While we generally recommend staying within 2 lines for your source description, you can choose to provide a "show more" button that allows users to expand and view a longer description. When using expandable descriptions, it is recommended to end the description at the end of the sentence. Use your best UX judgment here&mdash;extremely lengthy descriptions can quickly fill out the chat window and obstruct previous conversation details.
 
 <div class="ws-docs-content-img">
-![A before and after image is shown. The before image shows a single source card below a chatbot message, with a blue link at the bottom that says "show more." In the after image, additional description lines are shown and the link now says "show less."](./img/source-tile-expanded.svg)
+![A before and after image is shown. The before image shows a single source card below a chatbot message, with a blue link at the bottom that says "show more." In the after image, additional description lines are shown and the link now says "show less."](./img/source-card-expanded.svg)
 </div>
+
+##### Custom source cards
+
+You can create a custom source card by utilizing additional components that make sense for your use case. The source card's flexibility can be used in a number of ways, but the following example demonstrates how you might customize its appearance to provide additional details about a source.
+
+<div class="ws-docs-content-img">
+![A source card, annotated with four pink markers. Each marker points to a unique point of the card: a light gray subtitle below the main card title, a filled, green label beneath the card body that is labeled with a confidence % score, a blue help link is to the right of the green label that says "learn about this score", and light gray text at the bottom of the card with the last updated date.](./img/custom-source-card.svg)
+</div>
+
+1. **Subtitle:** Additional context about the resource, such as where the documentation is hosted.
+2. **Label:** A confidence score, to indicate the likelihood that a source contains relevant information for the user.
+3. **Link with popover:** Additional context about the confidence score label.
+4. **Date:** The last time the linked resource was updated. 
 
 #### Quick start tiles
 
