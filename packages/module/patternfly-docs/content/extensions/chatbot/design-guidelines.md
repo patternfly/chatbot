@@ -258,19 +258,19 @@ When a ChatBot is launches via an AI-supported action, the action should be sent
 
 ### Starting a new chat 
 
-The default approach for users to create a new chat is by using the **New chat** button at the top of the [chat history menu](#using-the-chat-history-menu). The "pen to square" icon is used to identify new chat actions. 
+Each time a user begins a new chat, display a [welcome message](#welcome-message), with prompts that provide initial suggestions and indicate the actions that the ChatBot can take.
+
+The default approach for users to create a new chat is by clicking the "New chat" button (which contains a "pen to square" icon) placed at the top of the [chat history menu](#using-the-chat-history-menu). 
 
 <div class="ws-docs-content-img">
-![A blue "new chat" button at the top of a drawer labeled "Chat history".](./img/new-chat-in-nav.svg)
+![A blue "New chat" button at the top right of a drawer labeled "Chat history".](./img/new-chat-in-nav.svg)
 </div>
 
-Alternatively, you can choose to surface the button as an icon button in the header (using the "pen to square" icon) or as a menu item in the options menu. 
+Alternatively, you can choose to surface the "New chat" button as an icon button in the header. For this approach, the "pen to square" icon is displayed in the button and a "New chat" tooltip should appear on hover and focus.
 
 <div class="ws-docs-content-img">
-![A blue "new chat" button at the top of a drawer labeled "Chat history".](./img/starting-new-chat.svg)
+![An icon button is placed at the start of the ChatBot header, prior to a hamburger menu. It contains the visual of a pen placed within a square and is in a hover state, with a darker gray background and a black tooltip that says "New chat."](./img/starting-new-chat.svg)
 </div>
-
-Each time a user begins a new chat, display a [welcome message, with prompts](#welcome-message) that help them learn what the ChatBot can help with.
 
 ### Executing user requests
 
