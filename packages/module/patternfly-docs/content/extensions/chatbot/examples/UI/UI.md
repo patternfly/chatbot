@@ -293,12 +293,12 @@ Attachments can also be added to the ChatBot via [drag and drop.](/extensions/ch
 
 ### Message bar with custom attach menu and additional actions
 
-You can position the attach button at the start of the message bar and customize it with a different icon (like a Plus icon). Additionally, you can use the `additionalActions` prop to add custom controls such as a model selector or dismissable labels.
+You can move the attach button to the start of the message bar and customize it with a different icon. To include additional actions in the message bar you can also use the `additionalActions` prop.
 
-This example shows two variations:
+This example shows two message bar variations:
 
-1. A message bar with a custom attach menu using a Plus icon positioned at the start
-2. A message bar with the same attach menu plus additional actions including a model selector and a dismissable "Canvas" label
+1. A message bar with a custom attach menu where a `PlusIcon` is positioned at the start
+2. The same custom attach menu with additional actions, including a model selector menu and a dismissable "Canvas" label
 
 ```js file="./ChatbotMessageBarCustomActions.tsx"
 
