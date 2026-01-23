@@ -179,6 +179,12 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
 
   const topMargin = '1rem';
 
+  useEffect(() => {
+    if (value !== undefined && value !== message) {
+      setMessage(value);
+    }
+  }, [value, message]);
+
   const setInitialLineHeight = (field: HTMLTextAreaElement) => {
     field.style.setProperty('line-height', '1rem');
     const parent = field.parentElement;
