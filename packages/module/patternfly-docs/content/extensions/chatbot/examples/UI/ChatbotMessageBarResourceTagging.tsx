@@ -44,14 +44,13 @@ export const ChatbotMessageBarResourceTaggingExample: FunctionComponent = () => 
 
   // Sample resources
   const availableResources: Resource[] = [
-    { id: '1', name: 'pod/auth-operator', type: 'Pod' },
-    { id: '2', name: 'deployment/frontend-app', type: 'Deployment' },
-    { id: '3', name: 'service/backend-api', type: 'Service' },
-    { id: '4', name: 'configmap/app-config', type: 'ConfigMap' },
-    { id: '5', name: 'secret/db-credentials', type: 'Secret' },
-    { id: '6', name: 'pod/redis-cache', type: 'Pod' },
-    { id: '7', name: 'deployment/nginx-proxy', type: 'Deployment' },
-    { id: '8', name: 'service/auth-service', type: 'Service' }
+    { id: '1', name: 'OpenShift Ansible Playbook', type: 'Chat' },
+    { id: '2', name: 'Q4 Sales Performance', type: 'Dashboard' },
+    { id: '3', name: 'Ansible RHEL Patcher', type: 'Code File' },
+    { id: '4', name: 'prod-apps-useast1-a-7d9bd4...', type: 'Pod' },
+    { id: '5', name: 'ingress-controller', type: 'Deployment' },
+    { id: '6', name: 'prod-apps-eucentral1-a', type: 'Cluster' },
+    { id: '7', name: 'apex-monitoring', type: 'Namespace' }
   ];
 
   const handleSend = (msg: string | number) => {
