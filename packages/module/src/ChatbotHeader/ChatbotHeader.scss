@@ -62,7 +62,7 @@
   .pf-chatbot--fullscreen,
   .pf-chatbot--embedded {
     .pf-chatbot__header {
-      background-color: var(--pf-t--global--background--color--primary--default);
+      background-color: var(--pf-t--global--background--color--primary--default); // TODO - what about this in glass?
     }
     .pf-chatbot__header__divider {
       display: none;
@@ -76,7 +76,7 @@
 .pf-chatbot--drawer,
 .pf-chatbot--docked {
   .pf-chatbot__header {
-    background-color: var(--pf-t--global--background--color--secondary--default);
+    background-color: var(--pf-t--global--background--color--secondary--default); // TODO - what about this in glass?
   }
 }
 
@@ -180,4 +180,11 @@
       }
     }
   }
+}
+
+// ============================================================================
+// Chatbot glass theme
+// ============================================================================
+:where(.pf-v6-theme-glass) .pf-chatbot__header {
+  background-color: transparent;
 }
