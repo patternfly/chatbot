@@ -66,6 +66,19 @@
     padding-block-start: var(--pf-t--global--spacer--xs);
     padding-block-end: var(--pf-t--global--spacer--xs);
     gap: var(--pf-t--global--spacer--gap--action-to-action--plain);
+
+    &.pf-m-grouped {
+      flex-basis: 100%;
+      justify-content: space-between;
+    }
+  }
+
+  &-actions-group {
+    display: flex;
+    padding-block-start: var(--pf-t--global--spacer--xs);
+    padding-block-end: var(--pf-t--global--spacer--xs);
+    gap: var(--pf-t--global--spacer--gap--action-to-action--plain);
+    align-items: center;
   }
 
   &-input {
@@ -147,11 +160,21 @@
   .pf-chatbot__message-textarea {
     font-size: var(--pf-t--global--font--size--sm) !important;
   }
+}
 
-  .pf-chatbot__message-bar-actions {
-    padding-block-start: var(--pf-t--global--spacer--md);
-    padding-block-end: var(--pf-t--global--spacer--md);
+.pf-m-compact {
+  .pf-chatbot__message-bar-actions,
+  .pf-chatbot__message-bar-actions-group {
+    padding-block-start: var(--pf-t--global--spacer--sm);
+    padding-block-end: var(--pf-t--global--spacer--sm);
   }
+}
+
+// ============================================================================
+// Multiline textarea styles (2+ lines)
+// ============================================================================
+.pf-chatbot__message-bar.pf-m-multiline {
+  border-radius: calc(var(--pf-t--global--border--radius--small) * 2);
 }
 
 // ============================================================================

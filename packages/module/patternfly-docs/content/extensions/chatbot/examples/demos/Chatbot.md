@@ -52,6 +52,20 @@ import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
 import OpenDrawerRightIcon from '@patternfly/react-icons/dist/esm/icons/open-drawer-right-icon';
 import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/outlined-window-restore-icon';
 import { BarsIcon } from '@patternfly/react-icons/dist/esm/icons/bars-icon';
+import { CopyIcon } from '@patternfly/react-icons/dist/esm/icons/copy-icon';
+import { WrenchIcon } from '@patternfly/react-icons/dist/esm/icons/wrench-icon';
+import {
+Button,
+DescriptionList,
+DescriptionListDescription,
+DescriptionListGroup,
+DescriptionListTerm,
+ExpandableSection,
+ExpandableSectionVariant,
+Flex,
+FlexItem,
+Label
+} from '@patternfly/react-core';
 import PFHorizontalLogoColor from '../UI/PF-HorizontalLogo-Color.svg';
 import PFHorizontalLogoReverse from '../UI/PF-HorizontalLogo-Reverse.svg';
 import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
@@ -59,7 +73,7 @@ import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import { getTrackingProviders } from "@patternfly/chatbot/dist/dynamic/tracking";
-import { useEffect,useCallback, useRef, useState, FunctionComponent, MouseEvent } from 'react';
+import { useEffect,useCallback, useRef, useState, FunctionComponent, MouseEvent, MouseEvent as ReactMouseEvent } from 'react';
 import saveAs from 'file-saver';
 
 ### Basic ChatBot

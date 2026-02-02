@@ -70,11 +70,11 @@ import { MessageBar } from '@patternfly/chatbot/dist/dynamic/MessageBar';
 import SourceDetailsMenuItem from '@patternfly/chatbot/dist/dynamic/SourceDetailsMenuItem';
 import { ChatbotModal } from '@patternfly/chatbot/dist/dynamic/ChatbotModal';
 import SettingsForm from '@patternfly/chatbot/dist/dynamic/Settings';
-import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, ThumbtackIcon, UploadIcon } from '@patternfly/react-icons';
+import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, PlusIcon, ThumbtackIcon, UploadIcon } from '@patternfly/react-icons';
 import { useDropzone } from 'react-dropzone';
 
 import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
-import { DropdownItem, DropdownList, Checkbox } from '@patternfly/react-core';
+import { Button, Label, DropdownItem, DropdownList, Checkbox, MenuToggle, Select, SelectList, SelectOption } from '@patternfly/react-core';
 
 import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/outlined-window-restore-icon';
 import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
@@ -87,7 +87,7 @@ import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import termsAndConditionsHeader from './PF-TermsAndConditionsHeader.svg';
 import onboardingHeader from './RH-Hat-Image.svg';
-import { CloseIcon, SearchIcon, OutlinedCommentsIcon } from '@patternfly/react-icons';
+import { CloseIcon, SearchIcon, OutlinedCommentsIcon, FilterIcon, SortAmountDownIcon } from '@patternfly/react-icons';
 import { FunctionComponent, FormEvent, useState, useRef, MouseEvent, isValidElement, cloneElement, Children, ReactNode, Ref, MouseEvent as ReactMouseEvent, CSSProperties, useEffect} from 'react';
 import FilePreview from '@patternfly/chatbot/dist/dynamic/FilePreview';
 
@@ -291,6 +291,19 @@ Attachments can also be added to the ChatBot via [drag and drop.](/extensions/ch
 
 ```
 
+### Message bar with custom attach menu and additional actions
+
+You can move the attach button to the start of the message bar and customize it with a different icon. To include additional actions in the message bar you can also use the `additionalActions` prop.
+
+This example shows two message bar variations:
+
+1. A message bar with a custom attach menu where a `PlusIcon` is positioned at the start
+2. The same custom attach menu with additional actions, including a model selector menu and a dismissable "Canvas" label
+
+```js file="./ChatbotMessageBarCustomActions.tsx"
+
+```
+
 ### Footer with message bar and footnote
 
 A simple footer with a message bar and footnote would have this code structure:
@@ -368,6 +381,16 @@ They can also start new conversations via a "New chat" button. To customize the 
 Both the search input field and "New chat" buttons are optional. The `reverseButtonOrder` prop allows you to invert the positions of the Close and "New chat" buttons within the drawer when set to `true`.
 
 ```js file="./ChatbotHeaderDrawer.tsx"
+
+```
+
+### Drawer with search actions
+
+You can customize the search experience within the conversation history drawer via the `searchActionStart` and `searchActionEnd` props, which provide additional search controls before and after the input field. These props are useful for adding filtering, sorting, or other search-related functionality.
+
+You can also add a visual divider between the drawer head and the title by setting `hasDrawerHeadDivider` to `true`.
+
+```ts file="./ChatbotHeaderDrawerWithSearchActions.tsx"
 
 ```
 

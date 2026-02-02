@@ -22,7 +22,7 @@ export interface MessageInputProps extends FormProps {
   content?: string;
 }
 
-const MessageInput: FunctionComponent<MessageInputProps> = ({
+export const MessageInput: FunctionComponent<MessageInputProps> = ({
   editPlaceholder = 'Edit prompt message...',
   updateWord = 'Update',
   cancelWord = 'Cancel',

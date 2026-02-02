@@ -1,4 +1,4 @@
-import { type FunctionComponent } from 'react';
+import { useState, type FunctionComponent } from 'react';
 import {
   ActionList,
   ActionListProps,
@@ -19,6 +19,8 @@ import {
   Spinner,
   SpinnerProps
 } from '@patternfly/react-core';
+import MarkdownContent from '../MarkdownContent';
+import type { MarkdownContentProps } from '../MarkdownContent';
 
 export interface ToolCallProps {
   /** Title text for the tool call. */
@@ -31,6 +33,8 @@ export interface ToolCallProps {
   spinnerProps?: SpinnerProps;
   /** Content to render within an expandable section. */
   expandableContent?: React.ReactNode;
+  /** Flag indicating whether the expandable content is expanded by default. */
+  isDefaultExpanded?: boolean;
   /** Text content for the "run" action button. */
   runButtonText?: string;
   /** Additional props for the "run" action button. */
@@ -59,6 +63,14 @@ export interface ToolCallProps {
   cardFooterProps?: CardFooterProps;
   /** Additional props for the expandable section when expandableContent is passed. */
   expandableSectionProps?: Omit<ExpandableSectionProps, 'ref'>;
+  /** Whether to enable markdown rendering for titleText. When true, titleText will be parsed as markdown. */
+  isTitleMarkdown?: boolean;
+  /** Whether to enable markdown rendering for expandableContent. When true and expandableContent is a string, it will be parsed as markdown. */
+  isExpandableContentMarkdown?: boolean;
+  /** Props passed to MarkdownContent component when markdown is enabled */
+  markdownContentProps?: Omit<MarkdownContentProps, 'content'>;
+  /** Whether to retain styles in the MarkdownContent component. Defaults to false. */
+  shouldRetainStyles?: boolean;
 }
 
 export const ToolCall: FunctionComponent<ToolCallProps> = ({
@@ -66,6 +78,7 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
   loadingText,
   isLoading,
   expandableContent,
+  isDefaultExpanded = false,
   runButtonText = 'Run tool',
   runButtonProps,
   runActionItemProps,
@@ -80,8 +93,25 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
   cardBodyProps,
   cardFooterProps,
   expandableSectionProps,
-  spinnerProps
+  spinnerProps,
+  isTitleMarkdown,
+  isExpandableContentMarkdown,
+  markdownContentProps,
+  shouldRetainStyles = false
 }: ToolCallProps) => {
+  const [isExpanded, setIsExpanded] = useState(isDefaultExpanded);
+
+  const onToggle = (_event: React.MouseEvent, isExpanded: boolean) => {
+    setIsExpanded(isExpanded);
+  };
+
+  const renderTitle = () => {
+    if (isTitleMarkdown) {
+      return <MarkdownContent shouldRetainStyles={shouldRetainStyles} content={titleText} {...markdownContentProps} />;
+    }
+    return titleText;
+  };
+
   const titleContent = (
     <span className={`pf-chatbot__tool-call-title-content`}>
       {isLoading ? (
@@ -90,10 +120,23 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
           {<span className="pf-chatbot__tool-call-title-text">{loadingText}</span>}
         </>
       ) : (
-        <span className="pf-chatbot__tool-call-title-text">{titleText}</span>
+        <span className="pf-chatbot__tool-call-title-text">{renderTitle()}</span>
       )}
     </span>
   );
+
+  const renderExpandableContent = () => {
+    if (isExpandableContentMarkdown && typeof expandableContent === 'string') {
+      return (
+        <MarkdownContent
+          shouldRetainStyles={shouldRetainStyles}
+          content={expandableContent}
+          {...markdownContentProps}
+        />
+      );
+    }
+    return expandableContent;
+  };
   const defaultActions = (
     <>
       <ActionListItem {...actionListItemProps} {...cancelActionItemProps}>
@@ -124,10 +167,12 @@ export const ToolCall: FunctionComponent<ToolCallProps> = ({
           <ExpandableSection
             className="pf-chatbot__tool-call-expandable-section"
             toggleContent={titleContent}
+            onToggle={onToggle}
+            isExpanded={isExpanded}
             isIndented
             {...expandableSectionProps}
           >
-            {expandableContent}
+            {renderExpandableContent()}
           </ExpandableSection>
         ) : (
           titleContent

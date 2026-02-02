@@ -14,24 +14,40 @@ propComponents:
   [
     'AttachMenu',
     'AttachmentEdit',
+    'FileDropZone',
+    'Message',
+    'ErrorMessage',
+    'MessageLoadingProps',
+    'MessageInputProps',
+    'MessageAndActionsProps',
+    'MarkdownContent',
+    'QuickResponseProps',
+    'QuickStartTileProps',
+    'UserFeedback',
+    'UserFeedbackComplete',
+    'DeepThinking',
+    'ToolCall',
+    'ToolResponse',
+    'SourcesCard',
+    'ResponseActionsGroupsProps',
+    'ResponseActionProps',
+    'ActionProps',
+    'MessageAttachmentsContainerProps',
+    'MessageAttachmentItemProps',
     'FileDetailsProps',
     'FileDetailsLabelProps',
-    'FileDropZone',
-    'PreviewAttachment',
-    'Message',
     'MessageExtraContent',
-    'PreviewAttachment',
-    'ActionProps',
-    'SourcesCardProps',
-    'UserFeedbackProps',
-    'UserFeedbackCompleteProps',
-    'QuickResponseProps'
+    'PreviewAttachment'
   ]
 sortValue: 3
 ---
 
-import Message from '@patternfly/chatbot/dist/dynamic/Message';
+import Message, { ErrorMessage, MessageAndActions, MessageLoading, MessageAttachmentItem, MessageAttachmentsContainer } from '@patternfly/chatbot/dist/dynamic/Message';
+import MarkdownContent from '@patternfly/chatbot/dist/dynamic/MarkdownContent';
 import MessageDivider from '@patternfly/chatbot/dist/dynamic/MessageDivider';
+import ToolCall from '@patternfly/chatbot/dist/dynamic/ToolCall';
+import ResponseActions, { ResponseActionsGroups } from '@patternfly/chatbot/dist/dynamic/ResponseActions';
+import ToolResponse from '@patternfly/chatbot/dist/dynamic/ToolResponse';
 import { rehypeCodeBlockToggle } from '@patternfly/chatbot/dist/esm/Message/Plugins/rehypeCodeBlockToggle';
 import SourcesCard from '@patternfly/chatbot/dist/dynamic/SourcesCard';
 import { ArrowCircleDownIcon, ArrowRightIcon, CheckCircleIcon, CopyIcon, CubeIcon, CubesIcon, DownloadIcon, InfoCircleIcon, OutlinedQuestionCircleIcon, RedoIcon, RobotIcon, WrenchIcon } from '@patternfly/react-icons';
@@ -119,6 +135,24 @@ When `persistActionSelection` is `true`:
 - Clicking the same action button again will toggle the selection off, though you will have to move your focus elsewhere to see the visual state change.
 
 ```js file="./MessageWithPersistedActions.tsx"
+
+```
+
+### Multiple messsage action groups
+
+To maintain finer control over message action selection behavior, you can create groups of actions by passing an array of objects to the `actions` prop. This allows you to separate actions into conceptually or functionally different groups and implement different behavior for each group as needed. For example, you could separate feedback actions (thumbs up/down) form utility actions (copy and download), and have different selection behaviors for each group.
+
+To provide flexibility for your use case, there are 2 approaches you can take to pass an array of objects to `actions`:
+
+1. Pass an array of objects, where each object contains:
+
+   - `actions`: An `action` object containing the actions for that group (the same format as a single `action` object)
+
+   - `persistActionSelection` (optional): A boolean to control whether selections persists for this specific group
+
+2. Pass an array of `action` objects (the same format as a single `action` object) and (optionally) a value for the `persistActionSelection` property that will apply to all groups.
+
+```js file="./MessageWithMultipleActionGroups.tsx"
 
 ```
 
@@ -253,6 +287,35 @@ You can add custom content to specific parts of a `<Message>` via the `extraCont
 
 ```
 
+### Custom message structure
+
+For more advanced use cases, you can build completely custom message structures by passing children directly to `<Message>`. This approach is useful when you need to customize the order or structure of message elements beyond what the standard props allow.
+
+When creating custom message structures, you must follow an intended composable structure.
+
+1. **Message content and actions:** Wrap in `<MessageAndActions>`. This includes, but is not limited to:
+
+   - `<MarkdownContent>`: For rendering markdown or plain text content
+   - `<ErrorMessage>`
+   - `<MessageLoading>`
+   - `<MessageInput>`
+   - `<ToolCall>`
+   - `<ToolResponse>`
+   - `<DeepThinking>`
+   - `<QuickResponse>`
+   - `<QuickStartTile>`
+   - `<UserFeedback>` and `<UserFeedbackComplete>`
+   - `<SourcesCard>`
+   - `<ResponseActionsGroups>` and `<ResponseActions>`
+
+2. **File attachments:** Placed outside `<MessageAndActions>` and wrapped in attachment containers:
+   - `<MessageAttachmentsContainer>`: Container for all attachments
+   - `<MessageAttachmentItem>`: Individual attachment wrapper (contains `<FileDetailsLabel>` or other attachment components)
+
+```ts file="./MessageWithCustomStructure.tsx"
+
+```
+
 ## File attachments
 
 ### Messages with attachments
@@ -329,5 +392,37 @@ When an attachment upload fails, a [danger alert](/components/alert) is displaye
 An attachment dropzone allows users to upload files via drag and drop.
 
 ```js file="./FileDropZone.tsx"
+
+```
+
+## Examples with Markdown
+
+The ChatBot supports Markdown formatting in several message components, allowing you to display rich, formatted content. This is particularly useful when you need to include code snippets, lists, emphasis, or other formatted text. The following examples demonstrate different ways you can use Markdown in a few of the ChatBot components, but this is not an exhaustive list of all Markdown customizations you can make.
+
+To enable Markdown rendering, use the appropriate Markdown flag prop (such as `isBodyMarkdown`, `isSubheadingMarkdown`, or `isExpandableContentMarkdown`) depending on the component and content you're formatting.
+
+**Important:** When using Markdown in these components, set `shouldRetainStyles: true` to retain the styling of the context the Markdown is used in. This ensures that Markdown content maintains the proper font sizes, colors, and other styling properties of its parent component. For example, Markdown passed into a toggle will retain the ChatBot toggle styling, while Markdown in a card body will maintain the appropriate card body styling. Without this prop, the Markdown may override the contextual styles and create inconsistencies with the rest of the ChatBot interface.
+
+### Tool calls with Markdown
+
+When displaying tool call information, you can use Markdown in the expandable content to provide formatted details about what the tool is processing. This is useful for showing structured data, code snippets, or formatted lists.
+
+```ts file="./MessageWithMarkdownToolCall.tsx"
+
+```
+
+### Deep thinking with Markdown
+
+Deep thinking content can include Markdown formatting in both the subheading and body to better communicate the LLM's reasoning process. This allows you to emphasize key points, structure thought processes with lists, or include other formatting.
+
+```ts file="./MessageWithMarkdownDeepThinking.tsx"
+
+```
+
+### Tool responses with Markdown
+
+Tool response cards support Markdown in multiple areas, including the toggle content, subheading, and body. Use `shouldRetainStyles: true` along with the appropriate Markdown flag props to ensure proper formatting and spacing.
+
+```ts file="./MessageWithMarkdownToolResponse.tsx"
 
 ```

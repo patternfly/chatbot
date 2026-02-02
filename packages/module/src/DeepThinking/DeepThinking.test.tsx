@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import DeepThinking from './DeepThinking';
 
@@ -57,5 +58,113 @@ describe('DeepThinking', () => {
     const { container } = render(<DeepThinking {...defaultProps} />);
     const subheadingContainer = container.querySelector('.pf-chatbot__tool-response-subheading');
     expect(subheadingContainer).toBeFalsy();
+  });
+
+  it('should pass through cardBodyProps', () => {
+    render(
+      <DeepThinking {...defaultProps} body="Thinking content" cardBodyProps={{ className: 'custom-card-body-class' }} />
+    );
+
+    const cardBody = screen.getByText('Thinking content').closest('.pf-v6-c-card__body');
+    expect(cardBody).toHaveClass('custom-card-body-class');
+  });
+
+  it('Renders expanded by default', () => {
+    render(<DeepThinking {...defaultProps} body="Thinking content" />);
+
+    expect(screen.getByRole('button', { name: defaultProps.toggleContent })).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText('Thinking content')).toBeVisible();
+  });
+
+  it('Renders collapsed when isDefaultExpanded is false', () => {
+    render(<DeepThinking isDefaultExpanded={false} {...defaultProps} body="Thinking content" />);
+
+    expect(screen.getByRole('button', { name: defaultProps.toggleContent })).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByText('Thinking content')).not.toBeVisible();
+  });
+
+  it('expandableSectionProps.isExpanded overrides isDefaultExpanded', () => {
+    render(
+      <DeepThinking
+        {...defaultProps}
+        isDefaultExpanded={false}
+        body="Thinking content"
+        expandableSectionProps={{ isExpanded: true }}
+      />
+    );
+
+    expect(screen.getByRole('button', { name: defaultProps.toggleContent })).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText('Thinking content')).toBeVisible();
+  });
+
+  it('expandableSectionProps.onToggle overrides internal onToggle behavior', async () => {
+    const user = userEvent.setup();
+    const customOnToggle = jest.fn();
+
+    render(
+      <DeepThinking
+        {...defaultProps}
+        isDefaultExpanded={false}
+        body="Thinking content"
+        expandableSectionProps={{ onToggle: customOnToggle }}
+      />
+    );
+
+    const toggleButton = screen.getByRole('button', { name: defaultProps.toggleContent });
+    expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
+
+    await user.click(toggleButton);
+
+    expect(customOnToggle).toHaveBeenCalled();
+    expect(toggleButton).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByText('Thinking content')).not.toBeVisible();
+  });
+
+  it('should render toggleContent as markdown when isToggleContentMarkdown is true', () => {
+    const toggleContent = '**Bold thinking**';
+    const { container } = render(<DeepThinking toggleContent={toggleContent} isToggleContentMarkdown />);
+    expect(container.querySelector('strong')).toBeTruthy();
+    expect(screen.getByText('Bold thinking')).toBeTruthy();
+  });
+
+  it('should not render toggleContent as markdown when isToggleContentMarkdown is false', () => {
+    const toggleContent = '**Bold thinking**';
+    const { container } = render(<DeepThinking toggleContent={toggleContent} />);
+    expect(container.querySelector('strong')).toBeFalsy();
+    expect(screen.getByText('**Bold thinking**')).toBeTruthy();
+  });
+
+  it('should render subheading as markdown when isSubheadingMarkdown is true', () => {
+    const subheading = '**Bold subheading**';
+    const { container } = render(<DeepThinking {...defaultProps} subheading={subheading} isSubheadingMarkdown />);
+    expect(container.querySelector('strong')).toBeTruthy();
+    expect(screen.getByText('Bold subheading')).toBeTruthy();
+  });
+
+  it('should not render subheading as markdown when isSubheadingMarkdown is false', () => {
+    const subheading = '**Bold subheading**';
+    render(<DeepThinking {...defaultProps} subheading={subheading} />);
+    expect(screen.getByText('**Bold subheading**')).toBeTruthy();
+  });
+
+  it('should render body as markdown when isBodyMarkdown is true', () => {
+    const body = '**Bold body**';
+    const { container } = render(<DeepThinking {...defaultProps} body={body} isBodyMarkdown />);
+    expect(container.querySelector('strong')).toBeTruthy();
+    expect(screen.getByText('Bold body')).toBeTruthy();
+  });
+
+  it('should not render body as markdown when isBodyMarkdown is false', () => {
+    const body = '**Bold body**';
+    render(<DeepThinking {...defaultProps} body={body} />);
+    expect(screen.getByText('**Bold body**')).toBeTruthy();
+  });
+
+  it('should pass markdownContentProps to MarkdownContent component', () => {
+    const body = '**Bold body**';
+    const { container } = render(
+      <DeepThinking {...defaultProps} body={body} isBodyMarkdown markdownContentProps={{ isPrimary: true }} />
+    );
+    expect(container.querySelector('.pf-m-primary')).toBeTruthy();
   });
 });

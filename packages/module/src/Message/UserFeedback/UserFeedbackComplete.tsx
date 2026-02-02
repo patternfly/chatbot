@@ -2,10 +2,7 @@
 // Chatbot Main - Messages - Feedback Complete Card
 // ============================================================================
 import type { MouseEvent as ReactMouseEvent, FunctionComponent } from 'react';
-
 import { useState, useRef, useEffect } from 'react';
-
-// Import PatternFly components
 import { Card, CardBody, CardHeader, CardProps, CardTitle, OUIAProps, useOUIAProps } from '@patternfly/react-core';
 import CloseButton from './CloseButton';
 
@@ -48,7 +45,7 @@ export interface UserFeedbackCompleteProps extends Omit<CardProps, 'ref'>, OUIAP
   timestamp?: string;
 }
 
-const UserFeedbackComplete: FunctionComponent<UserFeedbackCompleteProps> = ({
+export const UserFeedbackComplete: FunctionComponent<UserFeedbackCompleteProps> = ({
   className,
   title = 'Feedback submitted',
   body = "We've received your response. Thank you for sharing your feedback!",

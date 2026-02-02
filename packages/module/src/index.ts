@@ -63,6 +63,9 @@ export * from './ImagePreview';
 export { default as LoadingMessage } from './LoadingMessage';
 export * from './LoadingMessage';
 
+export { default as MarkdownContent } from './MarkdownContent';
+export * from './MarkdownContent';
+
 export { default as Message } from './Message';
 export * from './Message';
 

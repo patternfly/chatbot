@@ -53,7 +53,7 @@ export interface QuickStartTileProps {
   isCompact?: boolean;
 }
 
-const QuickStartTile: FC<QuickStartTileProps> = ({
+export const QuickStartTile: FC<QuickStartTileProps> = ({
   className,
   quickStart,
   onClick,

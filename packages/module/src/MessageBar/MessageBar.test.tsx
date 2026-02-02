@@ -488,4 +488,31 @@ describe('Message bar', () => {
 
     expect(screen.getByRole('textbox').closest('.pf-chatbot__message-bar')).toHaveClass('pf-v6-m-thinking');
   });
+
+  it('Renders with flex-basis of auto by default', () => {
+    render(<MessageBar onSendMessage={jest.fn} />);
+
+    expect(screen.getByRole('textbox').closest('.pf-chatbot__message-bar-input')).toHaveAttribute(
+      'style',
+      'flex-basis: auto;'
+    );
+  });
+
+  it('Renders with flex-basis of 100% when forceMultilineLayout is true', () => {
+    render(<MessageBar forceMultilineLayout onSendMessage={jest.fn} />);
+
+    expect(screen.getByRole('textbox').closest('.pf-chatbot__message-bar-input')).toHaveAttribute(
+      'style',
+      'flex-basis: 100%;'
+    );
+  });
+
+  it('Renders with flex-basis of 100% when additionalActions is truthy', () => {
+    render(<MessageBar additionalActions="actions" onSendMessage={jest.fn} />);
+
+    expect(screen.getByRole('textbox').closest('.pf-chatbot__message-bar-input')).toHaveAttribute(
+      'style',
+      'flex-basis: 100%;'
+    );
+  });
 });

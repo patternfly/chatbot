@@ -7,8 +7,10 @@ export const MessageWithFeedbackExample: FunctionComponent = () => {
   const [hasCloseButton, setHasCloseButton] = useState(false);
   const [hasTextArea, setHasTextArea] = useState(false);
   const [hasChildren, setHasChildren] = useState(false);
+  const [hasPrivacyStatement, setHasPrivacyStatement] = useState(false);
 
-  const children = <>Do not share any personal or other sensitive information in your feedback.</>;
+  const children = <>This is additional content.</>;
+  const privacyStatement = 'Do not share any personal or other sensitive information in your feedback.';
 
   return (
     <>
@@ -33,6 +35,15 @@ export const MessageWithFeedbackExample: FunctionComponent = () => {
               label="Has additional content"
               id="has-children"
             />
+            <Checkbox
+              isChecked={hasPrivacyStatement}
+              onChange={() => {
+                setHasPrivacyStatement(!hasPrivacyStatement);
+              }}
+              name="feedback-card-with-privacy"
+              label="Has privacy statement"
+              id="has-privacy"
+            />
           </FormGroup>
         </FlexItem>
         <FlexItem>
@@ -51,6 +62,7 @@ export const MessageWithFeedbackExample: FunctionComponent = () => {
                 alert(`Selected ${quickResponse} and received the additional feedback: ${additionalFeedback}`),
               hasTextArea,
               children: hasChildren ? children : undefined,
+              privacyStatement: hasPrivacyStatement ? privacyStatement : undefined,
               // eslint-disable-next-line no-console
               onClose: () => console.log('closed feedback form'),
               focusOnLoad: false
@@ -73,6 +85,7 @@ export const MessageWithFeedbackExample: FunctionComponent = () => {
                 alert(`Selected ${quickResponse} and received the additional feedback: ${additionalFeedback}`),
               hasTextArea,
               children: hasChildren ? children : undefined,
+              privacyStatement: hasPrivacyStatement ? privacyStatement : undefined,
               // eslint-disable-next-line no-console
               onClose: () => console.log('closed feedback form'),
               focusOnLoad: false
