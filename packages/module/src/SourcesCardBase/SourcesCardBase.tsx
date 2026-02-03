@@ -170,7 +170,8 @@ const SourcesCardBase: FunctionComponent<SourcesCardBaseProps> = ({
               <div aria-live="off">
                 <ExpandableSection
                   variant={ExpandableSectionVariant.truncate}
-                  toggleText={localIsExpanded ? showLessWords : showMoreWords}
+                  toggleTextCollapsed={showLessWords}
+                  toggleTextExpanded={showMoreWords}
                   truncateMaxLines={2}
                 >
                   {source.body}
