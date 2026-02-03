@@ -94,7 +94,14 @@ const SourcesCard: FunctionComponent<SourcesCardProps> = ({
 }: SourcesCardProps) => (
   <div className={css('pf-chatbot__source', layout === 'wrap' && 'pf-m-wrap')}>
     <span>{pluralize(sources.length, sourceWord, sourceWordPlural)}</span>
-    <SourcesCardBase sources={sources} layout={layout} listProps={listProps} listItemProps={listItemProps} {...props} />
+    <SourcesCardBase
+      sources={sources}
+      layout={layout}
+      listProps={listProps}
+      listItemProps={listItemProps}
+      cardMaxWidth={cardMaxWidth}
+      {...props}
+    />
   </div>
 );
 
