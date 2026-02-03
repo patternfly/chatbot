@@ -70,11 +70,11 @@ import { MessageBar } from '@patternfly/chatbot/dist/dynamic/MessageBar';
 import SourceDetailsMenuItem from '@patternfly/chatbot/dist/dynamic/SourceDetailsMenuItem';
 import { ChatbotModal } from '@patternfly/chatbot/dist/dynamic/ChatbotModal';
 import SettingsForm from '@patternfly/chatbot/dist/dynamic/Settings';
-import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, ThumbtackIcon, UploadIcon } from '@patternfly/react-icons';
+import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, PlusIcon, ThumbtackIcon, UploadIcon } from '@patternfly/react-icons';
 import { useDropzone } from 'react-dropzone';
 
 import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
-import { Button, DropdownItem, DropdownList, Checkbox, MenuToggle, Select, SelectList, SelectOption } from '@patternfly/react-core';
+import { Button, Label, DropdownItem, DropdownList, Checkbox, MenuToggle, Select, SelectList, SelectOption } from '@patternfly/react-core';
 
 import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/outlined-window-restore-icon';
 import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
@@ -288,6 +288,19 @@ You can change the behavior of the attach button to open a menu, rather than the
 Attachments can also be added to the ChatBot via [drag and drop.](/extensions/chatbot/messages#attachment-dropzone)
 
 ```js file="./ChatbotMessageBarAttach.tsx"
+
+```
+
+### Message bar with custom attach menu and additional actions
+
+You can move the attach button to the start of the message bar and customize it with a different icon. To include additional actions in the message bar you can also use the `additionalActions` prop.
+
+This example shows two message bar variations:
+
+1. A message bar with a custom attach menu where a `PlusIcon` is positioned at the start
+2. The same custom attach menu with additional actions, including a model selector menu and a dismissable "Canvas" label
+
+```js file="./ChatbotMessageBarCustomActions.tsx"
 
 ```
 
