@@ -132,79 +132,69 @@ const SourcesCardBase: FunctionComponent<SourcesCardBaseProps> = ({
     return `Source ${index !== undefined ? index + 1 : page}`;
   };
 
-  const renderSourceCard = (source: SourcesCardBaseProps['sources'][0], index: number) => {
-    const [localIsExpanded, setLocalIsExpanded] = useState(false);
-
-    const onLocalToggle = (_event: ReactMouseEvent, isExpanded: boolean) => {
-      setLocalIsExpanded(isExpanded);
-    };
-
-    return (
-      <ListItem key={index} className="pf-chatbot__sources-list-item" {...listItemProps}>
-        <Card
-          isCompact={isCompact}
-          className="pf-chatbot__sources-card"
-          style={{ maxWidth: cardMaxWidth }}
-          component="span"
-          {...props}
-        >
-          <CardTitle className="pf-chatbot__sources-card-title" {...cardTitleProps}>
-            <div className="pf-chatbot__sources-card-title-container">
-              <Button
-                component="a"
-                variant={ButtonVariant.link}
-                href={source.link}
-                icon={source.isExternal ? <ExternalLinkSquareAltIcon /> : undefined}
-                iconPosition="end"
-                isInline
-                rel={source.isExternal ? 'noreferrer' : undefined}
-                target={source.isExternal ? '_blank' : undefined}
-                onClick={source.onClick ?? undefined}
-                {...source.titleProps}
-              >
-                {renderTitle(source.title, index, source.truncateProps)}
-              </Button>
-              {source.subtitle && <span className="pf-chatbot__sources-card-subtitle">{source.subtitle}</span>}
-            </div>
-          </CardTitle>
-          {source.body && (
-            <CardBody
-              className={`pf-chatbot__sources-card-body ${source.footer ? 'pf-chatbot__compact-sources-card-body' : undefined}`}
-              {...cardBodyProps}
+  const renderUncontrolledSourceCard = (source: SourcesCardBaseProps['sources'][0], index: number) => (
+    <ListItem key={index} className="pf-chatbot__sources-list-item" {...listItemProps}>
+      <Card
+        isCompact={isCompact}
+        className="pf-chatbot__sources-card"
+        style={{ maxWidth: cardMaxWidth }}
+        component="span"
+        {...props}
+      >
+        <CardTitle className="pf-chatbot__sources-card-title" {...cardTitleProps}>
+          <div className="pf-chatbot__sources-card-title-container">
+            <Button
+              component="a"
+              variant={ButtonVariant.link}
+              href={source.link}
+              icon={source.isExternal ? <ExternalLinkSquareAltIcon /> : undefined}
+              iconPosition="end"
+              isInline
+              rel={source.isExternal ? 'noreferrer' : undefined}
+              target={source.isExternal ? '_blank' : undefined}
+              onClick={source.onClick ?? undefined}
+              {...source.titleProps}
             >
-              {source.hasShowMore ? (
-                // prevents extra VO announcements of button text - parent Message has aria-live
-                <div aria-live="off">
-                  <ExpandableSection
-                    variant={ExpandableSectionVariant.truncate}
-                    toggleText={localIsExpanded ? showLessWords : showMoreWords}
-                    onToggle={onLocalToggle}
-                    isExpanded={localIsExpanded}
-                    truncateMaxLines={2}
-                  >
-                    {source.body}
-                  </ExpandableSection>
-                </div>
-              ) : (
-                <div className="pf-chatbot__sources-card-body-text">{source.body}</div>
-              )}
-            </CardBody>
-          )}
-          {source.footer && (
-            <CardFooter className="pf-chatbot__sources-card-footer" {...cardFooterProps}>
-              {source.footer}
-            </CardFooter>
-          )}
-        </Card>
-      </ListItem>
-    );
-  };
+              {renderTitle(source.title, index, source.truncateProps)}
+            </Button>
+            {source.subtitle && <span className="pf-chatbot__sources-card-subtitle">{source.subtitle}</span>}
+          </div>
+        </CardTitle>
+        {source.body && (
+          <CardBody
+            className={`pf-chatbot__sources-card-body ${source.footer ? 'pf-chatbot__compact-sources-card-body' : undefined}`}
+            {...cardBodyProps}
+          >
+            {source.hasShowMore ? (
+              // prevents extra VO announcements of button text - parent Message has aria-live
+              <div aria-live="off">
+                <ExpandableSection
+                  variant={ExpandableSectionVariant.truncate}
+                  toggleText={localIsExpanded ? showLessWords : showMoreWords}
+                  truncateMaxLines={2}
+                >
+                  {source.body}
+                </ExpandableSection>
+              </div>
+            ) : (
+              <div className="pf-chatbot__sources-card-body-text">{source.body}</div>
+            )}
+          </CardBody>
+        )}
+        {source.footer && (
+          <CardFooter className="pf-chatbot__sources-card-footer" {...cardFooterProps}>
+            {source.footer}
+          </CardFooter>
+        )}
+      </Card>
+    </ListItem>
+  );
 
   if (layout === 'wrap') {
     return (
       <div className="pf-chatbot__sources-card-base pf-m-wrap">
         <List isPlain variant={ListVariant.inline} className="pf-chatbot__sources-list" {...listProps}>
-          {sources.map((source, index) => renderSourceCard(source, index))}
+          {sources.map((source, index) => renderUncontrolledSourceCard(source, index))}
         </List>
       </div>
     );
