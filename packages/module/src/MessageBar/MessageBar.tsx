@@ -58,6 +58,8 @@ export interface MessageBarProps extends Omit<TextAreaProps, 'innerRef'> {
   placeholder?: string;
   /** Flag to disable/enable the Attach button  */
   hasAttachButton?: boolean;
+  /** Whether the attach button is rendered before or after the message input. */
+  attachButtonPosition?: 'start' | 'end';
   /** Flag to enable the Microphone button  */
   hasMicrophoneButton?: boolean;
   /** Placeholder text when listening */
@@ -116,6 +118,10 @@ export interface MessageBarProps extends Omit<TextAreaProps, 'innerRef'> {
   innerRef?: React.Ref<HTMLTextAreaElement>;
   /** Sets background color to primary */
   isPrimary?: boolean;
+  /** Additional actions to render for the message bar. This will force a multiline layout, and the actions will render at the start of the container.  */
+  additionalActions?: React.ReactNode;
+  /** Flag indicating whether a multiline layout for the message input and actions should be forced. This can be used to always render actions below the message input. */
+  forceMultilineLayout?: boolean;
   /** @beta Flag indicating whether the message bar has an AI indicator border. */
   hasAiIndicator?: boolean;
   /** @beta Flag indicating whether the chatbot is thinking in response to a query, adding an animation to the message bar. */
@@ -128,6 +134,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
   alwayShowSendButton,
   placeholder = 'Send a message...',
   hasAttachButton = true,
+  attachButtonPosition = 'end',
   hasMicrophoneButton,
   listeningText = 'Listening',
   handleAttach,
@@ -151,6 +158,8 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
   dropzoneProps,
   innerRef,
   isPrimary,
+  additionalActions,
+  forceMultilineLayout = false,
   hasAiIndicator,
   isThinking,
   ...props
@@ -161,12 +170,20 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
   const [isListeningMessage, setIsListeningMessage] = useState<boolean>(false);
   const [hasSentMessage, setHasSentMessage] = useState(false);
   const [isComposing, setIsComposing] = useState(false);
-  const [isMultiline, setIsMultiline] = useState(false);
+
+  const shouldForceMultiline = forceMultilineLayout || additionalActions;
+  const [isMultiline, setIsMultiline] = useState(shouldForceMultiline);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const textareaRef = (innerRef as React.RefObject<HTMLTextAreaElement>) ?? inputRef;
   const attachButtonRef = useRef<HTMLButtonElement>(null);
 
   const topMargin = '1rem';
+
+  useEffect(() => {
+    if (value !== undefined && value !== message) {
+      setMessage(value);
+    }
+  }, [value, message]);
 
   const setInitialLineHeight = (field: HTMLTextAreaElement) => {
     field.style.setProperty('line-height', '1rem');
@@ -178,7 +195,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
 
       const grandparent = parent.parentElement;
       if (grandparent) {
-        grandparent.style.setProperty('flex-basis', 'auto');
+        grandparent.style.setProperty('flex-basis', shouldForceMultiline ? '100%' : 'auto');
       }
     }
   };
@@ -227,7 +244,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
     const parent = field.parentElement;
     if (parent) {
       const grandparent = parent.parentElement;
-      if (textIsLongerThan2Lines(field) && grandparent) {
+      if ((textIsLongerThan2Lines(field) || shouldForceMultiline) && grandparent) {
         grandparent.style.setProperty('flex-basis', `100%`);
       }
     }
@@ -277,14 +294,14 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
     if (field) {
       if (field.value === '') {
         setInitialLineHeight(field);
-        setIsMultiline(false);
+        !shouldForceMultiline && setIsMultiline(false);
       } else {
         setAutoHeight(field);
         setAutoWidth(field);
-        checkIfMultiline(field);
+        !shouldForceMultiline && checkIfMultiline(field);
       }
     }
-  }, [displayMode, message, setAutoWidth, checkIfMultiline]);
+  }, [displayMode, message, setAutoWidth, shouldForceMultiline, checkIfMultiline]);
 
   useEffect(() => {
     const field = textareaRef.current;
@@ -300,10 +317,10 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
       if (textareaRef.current) {
         if (event.target.value === '') {
           setInitialLineHeight(textareaRef.current);
-          setIsMultiline(false);
+          !shouldForceMultiline && setIsMultiline(false);
         } else {
           setAutoHeight(textareaRef.current);
-          checkIfMultiline(textareaRef.current);
+          !shouldForceMultiline && checkIfMultiline(textareaRef.current);
         }
       }
       setMessage(event.target.value);
@@ -365,6 +382,55 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
     onChange && onChange({} as ChangeEvent<HTMLTextAreaElement>, message);
   };
 
+  const renderAttachButton = () => {
+    if (!attachMenuProps && hasAttachButton) {
+      return (
+        <AttachButton
+          onAttachAccepted={handleAttach}
+          isDisabled={isListeningMessage}
+          tooltipContent={buttonProps?.attach?.tooltipContent}
+          inputTestId={buttonProps?.attach?.inputTestId}
+          isCompact={isCompact}
+          tooltipProps={buttonProps?.attach?.tooltipProps}
+          allowedFileTypes={allowedFileTypes}
+          minSize={minSize}
+          maxSize={maxSize}
+          maxFiles={maxFiles}
+          isAttachmentDisabled={isAttachmentDisabled}
+          onAttach={onAttach}
+          onAttachRejected={onAttachRejected}
+          validator={validator}
+          dropzoneProps={dropzoneProps}
+          {...buttonProps?.attach}
+          {...buttonProps?.attach?.props}
+        />
+      );
+    }
+    if (attachMenuProps) {
+      return (
+        <AttachButton
+          ref={attachButtonRef}
+          onClick={handleAttachMenuToggle}
+          isDisabled={isListeningMessage}
+          tooltipContent={buttonProps?.attach?.tooltipContent}
+          isCompact={isCompact}
+          tooltipProps={buttonProps?.attach?.tooltipProps}
+          allowedFileTypes={allowedFileTypes}
+          minSize={minSize}
+          maxSize={maxSize}
+          maxFiles={maxFiles}
+          isAttachmentDisabled={isAttachmentDisabled}
+          onAttach={onAttach}
+          onAttachRejected={onAttachRejected}
+          validator={validator}
+          dropzoneProps={dropzoneProps}
+          {...buttonProps?.attach}
+        />
+      );
+    }
+  };
+
+  const isAttachButtonAtStart = attachButtonPosition === 'start';
   const renderButtons = () => {
     if (hasStopButton && handleStopButton) {
       return (
@@ -379,47 +445,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
     }
     return (
       <>
-        {attachMenuProps && (
-          <AttachButton
-            ref={attachButtonRef}
-            onClick={handleAttachMenuToggle}
-            isDisabled={isListeningMessage}
-            tooltipContent={buttonProps?.attach?.tooltipContent}
-            isCompact={isCompact}
-            tooltipProps={buttonProps?.attach?.tooltipProps}
-            allowedFileTypes={allowedFileTypes}
-            minSize={minSize}
-            maxSize={maxSize}
-            maxFiles={maxFiles}
-            isAttachmentDisabled={isAttachmentDisabled}
-            onAttach={onAttach}
-            onAttachRejected={onAttachRejected}
-            validator={validator}
-            dropzoneProps={dropzoneProps}
-            {...buttonProps?.attach}
-          />
-        )}
-        {!attachMenuProps && hasAttachButton && (
-          <AttachButton
-            onAttachAccepted={handleAttach}
-            isDisabled={isListeningMessage}
-            tooltipContent={buttonProps?.attach?.tooltipContent}
-            inputTestId={buttonProps?.attach?.inputTestId}
-            isCompact={isCompact}
-            tooltipProps={buttonProps?.attach?.tooltipProps}
-            allowedFileTypes={allowedFileTypes}
-            minSize={minSize}
-            maxSize={maxSize}
-            maxFiles={maxFiles}
-            isAttachmentDisabled={isAttachmentDisabled}
-            onAttach={onAttach}
-            onAttachRejected={onAttachRejected}
-            validator={validator}
-            dropzoneProps={dropzoneProps}
-            {...buttonProps?.attach}
-            {...buttonProps?.attach?.props}
-          />
-        )}
+        {!isAttachButtonAtStart && renderAttachButton()}
         {hasMicrophoneButton && (
           <MicrophoneButton
             isListening={isListeningMessage}
@@ -447,8 +473,12 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
     );
   };
 
+  const hasGroupedActions = additionalActions || (isAttachButtonAtStart && isMultiline);
   const messageBarContents = (
     <>
+      {isAttachButtonAtStart && !isMultiline && (
+        <div className="pf-chatbot__message-bar-actions test">{renderAttachButton()}</div>
+      )}
       <div className={`pf-chatbot__message-bar-input ${isCompact ? 'pf-m-compact' : ''}`}>
         <TextArea
           className="pf-chatbot__message-textarea"
@@ -463,7 +493,19 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
           {...props}
         />
       </div>
-      <div className="pf-chatbot__message-bar-actions">{renderButtons()}</div>
+      <div className={css('pf-chatbot__message-bar-actions', hasGroupedActions && 'pf-m-grouped')}>
+        {hasGroupedActions ? (
+          <>
+            <div className={css('pf-chatbot__message-bar-actions-group')}>
+              {isAttachButtonAtStart && renderAttachButton()}
+              {additionalActions}
+            </div>
+            <div className={css('pf-chatbot__message-bar-actions-group')}>{renderButtons()}</div>
+          </>
+        ) : (
+          renderButtons()
+        )}
+      </div>
     </>
   );
 
