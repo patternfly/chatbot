@@ -4,7 +4,10 @@
   flex-direction: column;
   gap: var(--pf-t--global--spacer--sm);
   padding-block-start: var(--pf-t--global--spacer--sm);
-  max-width: 22.5rem;
+
+  &:not(.pf-m-wrap) {
+    max-width: 22.5rem;
+  }
 }
 
 .pf-chatbot__sources-card-base {
@@ -12,6 +15,14 @@
     color: var(--pf-t--global--text--color--link--default) !important;
     -webkit-text-decoration: var(--pf-t--global--text-decoration--link--line--default) !important;
     text-decoration: var(--pf-t--global--text-decoration--link--line--default) !important;
+  }
+}
+
+.pf-chatbot__sources-card-base.pf-m-wrap {
+  .pf-v6-c-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--pf-t--global--spacer--xs);
   }
 }
 

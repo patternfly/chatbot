@@ -1,7 +1,7 @@
-import { FunctionComponent, MouseEvent as ReactMouseEvent, KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { FunctionComponent, MouseEvent as ReactMouseEvent, KeyboardEvent as ReactKeyboardEvent, useState } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import patternflyAvatar from './patternfly_avatar.jpg';
-import { Button, Flex, FlexItem, Label, Popover } from '@patternfly/react-core';
+import { Button, Checkbox, Flex, FlexItem, Label, Popover } from '@patternfly/react-core';
 import { OutlinedQuestionCircleIcon } from '@patternfly/react-icons';
 
 export const MessageWithSourcesExample: FunctionComponent = () => {
@@ -240,6 +240,42 @@ export const MessageWithSourcesExample: FunctionComponent = () => {
           onSetPage
         }}
         isCompact
+      />
+
+      <Message
+        name="Bot"
+        role="bot"
+        avatar={patternflyAvatar}
+        content="This example demonstrates the non-paginated layout option. When enabled, all source cards are displayed in a flex layout that wraps automatically based on available space:"
+        sources={{
+          sources: [
+            {
+              title: 'Getting started with Red Hat OpenShift',
+              link: '#',
+              body: 'Red Hat OpenShift on IBM Cloud is a managed offering to create your own cluster of compute hosts where you can deploy and manage containerized apps on IBM Cloud ...',
+              isExternal: true
+            },
+            {
+              title: 'Azure Red Hat OpenShift documentation',
+              link: '#',
+              body: 'Microsoft Azure Red Hat OpenShift allows you to deploy a production ready Red Hat OpenShift cluster in Azure ...',
+              isExternal: true
+            },
+            {
+              title: 'OKD Documentation: Home',
+              link: '#',
+              body: 'OKD is a distribution of Kubernetes optimized for continuous application development and multi-tenant deployment. OKD also serves as the upstream code base upon ...',
+              isExternal: true
+            },
+            {
+              title: 'Red Hat OpenShift Container Platform',
+              link: '#',
+              body: 'Red Hat OpenShift Container Platform is a Kubernetes platform that provides a cloud-like experience anywhere it is deployed ...',
+              isExternal: true
+            }
+          ],
+          layout: 'wrap'
+        }}
       />
     </>
   );

@@ -233,4 +233,85 @@ describe('SourcesCardBase', () => {
     );
     expect(screen.getByRole('link', { name: /How to make an apple pie/i })).toHaveClass('test');
   });
+
+  it('should render with wrap layout when layout prop is set to wrap', () => {
+    render(
+      <SourcesCardBase
+        layout="wrap"
+        sources={[
+          { title: 'How to make an apple pie', link: '' },
+          { title: 'How to make cookies', link: '' },
+          { title: 'How to make a sandwich', link: '' }
+        ]}
+      />
+    );
+
+    expect(screen.getByText('How to make an apple pie')).toBeVisible();
+    expect(screen.getByText('How to make cookies')).toBeVisible();
+    expect(screen.getByText('How to make a sandwich')).toBeVisible();
+
+    expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
+    expect(screen.queryByText('1/3')).not.toBeInTheDocument();
+  });
+
+  it('should apply default cardMaxWidth when using wrap layout', () => {
+    render(
+      <SourcesCardBase
+        layout="wrap"
+        sources={[
+          { title: 'How to make an apple pie', link: '' },
+          { title: 'How to make cookies', link: '' }
+        ]}
+      />
+    );
+    const firstCard = screen.getByText('How to make an apple pie').closest('.pf-chatbot__sources-card');
+    expect(firstCard).toHaveStyle({ maxWidth: '400px' });
+  });
+
+  it('should apply custom cardMaxWidth when using wrap layout', () => {
+    render(
+      <SourcesCardBase
+        layout="wrap"
+        sources={[
+          { title: 'How to make an apple pie', link: '' },
+          { title: 'How to make cookies', link: '' }
+        ]}
+        cardMaxWidth="500px"
+      />
+    );
+    const firstCard = screen.getByText('How to make an apple pie').closest('.pf-chatbot__sources-card');
+    expect(firstCard).toHaveStyle({ maxWidth: '500px' });
+  });
+
+  it('should apply listProps when using wrap layout', () => {
+    render(
+      <SourcesCardBase
+        layout="wrap"
+        sources={[
+          { title: 'How to make an apple pie', link: '' },
+          { title: 'How to make cookies', link: '' }
+        ]}
+        listProps={{ className: 'custom-list-class' }}
+      />
+    );
+    const listElement = screen.getByRole('list');
+    expect(listElement).toHaveClass('custom-list-class');
+  });
+
+  it('should apply listItemProps when using wrap layout', () => {
+    render(
+      <SourcesCardBase
+        layout="wrap"
+        sources={[
+          { title: 'How to make an apple pie', link: '' },
+          { title: 'How to make cookies', link: '' }
+        ]}
+        listItemProps={{ className: 'custom-list-item-class' }}
+      />
+    );
+    const listItemElements = screen.getAllByRole('listitem');
+    listItemElements.forEach((listItem) => {
+      expect(listItem).toHaveClass('custom-list-item-class');
+    });
+  });
 });
