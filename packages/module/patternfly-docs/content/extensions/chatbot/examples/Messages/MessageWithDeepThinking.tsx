@@ -27,5 +27,18 @@ export const MessageWithDeepThinkingExample: FunctionComponent = () => (
         body: "Here's why I said this."
       }}
     />
+    <Message
+      name="Bot"
+      role="bot"
+      avatar={patternflyAvatar}
+      content="This example has deep thinking that is loading:"
+      deepThinking={{
+        isDefaultExpanded: false,
+        toggleContent: 'Show thinking',
+        subheading: 'Thought for 3 seconds',
+        body: "Here's why I said this.",
+        isLoading: true
+      }}
+    />
   </>
 );
