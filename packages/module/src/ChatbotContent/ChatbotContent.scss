@@ -14,7 +14,7 @@
   }
 
   &.pf-m-primary {
-    background-color: var(--pf-t--global--background--color--primary--default);
+    background-color: var(--pf-t--global--background--color--primary--default); // TODO - what about this in glass?
   }
 }
 
@@ -30,4 +30,11 @@
       justify-content: center;
     }
   }
+}
+
+// ============================================================================
+// Chatbot glass theme
+// ============================================================================
+:where(.pf-v6-theme-glass) .pf-chatbot__content {
+  background-color: transparent;
 }
