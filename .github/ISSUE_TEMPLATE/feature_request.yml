@@ -1,0 +1,81 @@
+name: Chatbot Feature Request
+description: Suggest a new component or extension specifically for the PatternFly Chatbot library.
+title: "[Chatbot] - [short description]"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### AI & Conversational UX Proposal
+        Use this form for components like message bubbles, action footers, streaming indicators, or persona headers.
+
+  - type: dropdown
+    id: chatbot_category
+    attributes:
+      label: Chatbot Component Area
+      options:
+        - Message Content (Text, Markdown, Citations)
+        - Input/Action (Prompts, Attachments, Voice)
+        - Layout (Chat Drawer, Header, Persona)
+        - System (Loading, Error, Streaming)
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the feature
+      description: What is the specific chatbot interaction or UI component you are proposing?
+      placeholder: e.g., "A source citation component that appears below assistant responses."
+    validations:
+      required: true
+
+  - type: textarea
+    id: data_structure
+    attributes:
+      label: Expected Data Structure
+      description: Chatbot components often rely on specific JSON or object shapes. How should the data be passed?
+      placeholder: |
+        e.g.,
+        {
+          "source_id": 1,
+          "title": "Documentation",
+          "url": "..."
+        }
+    validations:
+      required: false
+
+  - type: textarea
+    id: interaction_flow
+    attributes:
+      label: Conversational Flow
+      description: How does this appear in the message stream? Does it support streaming?
+      placeholder: |
+        - Is it interactive (clickable)?
+        - Does it appear only in Assistant or User messages?
+        - How does it look while the message is still "typing" (streaming)?
+    validations:
+      required: false
+
+  - type: textarea
+    id: visuals
+    attributes:
+      label: Visuals & Mockups
+      description: Focus on how it integrates into the Chat Drawer or Window.
+      placeholder: "Figma links or screenshots go here."
+
+  - type: textarea
+    id: accessibility
+    attributes:
+      label: Conversational Accessibility
+      description: Focus on screen reader announcements for new messages or state changes.
+      placeholder: "e.g., Screen reader should announce when the 'Thought' block expands."
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Validation
+      options:
+        - label: This request aligns with PatternFly AI/Chatbot design guidelines.
+          required: true
+        - label: I have searched for existing chatbot-specific components.
+          required: true
