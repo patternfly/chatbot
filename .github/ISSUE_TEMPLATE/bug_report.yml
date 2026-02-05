@@ -1,0 +1,58 @@
+name: Bug report
+description: Report an issue with a chatbot component or interaction.
+title: "[Bug] - [short description]"
+type: bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please provide a clear way to reproduce the issue.
+
+  - type: textarea
+    id: bug_description
+    attributes:
+      label: Description
+      description: What is the current (incorrect) behavior?
+      placeholder: e.g., "The message bubble overflows the container when a long URL is pasted."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction_steps
+    attributes:
+      label: Steps to Reproduce
+      placeholder: |
+        1. Go to '...'
+        2. Enter '...' in the chat input
+        3. Observe the error
+    validations:
+      required: true
+
+  - type: textarea
+    id: data_context
+    attributes:
+      label: Data/JSON Context (if applicable)
+      description: Provide the message object or JSON that triggered the bug.
+      placeholder: |
+        {
+          "role": "assistant",
+          "content": "...",
+          "metadata": { ... }
+        }
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: |
+        - PatternFly Chatbot Version:
+        - Browser & Version:
+        - Viewport size:
+    validations:
+      required: false
+
+  - type: textarea
+    id: visuals
+    attributes:
+      label: Screenshots or Logs
+      description: Drag and drop images or paste console errors here.
