@@ -255,6 +255,17 @@ describe('Message', () => {
       })
     ).not.toBeInTheDocument();
   });
+
+  it('Does not render metadata when isMetadataVisible is false', () => {
+    render(
+      <Message isMetadataVisible={false} avatar="./img" role="bot" name="Bot" content="Hi" timestamp="2 hours ago" />
+    );
+
+    expect(screen.queryByText('Bot')).not.toBeInTheDocument();
+    expect(screen.queryByText('AI')).not.toBeInTheDocument();
+    expect(screen.queryByText('2 hours ago')).not.toBeInTheDocument();
+  });
+
   it('should render attachments', () => {
     render(<Message avatar="./img" role="user" content="Hi" attachments={[{ name: 'testAttachment' }]} />);
     expect(screen.getByText('Hi')).toBeTruthy();
@@ -1329,5 +1340,15 @@ describe('Message', () => {
       <Message avatar="./img" role="user" name="User" content="" attachments={[{ name: 'testAttachment' }]} />
     );
     expect(container.querySelector('.pf-m-outline')).toBeFalsy();
+  });
+
+  it('Renders without pf-m-end class by default', () => {
+    render(<Message avatar="./img" role="user" name="User" content="" />);
+    expect(screen.getByRole('region')).not.toHaveClass('pf-m-end');
+  });
+
+  it('Renders with pf-m-end class when alignment="end"', () => {
+    render(<Message alignment="end" avatar="./img" role="user" name="User" content="" />);
+    expect(screen.getByRole('region')).toHaveClass('pf-m-end');
   });
 });

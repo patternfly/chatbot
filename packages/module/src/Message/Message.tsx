@@ -35,6 +35,7 @@ import ToolResponse, { ToolResponseProps } from '../ToolResponse';
 import DeepThinking, { DeepThinkingProps } from '../DeepThinking';
 import ToolCall, { ToolCallProps } from '../ToolCall';
 import MarkdownContent from '../MarkdownContent';
+import { css } from '@patternfly/react-styles';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -73,6 +74,10 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   id?: string;
   /** Role of the user sending the message */
   role: 'user' | 'bot';
+  /** Whether the message is aligned at the horizontal start or end of the message container. */
+  alignment?: 'start' | 'end';
+  /** Flag indicating whether message metadata (user name and timestamp) are visible. */
+  isMetadataVisible?: boolean;
   /** Message content */
   content?: string;
   /** Extra Message content */
@@ -197,6 +202,8 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
 export const MessageBase: FunctionComponent<MessageProps> = ({
   children,
   role,
+  alignment = 'start',
+  isMetadataVisible = true,
   content,
   extraContent,
   name,
@@ -314,7 +321,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   return (
     <section
       aria-label={`Message from ${role} - ${dateString}`}
-      className={`pf-chatbot__message pf-chatbot__message--${role}`}
+      className={css(`pf-chatbot__message pf-chatbot__message--${role}`, alignment === 'end' && 'pf-m-end')}
       aria-live={isLiveRegion ? 'polite' : undefined}
       aria-atomic={isLiveRegion ? false : undefined}
       ref={innerRef}
@@ -330,19 +337,21 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
         />
       )}
       <div className="pf-chatbot__message-contents">
-        <div className="pf-chatbot__message-meta">
-          {name && (
-            <span className="pf-chatbot__message-name">
-              <Truncate content={name} />
-            </span>
-          )}
-          {role === 'bot' && (
-            <Label variant="outline" isCompact>
-              {botWord}
-            </Label>
-          )}
-          <Timestamp date={date}>{timestamp}</Timestamp>
-        </div>
+        {isMetadataVisible && (
+          <div className="pf-chatbot__message-meta">
+            {name && (
+              <span className="pf-chatbot__message-name">
+                <Truncate content={name} />
+              </span>
+            )}
+            {role === 'bot' && (
+              <Label variant="outline" isCompact>
+                {botWord}
+              </Label>
+            )}
+            <Timestamp date={date}>{timestamp}</Timestamp>
+          </div>
+        )}
         <div className="pf-chatbot__message-response">
           {children ? (
             <>{children}</>
