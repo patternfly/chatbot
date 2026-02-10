@@ -319,6 +319,13 @@ _Italic text, formatted with single underscores_
         hasRoundAvatar={false}
       />
       <Message name="Bot" role="bot" content="This is a message from a bot with no avatar." />
+      <Message
+        name="Bot"
+        role="bot"
+        avatar={patternflyAvatar}
+        isMetadataVisible={false}
+        content="This is a message from a bot with metadata not visible."
+      />
       <Select
         id="single-select"
         isOpen={isOpen}
