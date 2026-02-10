@@ -1415,4 +1415,140 @@ describe('Message', () => {
     expect(screen.getByText('ThumbsUpIcon')).toBeInTheDocument();
     expect(screen.queryByText('OutlinedThumbsUpIcon')).not.toBeInTheDocument();
   });
+
+  it('should apply pf-m-visible-interaction class to response actions when showActionsOnInteraction is true', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        showActionsOnInteraction
+        actions={{
+          positive: { onClick: jest.fn() }
+        }}
+      />
+    );
+
+    const responseContainer = screen
+      .getByRole('button', { name: 'Good response' })
+      .closest('.pf-chatbot__response-actions');
+    expect(responseContainer).toHaveClass('pf-m-visible-interaction');
+  });
+
+  it('should not apply pf-m-visible-interaction class to response actions when showActionsOnInteraction is false', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        showActionsOnInteraction={false}
+        actions={{
+          positive: { onClick: jest.fn() }
+        }}
+      />
+    );
+
+    const responseContainer = screen
+      .getByRole('button', { name: 'Good response' })
+      .closest('.pf-chatbot__response-actions');
+    expect(responseContainer).not.toHaveClass('pf-m-visible-interaction');
+  });
+
+  it('should not apply pf-m-visible-interaction class to response actions by default', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        actions={{
+          positive: { onClick: jest.fn() }
+        }}
+      />
+    );
+
+    const responseContainer = screen
+      .getByRole('button', { name: 'Good response' })
+      .closest('.pf-chatbot__response-actions');
+    expect(responseContainer).not.toHaveClass('pf-m-visible-interaction');
+  });
+
+  it('should apply pf-m-visible-interaction class to grouped actions container when showActionsOnInteraction is true', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        showActionsOnInteraction
+        actions={[
+          {
+            positive: { onClick: jest.fn() },
+            negative: { onClick: jest.fn() }
+          },
+          {
+            copy: { onClick: jest.fn() }
+          }
+        ]}
+      />
+    );
+
+    const responseContainer = screen
+      .getByRole('button', { name: 'Good response' })
+      .closest('.pf-chatbot__response-actions-groups');
+    expect(responseContainer).toHaveClass('pf-m-visible-interaction');
+  });
+
+  it('should not apply pf-m-visible-interaction class to grouped actions container when showActionsOnInteraction is false', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        showActionsOnInteraction={false}
+        actions={[
+          {
+            positive: { onClick: jest.fn() },
+            negative: { onClick: jest.fn() }
+          },
+          {
+            copy: { onClick: jest.fn() }
+          }
+        ]}
+      />
+    );
+
+    const responseContainer = screen
+      .getByRole('button', { name: 'Good response' })
+      .closest('.pf-chatbot__response-actions-groups');
+    expect(responseContainer).not.toHaveClass('pf-m-visible-interaction');
+  });
+
+  it('should not apply pf-m-visible-interaction class to grouped actions container by default', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        actions={[
+          {
+            positive: { onClick: jest.fn() },
+            negative: { onClick: jest.fn() }
+          },
+          {
+            copy: { onClick: jest.fn() }
+          }
+        ]}
+      />
+    );
+
+    const responseContainer = screen
+      .getByRole('button', { name: 'Good response' })
+      .closest('.pf-chatbot__response-actions-groups');
+    expect(responseContainer).not.toHaveClass('pf-m-visible-interaction');
+  });
 });
