@@ -186,9 +186,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
   // We want to append the tooltip inline so that hovering the tooltip keeps the actions container visible
   // when showActionsOnInteraction is true. Otherwise hovering the tooltip causes the actions container
   // to disappear but the tooltip will remain visible.
-  const getTooltipContainer = (): HTMLElement => {
-    return responseActions.current || document.body;
-  };
+  const getTooltipContainer = (): HTMLElement => responseActions.current || document.body;
 
   const getTooltipProps = (tooltipProps?: TooltipProps) =>
     ({
