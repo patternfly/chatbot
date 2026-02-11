@@ -35,6 +35,7 @@ import ToolResponse, { ToolResponseProps } from '../ToolResponse';
 import DeepThinking, { DeepThinkingProps } from '../DeepThinking';
 import ToolCall, { ToolCallProps } from '../ToolCall';
 import MarkdownContent from '../MarkdownContent';
+import { css } from '@patternfly/react-styles';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -109,6 +110,10 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
    * For finer control of multiple action groups, use persistActionSelection on each group.
    */
   persistActionSelection?: boolean;
+  /** Flag indicating whether the actions container is only visible when a message is hovered or an action would receive focus. Note
+   * that setting this to true will append tooltips inline instead of the document.body.
+   */
+  showActionsOnInteraction?: boolean;
   /** Sources for message */
   sources?: SourcesCardProps;
   /** Label for the English word "AI," used to tag messages with role "bot" */
@@ -205,6 +210,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   isLoading,
   actions,
   persistActionSelection,
+  showActionsOnInteraction = false,
   sources,
   botWord = 'AI',
   loadingWord = 'Loading message',
@@ -370,7 +376,12 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
                 {!isLoading && !isEditable && actions && (
                   <>
                     {Array.isArray(actions) ? (
-                      <div className="pf-chatbot__response-actions-groups">
+                      <div
+                        className={css(
+                          'pf-chatbot__response-actions-groups',
+                          showActionsOnInteraction && 'pf-m-visible-interaction'
+                        )}
+                      >
                         {actions.map((actionGroup, index) => (
                           <ResponseActions
                             key={index}
@@ -380,7 +391,11 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
                         ))}
                       </div>
                     ) : (
-                      <ResponseActions actions={actions} persistActionSelection={persistActionSelection} />
+                      <ResponseActions
+                        actions={actions}
+                        persistActionSelection={persistActionSelection}
+                        showActionsOnInteraction={showActionsOnInteraction}
+                      />
                     )}
                   </>
                 )}

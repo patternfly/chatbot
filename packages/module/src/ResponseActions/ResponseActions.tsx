@@ -11,6 +11,7 @@ import {
 } from '@patternfly/react-icons';
 import ResponseActionButton from './ResponseActionButton';
 import { ButtonProps, TooltipProps } from '@patternfly/react-core';
+import { css } from '@patternfly/react-styles';
 
 export interface ActionProps extends Omit<ButtonProps, 'ref'> {
   /** Aria-label for the button */
@@ -49,6 +50,8 @@ type ExtendedActionProps = ActionProps & {
  */
 
 export interface ResponseActionProps {
+  /** Additional classes for the response actions container. */
+  className?: string;
   /** Props for message actions, such as feedback (positive or negative), copy button, share, and listen */
   actions: Record<string, ExtendedActionProps | undefined> & {
     positive?: ActionProps;
@@ -62,11 +65,18 @@ export interface ResponseActionProps {
   /** When true, the selected action will persist even when clicking outside the component.
    * When false (default), clicking outside or clicking another action will deselect the current selection. */
   persistActionSelection?: boolean;
+  /** Flag indicating whether the actions container is only visible when a message is hovered or an action would receive focus. Note
+   * that setting this to true will append tooltips inline instead of the document.body.
+   */
+  showActionsOnInteraction?: boolean;
 }
 
 export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
+  className,
   actions,
-  persistActionSelection = false
+  persistActionSelection = false,
+  showActionsOnInteraction = false,
+  ...props
 }) => {
   const [activeButton, setActiveButton] = useState<string>();
   const [clickStatePersisted, setClickStatePersisted] = useState<boolean>(false);
@@ -145,8 +155,23 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
     onClick && onClick(e);
   };
 
+  // We want to append the tooltip inline so that hovering the tooltip keeps the actions container visible
+  // when showActionsOnInteraction is true. Otherwise hovering the tooltip causes the actions container
+  // to disappear but the tooltip will remain visible.
+  const getTooltipContainer = (): HTMLElement => responseActions.current || document.body;
+
+  const getTooltipProps = (tooltipProps?: TooltipProps) =>
+    ({
+      ...(showActionsOnInteraction && { appendTo: getTooltipContainer }),
+      ...tooltipProps
+    }) as TooltipProps;
+
   return (
-    <div ref={responseActions} className="pf-chatbot__response-actions">
+    <div
+      ref={responseActions}
+      className={css('pf-chatbot__response-actions', showActionsOnInteraction && 'pf-m-visible-interaction', className)}
+      {...props}
+    >
       {positive && (
         <ResponseActionButton
           {...positive}
@@ -157,7 +182,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           isDisabled={positive.isDisabled}
           tooltipContent={positive.tooltipContent ?? 'Good response'}
           clickedTooltipContent={positive.clickedTooltipContent ?? 'Good response recorded'}
-          tooltipProps={positive.tooltipProps}
+          tooltipProps={getTooltipProps(positive.tooltipProps)}
           icon={<OutlinedThumbsUpIcon />}
           isClicked={activeButton === 'positive'}
           ref={positive.ref}
@@ -175,7 +200,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           isDisabled={negative.isDisabled}
           tooltipContent={negative.tooltipContent ?? 'Bad response'}
           clickedTooltipContent={negative.clickedTooltipContent ?? 'Bad response recorded'}
-          tooltipProps={negative.tooltipProps}
+          tooltipProps={getTooltipProps(negative.tooltipProps)}
           icon={<OutlinedThumbsDownIcon />}
           isClicked={activeButton === 'negative'}
           ref={negative.ref}
@@ -193,7 +218,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           isDisabled={copy.isDisabled}
           tooltipContent={copy.tooltipContent ?? 'Copy'}
           clickedTooltipContent={copy.clickedTooltipContent ?? 'Copied'}
-          tooltipProps={copy.tooltipProps}
+          tooltipProps={getTooltipProps(copy.tooltipProps)}
           icon={<OutlinedCopyIcon />}
           isClicked={activeButton === 'copy'}
           ref={copy.ref}
@@ -211,7 +236,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           isDisabled={edit.isDisabled}
           tooltipContent={edit.tooltipContent ?? 'Edit '}
           clickedTooltipContent={edit.clickedTooltipContent ?? 'Editing'}
-          tooltipProps={edit.tooltipProps}
+          tooltipProps={getTooltipProps(edit.tooltipProps)}
           icon={<PencilAltIcon />}
           isClicked={activeButton === 'edit'}
           ref={edit.ref}
@@ -229,7 +254,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           isDisabled={share.isDisabled}
           tooltipContent={share.tooltipContent ?? 'Share'}
           clickedTooltipContent={share.clickedTooltipContent ?? 'Shared'}
-          tooltipProps={share.tooltipProps}
+          tooltipProps={getTooltipProps(share.tooltipProps)}
           icon={<ExternalLinkAltIcon />}
           isClicked={activeButton === 'share'}
           ref={share.ref}
@@ -247,7 +272,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           isDisabled={download.isDisabled}
           tooltipContent={download.tooltipContent ?? 'Download'}
           clickedTooltipContent={download.clickedTooltipContent ?? 'Downloaded'}
-          tooltipProps={download.tooltipProps}
+          tooltipProps={getTooltipProps(download.tooltipProps)}
           icon={<DownloadIcon />}
           isClicked={activeButton === 'download'}
           ref={download.ref}
@@ -265,7 +290,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           isDisabled={listen.isDisabled}
           tooltipContent={listen.tooltipContent ?? 'Listen'}
           clickedTooltipContent={listen.clickedTooltipContent ?? 'Listening'}
-          tooltipProps={listen.tooltipProps}
+          tooltipProps={getTooltipProps(listen.tooltipProps)}
           icon={<VolumeUpIcon />}
           isClicked={activeButton === 'listen'}
           ref={listen.ref}
@@ -284,7 +309,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           className={additionalActions[action]?.className}
           isDisabled={additionalActions[action]?.isDisabled}
           tooltipContent={additionalActions[action]?.tooltipContent}
-          tooltipProps={additionalActions[action]?.tooltipProps}
+          tooltipProps={getTooltipProps(additionalActions[action]?.tooltipProps)}
           clickedTooltipContent={additionalActions[action]?.clickedTooltipContent}
           icon={additionalActions[action]?.icon}
           isClicked={activeButton === action}
