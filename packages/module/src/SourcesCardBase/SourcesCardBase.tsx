@@ -27,12 +27,16 @@ import { ExternalLinkSquareAltIcon } from '@patternfly/react-icons';
 export interface SourcesCardBaseProps extends CardProps {
   /** Additional classes for the pagination navigation container. */
   className?: string;
+  /** The layout used to display source cards. Use wrap to display and wrap all sources at once. */
+  layout?: 'paginated' | 'wrap';
   /** Flag indicating if the pagination is disabled. */
   isDisabled?: boolean;
   /** @deprecated ofWord has been deprecated. Label for the English word "of." */
   ofWord?: string;
   /** Accessible label for the pagination component. */
   paginationAriaLabel?: string;
+  /** Max width of a source card when the wrap layout is used. Can be any valid CSS width value. */
+  cardMaxWidth?: string;
   /** Content rendered inside the paginated card */
   sources: {
     /** Title of sources card */
@@ -94,6 +98,8 @@ const SourcesCardBase: FunctionComponent<SourcesCardBaseProps> = ({
   cardTitleProps,
   cardBodyProps,
   cardFooterProps,
+  layout = 'paginated',
+  cardMaxWidth = '400px',
   ...props
 }: SourcesCardBaseProps) => {
   const [page, setPage] = useState(1);
@@ -108,12 +114,75 @@ const SourcesCardBase: FunctionComponent<SourcesCardBaseProps> = ({
     onSetPage && onSetPage(_evt, newPage);
   };
 
-  const renderTitle = (title?: string, truncateProps?: TruncateProps) => {
+  const renderTitle = (title?: string, index?: number, truncateProps?: TruncateProps) => {
     if (title) {
       return <Truncate content={title} {...truncateProps} />;
     }
-    return `Source ${page}`;
+    return `Source ${index !== undefined ? index + 1 : page}`;
   };
+
+  const renderUncontrolledSourceCard = (source: SourcesCardBaseProps['sources'][0], index: number) => (
+    <li key={index} className="pf-chatbot__sources-list-item">
+      <Card isCompact={isCompact} className="pf-chatbot__sources-card" style={{ maxWidth: cardMaxWidth }} {...props}>
+        <CardTitle className="pf-chatbot__sources-card-title" {...cardTitleProps}>
+          <div className="pf-chatbot__sources-card-title-container">
+            <Button
+              component="a"
+              variant={ButtonVariant.link}
+              href={source.link}
+              icon={source.isExternal ? <ExternalLinkSquareAltIcon /> : undefined}
+              iconPosition="end"
+              isInline
+              rel={source.isExternal ? 'noreferrer' : undefined}
+              target={source.isExternal ? '_blank' : undefined}
+              onClick={source.onClick ?? undefined}
+              {...source.titleProps}
+            >
+              {renderTitle(source.title, index, source.truncateProps)}
+            </Button>
+            {source.subtitle && <span className="pf-chatbot__sources-card-subtitle">{source.subtitle}</span>}
+          </div>
+        </CardTitle>
+        {source.body && (
+          <CardBody
+            className={`pf-chatbot__sources-card-body ${source.footer ? 'pf-chatbot__compact-sources-card-body' : undefined}`}
+            {...cardBodyProps}
+          >
+            {source.hasShowMore ? (
+              // prevents extra VO announcements of button text - parent Message has aria-live
+              <div aria-live="off">
+                <ExpandableSection
+                  variant={ExpandableSectionVariant.truncate}
+                  toggleTextCollapsed={showMoreWords}
+                  toggleTextExpanded={showLessWords}
+                  truncateMaxLines={2}
+                >
+                  {source.body}
+                </ExpandableSection>
+              </div>
+            ) : (
+              <div className="pf-chatbot__sources-card-body-text">{source.body}</div>
+            )}
+          </CardBody>
+        )}
+        {source.footer && (
+          <CardFooter className="pf-chatbot__sources-card-footer" {...cardFooterProps}>
+            {source.footer}
+          </CardFooter>
+        )}
+      </Card>
+    </li>
+  );
+
+  if (layout === 'wrap') {
+    return (
+      <div className="pf-chatbot__sources-card-base pf-m-wrap">
+        <ul className="pf-chatbot__sources-list" role="list">
+          {sources.map((source, index) => renderUncontrolledSourceCard(source, index))}
+        </ul>
+      </div>
+    );
+  }
 
   return (
     <div className="pf-chatbot__sources-card-base">
@@ -132,7 +201,7 @@ const SourcesCardBase: FunctionComponent<SourcesCardBaseProps> = ({
               onClick={sources[page - 1].onClick ?? undefined}
               {...sources[page - 1].titleProps}
             >
-              {renderTitle(sources[page - 1].title, sources[page - 1].truncateProps)}
+              {renderTitle(sources[page - 1].title, undefined, sources[page - 1].truncateProps)}
             </Button>
             {sources[page - 1].subtitle && (
               <span className="pf-chatbot__sources-card-subtitle">{sources[page - 1].subtitle}</span>
