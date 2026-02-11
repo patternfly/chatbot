@@ -337,6 +337,13 @@ _Italic text, formatted with single underscores_
       <Message
         name="User"
         role="user"
+        content="This is a user message with metadata not visible."
+        avatar={userAvatar}
+        isMetadataVisible={false}
+      />
+      <Message
+        name="User"
+        role="user"
         isEditable={isEditable}
         onEditUpdate={onUpdateOrCancelEdit}
         onEditCancel={onUpdateOrCancelEdit}
@@ -344,6 +351,13 @@ _Italic text, formatted with single underscores_
         content="This is a user message with an edit action."
         avatar={userAvatar}
         inputRef={messageInputRef}
+      />
+      <Message
+        name="User"
+        role="user"
+        avatar={userAvatar}
+        alignment="end"
+        content="This is a user message that is aligned at the end of the message container."
       />
       <Select
         id="single-select"

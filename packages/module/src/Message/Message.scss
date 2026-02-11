@@ -134,6 +134,15 @@
   .footnotes {
     background-color: var(--pf-t--global--background--color--tertiary--default);
   }
+
+  // Right/End-aligned messages
+  &.pf-m-end {
+    flex-direction: row-reverse;
+
+    .pf-chatbot__message-contents {
+      align-items: flex-end;
+    }
+  }
 }
 
 // Attachments
