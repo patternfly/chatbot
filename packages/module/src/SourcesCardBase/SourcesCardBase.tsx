@@ -19,11 +19,6 @@ import {
   ExpandableSection,
   ExpandableSectionVariant,
   Icon,
-  List,
-  ListProps,
-  ListItem,
-  ListItemProps,
-  ListVariant,
   Truncate,
   TruncateProps
 } from '@patternfly/react-core';
@@ -42,10 +37,6 @@ export interface SourcesCardBaseProps extends CardProps {
   paginationAriaLabel?: string;
   /** Max width of a source card when the wrap layout is used. Can be any valid CSS width value. */
   cardMaxWidth?: string;
-  /** Additional props to pass to the list of source cards when the wrap layout is used. */
-  listProps?: ListProps;
-  /** Additional props to pass to the list items of source cards when the wrap layout is used. */
-  listItemProps?: Omit<ListItemProps, 'children'>;
   /** Content rendered inside the paginated card */
   sources: {
     /** Title of sources card */
@@ -109,8 +100,6 @@ const SourcesCardBase: FunctionComponent<SourcesCardBaseProps> = ({
   cardFooterProps,
   layout = 'paginated',
   cardMaxWidth = '400px',
-  listProps,
-  listItemProps,
   ...props
 }: SourcesCardBaseProps) => {
   const [page, setPage] = useState(1);
@@ -133,14 +122,8 @@ const SourcesCardBase: FunctionComponent<SourcesCardBaseProps> = ({
   };
 
   const renderUncontrolledSourceCard = (source: SourcesCardBaseProps['sources'][0], index: number) => (
-    <ListItem key={index} className="pf-chatbot__sources-list-item" {...listItemProps}>
-      <Card
-        isCompact={isCompact}
-        className="pf-chatbot__sources-card"
-        style={{ maxWidth: cardMaxWidth }}
-        component="span"
-        {...props}
-      >
+    <li key={index} className="pf-chatbot__sources-list-item">
+      <Card isCompact={isCompact} className="pf-chatbot__sources-card" style={{ maxWidth: cardMaxWidth }} {...props}>
         <CardTitle className="pf-chatbot__sources-card-title" {...cardTitleProps}>
           <div className="pf-chatbot__sources-card-title-container">
             <Button
@@ -170,8 +153,8 @@ const SourcesCardBase: FunctionComponent<SourcesCardBaseProps> = ({
               <div aria-live="off">
                 <ExpandableSection
                   variant={ExpandableSectionVariant.truncate}
-                  toggleTextCollapsed={showLessWords}
-                  toggleTextExpanded={showMoreWords}
+                  toggleTextCollapsed={showMoreWords}
+                  toggleTextExpanded={showLessWords}
                   truncateMaxLines={2}
                 >
                   {source.body}
@@ -188,15 +171,15 @@ const SourcesCardBase: FunctionComponent<SourcesCardBaseProps> = ({
           </CardFooter>
         )}
       </Card>
-    </ListItem>
+    </li>
   );
 
   if (layout === 'wrap') {
     return (
       <div className="pf-chatbot__sources-card-base pf-m-wrap">
-        <List isPlain variant={ListVariant.inline} className="pf-chatbot__sources-list" {...listProps}>
+        <ul className="pf-chatbot__sources-list" role="list">
           {sources.map((source, index) => renderUncontrolledSourceCard(source, index))}
-        </List>
+        </ul>
       </div>
     );
   }

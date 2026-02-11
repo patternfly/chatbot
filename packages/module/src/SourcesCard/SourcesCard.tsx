@@ -8,8 +8,6 @@ import {
   CardFooterProps,
   CardProps,
   CardTitleProps,
-  ListProps,
-  ListItemProps,
   pluralize,
   TruncateProps
 } from '@patternfly/react-core';
@@ -23,10 +21,6 @@ export interface SourcesCardProps extends CardProps {
   layout?: 'paginated' | 'wrap';
   /** Max width of a source card when the wrap layout is used. Can be any valid CSS width value. */
   cardMaxWidth?: string;
-  /** Additional props to pass to the list of source cards when the wrap layout is used. */
-  listProps?: ListProps;
-  /** Additional props to pass to the list items of source cards when the wrap layout is used. */
-  listItemProps?: Omit<ListItemProps, 'children'>;
   /** Flag indicating if the pagination is disabled. */
   isDisabled?: boolean;
   /** @deprecated ofWord has been deprecated. Label for the English word "of." */
@@ -88,20 +82,11 @@ const SourcesCard: FunctionComponent<SourcesCardProps> = ({
   sourceWordPlural = 'sources',
   layout = 'paginated',
   cardMaxWidth = '400px',
-  listProps,
-  listItemProps,
   ...props
 }: SourcesCardProps) => (
   <div className={css('pf-chatbot__source', layout === 'wrap' && 'pf-m-wrap')}>
     <span>{pluralize(sources.length, sourceWord, sourceWordPlural)}</span>
-    <SourcesCardBase
-      sources={sources}
-      layout={layout}
-      listProps={listProps}
-      listItemProps={listItemProps}
-      cardMaxWidth={cardMaxWidth}
-      {...props}
-    />
+    <SourcesCardBase sources={sources} layout={layout} cardMaxWidth={cardMaxWidth} {...props} />
   </div>
 );
 

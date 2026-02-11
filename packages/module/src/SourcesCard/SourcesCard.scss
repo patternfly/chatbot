@@ -19,9 +19,10 @@
 }
 
 .pf-chatbot__sources-card-base.pf-m-wrap {
-  .pf-v6-c-list {
+  .pf-chatbot__sources-list {
     display: flex;
     flex-wrap: wrap;
+    list-style: none;
     gap: var(--pf-t--global--spacer--xs);
   }
 }

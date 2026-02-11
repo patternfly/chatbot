@@ -282,36 +282,4 @@ describe('SourcesCardBase', () => {
     const firstCard = screen.getByText('How to make an apple pie').closest('.pf-chatbot__sources-card');
     expect(firstCard).toHaveStyle({ maxWidth: '500px' });
   });
-
-  it('should apply listProps when using wrap layout', () => {
-    render(
-      <SourcesCardBase
-        layout="wrap"
-        sources={[
-          { title: 'How to make an apple pie', link: '' },
-          { title: 'How to make cookies', link: '' }
-        ]}
-        listProps={{ className: 'custom-list-class' }}
-      />
-    );
-    const listElement = screen.getByRole('list');
-    expect(listElement).toHaveClass('custom-list-class');
-  });
-
-  it('should apply listItemProps when using wrap layout', () => {
-    render(
-      <SourcesCardBase
-        layout="wrap"
-        sources={[
-          { title: 'How to make an apple pie', link: '' },
-          { title: 'How to make cookies', link: '' }
-        ]}
-        listItemProps={{ className: 'custom-list-item-class' }}
-      />
-    );
-    const listItemElements = screen.getAllByRole('listitem');
-    listItemElements.forEach((listItem) => {
-      expect(listItem).toHaveClass('custom-list-item-class');
-    });
-  });
 });

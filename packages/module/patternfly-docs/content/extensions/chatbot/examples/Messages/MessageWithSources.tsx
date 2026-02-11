@@ -253,7 +253,8 @@ export const MessageWithSourcesExample: FunctionComponent = () => {
               title: 'Getting started with Red Hat OpenShift',
               link: '#',
               body: 'Red Hat OpenShift on IBM Cloud is a managed offering to create your own cluster of compute hosts where you can deploy and manage containerized apps on IBM Cloud.',
-              isExternal: true
+              isExternal: true,
+              hasShowMore: true
             },
             {
               title: 'Azure Red Hat OpenShift documentation',
