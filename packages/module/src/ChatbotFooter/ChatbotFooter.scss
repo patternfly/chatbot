@@ -13,7 +13,7 @@
   position: relative; // this is so focus ring on parent chatbot doesn't include footer
 
   &.pf-m-primary {
-    background-color: var(--pf-t--global--background--color--primary--default);
+    background-color: var(--pf-t--global--background--color--primary--default); // TODO - what about this in glass?
   }
 }
 .pf-chatbot__footer-container {
@@ -82,4 +82,11 @@
       }
     }
   }
+}
+
+// ============================================================================
+// Chatbot glass theme
+// ============================================================================
+:where(.pf-v6-theme-glass) .pf-chatbot__footer {
+  background-color: transparent;
 }

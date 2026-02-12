@@ -161,3 +161,12 @@
 .pf-chatbot.pf-m-compact {
   font-size: var(--pf-t--global--font--size--sm);
 }
+
+// ============================================================================
+// Glass styles
+// ============================================================================
+:where(.pf-v6-theme-glass) .pf-chatbot {
+  background-color: var(--pf-t--global--background--color--glass--default);
+  backdrop-filter: var(--pf-t--global--background--color--glass--filter);
+  border: var(--pf-t--global--border--width--box--default) solid var(--pf-t--global--border--color--alt);
+}
