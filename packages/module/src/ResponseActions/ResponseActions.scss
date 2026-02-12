@@ -22,6 +22,13 @@
   }
 }
 
+.pf-chatbot__message.pf-m-end {
+  .pf-chatbot__response-actions-groups,
+  :not(.pf-chatbot__response-actions-groups) > .pf-chatbot__response-actions {
+    justify-content: end;
+  }
+}
+
 .pf-chatbot__response-actions-groups {
   display: grid;
   grid-auto-flow: column;
