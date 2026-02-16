@@ -9,6 +9,24 @@ import rehypeExternalLinks from '../__mocks__/rehype-external-links';
 import { AlertActionLink, Button, CodeBlockAction } from '@patternfly/react-core';
 import { DeepThinkingProps } from '../DeepThinking';
 
+// Mock the icon components
+jest.mock('@patternfly/react-icons', () => ({
+  OutlinedThumbsUpIcon: () => <div>OutlinedThumbsUpIcon</div>,
+  ThumbsUpIcon: () => <div>ThumbsUpIcon</div>,
+  OutlinedThumbsDownIcon: () => <div>OutlinedThumbsDownIcon</div>,
+  ThumbsDownIcon: () => <div>ThumbsDownIcon</div>,
+  OutlinedCopyIcon: () => <div>OutlinedCopyIcon</div>,
+  CopyIcon: () => <div>CopyIcon</div>,
+  DownloadIcon: () => <div>DownloadIcon</div>,
+  ExternalLinkAltIcon: () => <div>ExternalLinkAltIcon</div>,
+  VolumeUpIcon: () => <div>VolumeUpIcon</div>,
+  PencilAltIcon: () => <div>PencilAltIcon</div>,
+  CheckIcon: () => <div>CheckIcon</div>,
+  CloseIcon: () => <div>CloseIcon</div>,
+  ExternalLinkSquareAltIcon: () => <div>ExternalLinkSquareAltIcon</div>,
+  TimesIcon: () => <div>TimesIcon</div>
+}));
+
 const ALL_ACTIONS = [
   { label: /Good response/i },
   { label: /Bad response/i },
@@ -1350,5 +1368,52 @@ describe('Message', () => {
   it('Renders with pf-m-end class when alignment="end"', () => {
     render(<Message alignment="end" avatar="./img" role="user" name="User" content="" />);
     expect(screen.getByRole('region')).toHaveClass('pf-m-end');
+  });
+
+  // We're just testing the positive action here to ensure logic passes through as needed, the other actions are
+  // tested in ResponseActions.test.tsx along with other aspects of this functionality
+  it('should not swap icons when useFilledIconsOnClick is omitted', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        actions={{
+          positive: { onClick: jest.fn() }
+        }}
+      />
+    );
+
+    expect(screen.getByText('OutlinedThumbsUpIcon')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /Good response/i }));
+
+    expect(screen.getByText('OutlinedThumbsUpIcon')).toBeInTheDocument();
+    expect(screen.queryByText('ThumbsUpIcon')).not.toBeInTheDocument();
+  });
+
+  it('should swap icons when useFilledIconsOnClick is true', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        actions={{
+          positive: { onClick: jest.fn() }
+        }}
+        useFilledIconsOnClick
+      />
+    );
+
+    await user.click(screen.getByRole('button', { name: /Good response/i }));
+
+    expect(screen.getByText('ThumbsUpIcon')).toBeInTheDocument();
+    expect(screen.queryByText('OutlinedThumbsUpIcon')).not.toBeInTheDocument();
   });
 });

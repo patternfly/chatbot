@@ -5,6 +5,22 @@ import userEvent from '@testing-library/user-event';
 import { DownloadIcon, InfoCircleIcon, RedoIcon } from '@patternfly/react-icons';
 import Message from '../Message';
 
+// Mock the icon components
+jest.mock('@patternfly/react-icons', () => ({
+  OutlinedThumbsUpIcon: () => <div>OutlinedThumbsUpIcon</div>,
+  ThumbsUpIcon: () => <div>ThumbsUpIcon</div>,
+  OutlinedThumbsDownIcon: () => <div>OutlinedThumbsDownIcon</div>,
+  ThumbsDownIcon: () => <div>ThumbsDownIcon</div>,
+  OutlinedCopyIcon: () => <div>OutlinedCopyIcon</div>,
+  CopyIcon: () => <div>CopyIcon</div>,
+  DownloadIcon: () => <div>DownloadIcon</div>,
+  InfoCircleIcon: () => <div>InfoCircleIcon</div>,
+  RedoIcon: () => <div>RedoIcon</div>,
+  ExternalLinkAltIcon: () => <div>ExternalLinkAltIcon</div>,
+  VolumeUpIcon: () => <div>VolumeUpIcon</div>,
+  PencilAltIcon: () => <div>PencilAltIcon</div>
+}));
+
 const ALL_ACTIONS = [
   { type: 'positive', label: 'Good response', clickedLabel: 'Good response recorded' },
   { type: 'negative', label: 'Bad response', clickedLabel: 'Bad response recorded' },
@@ -420,5 +436,276 @@ describe('ResponseActions', () => {
 
     await userEvent.click(customBtn);
     expect(customBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
+  });
+
+  describe('icon swapping with useFilledIconsOnClick', () => {
+    it('should render outline icons by default', () => {
+      render(
+        <ResponseActions
+          actions={{
+            positive: { onClick: jest.fn() },
+            negative: { onClick: jest.fn() },
+            copy: { onClick: jest.fn() }
+          }}
+        />
+      );
+
+      expect(screen.getByText('OutlinedThumbsUpIcon')).toBeInTheDocument();
+      expect(screen.getByText('OutlinedThumbsDownIcon')).toBeInTheDocument();
+      expect(screen.getByText('OutlinedCopyIcon')).toBeInTheDocument();
+
+      expect(screen.queryByText('ThumbsUpIcon')).not.toBeInTheDocument();
+      expect(screen.queryByText('ThumbsDownIcon')).not.toBeInTheDocument();
+      expect(screen.queryByText('CopyIcon')).not.toBeInTheDocument();
+    });
+
+    describe('positive actions', () => {
+      it('should not swap positive icon when clicked and useFilledIconsOnClick is false', async () => {
+        const user = userEvent.setup()
+
+        render(
+          <ResponseActions
+            actions={{
+              positive: { onClick: jest.fn() }
+            }}
+            useFilledIconsOnClick={false}
+          />
+        );
+
+        await user.click(screen.getByRole('button', { name: 'Good response' }));
+
+        expect(screen.getByText('OutlinedThumbsUpIcon')).toBeInTheDocument();
+        expect(screen.queryByText('ThumbsUpIcon')).not.toBeInTheDocument();
+      });
+
+      it('should swap positive icon from outline to filled when clicked with useFilledIconsOnClick', async () => {
+        const user = userEvent.setup()
+
+        render(
+          <ResponseActions
+            actions={{
+              positive: { onClick: jest.fn() }
+            }}
+            useFilledIconsOnClick
+          />
+        );
+
+        await user.click(screen.getByRole('button', { name: 'Good response' }));
+
+        expect(screen.getByText('ThumbsUpIcon')).toBeInTheDocument();
+        expect(screen.queryByText('OutlinedThumbsUpIcon')).not.toBeInTheDocument();
+      });
+
+      it('should revert positive icon to outline icon when clicking outside', async () => {
+        const user = userEvent.setup()
+
+        render(
+          <div>
+            <ResponseActions
+              actions={{
+                positive: { onClick: jest.fn() }
+              }}
+              useFilledIconsOnClick
+            />
+            <div data-testid="outside">Outside</div>
+          </div>
+        );
+
+        await user.click(screen.getByRole('button', { name: 'Good response' }));
+        expect(screen.getByText('ThumbsUpIcon')).toBeInTheDocument();
+
+        await user.click(screen.getByTestId('outside'));
+        expect(screen.getByText('OutlinedThumbsUpIcon')).toBeInTheDocument();
+      });
+
+      it('should not revert positive icon to outline icon when clicking outside if persistActionSelection is true', async () => {
+        const user = userEvent.setup()
+
+        render(
+          <div>
+            <ResponseActions
+              actions={{
+                positive: { onClick: jest.fn() }
+              }}
+              persistActionSelection
+              useFilledIconsOnClick
+            />
+            <div data-testid="outside">Outside</div>
+          </div>
+        );
+
+        await user.click(screen.getByRole('button', { name: 'Good response' }));
+        expect(screen.getByText('ThumbsUpIcon')).toBeInTheDocument();
+
+        await user.click(screen.getByTestId('outside'));
+        expect(screen.getByText('ThumbsUpIcon')).toBeInTheDocument();
+      });
+
+      describe('negative actions', () => {
+        it('should not swap negative icon when clicked and useFilledIconsOnClick is false', async () => {
+          const user = userEvent.setup()
+
+          render(
+            <ResponseActions
+              actions={{
+                negative: { onClick: jest.fn() }
+              }}
+              useFilledIconsOnClick={false}
+            />
+          );
+
+          await user.click(screen.getByRole('button', { name: 'Bad response' }));
+
+          expect(screen.getByText('OutlinedThumbsDownIcon')).toBeInTheDocument();
+          expect(screen.queryByText('ThumbsDownIcon')).not.toBeInTheDocument();
+        });
+
+        it('should swap negative icon from outline to filled when clicked with useFilledIconsOnClick', async () => {
+          const user = userEvent.setup()
+
+          render(
+            <ResponseActions
+              actions={{
+                negative: { onClick: jest.fn() }
+              }}
+              useFilledIconsOnClick
+            />
+          );
+
+          await user.click(screen.getByRole('button', { name: 'Bad response' }));
+
+          expect(screen.getByText('ThumbsDownIcon')).toBeInTheDocument();
+          expect(screen.queryByText('OutlinedThumbsDownIcon')).not.toBeInTheDocument();
+        });
+
+        it('should revert negative icon to outline when clicking outside', async () => {
+          const user = userEvent.setup()
+
+          render(
+            <div>
+              <ResponseActions
+                actions={{
+                  negative: { onClick: jest.fn() }
+                }}
+                useFilledIconsOnClick
+              />
+              <div data-testid="outside">Outside</div>
+            </div>
+          );
+
+          await user.click(screen.getByRole('button', { name: 'Bad response' }));
+          expect(screen.getByText('ThumbsDownIcon')).toBeInTheDocument();
+
+          await user.click(screen.getByTestId('outside'));
+          expect(screen.getByText('OutlinedThumbsDownIcon')).toBeInTheDocument();
+        });
+
+        it('should not revert negative icon to outline icon when clicking outside if persistActionSelection is true', async () => {
+          const user = userEvent.setup()
+
+          render(
+            <div>
+              <ResponseActions
+                actions={{
+                  negative: { onClick: jest.fn() }
+                }}
+                persistActionSelection
+                useFilledIconsOnClick
+              />
+              <div data-testid="outside">Outside</div>
+            </div>
+          );
+
+          await user.click(screen.getByRole('button', { name: 'Bad response' }));
+          expect(screen.getByText('ThumbsDownIcon')).toBeInTheDocument();
+
+          await user.click(screen.getByTestId('outside'));
+          expect(screen.getByText('ThumbsDownIcon')).toBeInTheDocument();
+        });
+      });
+
+      describe('copy actions', () => {
+        it('should not swap copy icon when clicked and useFilledIconsOnClick is false', async () => {
+          const user = userEvent.setup()
+
+          render(
+            <ResponseActions
+              actions={{
+                copy: { onClick: jest.fn() }
+              }}
+              useFilledIconsOnClick={false}
+            />
+          );
+
+          await user.click(screen.getByRole('button', { name: 'Copy' }));
+
+          expect(screen.getByText('OutlinedCopyIcon')).toBeInTheDocument();
+          expect(screen.queryByText('CopyIcon')).not.toBeInTheDocument();
+        });
+
+        it('should swap copy icon from outline to filled when clicked with useFilledIconsOnClick', async () => {
+          const user = userEvent.setup()
+
+          render(
+            <ResponseActions
+              actions={{
+                copy: { onClick: jest.fn() }
+              }}
+              useFilledIconsOnClick
+            />
+          );
+
+          await user.click(screen.getByRole('button', { name: 'Copy' }));
+
+          expect(screen.getByText('CopyIcon')).toBeInTheDocument();
+          expect(screen.queryByText('OutlinedCopyIcon')).not.toBeInTheDocument();
+        });
+
+        it('should revert copy icon to outline when clicking outside', async () => {
+          const user = userEvent.setup()
+
+          render(
+            <div>
+              <ResponseActions
+                actions={{
+                  copy: { onClick: jest.fn() }
+                }}
+                useFilledIconsOnClick
+              />
+              <div data-testid="outside">Outside</div>
+            </div>
+          );
+
+          await user.click(screen.getByRole('button', { name: 'Copy' }));
+          expect(screen.getByText('CopyIcon')).toBeInTheDocument();
+
+          await user.click(screen.getByTestId('outside'));
+          expect(screen.getByText('OutlinedCopyIcon')).toBeInTheDocument();
+        });
+
+        it('should not revert copy icon to outline icon when clicking outside if persistActionSelection is true', async () => {
+          const user = userEvent.setup()
+
+          render(
+            <div>
+              <ResponseActions
+                actions={{
+                  copy: { onClick: jest.fn() }
+                }}
+                persistActionSelection
+                useFilledIconsOnClick
+              />
+              <div data-testid="outside">Outside</div>
+            </div>
+          );
+
+          await user.click(screen.getByRole('button', { name: 'Copy' }));
+          expect(screen.getByText('CopyIcon')).toBeInTheDocument();
+
+          await user.click(screen.getByTestId('outside'));
+          expect(screen.getByText('CopyIcon')).toBeInTheDocument();
+        });
+      });
+    });
   });
 });
