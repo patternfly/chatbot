@@ -461,7 +461,7 @@ describe('ResponseActions', () => {
 
     describe('positive actions', () => {
       it('should not swap positive icon when clicked and useFilledIconsOnClick is false', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup();
 
         render(
           <ResponseActions
@@ -479,7 +479,7 @@ describe('ResponseActions', () => {
       });
 
       it('should swap positive icon from outline to filled when clicked with useFilledIconsOnClick', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup();
 
         render(
           <ResponseActions
@@ -497,7 +497,7 @@ describe('ResponseActions', () => {
       });
 
       it('should revert positive icon to outline icon when clicking outside', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup();
 
         render(
           <div>
@@ -519,7 +519,7 @@ describe('ResponseActions', () => {
       });
 
       it('should not revert positive icon to outline icon when clicking outside if persistActionSelection is true', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup();
 
         render(
           <div>
@@ -543,7 +543,7 @@ describe('ResponseActions', () => {
 
       describe('negative actions', () => {
         it('should not swap negative icon when clicked and useFilledIconsOnClick is false', async () => {
-          const user = userEvent.setup()
+          const user = userEvent.setup();
 
           render(
             <ResponseActions
@@ -561,7 +561,7 @@ describe('ResponseActions', () => {
         });
 
         it('should swap negative icon from outline to filled when clicked with useFilledIconsOnClick', async () => {
-          const user = userEvent.setup()
+          const user = userEvent.setup();
 
           render(
             <ResponseActions
@@ -579,7 +579,7 @@ describe('ResponseActions', () => {
         });
 
         it('should revert negative icon to outline when clicking outside', async () => {
-          const user = userEvent.setup()
+          const user = userEvent.setup();
 
           render(
             <div>
@@ -601,7 +601,7 @@ describe('ResponseActions', () => {
         });
 
         it('should not revert negative icon to outline icon when clicking outside if persistActionSelection is true', async () => {
-          const user = userEvent.setup()
+          const user = userEvent.setup();
 
           render(
             <div>
@@ -626,7 +626,7 @@ describe('ResponseActions', () => {
 
       describe('copy actions', () => {
         it('should not swap copy icon when clicked and useFilledIconsOnClick is false', async () => {
-          const user = userEvent.setup()
+          const user = userEvent.setup();
 
           render(
             <ResponseActions
@@ -644,7 +644,7 @@ describe('ResponseActions', () => {
         });
 
         it('should swap copy icon from outline to filled when clicked with useFilledIconsOnClick', async () => {
-          const user = userEvent.setup()
+          const user = userEvent.setup();
 
           render(
             <ResponseActions
@@ -662,7 +662,7 @@ describe('ResponseActions', () => {
         });
 
         it('should revert copy icon to outline when clicking outside', async () => {
-          const user = userEvent.setup()
+          const user = userEvent.setup();
 
           render(
             <div>
@@ -684,7 +684,7 @@ describe('ResponseActions', () => {
         });
 
         it('should not revert copy icon to outline icon when clicking outside if persistActionSelection is true', async () => {
-          const user = userEvent.setup()
+          const user = userEvent.setup();
 
           render(
             <div>
