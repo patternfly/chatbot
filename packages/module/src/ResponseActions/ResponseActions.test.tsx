@@ -619,7 +619,6 @@ describe('ResponseActions', () => {
           expect(screen.getByText('ThumbsDownIcon')).toBeInTheDocument();
         });
       });
-
     });
   });
 });
