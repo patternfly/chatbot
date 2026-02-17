@@ -140,7 +140,9 @@ When `persistActionSelection` is `true`:
 
 ### Message actions that fill
 
-To provide enhanced visual feedback when users interact with response actions, you can enable icon swapping by setting `useFilledIconsOnClick` to `true`. When enabled, the predefined actions positive and negative will automatically swap from outline icon variants to filled icon variants when clicked.
+To provide enhanced visual feedback when users interact with response actions, you can enable icon swapping by setting `useFilledIconsOnClick` to `true`. When enabled, the predefined "positive" and "negative" actions will automatically swap to their filled icon counterparts when clicked, replacing the original outlined icon variants. 
+
+This is especially useful for actions that are intended to persist (such as the "positive" and "negative" responses), so that a user's selection is more clear and emphasized.
 
 
 ```js file="./MessageWithIconSwapping.tsx"
