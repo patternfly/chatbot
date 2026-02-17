@@ -8,7 +8,7 @@ export const IconSwappingExample: FunctionComponent = () => (
     name="Bot"
     role="bot"
     avatar={patternflyAvatar}
-    content="Click the response actions to see the icons change from outline to filled variants!"
+    content="Click the response actions to see the outlined icons swapped with the filled variants!"
     actions={{
       // eslint-disable-next-line no-console
       positive: { onClick: () => console.log('Good response') },
