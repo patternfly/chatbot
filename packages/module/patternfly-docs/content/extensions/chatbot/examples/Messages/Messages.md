@@ -138,6 +138,17 @@ When `persistActionSelection` is `true`:
 
 ```
 
+### Message actions that fill
+
+To provide enhanced visual feedback when users interact with response actions, you can enable icon swapping by setting `useFilledIconsOnClick` to `true`. When enabled, the predefined "positive" and "negative" actions will automatically swap to their filled icon counterparts when clicked, replacing the original outlined icon variants. 
+
+This is especially useful for actions that are intended to persist (such as the "positive" and "negative" responses), so that a user's selection is more clear and emphasized.
+
+
+```js file="./MessageWithIconSwapping.tsx"
+
+```
+
 ### Multiple messsage action groups
 
 To maintain finer control over message action selection behavior, you can create groups of actions by passing an array of objects to the `actions` prop. This allows you to separate actions into conceptually or functionally different groups and implement different behavior for each group as needed. For example, you could separate feedback actions (thumbs up/down) form utility actions (copy and download), and have different selection behaviors for each group.

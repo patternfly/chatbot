@@ -4,7 +4,9 @@ import {
   ExternalLinkAltIcon,
   VolumeUpIcon,
   OutlinedThumbsUpIcon,
+  ThumbsUpIcon,
   OutlinedThumbsDownIcon,
+  ThumbsDownIcon,
   OutlinedCopyIcon,
   DownloadIcon,
   PencilAltIcon
@@ -62,11 +64,15 @@ export interface ResponseActionProps {
   /** When true, the selected action will persist even when clicking outside the component.
    * When false (default), clicking outside or clicking another action will deselect the current selection. */
   persistActionSelection?: boolean;
+  /** When true, automatically swaps to filled icon variants when predefined actions are clicked.
+   * Predefined actions will use filled variants (e.g., ThumbsUpIcon) when clicked and outline variants (e.g., OutlinedThumbsUpIcon) when not clicked. */
+  useFilledIconsOnClick?: boolean;
 }
 
 export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
   actions,
-  persistActionSelection = false
+  persistActionSelection = false,
+  useFilledIconsOnClick = false
 }) => {
   const [activeButton, setActiveButton] = useState<string>();
   const [clickStatePersisted, setClickStatePersisted] = useState<boolean>(false);
@@ -129,6 +135,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
     id: string,
     onClick?: (event: MouseEvent | MouseEvent<Element, MouseEvent> | KeyboardEvent) => void
   ) => {
+    e.stopPropagation();
     if (persistActionSelection) {
       if (activeButton === id) {
         // Toggle off if clicking the same button
@@ -145,6 +152,27 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
     onClick && onClick(e);
   };
 
+  const iconMap = {
+    positive: {
+      filled: <ThumbsUpIcon />,
+      outlined: <OutlinedThumbsUpIcon />
+    },
+    negative: {
+      filled: <ThumbsDownIcon />,
+      outlined: <OutlinedThumbsDownIcon />
+    }
+  };
+
+  const getIcon = (actionName: string) => {
+    const isClicked = activeButton === actionName;
+
+    if (isClicked && useFilledIconsOnClick) {
+      return iconMap[actionName].filled;
+    }
+
+    return iconMap[actionName].outlined;
+  };
+
   return (
     <div ref={responseActions} className="pf-chatbot__response-actions">
       {positive && (
@@ -158,7 +186,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           tooltipContent={positive.tooltipContent ?? 'Good response'}
           clickedTooltipContent={positive.clickedTooltipContent ?? 'Good response recorded'}
           tooltipProps={positive.tooltipProps}
-          icon={<OutlinedThumbsUpIcon />}
+          icon={getIcon('positive')}
           isClicked={activeButton === 'positive'}
           ref={positive.ref}
           aria-expanded={positive['aria-expanded']}
@@ -176,7 +204,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           tooltipContent={negative.tooltipContent ?? 'Bad response'}
           clickedTooltipContent={negative.clickedTooltipContent ?? 'Bad response recorded'}
           tooltipProps={negative.tooltipProps}
-          icon={<OutlinedThumbsDownIcon />}
+          icon={getIcon('negative')}
           isClicked={activeButton === 'negative'}
           ref={negative.ref}
           aria-expanded={negative['aria-expanded']}

@@ -197,6 +197,8 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   hasNoImagesInUserMessages?: boolean;
   /** Sets background colors to be appropriate on primary chatbot background */
   isPrimary?: boolean;
+  /** When true, automatically swaps to filled icon variants when predefined actions are clicked. */
+  useFilledIconsOnClick?: boolean;
 }
 
 export const MessageBase: FunctionComponent<MessageProps> = ({
@@ -249,6 +251,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   toolCall,
   hasNoImagesInUserMessages = true,
   isPrimary,
+  useFilledIconsOnClick,
   ...props
 }: MessageProps) => {
   const [messageText, setMessageText] = useState(content);
@@ -385,11 +388,16 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
                             key={index}
                             actions={actionGroup.actions || actionGroup}
                             persistActionSelection={persistActionSelection || actionGroup.persistActionSelection}
+                            useFilledIconsOnClick={useFilledIconsOnClick}
                           />
                         ))}
                       </div>
                     ) : (
-                      <ResponseActions actions={actions} persistActionSelection={persistActionSelection} />
+                      <ResponseActions
+                        actions={actions}
+                        persistActionSelection={persistActionSelection}
+                        useFilledIconsOnClick={useFilledIconsOnClick}
+                      />
                     )}
                   </>
                 )}
