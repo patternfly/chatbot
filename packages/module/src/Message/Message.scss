@@ -94,6 +94,9 @@
 
   .pf-m-visible-interaction {
     opacity: 0;
+    transition-timing-function: var(--pf-t--global--motion--timing-function--default);
+    transition-duration: var(--pf-t--global--motion--duration--fade--short);
+    transition-property: opacity;
   }
 
   &:hover .pf-m-visible-interaction,
