@@ -12,7 +12,6 @@ jest.mock('@patternfly/react-icons', () => ({
   OutlinedThumbsDownIcon: () => <div>OutlinedThumbsDownIcon</div>,
   ThumbsDownIcon: () => <div>ThumbsDownIcon</div>,
   OutlinedCopyIcon: () => <div>OutlinedCopyIcon</div>,
-  CopyIcon: () => <div>CopyIcon</div>,
   DownloadIcon: () => <div>DownloadIcon</div>,
   InfoCircleIcon: () => <div>InfoCircleIcon</div>,
   RedoIcon: () => <div>RedoIcon</div>,
@@ -444,19 +443,16 @@ describe('ResponseActions', () => {
         <ResponseActions
           actions={{
             positive: { onClick: jest.fn() },
-            negative: { onClick: jest.fn() },
-            copy: { onClick: jest.fn() }
+            negative: { onClick: jest.fn() }
           }}
         />
       );
 
       expect(screen.getByText('OutlinedThumbsUpIcon')).toBeInTheDocument();
       expect(screen.getByText('OutlinedThumbsDownIcon')).toBeInTheDocument();
-      expect(screen.getByText('OutlinedCopyIcon')).toBeInTheDocument();
 
       expect(screen.queryByText('ThumbsUpIcon')).not.toBeInTheDocument();
       expect(screen.queryByText('ThumbsDownIcon')).not.toBeInTheDocument();
-      expect(screen.queryByText('CopyIcon')).not.toBeInTheDocument();
     });
 
     describe('positive actions', () => {
@@ -624,88 +620,6 @@ describe('ResponseActions', () => {
         });
       });
 
-      describe('copy actions', () => {
-        it('should not swap copy icon when clicked and useFilledIconsOnClick is false', async () => {
-          const user = userEvent.setup();
-
-          render(
-            <ResponseActions
-              actions={{
-                copy: { onClick: jest.fn() }
-              }}
-              useFilledIconsOnClick={false}
-            />
-          );
-
-          await user.click(screen.getByRole('button', { name: 'Copy' }));
-
-          expect(screen.getByText('OutlinedCopyIcon')).toBeInTheDocument();
-          expect(screen.queryByText('CopyIcon')).not.toBeInTheDocument();
-        });
-
-        it('should swap copy icon from outline to filled when clicked with useFilledIconsOnClick', async () => {
-          const user = userEvent.setup();
-
-          render(
-            <ResponseActions
-              actions={{
-                copy: { onClick: jest.fn() }
-              }}
-              useFilledIconsOnClick
-            />
-          );
-
-          await user.click(screen.getByRole('button', { name: 'Copy' }));
-
-          expect(screen.getByText('CopyIcon')).toBeInTheDocument();
-          expect(screen.queryByText('OutlinedCopyIcon')).not.toBeInTheDocument();
-        });
-
-        it('should revert copy icon to outline when clicking outside', async () => {
-          const user = userEvent.setup();
-
-          render(
-            <div>
-              <ResponseActions
-                actions={{
-                  copy: { onClick: jest.fn() }
-                }}
-                useFilledIconsOnClick
-              />
-              <div data-testid="outside">Outside</div>
-            </div>
-          );
-
-          await user.click(screen.getByRole('button', { name: 'Copy' }));
-          expect(screen.getByText('CopyIcon')).toBeInTheDocument();
-
-          await user.click(screen.getByTestId('outside'));
-          expect(screen.getByText('OutlinedCopyIcon')).toBeInTheDocument();
-        });
-
-        it('should not revert copy icon to outline icon when clicking outside if persistActionSelection is true', async () => {
-          const user = userEvent.setup();
-
-          render(
-            <div>
-              <ResponseActions
-                actions={{
-                  copy: { onClick: jest.fn() }
-                }}
-                persistActionSelection
-                useFilledIconsOnClick
-              />
-              <div data-testid="outside">Outside</div>
-            </div>
-          );
-
-          await user.click(screen.getByRole('button', { name: 'Copy' }));
-          expect(screen.getByText('CopyIcon')).toBeInTheDocument();
-
-          await user.click(screen.getByTestId('outside'));
-          expect(screen.getByText('CopyIcon')).toBeInTheDocument();
-        });
-      });
     });
   });
 });

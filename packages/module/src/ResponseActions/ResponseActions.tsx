@@ -8,7 +8,6 @@ import {
   OutlinedThumbsDownIcon,
   ThumbsDownIcon,
   OutlinedCopyIcon,
-  CopyIcon,
   DownloadIcon,
   PencilAltIcon
 } from '@patternfly/react-icons';
@@ -161,10 +160,6 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
     negative: {
       filled: <ThumbsDownIcon />,
       outlined: <OutlinedThumbsDownIcon />
-    },
-    copy: {
-      filled: <CopyIcon />,
-      outlined: <OutlinedCopyIcon />
     }
   };
 
@@ -227,7 +222,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           tooltipContent={copy.tooltipContent ?? 'Copy'}
           clickedTooltipContent={copy.clickedTooltipContent ?? 'Copied'}
           tooltipProps={copy.tooltipProps}
-          icon={getIcon('copy')}
+          icon={<OutlinedCopyIcon />}
           isClicked={activeButton === 'copy'}
           ref={copy.ref}
           aria-expanded={copy['aria-expanded']}

@@ -16,7 +16,6 @@ jest.mock('@patternfly/react-icons', () => ({
   OutlinedThumbsDownIcon: () => <div>OutlinedThumbsDownIcon</div>,
   ThumbsDownIcon: () => <div>ThumbsDownIcon</div>,
   OutlinedCopyIcon: () => <div>OutlinedCopyIcon</div>,
-  CopyIcon: () => <div>CopyIcon</div>,
   DownloadIcon: () => <div>DownloadIcon</div>,
   ExternalLinkAltIcon: () => <div>ExternalLinkAltIcon</div>,
   VolumeUpIcon: () => <div>VolumeUpIcon</div>,
