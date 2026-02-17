@@ -136,6 +136,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
     id: string,
     onClick?: (event: MouseEvent | MouseEvent<Element, MouseEvent> | KeyboardEvent) => void
   ) => {
+    e.stopPropagation();
     if (persistActionSelection) {
       if (activeButton === id) {
         // Toggle off if clicking the same button
