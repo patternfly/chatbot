@@ -138,7 +138,7 @@ When `persistActionSelection` is `true`:
 
 ```
 
-### Message actions with icon swapping
+### Message actions that fill
 
 To provide enhanced visual feedback when users interact with response actions, you can enable icon swapping by setting `useFilledIconsOnClick` to `true`. When enabled, the predefined actions positive and negative will automatically swap from outline icon variants to filled icon variants when clicked.
 
