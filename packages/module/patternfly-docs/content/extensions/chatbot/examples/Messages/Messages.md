@@ -95,14 +95,16 @@ For example, you can use the default divider to display a "timestamp" for more s
 
 ### Message actions
 
-You can add actions to a message, to allow users to interact with the message content. These actions can include:
+To let users interact with a bot's responses, you can add support for message actions. While you can customize message actions to your needs, default options include the following:
 
-- Feedback responses that allow users to rate a message as "good" or "bad".
-- Copy and share controls that allow users to share the message content with others.
-- An edit action to allow users to edit a message they previously sent. This should only be applied to user messages - see the [user messages example](#user-messages) for details on how to implement this action.
-- A listen action, that will read the message content out loud.
+- Positive and negative feedback: Allows users to rate a message as "good" or "bad."
+- Copy: Allows users to copy the message content to their clipboard.
+- Download: Allows users to download the message content.
+- Listen: Reads the message content out loud using text-to-speech.
 
-**Note:** The logic for the actions is not built into the component and must be implemented by the consuming application.
+You can display message actions by default, or use the `showActionsOnInteraction` prop to reveal actions on hover or keyboard focus.
+
+**Note**: The underlying logic for these actions is not built-in and must be implemented within the consuming application.
 
 ```js file="./MessageWithResponseActions.tsx"
 
@@ -140,10 +142,9 @@ When `persistActionSelection` is `true`:
 
 ### Message actions that fill
 
-To provide enhanced visual feedback when users interact with response actions, you can enable icon swapping by setting `useFilledIconsOnClick` to `true`. When enabled, the predefined "positive" and "negative" actions will automatically swap to their filled icon counterparts when clicked, replacing the original outlined icon variants. 
+To provide enhanced visual feedback when users interact with response actions, you can enable icon swapping by setting `useFilledIconsOnClick` to `true`. When enabled, the predefined "positive" and "negative" actions will automatically swap to their filled icon counterparts when clicked, replacing the original outlined icon variants.
 
 This is especially useful for actions that are intended to persist (such as the "positive" and "negative" responses), so that a user's selection is more clear and emphasized.
-
 
 ```js file="./MessageWithIconSwapping.tsx"
 

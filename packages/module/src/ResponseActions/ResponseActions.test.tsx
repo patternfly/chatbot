@@ -437,6 +437,65 @@ describe('ResponseActions', () => {
     expect(customBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
   });
 
+  it('should apply pf-m-visible-interaction class when showActionsOnInteraction is true', () => {
+    render(
+      <ResponseActions
+        data-testid="test-id"
+        actions={{
+          positive: { onClick: jest.fn() },
+          negative: { onClick: jest.fn() }
+        }}
+        showActionsOnInteraction
+      />
+    );
+
+    expect(screen.getByTestId('test-id')).toHaveClass('pf-m-visible-interaction');
+  });
+
+  it('should not apply pf-m-visible-interaction class when showActionsOnInteraction is false', () => {
+    render(
+      <ResponseActions
+        data-testid="test-id"
+        actions={{
+          positive: { onClick: jest.fn() },
+          negative: { onClick: jest.fn() }
+        }}
+        showActionsOnInteraction={false}
+      />
+    );
+
+    expect(screen.getByTestId('test-id')).not.toHaveClass('pf-m-visible-interaction');
+  });
+
+  it('should not apply pf-m-visible-interaction class by default', () => {
+    render(
+      <ResponseActions
+        data-testid="test-id"
+        actions={{
+          positive: { onClick: jest.fn() },
+          negative: { onClick: jest.fn() }
+        }}
+      />
+    );
+
+    expect(screen.getByTestId('test-id')).not.toHaveClass('pf-m-visible-interaction');
+  });
+
+  it('should render with custom className', () => {
+    render(
+      <ResponseActions
+        data-testid="test-id"
+        actions={{
+          positive: { onClick: jest.fn() },
+          negative: { onClick: jest.fn() }
+        }}
+        className="custom-class"
+      />
+    );
+
+    expect(screen.getByTestId('test-id')).toHaveClass('custom-class');
+  });
+
   describe('icon swapping with useFilledIconsOnClick', () => {
     it('should render outline icons by default', () => {
       render(
