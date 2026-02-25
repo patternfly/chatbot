@@ -7,7 +7,9 @@ import {
   CardBodyProps,
   CardProps,
   ExpandableSection,
-  ExpandableSectionProps
+  ExpandableSectionProps,
+  Spinner,
+  SpinnerProps
 } from '@patternfly/react-core';
 import { useState, type FunctionComponent } from 'react';
 import MarkdownContent from '../MarkdownContent';
@@ -38,6 +40,10 @@ export interface DeepThinkingProps {
   markdownContentProps?: Omit<MarkdownContentProps, 'content'>;
   /** Whether to retain styles in the MarkdownContent component. Defaults to false. */
   shouldRetainStyles?: boolean;
+  /** Flag indicating whether the deep thinking is loading or not. */
+  isLoading?: boolean;
+  /** Additional props for the spinner component when isLoading is true. */
+  spinnerProps?: SpinnerProps;
 }
 
 export const DeepThinking: FunctionComponent<DeepThinkingProps> = ({
@@ -52,7 +58,9 @@ export const DeepThinking: FunctionComponent<DeepThinkingProps> = ({
   isSubheadingMarkdown,
   isBodyMarkdown,
   markdownContentProps,
-  shouldRetainStyles = false
+  shouldRetainStyles = false,
+  isLoading = false,
+  spinnerProps
 }: DeepThinkingProps) => {
   const [isExpanded, setIsExpanded] = useState(isDefaultExpanded);
 
@@ -66,7 +74,12 @@ export const DeepThinking: FunctionComponent<DeepThinkingProps> = ({
         <MarkdownContent shouldRetainStyles={shouldRetainStyles} content={toggleContent} {...markdownContentProps} />
       );
     }
-    return toggleContent;
+    return (
+      <>
+        {isLoading && <Spinner diameter="1em" isInline style={{ marginInlineEnd: '8px' }} {...spinnerProps} />}
+        {toggleContent}
+      </>
+    );
   };
 
   const renderSubheading = () => {

@@ -167,4 +167,27 @@ describe('DeepThinking', () => {
     );
     expect(container.querySelector('.pf-m-primary')).toBeTruthy();
   });
+
+  it('should render spinner when isLoading is true', () => {
+    render(<DeepThinking {...defaultProps} isLoading />);
+    expect(screen.getByLabelText('Contents')).toBeInTheDocument();
+  });
+
+  it('should not render spinner when isLoading is false', () => {
+    render(<DeepThinking {...defaultProps} />);
+    expect(screen.queryByLabelText('Contents')).not.toBeInTheDocument();
+  });
+
+  it('should pass spinnerProps to Spinner component', () => {
+    render(<DeepThinking {...defaultProps} isLoading spinnerProps={{ 'aria-label': 'Custom label' }} />);
+    expect(screen.getByLabelText('Custom label')).toBeInTheDocument();
+  });
+
+  it('should not render spinner when isToggleContentMarkdown is true', () => {
+    const toggleContent = '**Bold thinking**';
+    render(<DeepThinking toggleContent={toggleContent} isToggleContentMarkdown isLoading />);
+
+    expect(screen.queryByLabelText('Contents')).not.toBeInTheDocument();
+    expect(screen.getByText('Bold thinking')).toBeInTheDocument();
+  });
 });

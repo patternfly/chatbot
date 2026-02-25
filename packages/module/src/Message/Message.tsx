@@ -35,6 +35,7 @@ import ToolResponse, { ToolResponseProps } from '../ToolResponse';
 import DeepThinking, { DeepThinkingProps } from '../DeepThinking';
 import ToolCall, { ToolCallProps } from '../ToolCall';
 import MarkdownContent from '../MarkdownContent';
+import { css } from '@patternfly/react-styles';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -73,6 +74,10 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   id?: string;
   /** Role of the user sending the message */
   role: 'user' | 'bot';
+  /** Whether the message is aligned at the horizontal start or end of the message container. */
+  alignment?: 'start' | 'end';
+  /** Flag indicating whether message metadata (user name and timestamp) are visible. */
+  isMetadataVisible?: boolean;
   /** Message content */
   content?: string;
   /** Extra Message content */
@@ -109,6 +114,10 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
    * For finer control of multiple action groups, use persistActionSelection on each group.
    */
   persistActionSelection?: boolean;
+  /** Flag indicating whether the actions container is only visible when a message is hovered or an action would receive focus. Note
+   * that setting this to true will append tooltips inline instead of the document.body.
+   */
+  showActionsOnInteraction?: boolean;
   /** Sources for message */
   sources?: SourcesCardProps;
   /** Label for the English word "AI," used to tag messages with role "bot" */
@@ -192,11 +201,15 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   hasNoImagesInUserMessages?: boolean;
   /** Sets background colors to be appropriate on primary chatbot background */
   isPrimary?: boolean;
+  /** When true, automatically swaps to filled icon variants when predefined actions are clicked. */
+  useFilledIconsOnClick?: boolean;
 }
 
 export const MessageBase: FunctionComponent<MessageProps> = ({
   children,
   role,
+  alignment = 'start',
+  isMetadataVisible = true,
   content,
   extraContent,
   name,
@@ -205,6 +218,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   isLoading,
   actions,
   persistActionSelection,
+  showActionsOnInteraction = false,
   sources,
   botWord = 'AI',
   loadingWord = 'Loading message',
@@ -242,6 +256,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   toolCall,
   hasNoImagesInUserMessages = true,
   isPrimary,
+  useFilledIconsOnClick,
   ...props
 }: MessageProps) => {
   const [messageText, setMessageText] = useState(content);
@@ -314,7 +329,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   return (
     <section
       aria-label={`Message from ${role} - ${dateString}`}
-      className={`pf-chatbot__message pf-chatbot__message--${role}`}
+      className={css(`pf-chatbot__message pf-chatbot__message--${role}`, alignment === 'end' && 'pf-m-end')}
       aria-live={isLiveRegion ? 'polite' : undefined}
       aria-atomic={isLiveRegion ? false : undefined}
       ref={innerRef}
@@ -330,19 +345,21 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
         />
       )}
       <div className="pf-chatbot__message-contents">
-        <div className="pf-chatbot__message-meta">
-          {name && (
-            <span className="pf-chatbot__message-name">
-              <Truncate content={name} />
-            </span>
-          )}
-          {role === 'bot' && (
-            <Label variant="outline" isCompact>
-              {botWord}
-            </Label>
-          )}
-          <Timestamp date={date}>{timestamp}</Timestamp>
-        </div>
+        {isMetadataVisible && (
+          <div className="pf-chatbot__message-meta">
+            {name && (
+              <span className="pf-chatbot__message-name">
+                <Truncate content={name} />
+              </span>
+            )}
+            {role === 'bot' && (
+              <Label variant="outline" isCompact>
+                {botWord}
+              </Label>
+            )}
+            <Timestamp date={date}>{timestamp}</Timestamp>
+          </div>
+        )}
         <div className="pf-chatbot__message-response">
           {children ? (
             <>{children}</>
@@ -370,17 +387,28 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
                 {!isLoading && !isEditable && actions && (
                   <>
                     {Array.isArray(actions) ? (
-                      <div className="pf-chatbot__response-actions-groups">
+                      <div
+                        className={css(
+                          'pf-chatbot__response-actions-groups',
+                          showActionsOnInteraction && 'pf-m-visible-interaction'
+                        )}
+                      >
                         {actions.map((actionGroup, index) => (
                           <ResponseActions
                             key={index}
                             actions={actionGroup.actions || actionGroup}
                             persistActionSelection={persistActionSelection || actionGroup.persistActionSelection}
+                            useFilledIconsOnClick={useFilledIconsOnClick}
                           />
                         ))}
                       </div>
                     ) : (
-                      <ResponseActions actions={actions} persistActionSelection={persistActionSelection} />
+                      <ResponseActions
+                        actions={actions}
+                        persistActionSelection={persistActionSelection}
+                        useFilledIconsOnClick={useFilledIconsOnClick}
+                        showActionsOnInteraction={showActionsOnInteraction}
+                      />
                     )}
                   </>
                 )}

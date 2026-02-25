@@ -9,6 +9,23 @@ import rehypeExternalLinks from '../__mocks__/rehype-external-links';
 import { AlertActionLink, Button, CodeBlockAction } from '@patternfly/react-core';
 import { DeepThinkingProps } from '../DeepThinking';
 
+// Mock the icon components
+jest.mock('@patternfly/react-icons', () => ({
+  OutlinedThumbsUpIcon: () => <div>OutlinedThumbsUpIcon</div>,
+  ThumbsUpIcon: () => <div>ThumbsUpIcon</div>,
+  OutlinedThumbsDownIcon: () => <div>OutlinedThumbsDownIcon</div>,
+  ThumbsDownIcon: () => <div>ThumbsDownIcon</div>,
+  OutlinedCopyIcon: () => <div>OutlinedCopyIcon</div>,
+  DownloadIcon: () => <div>DownloadIcon</div>,
+  ExternalLinkAltIcon: () => <div>ExternalLinkAltIcon</div>,
+  VolumeUpIcon: () => <div>VolumeUpIcon</div>,
+  PencilAltIcon: () => <div>PencilAltIcon</div>,
+  CheckIcon: () => <div>CheckIcon</div>,
+  CloseIcon: () => <div>CloseIcon</div>,
+  ExternalLinkSquareAltIcon: () => <div>ExternalLinkSquareAltIcon</div>,
+  TimesIcon: () => <div>TimesIcon</div>
+}));
+
 const ALL_ACTIONS = [
   { label: /Good response/i },
   { label: /Bad response/i },
@@ -255,6 +272,17 @@ describe('Message', () => {
       })
     ).not.toBeInTheDocument();
   });
+
+  it('Does not render metadata when isMetadataVisible is false', () => {
+    render(
+      <Message isMetadataVisible={false} avatar="./img" role="bot" name="Bot" content="Hi" timestamp="2 hours ago" />
+    );
+
+    expect(screen.queryByText('Bot')).not.toBeInTheDocument();
+    expect(screen.queryByText('AI')).not.toBeInTheDocument();
+    expect(screen.queryByText('2 hours ago')).not.toBeInTheDocument();
+  });
+
   it('should render attachments', () => {
     render(<Message avatar="./img" role="user" content="Hi" attachments={[{ name: 'testAttachment' }]} />);
     expect(screen.getByText('Hi')).toBeTruthy();
@@ -1329,5 +1357,198 @@ describe('Message', () => {
       <Message avatar="./img" role="user" name="User" content="" attachments={[{ name: 'testAttachment' }]} />
     );
     expect(container.querySelector('.pf-m-outline')).toBeFalsy();
+  });
+
+  it('Renders without pf-m-end class by default', () => {
+    render(<Message avatar="./img" role="user" name="User" content="" />);
+    expect(screen.getByRole('region')).not.toHaveClass('pf-m-end');
+  });
+
+  it('Renders with pf-m-end class when alignment="end"', () => {
+    render(<Message alignment="end" avatar="./img" role="user" name="User" content="" />);
+    expect(screen.getByRole('region')).toHaveClass('pf-m-end');
+  });
+
+  // We're just testing the positive action here to ensure logic passes through as needed, the other actions are
+  // tested in ResponseActions.test.tsx along with other aspects of this functionality
+  it('should not swap icons when useFilledIconsOnClick is omitted', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        actions={{
+          positive: { onClick: jest.fn() }
+        }}
+      />
+    );
+
+    expect(screen.getByText('OutlinedThumbsUpIcon')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /Good response/i }));
+
+    expect(screen.getByText('OutlinedThumbsUpIcon')).toBeInTheDocument();
+    expect(screen.queryByText('ThumbsUpIcon')).not.toBeInTheDocument();
+  });
+
+  it('should swap icons when useFilledIconsOnClick is true', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        actions={{
+          positive: { onClick: jest.fn() }
+        }}
+        useFilledIconsOnClick
+      />
+    );
+
+    await user.click(screen.getByRole('button', { name: /Good response/i }));
+
+    expect(screen.getByText('ThumbsUpIcon')).toBeInTheDocument();
+    expect(screen.queryByText('OutlinedThumbsUpIcon')).not.toBeInTheDocument();
+  });
+
+  it('should apply pf-m-visible-interaction class to response actions when showActionsOnInteraction is true', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        showActionsOnInteraction
+        actions={{
+          positive: { onClick: jest.fn() }
+        }}
+      />
+    );
+
+    const responseContainer = screen
+      .getByRole('button', { name: 'Good response' })
+      .closest('.pf-chatbot__response-actions');
+    expect(responseContainer).toHaveClass('pf-m-visible-interaction');
+  });
+
+  it('should not apply pf-m-visible-interaction class to response actions when showActionsOnInteraction is false', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        showActionsOnInteraction={false}
+        actions={{
+          positive: { onClick: jest.fn() }
+        }}
+      />
+    );
+
+    const responseContainer = screen
+      .getByRole('button', { name: 'Good response' })
+      .closest('.pf-chatbot__response-actions');
+    expect(responseContainer).not.toHaveClass('pf-m-visible-interaction');
+  });
+
+  it('should not apply pf-m-visible-interaction class to response actions by default', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        actions={{
+          positive: { onClick: jest.fn() }
+        }}
+      />
+    );
+
+    const responseContainer = screen
+      .getByRole('button', { name: 'Good response' })
+      .closest('.pf-chatbot__response-actions');
+    expect(responseContainer).not.toHaveClass('pf-m-visible-interaction');
+  });
+
+  it('should apply pf-m-visible-interaction class to grouped actions container when showActionsOnInteraction is true', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        showActionsOnInteraction
+        actions={[
+          {
+            positive: { onClick: jest.fn() },
+            negative: { onClick: jest.fn() }
+          },
+          {
+            copy: { onClick: jest.fn() }
+          }
+        ]}
+      />
+    );
+
+    const responseContainer = screen
+      .getByRole('button', { name: 'Good response' })
+      .closest('.pf-chatbot__response-actions-groups');
+    expect(responseContainer).toHaveClass('pf-m-visible-interaction');
+  });
+
+  it('should not apply pf-m-visible-interaction class to grouped actions container when showActionsOnInteraction is false', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        showActionsOnInteraction={false}
+        actions={[
+          {
+            positive: { onClick: jest.fn() },
+            negative: { onClick: jest.fn() }
+          },
+          {
+            copy: { onClick: jest.fn() }
+          }
+        ]}
+      />
+    );
+
+    const responseContainer = screen
+      .getByRole('button', { name: 'Good response' })
+      .closest('.pf-chatbot__response-actions-groups');
+    expect(responseContainer).not.toHaveClass('pf-m-visible-interaction');
+  });
+
+  it('should not apply pf-m-visible-interaction class to grouped actions container by default', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="bot"
+        name="Bot"
+        content="Hi"
+        actions={[
+          {
+            positive: { onClick: jest.fn() },
+            negative: { onClick: jest.fn() }
+          },
+          {
+            copy: { onClick: jest.fn() }
+          }
+        ]}
+      />
+    );
+
+    const responseContainer = screen
+      .getByRole('button', { name: 'Good response' })
+      .closest('.pf-chatbot__response-actions-groups');
+    expect(responseContainer).not.toHaveClass('pf-m-visible-interaction');
   });
 });
