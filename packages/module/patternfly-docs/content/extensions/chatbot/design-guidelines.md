@@ -15,8 +15,8 @@ import "./images.css"
 </div>
 
 1. **Container:** The window that contains the entire ChatBot experience and all of its components.
-1. **Header:** A persistent region at the top of the ChatBot window that contains navigation, branding, and actions.
-1. **Chat history menu:** A menu that contains a history of previous chats.
+1. **Header:** A persistent region at the top of the ChatBot window that contains chat history, branding, and actions.
+1. **Chat history drawer:** A menu used to access previous chats.
 1. **Options menu:** A menu that contains settings that are relevant to your product. This typically includes display options (more details in the [ChatBot variations section](#variations)) and other general settings (more details in the [ChatBot settings and preferences section](#chatbot-settings-and-preferences)).
 1. **Messages:** Elements of the conversation between a ChatBot and user. More details can be found in the [message guidelines](#messages).
 1. **Attachments:** Details about files that a user has uploaded to the ChatBot.
@@ -288,7 +288,7 @@ When a ChatBot is launched via an AI-supported action, the action should be sent
 
 Each time a user begins a new chat, display a [welcome message](#welcome-message), with prompts that provide initial suggestions and indicate the actions that the ChatBot can take.
 
-The default approach for users to create a new chat is by clicking the "New chat" button (which contains a "pen to square" icon) placed at the top of the [chat history menu](#using-the-chat-history-menu). 
+The default approach for users to create a new chat is by clicking the "New chat" button (which contains a "pen to square" icon) placed at the top of the [chat history drawer](#using-the-chat-history-drawer). 
 
 <div class="ws-docs-content-img">
 ![A blue "New chat" button at the top right of a drawer labeled "Chat history".](./img/new-chat-in-nav.svg)
@@ -310,14 +310,12 @@ This can be done using the [quick response](/extensions/chatbot/messages#message
 ![Confirmation options from a bot in response to a user's request.](./img/quick-response-confirmation.svg)
 </div>
 
-### Using the chat history menu
+### Using the chat history drawer
 
-The ChatBot history menu contains a log of a user's previous chats. Clicking the menu icon opens a side drawer in the ChatBot window.
-
-By clicking into the history menu, users can search through previous conversations and perform additional actions, such as sharing a conversation with others.
+The chat history drawer can be opened via the hamburger menu in the ChatBot header. In this drawer, users can search through previous conversations and perform additional actions, such as sharing a conversation with others.
 
 <div class="ws-docs-content-img">
-![Conversation history with an options menu opened on a previous conversation.](./img/conversation-history.svg)
+![Chat history with an options menu opened on a previous conversation.](./img/conversation-history.svg)
 </div>
 
 When the chat history is still loading, display skeleton items:
@@ -383,16 +381,16 @@ If a message attachment fails, an error message should share the reason for fail
 
 You can enable users to download chat transcripts, for their personal records or to share with others. When users choose to download a transcript, you can choose how you want to configure the behavior in your ChatBot. 
 
-For guidance, refer to our download transcripts demo, which opens a Markdown file for a conversation within a new tab. 
+For guidance, refer to our [chat transcripts demo](/extensions/chatbot/overview/demo#chat-transcripts), which opens a Markdown file for a conversation within a new tab. 
 
 Choose the download action location that best works for your ChatBot:
 
 #### Download via chat history drawer
 
-If your ChatBot uses a chat history drawer, you can provide a download option in the [actions menu linked to a previous conversation](/extensions/chatbot/ui#drawer-with-conversation-actions).
+If your ChatBot uses chat history, you can provide a download option in the [actions menu linked to a previous conversation](/extensions/chatbot/ui#drawer-with-conversation-actions).
 
 <div class="ws-docs-content-img">
-![Expanded menu for previous chat in the history window, which shows a download option.](./img/download-chat-history.svg)
+![Expanded menu for previous chat in the chat history drawer, which shows a download option.](./img/download-chat-history.svg)
 </div>
 
 #### Download message response action
@@ -405,7 +403,7 @@ To allow users to download individual bot messages, the message actions can incl
 
 #### Download control in header
 
-If you don't use a chat history drawer, you can place an option to download the transcript for the active chat within the header options menu. 
+If you don't use chat history, you can place an option to download the transcript for the active chat within the header options menu. 
 
 <div class="ws-docs-content-img">
 ![Download transcript action within the ChatBot header options menu.](./img/download-header.svg)

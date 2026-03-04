@@ -80,7 +80,7 @@ export const BasicDemo: FunctionComponent = () => {
             showAll && setShowAll(!showAll);
           }}
           name="basic-inline-radio"
-          label="With menu"
+          label="With chat history drawer"
           id="menu"
         />
         <Checkbox

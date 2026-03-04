@@ -84,7 +84,7 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   activeItemId?: string | number;
   /** Callback function for when an item is selected */
   onSelectActiveItem?: (event?: React.MouseEvent, itemId?: string | number) => void;
-  /** Items shown in conversation history */
+  /** Items shown in chat history */
   conversations: Conversation[] | { [key: string]: Conversation[] };
   /** Additional button props for new chat button. */
   newChatButtonProps?: ButtonProps;

@@ -189,9 +189,9 @@ The ChatBot header is persistent, and contains the title for the ChatBot window,
 
 The `<ChatbotHeader>` has 2 sections:
 
-- `<ChatbotHeaderMain>` contains the title and an optional menu toggle or new chat button:
+- `<ChatbotHeaderMain>` contains the title and an optional hamburger menu toggle or new chat button:
   - `<ChatbotHeaderTitle>` handles the layout and display of a title or image at different responsive sizes.
-  - `<ChatbotHeaderMenu>` (optional) is placed on the left side of the header and used to toggle a chat history menu.
+  - `<ChatbotHeaderMenu>` (optional) is placed on the left side of the header and used to toggle a chat history drawer.
   - `<ChatbotHeaderNewChatButton>` (optional) is placed on the left side of the header and used to initiate a new chat.
 - `<ChatbotHeaderActions>` contains any additional controls:
   - The `<ChatbotHeaderSelectorDropdown>` component is a standard PatternFly dropdown that matches the ChatBot styles.
@@ -227,8 +227,8 @@ There are a variety of options and customizations you can make to the header, to
 
 In this example, select the respective checkbox to toggle these features:
 
-- **Menu:** Users can select the menu toggle to open a menu of additional options or actions.
-- **New chat button:** Used to start a new chat session. The header button can be used in addition to or in place of a new chat button within the [conversation history drawer](/extensions/chatbot/ui/#drawer-with-search-and-new-chat-button).
+- **Chat history drawer:** Users can select the hamburger menu toggle to open the [chat history drawer](#chat-history).
+- **New chat button:** Used to start a new chat session. The header button can be used in addition to or in place of a new chat button within the [chat history drawer](/extensions/chatbot/ui/#drawer-with-search-and-new-chat-button).
 - **Left-aligned logo**
 - **Centered logo**
 - **Selector dropdown:** Users can choose from preselected options in a dropdown menu. For example, they can toggle between AI models.
@@ -339,11 +339,11 @@ This example shows a simplified method of handling the "thinking" animation: aft
 
 ```
 
-## Navigation
+## Chat history
 
-### Side nav in a drawer
+### Chat history drawer
 
-The ChatBot conversation history is contained in an interactive drawer, where users can interact with previous conversations or start a new conversation.
+A user's chat history is contained in an interactive drawer, where they can interact with previous conversations or start a new conversation.
 
 The `<ChatbotConversationHistoryNav>` component is a wrapper placed within `<Chatbot>`, which contains all other ChatBot components in `drawerContent`. There is a focus trap so users can only tab within the drawer while it is open.
 
@@ -367,14 +367,14 @@ The code structure will look like this:
 </Chatbot>
 ```
 
-The conversation history drawer looks different depending on the `displayMode` of the parent `<Chatbot>`. (As shown in the [main ChatBot demo](/extensions/chatbot/overview/demo#basic-chatbot).):
+The chat history drawer looks different depending on the `displayMode` of the parent `<Chatbot>` (as shown in the [main ChatBot demo](/extensions/chatbot/overview/demo#basic-chatbot).):
 
-- `Default` and `docked` display modes display the conversation history on top of the rest of the ChatBot content, with a PatternFly backdrop between the drawer panel and drawer content.
-- `Fullscreen` and `embedded` display modes display the conversation history in line with the drawer content.
+- `Default` and `docked` display modes display the chat history on top of the rest of the ChatBot content, with a PatternFly backdrop between the drawer panel and drawer content.
+- `Fullscreen` and `embedded` display modes display the chat history in line with the drawer content.
 
 ### Drawer with search and "new chat" button
 
-In the conversation history drawer, users can search previous ChatBot conversations via an input field. To customize the placeholder text, use `searchInputPlaceholder`. Provide an aria label via `searchInputAriaLabel`.
+In the chat history drawer, users can search previous ChatBot conversations via an input field. To customize the placeholder text, use `searchInputPlaceholder`. Provide an aria label via `searchInputAriaLabel`.
 
 They can also start new conversations via a "New chat" button. To customize the button label, use `newChatButtonText`.
 
@@ -386,7 +386,7 @@ Both the search input field and "New chat" buttons are optional. The `reverseBut
 
 ### Drawer with search actions
 
-You can customize the search experience within the conversation history drawer via the `searchActionStart` and `searchActionEnd` props, which provide additional search controls before and after the input field. These props are useful for adding filtering, sorting, or other search-related functionality.
+You can customize the search experience within the chat history drawer via the `searchActionStart` and `searchActionEnd` props, which provide additional search controls before and after the input field. These props are useful for adding filtering, sorting, or other search-related functionality.
 
 You can also add a visual divider between the drawer head and the title by setting `hasDrawerHeadDivider` to `true`.
 
@@ -404,15 +404,15 @@ Actions can be added to conversations with `menuItems`. Optionally, you can also
 
 ### Pinning conversations
 
-To help users track important conversations, add a "pin" option to the conversation action menus. This action moves a conversation to a dedicated "pinned" section at the top of the history drawer for quick access. Pinned items should contain an "unpin" option, so that users can remove pinned conversations as needed.
+To help users track important conversations, add a "pin" option to the conversation action menus. This action moves a conversation to a dedicated "pinned" section at the top of the chat history drawer for quick access. Pinned items should contain an "unpin" option, so that users can remove pinned conversations as needed.
 
 ```js file="./ChatbotHeaderDrawerWithPin.tsx"
 
 ```
 
-### Renaming conversations in history drawer
+### Renaming conversations in chat history drawer
 
-You can allow users to rename a conversation in the history drawer by implementing a modal that opens upon clicking a "Rename" (or similar) action. When doing so, you must ensure the following:
+You can allow users to rename a conversation in the chat history drawer by implementing a modal that opens upon clicking a "Rename" (or similar) action. When doing so, you must ensure the following:
 
 - When the modal opens, focus is placed at the end of the text input.
 - When the modal closes, focus goes back to the action toggle that was previously opened.
@@ -433,7 +433,7 @@ If you're showing a conversation that is already active, you can set the `active
 
 ### Resizable drawer
 
-By default, the conversation history drawer has a fixed width (384px) and a focus trap. To provide users with more flexibility as they navigate their conversation history, or to better support embedded ChatBots on tablet-sized devices or smaller browser windows, you can instead make the drawer resizable. By default, even resizable drawers will still open to their full width on mobile devices.
+By default, the chat history drawer has a fixed width (384px) and a focus trap. To provide users with more flexibility as they navigate their chat history, or to better support embedded ChatBots on tablet-sized devices or smaller browser windows, you can instead make the drawer resizable. By default, even resizable drawers will still open to their full width on mobile devices.
 
 In this example, the drawer can be resized up to the max size of the parent and resized down to 200px wide. To customize this behavior further (including width, style, and focus behavior) use PatternFly [`<Drawer>` props](/components/drawer#props), [`<DrawerPanelContent>` props](/components/drawer/#drawerpanelcontent), or any other drawer subcomponents.
 

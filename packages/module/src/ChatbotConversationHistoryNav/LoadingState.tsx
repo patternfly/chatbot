@@ -5,7 +5,7 @@ export const LoadingState: FunctionComponent<SkeletonProps> = ({ screenreaderTex
   <div className="pf-chatbot__history-loading">
     <div className="pf-chatbot__history-loading-block">
       <Skeleton
-        screenreaderText={screenreaderText ?? 'Loading chatbot conversation history'}
+        screenreaderText={screenreaderText ?? 'Loading chatbot chat history'}
         fontSize="3xl"
         {...rest}
       />
