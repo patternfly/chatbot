@@ -4,11 +4,7 @@ import type { FunctionComponent } from 'react';
 export const LoadingState: FunctionComponent<SkeletonProps> = ({ screenreaderText, ...rest }: SkeletonProps) => (
   <div className="pf-chatbot__history-loading">
     <div className="pf-chatbot__history-loading-block">
-      <Skeleton
-        screenreaderText={screenreaderText ?? 'Loading chatbot conversation history'}
-        fontSize="3xl"
-        {...rest}
-      />
+      <Skeleton screenreaderText={screenreaderText ?? 'Loading chatbot chat history'} fontSize="3xl" {...rest} />
     </div>
     <div className="pf-chatbot__history-loading-block">
       <Skeleton fontSize="sm" width="70%" {...rest} />

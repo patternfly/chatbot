@@ -307,7 +307,7 @@ describe('ChatbotConversationHistoryNav', () => {
         isLoading
       />
     );
-    expect(screen.getByRole('dialog', { name: /Loading chatbot conversation history/i })).toBeTruthy();
+    expect(screen.getByRole('dialog', { name: /Loading chatbot chat history/i })).toBeTruthy();
     expect(screen.getByRole('button', { name: /Close drawer panel/i })).toBeTruthy();
   });
 

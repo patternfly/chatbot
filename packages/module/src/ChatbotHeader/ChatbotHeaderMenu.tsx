@@ -25,9 +25,9 @@ const ChatbotHeaderMenuBase: FunctionComponent<ChatbotHeaderMenuProps> = ({
   className,
   onMenuToggle,
   tooltipProps,
-  menuAriaLabel = 'Chat history menu',
+  menuAriaLabel = 'Chat history drawer',
   innerRef,
-  tooltipContent = 'Chat history menu',
+  tooltipContent = 'Chat history drawer',
   isCompact,
   ...props
 }: ChatbotHeaderMenuProps) => {

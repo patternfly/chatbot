@@ -40,7 +40,7 @@ Explore our documentation, which covers both the components you'll need to build
     - [Toggle](/extensions/chatbot/ui#toggle)
     - [Header](/extensions/chatbot/ui#header)
     - [Footer](/extensions/chatbot/ui#footer)
-    - [Navigation](/extensions/chatbot/ui#navigation)
+    - [Chat history drawer](/extensions/chatbot/ui#chat-history)
     - [Modals](/extensions/chatbot/ui#modals)
 - Messages: Components that customize features related to the conversation  
     - [Bot and user messages](/extensions/chatbot/messages)
