@@ -95,7 +95,7 @@ This demo displays a basic ChatBot, which includes:
 - Sending a message to the ChatBot.
 - Receiving a response from a backend AI tool with a loading message state.
 
-6. A [`<ChatbotConversationHistoryNav>`](/extensions/chatbot/ui#navigation) toggled open and closed by the `<ChatbotHeaderMenu`> in the `<ChatbotHeader>`.
+6. A [`<ChatbotConversationHistoryNav>`](/extensions/chatbot/ui#chat-history) toggled open and closed by the `<ChatbotHeaderMenu`> in the `<ChatbotHeader>`.
 
 7. A "Skip to chatbot" button that allows you to skip to the chatbot content via the [PatternFly skip to content component](/extensions/chatbot/ui#skip-to-content). To display this button you must tab into the main window.
 
@@ -126,7 +126,7 @@ This demo displays an embedded ChatBot. Embedded ChatBots are meant to be placed
    - [Speech to text.](/extensions/chatbot/ui#message-bar-with-speech-recognition-and-file-attachment)
    - Sending a message to the ChatBot.
    - Receiving a response from a backend AI tool with a loading message state.
-6. A [`<ChatbotConversationHistoryNav>`](/extensions/chatbot/ui#navigation) that can be toggled by the `<ChatbotHeaderMenu`> in the `<ChatbotHeader>`.
+6. A [`<ChatbotConversationHistoryNav>`](/extensions/chatbot/ui#chat-history) that can be toggled by the `<ChatbotHeaderMenu`> in the `<ChatbotHeader>`.
 
 ```js file="./EmbeddedChatbot.tsx" isFullscreen
 
@@ -196,7 +196,7 @@ This demo illustrates how you could add downloadable transcripts to your ChatBot
 
 A message transcript includes details from a single chat message. To download a sample message transcript in this demo, click the "Download" action under a bot message.
 
-A conversation transcript includes details from the entirety of a ChatBot conversation. To download a sample conversation transcript in this demo, open the chat history menu and click "Download" in the options menu for the conversation.
+A conversation transcript includes details from the entirety of a ChatBot conversation. To download a sample conversation transcript in this demo, open the chat history drawer and click "Download" in the options menu for the conversation.
 
 In this example, file download is implemented with [file-saver](https://www.npmjs.com/package/file-saver).
 
