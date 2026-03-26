@@ -68,7 +68,7 @@
     "@octokit/rest": "^18.0.0",
     "@patternfly/documentation-framework": "6.28.9",
     "@patternfly/patternfly": "^6.1.0",
-    "@patternfly/patternfly-a11y": "^5.0.0",
+    "@patternfly/patternfly-a11y": "^5.2.1",
     "@types/dom-speech-recognition": "^0.0.4",
     "@types/react": "^18.2.61",
     "estree-util-is-identifier-name": "^3.0.0",
