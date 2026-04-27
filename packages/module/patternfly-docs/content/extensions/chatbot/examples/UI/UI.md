@@ -70,11 +70,11 @@ import { MessageBar } from '@patternfly/chatbot/dist/dynamic/MessageBar';
 import SourceDetailsMenuItem from '@patternfly/chatbot/dist/dynamic/SourceDetailsMenuItem';
 import { ChatbotModal } from '@patternfly/chatbot/dist/dynamic/ChatbotModal';
 import SettingsForm from '@patternfly/chatbot/dist/dynamic/Settings';
-import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, PlusIcon, ThumbtackIcon, UploadIcon } from '@patternfly/react-icons';
+import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, HashtagIcon, PlusIcon, ThumbtackIcon, UploadIcon } from '@patternfly/react-icons';
 import { useDropzone } from 'react-dropzone';
 
 import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
-import { Button, Label, DropdownItem, DropdownList, Checkbox, MenuToggle, Select, SelectList, SelectOption } from '@patternfly/react-core';
+import { Button, Divider, DropdownItem, DropdownList, Checkbox, Label, LabelGroup, Menu, MenuContent, MenuItem, MenuList, MenuToggle, Popper, Select, SelectList, SelectOption } from '@patternfly/react-core';
 
 import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/outlined-window-restore-icon';
 import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
@@ -301,6 +301,31 @@ This example shows two message bar variations:
 2. The same custom attach menu with additional actions, including a model selector menu and a dismissable "Canvas" label
 
 ```js file="./ChatbotMessageBarCustomActions.tsx"
+
+```
+
+### Message bar with resource tagging
+
+You can implement custom keyboard logic to create a typeahead-style dropdown that opens when users type special characters. This example demonstrates a resource tagging feature that combines a custom attach menu with resource tagging functionality:
+
+**Attach menu features:**
+
+- Plus icon attach button positioned at the start
+- "Add resource" option that triggers the resource tagging flow
+- When clicked, the attach menu closes, focus moves to the input, and the resource menu opens
+
+**Resource tagging features:**
+
+1. Typing "#" opens a dropdown menu of available resources
+2. The menu automatically filters as you continue typing
+3. Arrow keys navigate the menu (ArrowUp/ArrowDown), Enter selects, Escape closes
+4. Selecting a resource autofills the name in the input (e.g., "Hello #" → "Hello #service/auth-service")
+5. A dismissable label appears above the message input showing the selected resource
+6. Multiple resources can be tagged in a single message
+
+This pattern is useful for mentioning resources, users, channels, or other entities within chat messages.
+
+```js file="./ChatbotMessageBarResourceTagging.tsx"
 
 ```
 
