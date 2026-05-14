@@ -8,6 +8,8 @@ source: design-guidelines
 
 import "./images.css"
 
+**Note:** These guidelines are specific to ChatBot. Before implementing AI-enabled features, review PatternFly's [AI design language guidelines](/ai/design-language), which cover foundational requirements for AI disclosure, iconography, and color that apply across all Red Hat products.
+
 ## Elements 
 
 <div class="ws-docs-content-img">
@@ -256,13 +258,11 @@ If necessary for brand consistency, you can customize the toggle shape and icon.
 
 #### Masthead toggle 
 
-When the ChatBot toggle is a masthead utility, use the fa-comments icon:
+You can also add a ChatBot toggle as an action in the masthead:
 
 <div class="ws-docs-content-img">
 ![ChatBot toggle in a masthead.](./img/masthead-toggle.svg)
 </div>
-
-The exception to this is if you have a specific icon that aligns with your product or ChatBot branding.
 
 When there is an unread message from the ChatBot, a notification count should be displayed, and the badge should be styled as unread.
 
@@ -272,7 +272,7 @@ When there is an unread message from the ChatBot, a notification count should be
 
 ### Launching a ChatBot from page content
 
-If a UI element within the page content is an AI/ChatBot-supported feature, the ChatBot should be launched when users select the clearly-identified action. These kinds of actions should display your ChatBot's logo beside a label that clearly communicates the intention of the AI action.
+If a UI element within the page content is an AI/ChatBot-supported feature, the ChatBot should be launched when users select the clearly-identified action. These kinds of actions should display the [UI robot icon](/ai/design-language#robot-icon) beside a text label that clearly communicates the intention of the action (for example, "Chat with AI" or "Ask with AI").
 
 <div class="ws-docs-content-img">
 ![Menu item for an AI action that launches a ChatBot.](./img/ai-action-inpage.svg)
