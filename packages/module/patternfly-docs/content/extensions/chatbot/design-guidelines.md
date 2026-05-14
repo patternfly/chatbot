@@ -272,7 +272,7 @@ When there is an unread message from the ChatBot, a notification count should be
 
 ### Launching a ChatBot from page content
 
-If a UI element within the page content is an AI/ChatBot-supported feature, the ChatBot should be launched when users select the clearly-identified action. These kinds of actions should display robot icon beside a text label that clearly communicates the intention of the AI action, following the format "[ Action ] with AI" (for example, "Chat with AI" or "Summarize with AI").
+If a UI element within the page content is an AI/ChatBot-supported feature, the ChatBot should be launched when users select the clearly-identified action. These kinds of actions should display the [UI robot icon](/ai/design-language#robot-icon) beside a text label that clearly communicates the intention of the action (for example, "Chat with AI" or "Ask with AI").
 
 <div class="ws-docs-content-img">
 ![Menu item for an AI action that launches a ChatBot.](./img/ai-action-inpage.svg)
