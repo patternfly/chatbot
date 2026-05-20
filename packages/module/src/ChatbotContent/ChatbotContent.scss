@@ -3,7 +3,10 @@
 // ============================================================================
 .pf-chatbot__content {
   position: relative;
-  background-color: var(--pf-t--global--background--color--secondary--default);
+  background-color: var(
+    --pf-t--global--background--color--floating--secondary--default,
+    --pf-t--global--background--color--secondary--default
+  );
   overflow-y: auto;
   overflow: hidden; // needed in Red Hat Developer Hub workspace
   flex: 1; // needed in Composer AI
@@ -26,6 +29,7 @@
   .pf-chatbot--fullscreen,
   .pf-chatbot--embedded {
     .pf-chatbot__content {
+      background-color: var(--pf-t--global--background--color--secondary--default);
       display: flex;
       justify-content: center;
     }
