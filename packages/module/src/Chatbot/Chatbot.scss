@@ -9,7 +9,7 @@
   flex-direction: column;
   width: 30rem;
   height: 70vh;
-  background-color: var(--pf-t--global--background--color--secondary--default);
+  background-color: var(--pf-t--global--background--color--floating--secondary--default);
   border-radius: var(--pf-t--global--border--radius--medium);
   box-shadow: var(--pf-t--global--box-shadow--lg);
   font-size: var(--pf-t--global--font--size--md);
@@ -72,6 +72,8 @@
 // Chatbot Display Mode - Fullscreen
 // ============================================================================
 .pf-chatbot--fullscreen {
+  background-color: var(--pf-t--global--background--color--secondary--default);
+
   // for high contrast support
   border: unset;
   inset-block-end: 0;
@@ -87,6 +89,8 @@
 // Chatbot Display Mode - Embedded
 // ============================================================================
 .pf-chatbot--embedded {
+  background-color: var(--pf-t--global--background--color--secondary--default);
+
   // for high contrast support
   border: unset;
   position: static;
