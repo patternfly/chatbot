@@ -43,6 +43,10 @@
       border-width var(--pf-t--global--motion--timing-function--accelerate) var(--pf-t--global--motion--duration--sm);
   }
 
+  &::after {
+    border-color: var(--pf-t--global--border--color--control--default, transparent);
+  }
+
   &.pf-m-primary {
     &::after {
       border-color: var(--pf-t--global--border--color--control--default, --pf-t--global--border--color--default);
@@ -51,14 +55,14 @@
 
   &:hover {
     &::after {
-      border-color: var(--pf-t--global--border--color--control--default, --pf-t--global--border--color--default);
+      border-color: var(--pf-t--global--border--color--hover, --pf-t--global--border--color--default);
       border-width: var(--pf-t--global--border--width--control--hover);
     }
   }
 
   &:focus-within {
     &::after {
-      border-color: var(--pf-t--global--border--color--control--default, --pf-t--global--border--color--default);
+      border-color: var(--pf-t--global--border--color--clicked, --pf-t--global--border--color--default);
       border-width: var(--pf-t--global--border--width--control--clicked);
     }
   }
