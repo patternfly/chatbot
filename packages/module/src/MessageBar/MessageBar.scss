@@ -19,7 +19,10 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
-  background-color: var(--pf-t--global--background--color--primary--default);
+  background-color: var(
+    --pf-t--global--background--color--control--default,
+    --pf-t--global--background--color--primary--default
+  );
   border-radius: calc(var(--pf-t--global--border--radius--medium) * 2);
   transition: border-color var(--pf-t--global--motion--timing-function--accelerate)
     var(--pf-t--global--motion--duration--sm);
@@ -40,22 +43,26 @@
       border-width var(--pf-t--global--motion--timing-function--accelerate) var(--pf-t--global--motion--duration--sm);
   }
 
+  &::after {
+    border-color: var(--pf-t--global--border--color--control--default, transparent);
+  }
+
   &.pf-m-primary {
     &::after {
-      border-color: var(--pf-t--global--border--color--default);
+      border-color: var(--pf-t--global--border--color--control--default, --pf-t--global--border--color--default);
     }
   }
 
   &:hover {
     &::after {
-      border-color: var(--pf-t--global--border--color--default);
+      border-color: var(--pf-t--global--border--color--hover, --pf-t--global--border--color--default);
       border-width: var(--pf-t--global--border--width--control--hover);
     }
   }
 
   &:focus-within {
     &::after {
-      border-color: var(--pf-t--global--color--brand--default);
+      border-color: var(--pf-t--global--border--color--clicked, --pf-t--global--border--color--default);
       border-width: var(--pf-t--global--border--width--control--clicked);
     }
   }
@@ -183,7 +190,7 @@
 :root:where(.pf-v6-theme-high-contrast) {
   .pf-chatbot__message-bar {
     &::after {
-      border-color: var(--pf-t--global--border--color--default);
+      border-color: var(--pf-t--global--border--color--control--default, --pf-t--global--border--color--default);
     }
   }
 }
