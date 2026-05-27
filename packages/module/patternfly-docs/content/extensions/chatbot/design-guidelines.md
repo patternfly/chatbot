@@ -41,6 +41,16 @@ import "./images.css"
 1. **Quick responses:** Programmable, clickable actions that allow users to quickly answer questions from the ChatBot.
 1. **Message actions:** Actions that allow users to interact with a bot message. These typically include providing feedback, copying, sharing, or reading aloud, but [custom message actions](/extensions/chatbot/messages#custom-message-actions) are also supported. More details for the feedback actions can be found in the [message feedback](#message-feedback) section.
 
+#### ChatBot avatars
+
+There are different color options available for the bot and user avatars within the ChatBot. If desired, you can select a specific color for your ChatBot, but users are not able to change the color of the bot avatar. 
+
+The default option used is a black icon on a plain background. 
+
+<div class="ws-docs-content-img">
+![Gallery of different color options for the avatar.](./img/avatar-options.svg)
+</div>
+
 #### Welcome message
 
 At the start of a new chat, you should welcome your users to the ChatBot with a greeting.
@@ -73,7 +83,7 @@ To share relevant resources with users, like documentation containing the answer
 Instead of a short preview of the linked source's content, you can choose to summarize the contents and use that summary as your description. This is helpful for in-depth resources where the context is not clear from the beginning snippet. You can also choose to elevate a quote from the resource that is most relevant to the user's question.
 
 <div class="ws-docs-content-img">
-![A single source card is show below a chatbot message.](./img/source-card-summary.svg)
+![A single source card is shown below a chatbot message.](./img/source-card-summary.svg)
 </div>
 
 While we generally recommend staying within 2 lines for your source description, you can choose to provide a "show more" button that allows users to expand and view a longer description. When using expandable descriptions, it is recommended to end the description at the end of the sentence. Use your best UX judgment here&mdash;extremely lengthy descriptions can quickly fill out the chat window and obstruct previous conversation details.
@@ -250,12 +260,6 @@ When there is an unread message from the ChatBot, a notification badge should be
 ![Toggle with notification badge.](./img/chatbot-toggle-notification.svg)
 </div>
 
-If necessary for brand consistency, you can customize the toggle shape and icon.
-
-<div class="ws-docs-content-img">
-![Different toggle shapes and icons.](./img/toggle-customizations.svg)
-</div>
-
 #### Masthead toggle 
 
 You can also add a ChatBot toggle as an action in the masthead:
@@ -272,7 +276,7 @@ When there is an unread message from the ChatBot, a notification count should be
 
 ### Launching a ChatBot from page content
 
-If a UI element within the page content is an AI/ChatBot-supported feature, the ChatBot should be launched when users select the clearly-identified action. These kinds of actions should display the [UI robot icon](/ai/design-language#robot-icon) beside a text label that clearly communicates the intention of the action (for example, "Chat with AI" or "Ask with AI").
+If a UI element within the page content is an AI/ChatBot-supported feature, the ChatBot should be launched when users select the clearly-identified action. These kinds of actions should use the appropriate [AI icon and text label](/ai/design-language#iconography) that clearly communicates the intention of the action.
 
 <div class="ws-docs-content-img">
 ![Menu item for an AI action that launches a ChatBot.](./img/ai-action-inpage.svg)
