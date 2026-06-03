@@ -477,18 +477,6 @@ describe('Message bar', () => {
     expect(container.querySelector('.pf-m-primary')).toBeTruthy();
   });
 
-  it('Renders with class pf-v6-m-ai-indicator when hasAiIndicator is true', () => {
-    render(<MessageBar onSendMessage={jest.fn} hasAiIndicator />);
-
-    expect(screen.getByRole('textbox').closest('.pf-chatbot__message-bar')).toHaveClass('pf-v6-m-ai-indicator');
-  });
-
-  it('Renders with class pf-v6-m-thinking when isThinking is true', () => {
-    render(<MessageBar onSendMessage={jest.fn} isThinking />);
-
-    expect(screen.getByRole('textbox').closest('.pf-chatbot__message-bar')).toHaveClass('pf-v6-m-thinking');
-  });
-
   it('Renders with flex-basis of auto by default', () => {
     render(<MessageBar onSendMessage={jest.fn} />);
 

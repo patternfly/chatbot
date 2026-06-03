@@ -122,10 +122,6 @@ export interface MessageBarProps extends Omit<TextAreaProps, 'innerRef'> {
   additionalActions?: React.ReactNode;
   /** Flag indicating whether a multiline layout for the message input and actions should be forced. This can be used to always render actions below the message input. */
   forceMultilineLayout?: boolean;
-  /** @beta Flag indicating whether the message bar has an AI indicator border. */
-  hasAiIndicator?: boolean;
-  /** @beta Flag indicating whether the chatbot is thinking in response to a query, adding an animation to the message bar. */
-  isThinking?: boolean;
 }
 
 export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
@@ -160,8 +156,6 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
   isPrimary,
   additionalActions,
   forceMultilineLayout = false,
-  hasAiIndicator,
-  isThinking,
   ...props
 }: MessageBarProps) => {
   // Text Input
@@ -539,8 +533,6 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
       className={css(
         'pf-chatbot__message-bar',
         isPrimary && 'pf-m-primary',
-        hasAiIndicator && 'pf-v6-m-ai-indicator',
-        isThinking && 'pf-v6-m-thinking',
         isMultiline && 'pf-m-multiline',
         className
       )}
