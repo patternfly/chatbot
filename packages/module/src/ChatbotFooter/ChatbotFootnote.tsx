@@ -5,15 +5,8 @@
 import type { HTMLProps, FunctionComponent } from 'react';
 
 import { useState } from 'react';
-
-// Import Patternfly components
 import { Button, Content, ContentVariants, Flex, PopoverProps } from '@patternfly/react-core';
-
-// Import Patternfly icons
-import { InfoCircleIcon } from '@patternfly/react-icons/dist/esm/icons/info-circle-icon';
 import { ExternalLinkAltIcon } from '@patternfly/react-icons/dist/esm/icons/external-link-alt-icon';
-
-// Import Chatbot components
 import ChatbotPopover from '../ChatbotPopover/ChatbotPopover';
 
 export interface ChatbotFootnoteProps extends Omit<HTMLProps<HTMLDivElement>, 'popover'> {
