@@ -240,10 +240,11 @@ In this example, select the respective checkbox to toggle these features:
 
 ## Footer
 
-### Footnote with popover
+### Footnote
 
-A footnote can be placed in the ChatBot footer to communicate any legal disclaimers or information about the ChatBot.
-Footnotes can be static text or a button that opens a popover.
+A `<ChatbotFootnote>` can be placed in the ChatBot footer to communicate any legal disclaimers or information about the ChatBot.
+
+To create a static text footnote, pass the `label` property. To create a footnote button that triggers a popover, pass in both the `label` and `popover` properties.
 
 ```js file="./ChatbotFootnote.tsx"
 

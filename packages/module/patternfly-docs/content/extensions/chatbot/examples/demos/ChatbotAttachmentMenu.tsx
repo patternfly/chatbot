@@ -262,7 +262,7 @@ export const AttachmentMenuDemo: FunctionComponent = () => {
                   onAttachMenuToggleClick: onToggleClick
                 }}
               />
-              <ChatbotFootnote label="ChatBot uses AI. Check for mistakes." />
+              <ChatbotFootnote label="Always review AI-generated content prior to use." />
             </ChatbotFooter>
           </>
         </FileDropZone>

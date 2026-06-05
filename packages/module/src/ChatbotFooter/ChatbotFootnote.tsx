@@ -5,15 +5,8 @@
 import type { HTMLProps, FunctionComponent } from 'react';
 
 import { useState } from 'react';
-
-// Import Patternfly components
 import { Button, Content, ContentVariants, Flex, PopoverProps } from '@patternfly/react-core';
-
-// Import Patternfly icons
-import { InfoCircleIcon } from '@patternfly/react-icons/dist/esm/icons/info-circle-icon';
 import { ExternalLinkAltIcon } from '@patternfly/react-icons/dist/esm/icons/external-link-alt-icon';
-
-// Import Chatbot components
 import ChatbotPopover from '../ChatbotPopover/ChatbotPopover';
 
 export interface ChatbotFootnoteProps extends Omit<HTMLProps<HTMLDivElement>, 'popover'> {
@@ -38,6 +31,10 @@ export interface ChatbotFootnotePopover {
   link?: ChatbotFootnotePopoverLink;
   /** Props for PF Popover */
   popoverProps?: PopoverProps;
+  /** Flag indicating whether the popover close button is rendered. Either this or a cta that closes the popover
+   * must be present.
+   */
+  showClose?: boolean;
 }
 
 export interface ChatbotFootnotePopoverCTA {
@@ -66,10 +63,15 @@ export const ChatbotFootnote: FunctionComponent<ChatbotFootnoteProps> = ({
   className,
   ...props
 }: ChatbotFootnoteProps) => {
-  // Popover visibility state
+  if (!popover?.cta && !popover?.showClose) {
+    // eslint-disable-next-line no-console
+    console.error(
+      'ChatbotFootnote: You must provide either the popover.cta or popover.showClose props in order to render a button that can close the popover.'
+    );
+  }
+
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
-  // Define popover body content
   const popoverBodyContent = (
     <>
       {popover?.bannerImage && <img src={popover.bannerImage.src} alt={popover.bannerImage.alt} />}
@@ -121,11 +123,11 @@ export const ChatbotFootnote: FunctionComponent<ChatbotFootnoteProps> = ({
           minWidth={popover.popoverProps?.minWidth || '432'}
           maxWidth={popover.popoverProps?.maxWidth || '432'}
           distance={popover.popoverProps?.distance || 16}
-          showClose={false}
+          showClose={popover?.showClose || false}
           {...popover.popoverProps}
         >
-          <Button variant="link" size="sm">
-            {label} <InfoCircleIcon />
+          <Button aria-haspopup="dialog" isExpanded={isVisible} variant="link" size="sm">
+            {label}
           </Button>
         </ChatbotPopover>
       )}

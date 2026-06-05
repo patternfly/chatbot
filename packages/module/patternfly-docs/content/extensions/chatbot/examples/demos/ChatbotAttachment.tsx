@@ -273,7 +273,7 @@ export const BasicDemo: FunctionComponent = () => {
               }}
               onAttachRejected={handleAttachRejected}
             />
-            <ChatbotFootnote label="ChatBot uses AI. Check for mistakes." />
+            <ChatbotFootnote label="Always review AI-generated content prior to use." />
           </ChatbotFooter>
         </FileDropZone>
       </Chatbot>
