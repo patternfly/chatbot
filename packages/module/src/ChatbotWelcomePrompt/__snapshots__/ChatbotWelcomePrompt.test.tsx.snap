@@ -7,7 +7,7 @@ exports[`ChatbotWelcomePrompt should render welcome prompt 1`] = `
   >
     <h1
       class="pf-v6-c-content--h1"
-      data-ouia-component-id="OUIA-Generated-Content-1"
+      data-ouia-component-id="OUIA-Generated-Content-:r0:"
       data-ouia-component-type="PF6/Content"
       data-ouia-safe="true"
       data-pf-content="true"

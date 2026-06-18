@@ -11,7 +11,6 @@ import {
   Icon,
   MenuToggleProps
 } from '@patternfly/react-core';
-import EllipsisIcon from '@patternfly/react-icons/dist/esm/icons/ellipsis-v-icon';
 import RhUiEllipsisHorizontalFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-ellipsis-horizontal-fill-icon';
 
 export interface ChatbotHeaderOptionsDropdownProps extends Omit<DropdownProps, 'toggle'> {
