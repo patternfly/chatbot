@@ -9,10 +9,7 @@
   grid-template-columns: 1fr auto;
   gap: var(--pf-t--global--spacer--sm);
   position: relative; // this is so focus ring on parent chatbot doesn't include header
-  background-color: var(
-    --pf-t--global--background--color--floating--secondary--default,
-    --pf-t--global--background--color--secondary--default
-  );
+  background-color: var(--pf-t--global--background--color--floating--secondary--default);
   justify-content: space-between;
   padding: var(--pf-t--global--spacer--lg);
 
@@ -58,28 +55,13 @@
   }
 }
 
-// ============================================================================
-// Chatbot Display Mode - Fullscreen and Embedded
-// ============================================================================
-@media screen and (min-width: 64rem) {
-  .pf-chatbot--fullscreen,
-  .pf-chatbot--embedded {
-    .pf-chatbot__header {
-      background-color: var(--pf-t--global--background--color--primary--default);
-    }
-    .pf-chatbot__header__divider {
-      display: none;
-    }
-  }
-}
-
-// ============================================================================
-// Chatbot Display Mode - Docked and Drawer
-// ============================================================================
-.pf-chatbot--drawer,
-.pf-chatbot--docked {
+.pf-chatbot:not(.pf-chatbot--default) {
   .pf-chatbot__header {
-    background-color: var(--pf-t--global--background--color--secondary--floating--default);
+    background-color: var(--pf-t--global--background--color--secondary--default);
+
+    @at-root :where(.pf-v6-theme-glass) & {
+      background-color: var(--pf-t--global--background--color--glass--primary--default);
+    }
   }
 }
 
@@ -99,12 +81,6 @@
   }
 
   .pf-v6-c-button__icon,
-  .pf-v6-c-menu-toggle__icon,
-  .pf-v6-c-icon__content {
-    color: var(--pf-t--global--icon--color--subtle);
-  }
-
-  .pf-v6-c-button__icon,
   .pf-v6-c-menu-toggle__icon {
     display: flex;
     align-items: center;
@@ -119,13 +95,6 @@
     .pf-v6-c-icon__content {
       color: var(--pf-t--global--icon--color--regular);
     }
-  }
-}
-
-// Rotate icon
-.pf-chatbot__button--toggle-options {
-  svg {
-    transform: rotate(90deg);
   }
 }
 
@@ -168,19 +137,4 @@
 
 .pf-chatbot__header .pf-chatbot__actions .pf-v6-c-menu-toggle.pf-m-secondary.pf-m-compact {
   width: initial;
-}
-
-// ============================================================================
-// High contrast
-// ============================================================================
-:root:where(.pf-v6-theme-high-contrast) {
-  // Chatbot Display Mode - Fullscreen and Embedded
-  @media screen and (min-width: 64rem) {
-    .pf-chatbot--fullscreen,
-    .pf-chatbot--embedded {
-      .pf-chatbot__header__divider {
-        display: var(--pf-v6-hidden-visible--Display);
-      }
-    }
-  }
 }

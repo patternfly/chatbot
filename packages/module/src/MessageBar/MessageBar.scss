@@ -36,33 +36,24 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    border: var(--pf-t--global--border--width--control--default) solid transparent;
+    border: var(--pf-t--global--border--width--control--default) solid
+      var(--pf-t--global--border--color--control--default);
     pointer-events: none;
     transition:
       border-color var(--pf-t--global--motion--timing-function--accelerate) var(--pf-t--global--motion--duration--sm),
       border-width var(--pf-t--global--motion--timing-function--accelerate) var(--pf-t--global--motion--duration--sm);
   }
 
-  &::after {
-    border-color: var(--pf-t--global--border--color--control--default, transparent);
-  }
-
-  &.pf-m-primary {
-    &::after {
-      border-color: var(--pf-t--global--border--color--control--default, --pf-t--global--border--color--default);
-    }
-  }
-
   &:hover {
     &::after {
-      border-color: var(--pf-t--global--border--color--hover, --pf-t--global--border--color--default);
+      border-color: var(--pf-t--global--border--color--control--hover);
       border-width: var(--pf-t--global--border--width--control--hover);
     }
   }
 
   &:focus-within {
     &::after {
-      border-color: var(--pf-t--global--border--color--clicked, --pf-t--global--border--color--default);
+      border-color: var(--pf-t--global--border--color--control--clicked);
       border-width: var(--pf-t--global--border--width--control--clicked);
     }
   }
@@ -182,15 +173,4 @@
 // ============================================================================
 .pf-chatbot__message-bar.pf-m-multiline {
   border-radius: calc(var(--pf-t--global--border--radius--small) * 2);
-}
-
-// ============================================================================
-// High contrast styles
-// ============================================================================
-:root:where(.pf-v6-theme-high-contrast) {
-  .pf-chatbot__message-bar {
-    &::after {
-      border-color: var(--pf-t--global--border--color--control--default, --pf-t--global--border--color--default);
-    }
-  }
 }

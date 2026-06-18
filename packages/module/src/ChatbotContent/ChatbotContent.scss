@@ -3,10 +3,7 @@
 // ============================================================================
 .pf-chatbot__content {
   position: relative;
-  background-color: var(
-    --pf-t--global--background--color--floating--secondary--default,
-    --pf-t--global--background--color--secondary--default
-  );
+  background-color: var(--pf-t--global--background--color--floating--secondary--default);
   overflow-y: auto;
   overflow: hidden; // needed in Red Hat Developer Hub workspace
   flex: 1; // needed in Composer AI
@@ -21,6 +18,16 @@
   }
 }
 
+.pf-chatbot:not(.pf-chatbot--default) {
+  .pf-chatbot__content {
+    background-color: var(--pf-t--global--background--color--secondary--default);
+
+    @at-root :where(.pf-v6-theme-glass) & {
+      background-color: var(--pf-t--global--background--color--glass--primary--default);
+    }
+  }
+}
+
 // ============================================================================
 // Chatbot Display Mode - Fullscreen and Embedded
 // ============================================================================
@@ -29,7 +36,6 @@
   .pf-chatbot--fullscreen,
   .pf-chatbot--embedded {
     .pf-chatbot__content {
-      background-color: var(--pf-t--global--background--color--secondary--default);
       display: flex;
       justify-content: center;
     }

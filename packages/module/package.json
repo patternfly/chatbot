@@ -33,11 +33,19 @@
     "tag": "prerelease"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@patternfly/react-code-editor": "^6.1.0",
     "@patternfly/react-core": "^6.1.0",
     "@patternfly/react-icons": "^6.5.1",
     "@patternfly/react-styles": "^6.1.0",
     "@patternfly/react-table": "^6.1.0",
+=======
+    "@patternfly/react-code-editor": "^6.5.1",
+    "@patternfly/react-core": "^6.5.1",
+    "@patternfly/react-icons": "^6.5.1",
+    "@patternfly/react-styles": "^6.5.1",
+    "@patternfly/react-table": "^6.5.1",
+>>>>>>> 5d910d9 (feat(Chatbot): applied glass and felt tokens)
     "@segment/analytics-next": "^1.76.0",
     "clsx": "^2.1.0",
     "path-browserify": "^1.0.1",
@@ -66,8 +74,8 @@
   },
   "devDependencies": {
     "@octokit/rest": "^18.0.0",
-    "@patternfly/documentation-framework": "6.28.9",
-    "@patternfly/patternfly": "^6.1.0",
+    "@patternfly/documentation-framework": "^6.44.0",
+    "@patternfly/patternfly": "^6.5.2",
     "@patternfly/patternfly-a11y": "^5.0.0",
     "@types/dom-speech-recognition": "^0.0.4",
     "@types/react": "^18.2.61",
