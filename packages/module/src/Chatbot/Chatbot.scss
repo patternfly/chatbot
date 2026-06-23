@@ -44,11 +44,10 @@
   }
 
   &:not(&--default) {
-    background-color: var(--pf-t--global--background--color--secondary--default);
-
-    @at-root :where(.pf-v6-theme-glass) & {
-      background-color: var(--pf-t--global--background--color--glass--primary--default);
-    }
+    background-color: var(
+      --pf-t--global--background--color--glass--primary--default,
+      var(--pf-t--global--background--color--secondary--default)
+    );
   }
 }
 
@@ -170,11 +169,6 @@
 
   .pf-chatbot-container {
     border-radius: var(--pf-t--global--border--radius--sharp);
-  }
-
-  @media screen and (min-width: 768px) {
-    // only want if drawer open - drawer closes/stops being inline on mobile
-    border-left: var(--pf-t--global--border--width--divider--default) solid;
   }
 }
 

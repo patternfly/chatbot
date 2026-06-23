@@ -9,7 +9,6 @@
   inset-inline-end: var(--pf-t--global--spacer--lg);
   width: 30rem !important;
   height: 70vh;
-  background-color: var(--pf-t--global--background--color--secondary--default) !important;
 
   .pf-v6-c-modal-box__title {
     --pf-v6-c-modal-box__title--FontSize: var(--pf-t--global--font--size--heading--h3);
@@ -56,13 +55,6 @@
 }
 
 // ============================================================================
-// Chatbot Display Mode - Default
-// ============================================================================
-.pf-chatbot__chatbot-modal--default {
-  box-shadow: unset !important;
-}
-
-// ============================================================================
 // Chatbot Display Mode - Docked
 // ============================================================================
 .pf-chatbot__chatbot-modal--docked {
@@ -71,7 +63,6 @@
   inset-inline-end: 0;
   border-radius: 0 !important;
   --pf-v6-c-modal-box--MaxHeight: 100vh !important;
-  box-shadow: unset !important;
 }
 
 // ============================================================================
