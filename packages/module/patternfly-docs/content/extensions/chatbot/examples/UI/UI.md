@@ -165,6 +165,14 @@ To allow users to open and close the ChatBot window as needed, add a toggle.
 
 ```
 
+### Secondary color toggle
+
+Use `colorVariant="secondary"` for a light gray toggle with a default border. This is useful when the floating default style does not match the surrounding UI.
+
+```js file="./SecondaryChatbotToggle.tsx" isFullscreen
+
+```
+
 ### Custom toggle icon
 
 A custom icon can be passed to the toggle. To ensure the icon is visible in both light and dark themes, use an SVG image and set `fill="currentColor"`.
