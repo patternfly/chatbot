@@ -36,6 +36,7 @@ import DeepThinking, { DeepThinkingProps } from '../DeepThinking';
 import ToolCall, { ToolCallProps } from '../ToolCall';
 import MarkdownContent from '../MarkdownContent';
 import { css } from '@patternfly/react-styles';
+import RhUiAiChatbotIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-ai-chatbot-icon';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -326,6 +327,34 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
     );
   };
 
+  /* We are using an empty alt tag intentionally in order to reduce noise on screen readers */
+  const defaultAvatar = (
+    <Avatar
+      className={`pf-chatbot__message-avatar ${hasRoundAvatar ? 'pf-chatbot__message-avatar--round' : ''} ${avatarClassName ? avatarClassName : ''}`}
+      src={avatar}
+      alt=""
+      {...avatarProps}
+    />
+  );
+
+  const botAvatar = (
+    <Avatar
+      className={`pf-chatbot__message-avatar ${hasRoundAvatar ? 'pf-chatbot__message-avatar--round' : ''} ${avatarClassName ? avatarClassName : ''}`}
+      alt=""
+      {...avatarProps}
+    >
+      <RhUiAiChatbotIcon />
+    </Avatar>
+  );
+
+  let _avatar: ReactNode | undefined;
+
+  if (avatar) {
+    _avatar = defaultAvatar;
+  } else if (role === 'bot') {
+    _avatar = botAvatar;
+  }
+
   return (
     <section
       aria-label={`Message from ${role} - ${dateString}`}
@@ -335,15 +364,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
       ref={innerRef}
       {...props}
     >
-      {/* We are using an empty alt tag intentionally in order to reduce noise on screen readers */}
-      {avatar && (
-        <Avatar
-          className={`pf-chatbot__message-avatar ${hasRoundAvatar ? 'pf-chatbot__message-avatar--round' : ''} ${avatarClassName ? avatarClassName : ''}`}
-          src={avatar}
-          alt=""
-          {...avatarProps}
-        />
-      )}
+      {_avatar && _avatar}
       <div className="pf-chatbot__message-contents">
         {isMetadataVisible && (
           <div className="pf-chatbot__message-meta">
