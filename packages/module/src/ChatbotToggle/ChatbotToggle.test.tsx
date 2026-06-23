@@ -43,4 +43,8 @@ describe('ChatbotToggle', () => {
     expect(screen.getByRole('button')).toHaveClass('pf-chatbot__button');
     expect(screen.getByRole('button')).toHaveClass('test');
   });
+  it('should handle colorVariant secondary correctly', () => {
+    render(<ChatbotToggle tooltipLabel="Chatbot" colorVariant="secondary" />);
+    expect(screen.getByRole('button')).toHaveClass('pf-chatbot__button--secondary');
+  });
 });

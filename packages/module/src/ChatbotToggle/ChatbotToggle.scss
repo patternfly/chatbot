@@ -5,14 +5,17 @@
   position: fixed;
   inset-block-end: var(--pf-t--global--spacer--md);
   inset-inline-end: var(--pf-t--global--spacer--md);
-  background-color: var(--pf-t--global--background--color--inverse--default);
-  --pf-v6-c-button__icon--Color: var(--pf-t--global--icon--color--inverse);
+  --pf-v6-c-button--m-plain--BackgroundColor: var(--pf-t--global--background--color--floating--default);
+  --pf-v6-c-button--m-plain--hover--BackgroundColor: var(--pf-t--global--background--color--floating--hover);
+  --pf-v6-c-button--m-plain--m-clicked--BackgroundColor: var(--pf-t--global--background--color--floating--clicked);
+  --pf-v6-c-button--m-plain--BorderColor: var(--pf-t--global--border--color--default);
+  --pf-v6-c-button--m-plain--hover--BorderColor: var(--pf-t--global--border--color--default);
+  --pf-v6-c-button--m-plain--m-clicked--BorderColor: var(--pf-t--global--border--color--default);
+  --pf-v6-c-button--m-plain--BorderWidth: 1px;
+  --pf-v6-c-button--m-plain--hover--BorderWidth: 1px;
+  --pf-v6-c-button--m-plain--m-clicked--BorderWidth: 1px;
   padding: var(--pf-t--global--spacer--md);
-
-  &:hover,
-  &:focus {
-    background-color: var(--pf-t--color--gray--70);
-  }
+  box-shadow: var(--pf-t--global--box-shadow--sm);
 
   .pf-v6-c-button__icon {
     display: contents;
@@ -22,6 +25,20 @@
   svg {
     width: var(--pf-t--global--spacer--lg);
     height: var(--pf-t--global--spacer--lg);
+  }
+
+  &--active {
+    --pf-v6-c-button--m-plain--BackgroundColor: var(--pf-t--global--background--color--floating--clicked);
+  }
+
+  &--secondary {
+    --pf-v6-c-button--m-plain--BackgroundColor: var(--pf-t--global--background--color--secondary--default);
+    --pf-v6-c-button--m-plain--hover--BackgroundColor: var(--pf-t--global--background--color--secondary--hover);
+    --pf-v6-c-button--m-plain--m-clicked--BackgroundColor: var(--pf-t--global--background--color--secondary--clicked);
+
+    &.pf-chatbot__button--active {
+      --pf-v6-c-button--m-plain--BackgroundColor: var(--pf-t--global--background--color--secondary--clicked);
+    }
   }
 }
 
