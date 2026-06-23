@@ -87,6 +87,8 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   name?: string;
   /** Avatar src for the user */
   avatar?: string;
+  /** Flag indicating whether the avatar is hidden */
+  isAvatarHidden?: boolean;
   /** Timestamp for the message */
   timestamp?: string;
   /** Set this to true if message is being loaded */
@@ -215,6 +217,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   extraContent,
   name,
   avatar,
+  isAvatarHidden = false,
   timestamp,
   isLoading,
   actions,
@@ -327,32 +330,27 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
     );
   };
 
-  /* We are using an empty alt tag intentionally in order to reduce noise on screen readers */
-  const defaultAvatar = (
-    <Avatar
-      className={`pf-chatbot__message-avatar ${hasRoundAvatar ? 'pf-chatbot__message-avatar--round' : ''} ${avatarClassName ? avatarClassName : ''}`}
-      src={avatar}
-      alt=""
-      {...avatarProps}
-    />
+  const avatarClasses = css(
+    `pf-chatbot__message-avatar ${hasRoundAvatar ? 'pf-chatbot__message-avatar--round' : ''} ${avatarClassName ? avatarClassName : ''}`
   );
 
+  /* We are using an empty alt tag intentionally in order to reduce noise on screen readers */
+  const defaultAvatar = <Avatar className={avatarClasses} src={avatar} alt="" {...avatarProps} />;
+
   const botAvatar = (
-    <Avatar
-      className={`pf-chatbot__message-avatar ${hasRoundAvatar ? 'pf-chatbot__message-avatar--round' : ''} ${avatarClassName ? avatarClassName : ''}`}
-      alt=""
-      {...avatarProps}
-    >
+    <Avatar className={avatarClasses} alt="" {...avatarProps}>
       <RhUiAiChatbotIcon />
     </Avatar>
   );
 
   let _avatar: ReactNode | undefined;
 
-  if (avatar) {
-    _avatar = defaultAvatar;
-  } else if (role === 'bot') {
-    _avatar = botAvatar;
+  if (!isAvatarHidden) {
+    if (avatar) {
+      _avatar = defaultAvatar;
+    } else if (role === 'bot') {
+      _avatar = botAvatar;
+    }
   }
 
   return (
