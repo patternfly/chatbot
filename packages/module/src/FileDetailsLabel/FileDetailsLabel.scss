@@ -9,7 +9,7 @@
   padding: var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--md) var(--pf-t--global--spacer--sm)
     var(--pf-t--global--spacer--md) !important;
   gap: var(--pf-t--global--spacer--sm);
-  --pf-v6-c-label--m-clickable--hover--BackgroundColor: var(--pf-t--global--background--color--secondary--hover);
+  --pf-v6-c-label--m-clickable--hover--BackgroundColor: var(--pf-t--global--background--color--primary--hover);
   --pf-v6-c-label--MaxWidth: 12rem !important;
   .pf-v6-c-truncate {
     max-width: 9ch;
@@ -23,12 +23,17 @@
 }
 
 .pf-v6-c-label.pf-chatbot__file-label {
-  --pf-v6-c-label--BackgroundColor: var(--pf-t--global--background--color--secondary--default);
+  --pf-v6-c-label--BackgroundColor: var(--pf-t--global--background--color--primary--default);
   --pf-v6-c-label--BorderRadius: var(--pf-t--global--border--radius--small);
   --pf-v6-c-label--Color: var(--pf-t--global--text--color--regular);
 
   .pf-chatbot__file-label > .pf-v6-c-label__content {
     --pf-v6-c-label--Color: var(--pf-t--global--background--color--primary--default);
+  }
+
+  @at-root :where(.pf-v6-theme-glass) & {
+    --pf-v6-c-label--BackgroundColor: var(--pf-t--global--background--color--secondary--default);
+    --pf-v6-c-label--m-clickable--hover--BackgroundColor: var(--pf-t--global--background--color--secondary--hover);
   }
 }
 
