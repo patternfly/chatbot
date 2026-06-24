@@ -9,10 +9,7 @@
   flex-direction: column;
   width: 30rem;
   height: 70vh;
-  background-color: var(
-    --pf-t--global--background--color--floating--secondary--default,
-    --pf-t--global--background--color--secondary--default
-  );
+  background-color: var(--pf-t--global--background--color--floating--secondary--default);
   border-radius: var(--pf-t--global--border--radius--medium);
   box-shadow: var(--pf-t--global--box-shadow--lg);
   font-size: var(--pf-t--global--font--size--md);
@@ -31,9 +28,8 @@
     opacity: 1;
     transform: translateY(0);
   }
-  // for high contrast support
-  border: var(--pf-t--global--border--width--high-contrast--regular) solid
-    var(--pf-t--global--border--color--high-contrast);
+
+  border: var(--pf-t--global--border--width--regular) solid var(--pf-t--global--border--color--subtle);
 
   // 32 rem is the width of the overlay chatbot plus the insets
   // if the screen is smaller, we want to be 100%
@@ -46,23 +42,40 @@
   @media screen and (max-height: 518px) {
     overflow: auto;
   }
+
+  &:not(&--default) {
+    background-color: var(
+      --pf-t--global--background--color--glass--primary--default,
+      var(--pf-t--global--background--color--secondary--default)
+    );
+  }
+}
+
+:root:where(.pf-v6-theme-felt):not(.pf-v6-theme-glass) {
+  .pf-chatbot.pf-chatbot--default {
+    box-shadow: var(--pf-t--global--box-shadow--md);
+  }
 }
 
 // ============================================================================
 // Chatbot Display Mode - Docked
 // ============================================================================
 .pf-chatbot--docked {
-  // for high contrast support
   border: unset;
-  border-left: var(--pf-t--global--border--width--high-contrast--regular) solid
-    var(--pf-t--global--border--color--high-contrast);
+  border-left: var(--pf-t--global--border--width--regular) solid var(--pf-t--global--border--color--subtle);
   inset-block-end: 0;
   inset-inline-end: 0;
   padding: 0;
   height: 100%;
   border-radius: 0;
-  box-shadow: var(--pf-t--global--box-shadow--lg--left);
   overflow: inherit;
+
+  @at-root :where(.pf-v6-theme-glass) & {
+    border-left: var(--pf-t--global--border--width--glass--default) solid
+      var(--pf-t--global--border--color--glass--default);
+    box-shadow: var(--pf-t--global--box-shadow--md--left);
+    backdrop-filter: var(--pf-t--global--background--filter--glass--blur--primary);
+  }
 
   // 30rem is the width of the docked chatbot
   // if the screen is smaller, we want to be 100%
@@ -75,9 +88,6 @@
 // Chatbot Display Mode - Fullscreen
 // ============================================================================
 .pf-chatbot--fullscreen {
-  background-color: var(--pf-t--global--background--color--secondary--default);
-
-  // for high contrast support
   border: unset;
   inset-block-end: 0;
   inset-inline-end: 0;
@@ -86,21 +96,27 @@
   height: 100%;
   border-radius: 0;
   box-shadow: none;
+
+  @at-root :where(.pf-v6-theme-glass) & {
+    backdrop-filter: var(--pf-t--global--background--filter--glass--blur--primary);
+  }
 }
 
 // ============================================================================
 // Chatbot Display Mode - Embedded
 // ============================================================================
 .pf-chatbot--embedded {
-  background-color: var(--pf-t--global--background--color--secondary--default);
-
-  // for high contrast support
-  border: unset;
   position: static;
   width: 100%;
   min-height: 100%;
   border-radius: 0;
-  box-shadow: none;
+  box-shadow: var(--pf-t--global--box-shadow--lg);
+
+  @at-root :where(.pf-v6-theme-glass) & {
+    border: var(--pf-t--global--border--width--glass--default) solid var(--pf-t--global--border--color--glass--default);
+    box-shadow: var(--pf-t--global--box-shadow--md);
+    backdrop-filter: var(--pf-t--global--background--filter--glass--blur--primary);
+  }
 }
 
 .pf-chatbot-container {
@@ -143,19 +159,19 @@
   height: 100%;
   border-radius: 0;
   box-shadow: none;
-  border-color: var(--pf-t--global--border--color--default);
+  border-color: var(--pf-t--global--border--color--subtle);
+
+  @at-root :where(.pf-v6-theme-glass) & {
+    border: var(--pf-t--global--border--width--glass--default) solid var(--pf-t--global--border--color--glass--default);
+    box-shadow: var(--pf-t--global--box-shadow--md);
+    backdrop-filter: var(--pf-t--global--background--filter--glass--blur--primary);
+  }
 
   .pf-chatbot-container {
     border-radius: var(--pf-t--global--border--radius--sharp);
   }
-
-  @media screen and (min-width: 768px) {
-    // only want if drawer open - drawer closes/stops being inline on mobile
-    border-left: var(--pf-t--global--border--width--divider--default) solid;
-  }
 }
 
-// for high contrast support
 :root:where(.pf-v6-theme-high-contrast) {
   .pf-chatbot--drawer {
     border: unset;

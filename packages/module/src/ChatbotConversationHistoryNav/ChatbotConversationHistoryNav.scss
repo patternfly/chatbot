@@ -203,6 +203,20 @@
   }
 }
 
+.pf-chatbot:is(.pf-chatbot--drawer, .pf-chatbot--docked) .pf-chatbot__history {
+  // .pf-v6-c-menu {
+  //   @at-root :where(.pf-v6-theme-glass) & {
+  //     --pf-v6-c-menu--BackgroundColor: var(--pf-t--global--background--color--floating--default);
+  //   }
+  // }
+
+  // .pf-chatbot__menu-item-header > .pf-v6-c-menu__group-title {
+  //   @at-root :where(.pf-v6-theme-glass) & {
+  //     background-color: var(--pf-t--global--background--color--floating--default);
+  //   }
+  // }
+}
+
 // ============================================================================
 // Chatbot Display Mode - Docked
 // ============================================================================

@@ -20,7 +20,7 @@ const MessageDivider: FunctionComponent<MessageDividerProps> = ({
     return (
       <div className="pf-chatbot__message-divider pf-m-divider pf-m-wrap" {...props}>
         <Divider />
-        <Label variant="outline">{content}</Label>
+        <Label>{content}</Label>
       </div>
     );
   }

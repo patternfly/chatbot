@@ -30,6 +30,11 @@
   .pf-chatbot__file-label > .pf-v6-c-label__content {
     --pf-v6-c-label--Color: var(--pf-t--global--background--color--primary--default);
   }
+
+  @at-root :where(.pf-v6-theme-glass) & {
+    --pf-v6-c-label--BackgroundColor: var(--pf-t--global--background--color--secondary--default);
+    --pf-v6-c-label--m-clickable--hover--BackgroundColor: var(--pf-t--global--background--color--secondary--hover);
+  }
 }
 
 .pf-v6-theme-dark {

@@ -6,10 +6,7 @@
 // ============================================================================
 .pf-chatbot__footer {
   --pf-chatbot__footer--RowGap: var(--pf-t--global--spacer--md);
-  background-color: var(
-    --pf-t--global--background--color--floating--secondary--default,
-    --pf-t--global--background--color--secondary--default
-  );
+  background-color: var(--pf-t--global--background--color--floating--secondary--default);
   display: flex;
   flex-direction: column;
   row-gap: var(--pf-chatbot__footer--RowGap);
@@ -19,6 +16,17 @@
     background-color: var(--pf-t--global--background--color--primary--default);
   }
 }
+
+.pf-chatbot:not(.pf-chatnot--default) {
+  .pf-chatbot__footer {
+    background-color: var(--pf-t--global--background--color--secondary--default);
+
+    @at-root :where(.pf-v6-theme-glass) & {
+      background-color: var(--pf-t--global--background--color--glass--primary--default);
+    }
+  }
+}
+
 .pf-chatbot__footer-container {
   padding: 0 var(--pf-t--global--spacer--lg) var(--pf-t--global--spacer--lg) var(--pf-t--global--spacer--lg);
   display: flex;
@@ -35,12 +43,6 @@
   .pf-chatbot--fullscreen {
     .pf-chatbot__footer {
       align-items: center;
-      .pf-v6-c-divider {
-        display: none;
-      }
-    }
-    .pf-chatbot__footer {
-      background-color: var(--pf-t--global--background--color--secondary--default);
     }
 
     .pf-chatbot__footer-container {

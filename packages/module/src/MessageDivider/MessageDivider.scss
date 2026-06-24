@@ -12,30 +12,28 @@
   }
 
   .pf-v6-c-label {
-    --pf-v6-c-label--BackgroundColor: var(--pf-t--global--background--color--tertiary--default); 
-    --pf-v6-c-label--BorderColor: var(--pf-t--global--border--color--default); 
-    --pf-v6-c-label--PaddingInlineStart: var(--pf-t--global--spacer--action--horizontal--compact); 
+    --pf-v6-c-label--BorderColor: var(--pf-t--global--border--color--default);
+    --pf-v6-c-label--PaddingInlineStart: var(--pf-t--global--spacer--action--horizontal--compact);
     --pf-v6-c-label--PaddingInlineEnd: var(--pf-t--global--spacer--action--horizontal--compact);
-    
+
     .pf-v6-c-label__text {
       font-weight: var(--pf-t--global--font--weight--body--bold);
       text-align: center;
-    }  
+    }
   }
 
-  &.pf-m-divider {    
+  &.pf-m-divider {
     .pf-v6-c-label {
-      --pf-v6-c-label--BackgroundColor: var(--pf-t--global--background--color--secondary--default); 
       --pf-v6-c-label--MaxWidth: 75%;
 
       justify-self: center;
     }
-    
+
     .pf-v6-c-divider {
       align-self: center;
     }
   }
-  
+
   &.pf-m-wrap {
     .pf-v6-c-label,
     .pf-v6-c-label__text {
