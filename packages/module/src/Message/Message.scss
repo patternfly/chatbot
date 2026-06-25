@@ -11,10 +11,15 @@
   // --------------------------------------------------------------------------
   &-avatar.pf-v6-c-avatar {
     --pf-v6-c-avatar--BorderRadius: 0;
+    flex-shrink: 0;
     position: sticky;
     top: var(--pf-t--global--spacer--md);
     object-fit: cover;
     pointer-events: none; // prevent dragging - interferes with FileDropZone
+  }
+
+  &-avatar.pf-v6-c-avatar:not(.pf-m-colorful) {
+    --pf-v6-c-avatar--BackgroundColor: var(--pf-t--global--background--color--floating--default);
   }
 
   &-avatar.pf-chatbot__message-avatar--round.pf-v6-c-avatar {
