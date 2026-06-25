@@ -41,7 +41,6 @@ import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import { BarsIcon } from '@patternfly/react-icons';
 import userAvatar from '../Messages/user_avatar.svg';
-import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
 
@@ -102,7 +101,6 @@ const initialMessages: MessageProps[] = [
     role: 'bot',
     content: markdown,
     name: 'Bot',
-    avatar: patternflyAvatar,
     timestamp: date.toLocaleString(),
     actions: {
       // eslint-disable-next-line no-console
@@ -218,7 +216,6 @@ export const EmbeddedChatbotDemo: FunctionComponent = () => {
       role: 'bot',
       content: 'API response goes here',
       name: 'Bot',
-      avatar: patternflyAvatar,
       isLoading: true,
       timestamp: date.toLocaleString()
     });
@@ -238,7 +235,6 @@ export const EmbeddedChatbotDemo: FunctionComponent = () => {
         role: 'bot',
         content: 'API response goes here',
         name: 'Bot',
-        avatar: patternflyAvatar,
         isLoading: false,
         actions: {
           // eslint-disable-next-line no-console

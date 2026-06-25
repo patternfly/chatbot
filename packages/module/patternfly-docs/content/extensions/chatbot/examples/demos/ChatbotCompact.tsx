@@ -30,7 +30,6 @@ import PFHorizontalLogoReverse from '../UI/PF-HorizontalLogo-Reverse.svg';
 import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
-import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 
 const footnoteProps = {
   label: 'Always review AI-generated content prior to use.'
@@ -89,7 +88,6 @@ const initialMessages: MessageProps[] = [
     role: 'bot',
     content: markdown,
     name: 'Bot',
-    avatar: patternflyAvatar,
     timestamp: date.toLocaleString(),
     actions: {
       // eslint-disable-next-line no-console
@@ -208,7 +206,6 @@ export const ChatbotDemo: FunctionComponent = () => {
       content: 'API response goes here',
       name: 'Bot',
       isLoading: true,
-      avatar: patternflyAvatar,
       timestamp: date.toLocaleString()
     });
     setMessages(newMessages);
@@ -228,7 +225,6 @@ export const ChatbotDemo: FunctionComponent = () => {
         content: 'API response goes here',
         name: 'Bot',
         isLoading: false,
-        avatar: patternflyAvatar,
         timestamp: date.toLocaleString(),
         actions: {
           // eslint-disable-next-line no-console

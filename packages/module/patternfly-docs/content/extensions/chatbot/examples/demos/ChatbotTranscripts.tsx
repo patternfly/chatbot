@@ -30,7 +30,6 @@ import PFHorizontalLogoReverse from '../UI/PF-HorizontalLogo-Reverse.svg';
 import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
-import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
 import saveAs from 'file-saver';
@@ -182,7 +181,6 @@ export const ChatbotDemo: FunctionComponent = () => {
       role: 'bot',
       content: markdown,
       name: 'Bot',
-      avatar: patternflyAvatar,
       timestamp: date.toLocaleString(),
       actions: {
         download: {
@@ -193,7 +191,6 @@ export const ChatbotDemo: FunctionComponent = () => {
                 role: 'bot',
                 content: markdown,
                 name: 'Bot',
-                avatar: patternflyAvatar,
                 timestamp: date.toLocaleString()
               },
               selectedModel
@@ -292,7 +289,6 @@ export const ChatbotDemo: FunctionComponent = () => {
       content: 'API response goes here',
       name: 'Bot',
       isLoading: true,
-      avatar: patternflyAvatar,
       timestamp: date.toLocaleString()
     });
     setMessages(newMessages);
@@ -308,7 +304,6 @@ export const ChatbotDemo: FunctionComponent = () => {
       loadedMessages.pop();
       const id = generateId();
       const timestamp = date.toLocaleString();
-      const avatar = patternflyAvatar;
       const name = 'Bot';
       const content = 'API response goes here';
       const role = 'bot';
@@ -318,7 +313,6 @@ export const ChatbotDemo: FunctionComponent = () => {
         content,
         name,
         isLoading: false,
-        avatar,
         timestamp,
         actions: {
           download: {
@@ -329,7 +323,6 @@ export const ChatbotDemo: FunctionComponent = () => {
                   role,
                   content,
                   name,
-                  avatar,
                   timestamp
                 },
                 selectedModel

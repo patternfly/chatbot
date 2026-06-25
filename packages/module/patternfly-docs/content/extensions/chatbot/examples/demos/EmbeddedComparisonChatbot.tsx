@@ -22,7 +22,6 @@ import ChatbotHeader, { ChatbotHeaderMain } from '@patternfly/chatbot/dist/dynam
 import Compare from '@patternfly/chatbot/dist/dynamic/Compare';
 import { BarsIcon } from '@patternfly/react-icons';
 import userAvatar from '../Messages/user_avatar.svg';
-import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
 
@@ -53,7 +52,6 @@ export const CompareChild = ({ name, input, hasNewInput, setIsSendButtonDisabled
         timestamp: `${date?.toLocaleDateString()} ${date?.toLocaleTimeString()}`
       });
       newMessages.push({
-        avatar: patternflyAvatar,
         id: generateId(),
         name,
         role: 'bot',
@@ -76,7 +74,6 @@ export const CompareChild = ({ name, input, hasNewInput, setIsSendButtonDisabled
           role: 'bot',
           content: `API response from ${name} goes here`,
           name,
-          avatar: patternflyAvatar,
           isLoading: false,
           actions: {
             // eslint-disable-next-line no-console
