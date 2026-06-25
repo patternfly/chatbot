@@ -85,7 +85,7 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   extraContent?: MessageExtraContent;
   /** Name of the user */
   name?: string;
-  /** Avatar src for the user */
+  /** Avatar for the user. Pass a string for an image src, or a ReactNode for custom content like an svg or icon. */
   avatar?: string | ReactNode;
   /** Flag indicating whether the avatar is hidden */
   isAvatarHidden?: boolean;

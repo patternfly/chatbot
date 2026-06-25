@@ -333,6 +333,19 @@ _Italic text, formatted with single underscores_
         avatar={userAvatar}
         avatarProps={{ isBordered: true }}
       />
+      <Message
+        name="User"
+        role="user"
+        content="This is a user message with `avatarProps` set to set an avatar color."
+        avatar={userAvatar}
+        avatarProps={{ color: 'blue' }}
+      />
+      <Message
+        name="User"
+        role="user"
+        content="This is a user message with `avatarProps` set to set an avatar with initials."
+        avatarProps={{ initials: 'A' }}
+      />
       <Message name="User" role="user" content="This is a user message with no avatar" />
       <Message
         name="User"
