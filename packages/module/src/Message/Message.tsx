@@ -336,7 +336,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
 
   /* We are using an empty alt tag intentionally in order to reduce noise on screen readers */
   const botAvatar = (
-    <Avatar className={avatarClasses} alt="" {...avatarProps}>
+    <Avatar className={avatarClasses} alt="" isBordered {...avatarProps}>
       <RhUiAiChatbotIcon />
     </Avatar>
   );
