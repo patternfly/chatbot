@@ -336,15 +336,8 @@ _Italic text, formatted with single underscores_
       <Message
         name="User"
         role="user"
-        content="This is a user message with `avatarProps` set to set an avatar color."
-        avatar={userAvatar}
-        avatarProps={{ color: 'blue' }}
-      />
-      <Message
-        name="User"
-        role="user"
-        content="This is a user message with `avatarProps` set to set an avatar with initials."
-        avatarProps={{ initials: 'A' }}
+        content="This is a user message with `avatarProps` set to set an avatar with initials and a blue color."
+        avatarProps={{ initials: 'A', color: 'blue' }}
       />
       <Message name="User" role="user" content="This is a user message with no avatar" />
       <Message
