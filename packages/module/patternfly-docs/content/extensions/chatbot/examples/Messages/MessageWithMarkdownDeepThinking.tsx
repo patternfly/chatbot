@@ -1,12 +1,10 @@
 import { FunctionComponent } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
-import patternflyAvatar from './patternfly_avatar.jpg';
 
 export const MessageWithMarkdownDeepThinkingExample: FunctionComponent = () => (
   <Message
     name="Bot"
     role="bot"
-    avatar={patternflyAvatar}
     content="This example shows how to use Markdown formatting in deep thinking content. Note the use of shouldRetainStyles to maintain proper formatting:"
     deepThinking={{
       shouldRetainStyles: true,

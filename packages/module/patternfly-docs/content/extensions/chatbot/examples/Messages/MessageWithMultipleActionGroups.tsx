@@ -1,14 +1,12 @@
 import { FunctionComponent } from 'react';
 
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
-import patternflyAvatar from './patternfly_avatar.jpg';
 
 export const MessageWithMultipleActionGroups: FunctionComponent = () => (
   <>
     <Message
       name="Bot"
       role="bot"
-      avatar={patternflyAvatar}
       content="This message contains multiple action groups, each with their own selection persistence: \n1. Feedback actions (thumbs up/down) with persistent selections \n2. Utility actions (copy, download) with non-persistent selections \n3. Listen action with persistent selection"
       actions={[
         {
@@ -41,7 +39,6 @@ export const MessageWithMultipleActionGroups: FunctionComponent = () => (
     <Message
       name="Bot"
       role="bot"
-      avatar={patternflyAvatar}
       content="This message contains multiple action groups, both of which persist selections."
       actions={[
         {

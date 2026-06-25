@@ -1,14 +1,12 @@
 import { FunctionComponent } from 'react';
 
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
-import patternflyAvatar from './patternfly_avatar.jpg';
 
 export const ResponseActionExample: FunctionComponent = () => (
   <>
     <Message
       name="Bot"
       role="bot"
-      avatar={patternflyAvatar}
       content="I updated your account with those settings. You're ready to set up your first dashboard!"
       actions={{
         // eslint-disable-next-line no-console
@@ -27,7 +25,6 @@ export const ResponseActionExample: FunctionComponent = () => (
       name="Bot"
       role="bot"
       showActionsOnInteraction
-      avatar={patternflyAvatar}
       content="This message has response actions visually hidden until you hover over the message via mouse, or an action would receive focus via keyboard."
       actions={{
         // eslint-disable-next-line no-console

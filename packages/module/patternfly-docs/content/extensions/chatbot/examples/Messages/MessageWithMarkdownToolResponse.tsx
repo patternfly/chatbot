@@ -1,6 +1,5 @@
 import { useState, FunctionComponent, MouseEvent as ReactMouseEvent } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
-import patternflyAvatar from './patternfly_avatar.jpg';
 import { CopyIcon, WrenchIcon } from '@patternfly/react-icons';
 import {
   Button,
@@ -35,7 +34,6 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
     <Message
       name="Bot"
       role="bot"
-      avatar={patternflyAvatar}
       content="This example shows how to use Markdown formatting in tool response content. Note the use of shouldRetainStyles to maintain proper formatting:"
       toolResponse={{
         shouldRetainStyles: true,

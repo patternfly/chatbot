@@ -1,6 +1,5 @@
 import { useState, FunctionComponent, MouseEvent as ReactMouseEvent } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
-import patternflyAvatar from './patternfly_avatar.jpg';
 import { CopyIcon, WrenchIcon } from '@patternfly/react-icons';
 import {
   Button,
@@ -27,7 +26,6 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
       <Message
         name="Bot"
         role="bot"
-        avatar={patternflyAvatar}
         content="This message has a body description that's within the recommended limit of 2 lines:"
         toolResponse={{
           toggleContent: 'Tool response: toolName',
@@ -138,7 +136,6 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
       <Message
         name="Bot"
         role="bot"
-        avatar={patternflyAvatar}
         content="This message has a tool response that is collapsed by default:"
         toolResponse={{
           isDefaultExpanded: false,

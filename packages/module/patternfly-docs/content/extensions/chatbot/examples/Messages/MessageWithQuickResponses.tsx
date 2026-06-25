@@ -1,6 +1,5 @@
 import { FunctionComponent } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
-import patternflyAvatar from './patternfly_avatar.jpg';
 import { CopyIcon, WrenchIcon } from '@patternfly/react-icons';
 
 export const MessageWithQuickResponsesExample: FunctionComponent = () => (
@@ -8,7 +7,6 @@ export const MessageWithQuickResponsesExample: FunctionComponent = () => (
     <Message
       name="Bot"
       role="bot"
-      avatar={patternflyAvatar}
       content="Did you clear your cache?"
       quickResponses={[
         { id: '1', content: 'Yes', onClick: () => alert('Clicked yes') },
@@ -18,7 +16,6 @@ export const MessageWithQuickResponsesExample: FunctionComponent = () => (
     <Message
       name="Bot"
       role="bot"
-      avatar={patternflyAvatar}
       content="What browser are you noticing the issue in?"
       quickResponses={[
         { id: '1', content: 'Microsoft Edge', onClick: () => alert('Clicked Edge') },
@@ -31,7 +28,6 @@ export const MessageWithQuickResponsesExample: FunctionComponent = () => (
     <Message
       name="Bot"
       role="bot"
-      avatar={patternflyAvatar}
       content="Welcome back, User! How can I help you today?"
       quickResponses={[
         { id: '1', content: 'Help me with an access issue', onClick: () => alert('Clicked id 1') },
@@ -44,7 +40,6 @@ export const MessageWithQuickResponsesExample: FunctionComponent = () => (
     <Message
       name="Bot"
       role="bot"
-      avatar={patternflyAvatar}
       content="Did you clear your cache?"
       quickResponses={[
         { id: '1', content: 'Yes', isDisabled: true },
@@ -54,7 +49,6 @@ export const MessageWithQuickResponsesExample: FunctionComponent = () => (
     <Message
       name="Bot"
       role="bot"
-      avatar={patternflyAvatar}
       content="Welcome back, User! How can I help you today?"
       quickResponses={[
         { id: '1', content: 'Help me with an access issue', onClick: () => alert('Clicked id 1') },
@@ -67,7 +61,6 @@ export const MessageWithQuickResponsesExample: FunctionComponent = () => (
     <Message
       name="Bot"
       role="bot"
-      avatar={patternflyAvatar}
       content="Example with compact responses"
       quickResponses={[
         { id: '1', content: 'Yes', onClick: () => alert('Clicked id 1') },
@@ -78,7 +71,6 @@ export const MessageWithQuickResponsesExample: FunctionComponent = () => (
     <Message
       name="Bot"
       role="bot"
-      avatar={patternflyAvatar}
       content="Example with icons"
       quickResponses={[
         { id: '1', content: 'Update your settings', onClick: () => alert('Clicked yes'), icon: <WrenchIcon /> },

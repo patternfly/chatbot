@@ -1,6 +1,5 @@
 import { FunctionComponent, MouseEvent as ReactMouseEvent, KeyboardEvent as ReactKeyboardEvent } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
-import patternflyAvatar from './patternfly_avatar.jpg';
 import { Button, Flex, FlexItem, Label, Popover } from '@patternfly/react-core';
 import { OutlinedQuestionCircleIcon } from '@patternfly/react-icons';
 
@@ -31,7 +30,6 @@ export const MessageWithSourcesExample: FunctionComponent = () => {
       <Message
         name="Bot"
         role="bot"
-        avatar={patternflyAvatar}
         content="This example has a custom subtitle and footer with no pagination"
         sources={{
           sources: [
@@ -83,7 +81,6 @@ export const MessageWithSourcesExample: FunctionComponent = () => {
       <Message
         name="Bot"
         role="bot"
-        avatar={patternflyAvatar}
         content="This example has a body description that's within the recommended limit of 2 lines:"
         sources={{
           sources: [
@@ -112,7 +109,6 @@ export const MessageWithSourcesExample: FunctionComponent = () => {
       <Message
         name="Bot"
         role="bot"
-        avatar={patternflyAvatar}
         content="This example has a body description that's longer than the recommended limit of 2 lines, with a link to load the rest of the description:"
         sources={{
           sources: [
@@ -141,7 +137,6 @@ export const MessageWithSourcesExample: FunctionComponent = () => {
       <Message
         name="Bot"
         role="bot"
-        avatar={patternflyAvatar}
         content="This example has a truncated title:"
         sources={{
           sources: [
@@ -164,7 +159,6 @@ export const MessageWithSourcesExample: FunctionComponent = () => {
       <Message
         name="Bot"
         role="bot"
-        avatar={patternflyAvatar}
         content="This example only includes 1 source:"
         sources={{
           sources: [
@@ -181,7 +175,6 @@ export const MessageWithSourcesExample: FunctionComponent = () => {
       <Message
         name="Bot"
         role="bot"
-        avatar={patternflyAvatar}
         content="This example has a title and no body description:"
         sources={{
           sources: [
@@ -203,7 +196,6 @@ export const MessageWithSourcesExample: FunctionComponent = () => {
       <Message
         name="Bot"
         role="bot"
-        avatar={patternflyAvatar}
         content="This example displays the source as a link, without a title (not recommended)"
         sources={{
           sources: [
@@ -223,7 +215,6 @@ export const MessageWithSourcesExample: FunctionComponent = () => {
       <Message
         name="Bot"
         role="bot"
-        avatar={patternflyAvatar}
         content="This example displays a compact sources card"
         sources={{
           sources: [
@@ -245,7 +236,6 @@ export const MessageWithSourcesExample: FunctionComponent = () => {
       <Message
         name="Bot"
         role="bot"
-        avatar={patternflyAvatar}
         content="This example demonstrates the non-paginated layout option. When enabled, all source cards are displayed in a flex layout that wraps automatically based on available space:"
         sources={{
           sources: [

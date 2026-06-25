@@ -1,7 +1,6 @@
 import { Fragment, FunctionComponent, useState, useEffect } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import userAvatar from './user_avatar.svg';
-import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import {
   Accordion,
   AccordionContent,
@@ -637,7 +636,6 @@ export const UserMessageWithExtraContent: FunctionComponent = () => (
       }}
     />
     <Message
-      avatar={patternflyAvatar}
       name="Bot"
       role="bot"
       content="This is a message with a live progress summmary card."
@@ -647,7 +645,6 @@ export const UserMessageWithExtraContent: FunctionComponent = () => (
       }}
     />
     <Message
-      avatar={patternflyAvatar}
       name="Bot"
       role="bot"
       content="This is a message with a version selector card."
@@ -657,7 +654,6 @@ export const UserMessageWithExtraContent: FunctionComponent = () => (
       }}
     />
     <Message
-      avatar={patternflyAvatar}
       name="Bot"
       role="bot"
       content="All set! I've finished building the Discovery ISO. The next step is to download it and boot your hosts, which you can do using the summary card I've prepared for you:"

@@ -1,6 +1,5 @@
 import { FunctionComponent, useState } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
-import patternflyAvatar from './patternfly_avatar.jpg';
 import { Checkbox, Flex, FlexItem } from '@patternfly/react-core';
 
 export const MessageWithToolCallExample: FunctionComponent = () => {
@@ -19,7 +18,6 @@ export const MessageWithToolCallExample: FunctionComponent = () => {
         <Message
           name="Bot"
           role="bot"
-          avatar={patternflyAvatar}
           content="This example has a static tool call title:"
           toolCall={{
             titleText: "Calling 'awesome_tool'",
@@ -30,7 +28,6 @@ export const MessageWithToolCallExample: FunctionComponent = () => {
         <Message
           name="Bot"
           role="bot"
-          avatar={patternflyAvatar}
           content="This example has an expandable tool call title, with an additional description:"
           toolCall={{
             titleText: "Calling 'awesome_tool_expansion'",
@@ -42,7 +39,6 @@ export const MessageWithToolCallExample: FunctionComponent = () => {
         <Message
           name="Bot"
           role="bot"
-          avatar={patternflyAvatar}
           content="This example has an expandable tool call that is expanded by default:"
           toolCall={{
             isDefaultExpanded: true,

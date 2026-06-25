@@ -8,7 +8,6 @@ import {
   Ref
 } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
-import patternflyAvatar from './patternfly_avatar.jpg';
 import squareImg from './PF-social-color-square.svg';
 import {
   AlertActionLink,
@@ -290,25 +289,18 @@ _Italic text, formatted with single underscores_
 
   return (
     <>
+      <Message name="Bot" role="bot" content={`This is a text-based message from a bot named "Bot."`} />
       <Message
         name="Bot"
         role="bot"
-        avatar={patternflyAvatar}
-        content={`This is a text-based message from a bot named "Bot."`}
-      />
-      <Message
-        name="Bot"
-        role="bot"
-        avatar={patternflyAvatar}
         content={`This is a text-based message from "Bot," with an updated timestamp.`}
         timestamp="1 hour ago"
       />
-      <Message name="Bot" role="bot" avatar={patternflyAvatar} content="Example content" isLoading />
-      <Message role="bot" avatar={patternflyAvatar} content="This message is from a nameless bot." />
+      <Message name="Bot" role="bot" content="Example content" isLoading />
+      <Message role="bot" content="This message is from a nameless bot." />
       <Message
         name="Default Openshift Container Platform Assistant That Can Help With Any Query You Might Need Help With"
         role="bot"
-        avatar={patternflyAvatar}
         content="This is a message from a bot with really long name: it's truncated!"
       />
       <Message
@@ -322,7 +314,6 @@ _Italic text, formatted with single underscores_
       <Message
         name="Bot"
         role="bot"
-        avatar={patternflyAvatar}
         isMetadataVisible={false}
         content="This is a message from a bot with metadata not visible."
       />
@@ -355,7 +346,6 @@ _Italic text, formatted with single underscores_
       <Message
         name="Bot"
         role="bot"
-        avatar={patternflyAvatar}
         content={renderContent()}
         tableProps={
           variant === 'Table' ? { 'aria-label': 'App information and user roles for bot messages' } : undefined

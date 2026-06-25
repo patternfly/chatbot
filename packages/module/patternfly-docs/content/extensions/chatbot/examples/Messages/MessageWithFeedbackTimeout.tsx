@@ -1,6 +1,5 @@
 import { FunctionComponent, useState } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
-import patternflyAvatar from './patternfly_avatar.jpg';
 import { Button } from '@patternfly/react-core';
 
 export const MessageWithFeedbackTimeoutExample: FunctionComponent = () => {
@@ -17,7 +16,6 @@ export const MessageWithFeedbackTimeoutExample: FunctionComponent = () => {
       <Message
         name="Bot"
         role="bot"
-        avatar={patternflyAvatar}
         content="This completion message times out after you click **Show card**:"
         userFeedbackComplete={hasFeedback ? { timeout: true, onTimeout: () => setHasFeedback(false) } : undefined}
         isLiveRegion
