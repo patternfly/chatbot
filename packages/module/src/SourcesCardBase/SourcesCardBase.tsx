@@ -1,7 +1,12 @@
 // ============================================================================
 // Chatbot Main - Messages - Sources Card
 // ============================================================================
-import type { FunctionComponent, MouseEvent as ReactMouseEvent, KeyboardEvent as ReactKeyboardEvent } from 'react';
+import type {
+  FunctionComponent,
+  MouseEvent as ReactMouseEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+  CSSProperties
+} from 'react';
 import { useState } from 'react';
 // Import PatternFly components
 import {
@@ -122,8 +127,12 @@ const SourcesCardBase: FunctionComponent<SourcesCardBaseProps> = ({
   };
 
   const renderUncontrolledSourceCard = (source: SourcesCardBaseProps['sources'][0], index: number) => (
-    <li key={index} className="pf-chatbot__sources-list-item">
-      <Card isCompact={isCompact} className="pf-chatbot__sources-card" style={{ maxWidth: cardMaxWidth }} {...props}>
+    <li
+      key={index}
+      className="pf-chatbot__sources-list-item"
+      style={{ '--pf-chatbot-sources-card-max-width': cardMaxWidth } as CSSProperties}
+    >
+      <Card isCompact={isCompact} className="pf-chatbot__sources-card" {...props}>
         <CardTitle className="pf-chatbot__sources-card-title" {...cardTitleProps}>
           <div className="pf-chatbot__sources-card-title-container">
             <Button
