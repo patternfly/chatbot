@@ -30,10 +30,6 @@
     --pf-v6-c-menu__item-main--ColumnGap: var(--pf-t--global--spacer--md);
   }
 
-  .pf-v6-c-menu__list {
-    padding: 0rem var(--pf-t--global--spacer--md) 0rem var(--pf-t--global--spacer--md);
-  }
-
   /* handles hover state, which uses a background */
   .pf-v6-c-menu__list-item {
     border-radius: var(--pf-t--global--border--radius--small);
