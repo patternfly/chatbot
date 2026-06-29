@@ -2,7 +2,11 @@ import { useState, isValidElement, cloneElement, Children, FunctionComponent, Re
 import { MessageBar } from '@patternfly/chatbot/dist/dynamic/MessageBar';
 import SourceDetailsMenuItem from '@patternfly/chatbot/dist/dynamic/SourceDetailsMenuItem';
 import { Divider, DropdownGroup, DropdownItem, DropdownList } from '@patternfly/react-core';
-import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, UploadIcon } from '@patternfly/react-icons';
+import RhUiAttentionBellIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-attention-bell-icon';
+import RhUiCalendarIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-calendar-icon';
+import RhUiClipboardIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-clipboard-icon';
+import RhUiCodeIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-code-icon';
+import RhUiUploadIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-upload-icon';
 import { useDropzone } from 'react-dropzone';
 
 export const ChatbotMessageBarDefaultAttachExample: FunctionComponent = () => {
@@ -95,19 +99,19 @@ export const ChatbotMessageBarDefaultAttachExample: FunctionComponent = () => {
     </DropdownList>,
     <DropdownGroup key="message-bar-attach-dropdown-group">
       <DropdownList>
-        <DropdownItem value="Alerts" id="1" icon={<BellIcon />}>
+        <DropdownItem value="Alerts" id="1" icon={<RhUiAttentionBellIcon />}>
           Alerts
         </DropdownItem>
-        <DropdownItem value="Events" id="2" icon={<CalendarAltIcon />}>
+        <DropdownItem value="Events" id="2" icon={<RhUiCalendarIcon />}>
           Events
         </DropdownItem>
-        <DropdownItem value="Logs" id="3" icon={<ClipboardIcon />}>
+        <DropdownItem value="Logs" id="3" icon={<RhUiClipboardIcon />}>
           Logs
         </DropdownItem>
-        <DropdownItem value="YAML - Status" id="4" icon={<CodeIcon />}>
+        <DropdownItem value="YAML - Status" id="4" icon={<RhUiCodeIcon />}>
           YAML - Status
         </DropdownItem>
-        <DropdownItem value="YAML - All contents" id="5" icon={<CodeIcon />}>
+        <DropdownItem value="YAML - All contents" id="5" icon={<RhUiCodeIcon />}>
           YAML - All contents
         </DropdownItem>
       </DropdownList>
@@ -117,7 +121,7 @@ export const ChatbotMessageBarDefaultAttachExample: FunctionComponent = () => {
   const uploadMenuItems = [
     <Divider key="divider" />,
     <DropdownList key="list-2">
-      <DropdownItem key="upload" value="upload" id="upload" icon={<UploadIcon />} onClick={open}>
+      <DropdownItem key="upload" value="upload" id="upload" icon={<RhUiUploadIcon />} onClick={open}>
         Upload from computer
       </DropdownItem>
     </DropdownList>
