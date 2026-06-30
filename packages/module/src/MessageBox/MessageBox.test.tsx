@@ -1,5 +1,6 @@
 import { createRef } from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { MessageBox, MessageBoxHandle } from './MessageBox';
 import userEvent from '@testing-library/user-event';
 
@@ -312,5 +313,95 @@ describe('MessageBox', () => {
     });
 
     expect(ref.current?.isSmartScrollActive()).toBe(true);
+  });
+
+  it('should keep auto-scroll active during programmatic scroll to bottom', async () => {
+    const ref = createRef<MessageBoxHandle>();
+    render(
+      <MessageBox ref={ref} enableSmartScroll>
+        <div>Test message content</div>
+      </MessageBox>
+    );
+
+    const element = ref.current!;
+    Object.defineProperty(element, 'scrollHeight', { configurable: true, value: 1000 });
+    Object.defineProperty(element, 'clientHeight', { configurable: true, value: 300 });
+    Object.defineProperty(element, 'scrollTop', { configurable: true, value: 0, writable: true });
+
+    act(() => {
+      ref.current?.scrollToBottom({ behavior: 'smooth' });
+    });
+
+    expect(ref.current?.isSmartScrollActive()).toBe(true);
+
+    act(() => {
+      element.scrollTop = 500;
+      element.dispatchEvent(new Event('scroll', { bubbles: true }));
+    });
+
+    expect(ref.current?.isSmartScrollActive()).toBe(true);
+  });
+
+  it('should not scroll to bottom on initial layout when the message box is at the top', () => {
+    render(
+      <MessageBox enableSmartScroll>
+        <div>Tall message content</div>
+      </MessageBox>
+    );
+
+    const region = screen.getByRole('region');
+    Object.defineProperty(region, 'scrollHeight', { configurable: true, value: 1000 });
+    Object.defineProperty(region, 'clientHeight', { configurable: true, value: 300 });
+    Object.defineProperty(region, 'scrollTop', { configurable: true, value: 0, writable: true });
+
+    act(() => {
+      region.dispatchEvent(new Event('scroll'));
+    });
+
+    expect(region.scrollTop).toBe(0);
+  });
+
+  it('should show the bottom jump button at the top on initial load when overflowing', async () => {
+    render(
+      <MessageBox enableSmartScroll>
+        <div>Tall message content</div>
+      </MessageBox>
+    );
+
+    const region = screen.getByRole('region');
+    Object.defineProperty(region, 'scrollHeight', { configurable: true, value: 1000 });
+    Object.defineProperty(region, 'clientHeight', { configurable: true, value: 300 });
+    Object.defineProperty(region, 'scrollTop', { configurable: true, value: 0, writable: true });
+
+    act(() => {
+      region.dispatchEvent(new Event('scroll'));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /Back to top/i })).toHaveClass('pf-chatbot-m-hidden');
+      expect(screen.getByRole('button', { name: /Back to bottom/i })).not.toHaveClass('pf-chatbot-m-hiddenn');
+    });
+  });
+
+  it('should hide the bottom jump button while smart scroll is actively following content', async () => {
+    render(
+      <MessageBox enableSmartScroll>
+        <div>Test message content</div>
+      </MessageBox>
+    );
+
+    const region = screen.getByRole('region');
+    Object.defineProperty(region, 'scrollHeight', { configurable: true, value: 1000 });
+    Object.defineProperty(region, 'clientHeight', { configurable: true, value: 300 });
+    Object.defineProperty(region, 'scrollTop', { configurable: true, value: 640, writable: true });
+
+    act(() => {
+      region.dispatchEvent(new Event('scroll'));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /Back to top/i })).not.toHaveClass('pf-chatbot-m-hidden');
+      expect(screen.getByRole('button', { name: /Back to bottom/i })).toHaveClass('pf-chatbot-m-hidden');
+    });
   });
 });

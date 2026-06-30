@@ -28,26 +28,25 @@ const JumpButton: FunctionComponent<JumpButtonProps> = ({
   onClick,
   jumpButtonProps,
   jumpButtonTooltipProps
-}: JumpButtonProps) =>
-  isHidden ? null : (
-    <Tooltip
-      id={`pf-chatbot__tooltip--jump-${position}`}
-      content={`Back to ${position}`}
-      position="top"
-      {...jumpButtonTooltipProps}
+}: JumpButtonProps) => (
+  <Tooltip
+    id={`pf-chatbot__tooltip--jump-${position}`}
+    content={`Back to ${position}`}
+    position="top"
+    {...jumpButtonTooltipProps}
+  >
+    <Button
+      variant="plain"
+      className={`pf-chatbot__jump pf-chatbot__jump--${position} ${isHidden ? 'pf-chatbot-m-hidden' : ''}`}
+      aria-label={`Back to ${position}`}
+      onClick={onClick}
+      {...jumpButtonProps}
     >
-      <Button
-        variant="plain"
-        className={`pf-chatbot__jump pf-chatbot__jump--${position}`}
-        aria-label={`Back to ${position}`}
-        onClick={onClick}
-        {...jumpButtonProps}
-      >
-        <Icon iconSize="lg" isInline>
-          {position === 'top' ? <ArrowUpIcon /> : <ArrowDownIcon />}
-        </Icon>
-      </Button>
-    </Tooltip>
-  );
+      <Icon iconSize="lg" isInline>
+        {position === 'top' ? <ArrowUpIcon /> : <ArrowDownIcon />}
+      </Icon>
+    </Button>
+  </Tooltip>
+);
 
 export default JumpButton;

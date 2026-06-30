@@ -7,7 +7,7 @@ import {
   useState,
   useRef,
   useCallback,
-  useEffect,
+  useLayoutEffect,
   forwardRef,
   ForwardedRef,
   useImperativeHandle,
@@ -18,7 +18,7 @@ import {
   WheelEventHandler
 } from 'react';
 import JumpButton from './JumpButton';
-import { ButtonProps, TooltipProps } from '@patternfly/react-core';
+import { ButtonProps, getResizeObserver, TooltipProps } from '@patternfly/react-core';
 
 export interface MessageBoxProps extends HTMLProps<HTMLDivElement> {
   /** Content that can be announced, such as a new message, for screen readers */
@@ -58,6 +58,48 @@ export interface MessageBoxHandle extends HTMLDivElement {
   isSmartScrollActive: () => boolean;
 }
 
+const SCROLL_EDGE_DELTA = 100;
+
+const getScrollMetrics = (element: HTMLDivElement) => {
+  const { scrollTop, scrollHeight, clientHeight } = element;
+  const roundedScrollTop = Math.round(scrollTop);
+  const roundedClientHeight = Math.round(clientHeight);
+  const roundedScrollHeight = Math.round(scrollHeight);
+  const distanceFromBottom = roundedScrollHeight - roundedScrollTop - roundedClientHeight;
+
+  return {
+    roundedScrollTop,
+    roundedClientHeight,
+    roundedScrollHeight,
+    distanceFromBottom,
+    atTop: roundedScrollTop === 0,
+    nearBottom: distanceFromBottom <= SCROLL_EDGE_DELTA,
+    isOverflowing: roundedScrollHeight >= roundedClientHeight
+  };
+};
+
+const isAtBottomEdge = (
+  metrics: ReturnType<typeof getScrollMetrics>,
+  enableSmartScroll: boolean,
+  autoScroll: boolean,
+  pauseAutoScroll: boolean,
+  programmaticScroll = false
+) =>
+  metrics.nearBottom ||
+  programmaticScroll ||
+  (enableSmartScroll && autoScroll && !pauseAutoScroll && metrics.roundedScrollTop > 0);
+
+const shouldFollowContentGrowth = (
+  metrics: ReturnType<typeof getScrollMetrics>,
+  enableSmartScroll: boolean,
+  autoScroll: boolean,
+  pauseAutoScroll: boolean,
+  programmaticScroll: boolean
+) =>
+  programmaticScroll ||
+  metrics.nearBottom ||
+  (enableSmartScroll && autoScroll && !pauseAutoScroll && metrics.roundedScrollTop > 0);
+
 export const MessageBox = forwardRef(
   (
     {
@@ -77,17 +119,22 @@ export const MessageBox = forwardRef(
     }: MessageBoxProps,
     ref: ForwardedRef<MessageBoxHandle | null>
   ) => {
-    const [atTop, setAtTop] = useState(false);
-    const [atBottom, setAtBottom] = useState(true);
+    const [atTop, setAtTop] = useState(true);
+    const [atBottom, setAtBottom] = useState(false);
     const [isOverflowing, setIsOverflowing] = useState(false);
+    const [hasMeasuredScroll, setHasMeasuredScroll] = useState(false);
     const [autoScroll, setAutoScroll] = useState(true);
+    const autoScrollRef = useRef(autoScroll);
     const lastScrollTop = useRef(0);
     const animationFrame = useRef<any>(null);
     const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
     const pauseAutoScrollRef = useRef(false);
+    const programmaticScrollRef = useRef(false);
     const messageBoxRef = useRef<HTMLDivElement>(null);
     const scrollQueued = useRef(false);
     const resetUserScrollIntentTimeout = useRef<NodeJS.Timeout>();
+
+    autoScrollRef.current = autoScroll;
 
     // Configure handlers
     const handleScroll = useCallback(() => {
@@ -96,13 +143,8 @@ export const MessageBox = forwardRef(
         return;
       }
 
-      const { scrollTop, scrollHeight, clientHeight } = element;
-
-      const roundedScrollTop = Math.round(scrollTop);
-      const roundedClientHeight = Math.round(clientHeight);
-      const roundedScrollHeight = Math.round(scrollHeight);
-
-      const distanceFromBottom = roundedScrollHeight - roundedScrollTop - roundedClientHeight;
+      const metrics = getScrollMetrics(element);
+      const { roundedScrollTop, distanceFromBottom } = metrics;
       const isScrollingDown = roundedScrollTop > lastScrollTop.current;
 
       const DELTA_UP = 10;
@@ -112,14 +154,23 @@ export const MessageBox = forwardRef(
       const delta = isScrollingDown ? DELTA_DOWN : DELTA_UP;
       const isAtBottom = distanceFromBottom <= delta;
 
-      setAtTop(roundedScrollTop === 0);
-      setAtBottom(roundedScrollTop + roundedClientHeight >= roundedScrollHeight - 1); // rounding means it could be within a pixel of the bottom
+      setAtTop(metrics.atTop);
+      setAtBottom(
+        isAtBottomEdge(
+          metrics,
+          enableSmartScroll,
+          autoScrollRef.current,
+          pauseAutoScrollRef.current,
+          programmaticScrollRef.current
+        )
+      );
+      setIsOverflowing(metrics.isOverflowing);
 
       if (!enableSmartScroll || scrollQueued.current) {
         return;
       }
 
-      if (roundedScrollTop === 0) {
+      if (metrics.roundedScrollTop === 0) {
         pauseAutoScrollRef.current = false;
       }
 
@@ -127,7 +178,11 @@ export const MessageBox = forwardRef(
         clearTimeout(debounceTimeout.current);
       }
 
-      if (!isAtBottom && !pauseAutoScrollRef.current) {
+      if (isAtBottom) {
+        programmaticScrollRef.current = false;
+      }
+
+      if (!isAtBottom && !metrics.nearBottom && !pauseAutoScrollRef.current && !programmaticScrollRef.current) {
         setAutoScroll(false);
       }
 
@@ -139,15 +194,7 @@ export const MessageBox = forwardRef(
       }
 
       lastScrollTop.current = roundedScrollTop;
-    }, [messageBoxRef]);
-
-    const checkOverflow = useCallback(() => {
-      const element = messageBoxRef.current;
-      if (element) {
-        const { scrollHeight, clientHeight } = element;
-        setIsOverflowing(scrollHeight >= clientHeight);
-      }
-    }, [messageBoxRef]);
+    }, [enableSmartScroll]);
 
     const resumeAutoScroll = useCallback(() => {
       if (!enableSmartScroll) {
@@ -213,6 +260,7 @@ export const MessageBox = forwardRef(
         }
 
         scrollQueued.current = true;
+        programmaticScrollRef.current = true;
 
         if (animationFrame.current) {
           cancelAnimationFrame(animationFrame.current);
@@ -222,30 +270,78 @@ export const MessageBox = forwardRef(
           element.scrollTo({ top: element.scrollHeight, behavior });
           resumeAutoScroll();
           scrollQueued.current = false;
+          if (behavior === 'auto') {
+            programmaticScrollRef.current = false;
+            lastScrollTop.current = element.scrollTop;
+          }
         });
         onScrollToBottomClick && onScrollToBottomClick();
       },
       [messageBoxRef, enableSmartScroll]
     );
 
-    // Detect scroll position
-    useEffect(() => {
+    const measureJumpButtonState = useCallback(() => {
       const element = messageBoxRef.current;
       if (!element) {
         return;
       }
 
-      // Listen for scroll events
+      const metrics = getScrollMetrics(element);
+
+      setAtTop(metrics.atTop);
+      setAtBottom(
+        isAtBottomEdge(
+          metrics,
+          enableSmartScroll,
+          autoScrollRef.current,
+          pauseAutoScrollRef.current,
+          programmaticScrollRef.current
+        )
+      );
+      setIsOverflowing(metrics.isOverflowing);
+      setHasMeasuredScroll(true);
+    }, [enableSmartScroll]);
+
+    const handleContentResize = useCallback(() => {
+      const element = messageBoxRef.current;
+      if (element) {
+        const metrics = getScrollMetrics(element);
+        const shouldFollow = shouldFollowContentGrowth(
+          metrics,
+          enableSmartScroll,
+          autoScrollRef.current,
+          pauseAutoScrollRef.current,
+          programmaticScrollRef.current
+        );
+
+        if (shouldFollow && !scrollQueued.current) {
+          programmaticScrollRef.current = true;
+          element.scrollTop = element.scrollHeight - element.clientHeight;
+          lastScrollTop.current = element.scrollTop;
+        }
+      }
+
+      measureJumpButtonState();
+    }, [enableSmartScroll, measureJumpButtonState]);
+
+    // Detect scroll position before paint to avoid jump button flash on mount
+    useLayoutEffect(() => {
+      const element = messageBoxRef.current;
+      if (!element) {
+        return;
+      }
+
+      measureJumpButtonState();
+
       element.addEventListener('scroll', handleScroll);
 
-      // Check initial position and overflow
-      handleScroll();
-      checkOverflow();
+      const resizeObserver = getResizeObserver(element, handleContentResize);
 
       return () => {
         element.removeEventListener('scroll', handleScroll);
+        resizeObserver();
       };
-    }, [checkOverflow, handleScroll, messageBoxRef]);
+    }, [handleContentResize, handleScroll, measureJumpButtonState]);
 
     useImperativeHandle(ref, (): MessageBoxHandle => {
       const node = messageBoxRef.current! as MessageBoxHandle;
@@ -273,6 +369,7 @@ export const MessageBox = forwardRef(
 
       if (!isScrollingDown) {
         pauseAutoScrollRef.current = true;
+        programmaticScrollRef.current = false;
         clearTimeout(resetUserScrollIntentTimeout.current);
         return;
       }
@@ -280,7 +377,7 @@ export const MessageBox = forwardRef(
       const { scrollTop, scrollHeight, clientHeight } = container;
       const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
 
-      if (distanceFromBottom < 100) {
+      if (distanceFromBottom < SCROLL_EDGE_DELTA) {
         pauseAutoScrollRef.current = false;
         setAutoScroll(true);
       }
@@ -320,10 +417,17 @@ export const MessageBox = forwardRef(
       <>
         <JumpButton
           position="top"
-          isHidden={isOverflowing && atTop}
+          isHidden={!hasMeasuredScroll || (isOverflowing && atTop)}
           onClick={scrollToTop}
           jumpButtonProps={jumpButtonTopProps}
           jumpButtonTooltipProps={jumpButtonTopTooltipProps}
+        />
+        <JumpButton
+          position="bottom"
+          isHidden={!hasMeasuredScroll || (isOverflowing && atBottom)}
+          onClick={() => scrollToBottom({ resumeSmartScroll: true })}
+          jumpButtonProps={jumpButtonBottomProps}
+          jumpButtonTooltipProps={jumpButtonBottomTooltipProps}
         />
         <div
           role="region"
@@ -339,13 +443,6 @@ export const MessageBox = forwardRef(
             {announcement}
           </div>
         </div>
-        <JumpButton
-          position="bottom"
-          isHidden={isOverflowing && atBottom}
-          onClick={() => scrollToBottom({ resumeSmartScroll: true })}
-          jumpButtonProps={jumpButtonBottomProps}
-          jumpButtonTooltipProps={jumpButtonBottomTooltipProps}
-        />
       </>
     );
   }
