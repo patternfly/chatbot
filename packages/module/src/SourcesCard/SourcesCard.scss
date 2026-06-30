@@ -27,12 +27,8 @@
   }
 
   .pf-chatbot__sources-list-item {
-    display: flex;
-    width: var(--pf-chatbot-sources-card-max-width);
-  }
-
-  .pf-chatbot__sources-card {
-    flex: 1;
+   width: 100%;
+   max-width: var(--pf-chatbot-sources-card-max-width);
   }
 }
 

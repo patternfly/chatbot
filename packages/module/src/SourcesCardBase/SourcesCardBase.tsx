@@ -132,7 +132,7 @@ const SourcesCardBase: FunctionComponent<SourcesCardBaseProps> = ({
       className="pf-chatbot__sources-list-item"
       style={{ '--pf-chatbot-sources-card-max-width': cardMaxWidth } as CSSProperties}
     >
-      <Card isCompact={isCompact} className="pf-chatbot__sources-card" {...props}>
+      <Card isFullHeight isCompact={isCompact} className="pf-chatbot__sources-card" {...props}>
         <CardTitle className="pf-chatbot__sources-card-title" {...cardTitleProps}>
           <div className="pf-chatbot__sources-card-title-container">
             <Button
