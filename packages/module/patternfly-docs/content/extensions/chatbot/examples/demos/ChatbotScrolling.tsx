@@ -31,7 +31,6 @@ import PFHorizontalLogoReverse from '../UI/PF-HorizontalLogo-Reverse.svg';
 import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
-import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
 
@@ -94,7 +93,6 @@ const initialMessages: MessageProps[] = [
     role: 'bot',
     content: markdown,
     name: 'Bot',
-    avatar: patternflyAvatar,
     timestamp: date.toLocaleString(),
     actions: {
       // eslint-disable-next-line no-console
@@ -233,7 +231,6 @@ export const ChatbotScrollingDemo: React.FunctionComponent = () => {
       content: 'API response goes here',
       name: 'Bot',
       isLoading: true,
-      avatar: patternflyAvatar,
       timestamp: date.toLocaleString()
     });
     setMessages(newMessages);
@@ -255,7 +252,6 @@ export const ChatbotScrollingDemo: React.FunctionComponent = () => {
         content: 'API response goes here.',
         name: 'Bot',
         isLoading: false,
-        avatar: patternflyAvatar,
         timestamp: date.toLocaleString(),
         actions: {
           // eslint-disable-next-line no-console

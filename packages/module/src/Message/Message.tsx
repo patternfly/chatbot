@@ -36,6 +36,7 @@ import DeepThinking, { DeepThinkingProps } from '../DeepThinking';
 import ToolCall, { ToolCallProps } from '../ToolCall';
 import MarkdownContent from '../MarkdownContent';
 import { css } from '@patternfly/react-styles';
+import RhUiAiChatbotIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-ai-chatbot-icon';
 
 export interface MessageAttachment {
   /** Name of file attached to the message */
@@ -84,8 +85,10 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   extraContent?: MessageExtraContent;
   /** Name of the user */
   name?: string;
-  /** Avatar src for the user */
-  avatar?: string;
+  /** Avatar for the user. Pass a string for an image src, or a ReactNode for custom content like an svg or icon. Avatars for Messages with role="bot" are pre-defined and not customizable. */
+  avatar?: string | ReactNode;
+  /** Flag indicating whether the avatar is hidden */
+  isAvatarHidden?: boolean;
   /** Timestamp for the message */
   timestamp?: string;
   /** Set this to true if message is being loaded */
@@ -214,6 +217,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   extraContent,
   name,
   avatar,
+  isAvatarHidden = false,
   timestamp,
   isLoading,
   actions,
@@ -326,6 +330,36 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
     );
   };
 
+  const avatarClasses = css(
+    `pf-chatbot__message-avatar ${hasRoundAvatar ? 'pf-chatbot__message-avatar--round' : ''} ${avatarClassName ? avatarClassName : ''}`
+  );
+
+  /* We are using an empty alt tag intentionally in order to reduce noise on screen readers */
+  const botAvatar = (
+    <Avatar className={avatarClasses} alt="" isBordered {...avatarProps} src={undefined} initials={undefined}>
+      <RhUiAiChatbotIcon />
+    </Avatar>
+  );
+
+  let _avatar: ReactNode | undefined;
+
+  if (!isAvatarHidden) {
+    if (role === 'bot') {
+      _avatar = botAvatar;
+    } else if (avatar) {
+      _avatar =
+        typeof avatar === 'string' ? (
+          <Avatar className={avatarClasses} src={avatar} alt="" {...avatarProps} />
+        ) : (
+          <Avatar className={avatarClasses} alt="" {...avatarProps}>
+            {avatar}
+          </Avatar>
+        );
+    } else if (avatarProps?.initials) {
+      _avatar = <Avatar className={avatarClasses} alt="" {...avatarProps} />;
+    }
+  }
+
   return (
     <section
       aria-label={`Message from ${role} - ${dateString}`}
@@ -335,15 +369,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
       ref={innerRef}
       {...props}
     >
-      {/* We are using an empty alt tag intentionally in order to reduce noise on screen readers */}
-      {avatar && (
-        <Avatar
-          className={`pf-chatbot__message-avatar ${hasRoundAvatar ? 'pf-chatbot__message-avatar--round' : ''} ${avatarClassName ? avatarClassName : ''}`}
-          src={avatar}
-          alt=""
-          {...avatarProps}
-        />
-      )}
+      {_avatar && _avatar}
       <div className="pf-chatbot__message-contents">
         {isMetadataVisible && (
           <div className="pf-chatbot__message-meta">

@@ -1,6 +1,5 @@
 import { useState, FunctionComponent } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
-import patternflyAvatar from './patternfly_avatar.jpg';
 import { Checkbox, FormGroup, Flex, FlexItem } from '@patternfly/react-core';
 
 export const MessageWithFeedbackExample: FunctionComponent = () => {
@@ -50,7 +49,6 @@ export const MessageWithFeedbackExample: FunctionComponent = () => {
           <Message
             name="Bot"
             role="bot"
-            avatar={patternflyAvatar}
             content="This is a message with the feedback card:"
             userFeedbackForm={{
               quickResponses: [
@@ -73,7 +71,6 @@ export const MessageWithFeedbackExample: FunctionComponent = () => {
           <Message
             name="Bot"
             role="bot"
-            avatar={patternflyAvatar}
             content="This is a compact message with the feedback card:"
             userFeedbackForm={{
               quickResponses: [
@@ -112,7 +109,6 @@ export const MessageWithFeedbackExample: FunctionComponent = () => {
           <Message
             name="Bot"
             role="bot"
-            avatar={patternflyAvatar}
             content="This is a thank-you message, which is displayed once the feedback card is submitted:"
             // eslint-disable-next-line no-console
             userFeedbackComplete={{
@@ -126,7 +122,6 @@ export const MessageWithFeedbackExample: FunctionComponent = () => {
           <Message
             name="Bot"
             role="bot"
-            avatar={patternflyAvatar}
             content="This is a compact thank-you message, which is displayed once the feedback card is submitted:"
             // eslint-disable-next-line no-console
             userFeedbackComplete={{

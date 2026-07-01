@@ -1,6 +1,5 @@
 import { FunctionComponent, useState, useRef } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
-import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
 
@@ -37,7 +36,6 @@ export const MessageWithFeedbackExample: FunctionComponent = () => {
     <Message
       name="Bot"
       role="bot"
-      avatar={patternflyAvatar}
       content="Bot message with user feedback flow; click on a message action to launch the feedback flow. Click submit to see the thank-you message."
       actions={{
         positive: {

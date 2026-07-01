@@ -14,7 +14,6 @@ import FileDetailsLabel from '@patternfly/chatbot/dist/dynamic/FileDetailsLabel'
 import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, UploadIcon } from '@patternfly/react-icons';
 import { useDropzone } from 'react-dropzone';
 import userAvatar from '../Messages/user_avatar.svg';
-import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
 import { cloneElement, FunctionComponent, isValidElement, ReactNode, useState, Children } from 'react';
@@ -79,8 +78,7 @@ const messages: MessageProps[] = [
   {
     role: 'bot',
     content: 'I sure can!',
-    name: 'Bot',
-    avatar: patternflyAvatar
+    name: 'Bot'
   }
 ];
 

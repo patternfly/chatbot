@@ -11,7 +11,6 @@ import ToolCall from '@patternfly/chatbot/dist/dynamic/ToolCall';
 import ToolResponse from '@patternfly/chatbot/dist/dynamic/ToolResponse';
 import FileDetailsLabel from '@patternfly/chatbot/dist/dynamic/FileDetailsLabel';
 import ResponseActions, { ResponseActionsGroups } from '@patternfly/chatbot/dist/dynamic/ResponseActions';
-import patternflyAvatar from './patternfly_avatar.jpg';
 import userAvatar from './user_avatar.svg';
 
 const handlePositiveResponse = () => {
@@ -36,7 +35,7 @@ const handleListen = () => {
 
 export const MessageWithCustomStructure: FunctionComponent = () => (
   <>
-    <Message name="Bot" role="bot" avatar={patternflyAvatar}>
+    <Message name="Bot" role="bot">
       <MessageAndActions>
         <MarkdownContent
           content={`This is a basic message with a more custom, fine-tuned structure. You can pass markdown to the MarkdownContent component, such as **bold content with double asterisks** or _italic content with single underscores_.`}

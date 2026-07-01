@@ -8,7 +8,6 @@ import MessageBar from '@patternfly/chatbot/dist/dynamic/MessageBar';
 import MessageBox from '@patternfly/chatbot/dist/dynamic/MessageBox';
 import Message, { MessageProps } from '@patternfly/chatbot/dist/dynamic/Message';
 import userAvatar from '../Messages/user_avatar.svg';
-import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import { FormGroup, Radio } from '@patternfly/react-core';
 
 export const ChatbotWelcomeInteractionDemo: FunctionComponent = () => {
@@ -50,7 +49,6 @@ export const ChatbotWelcomeInteractionDemo: FunctionComponent = () => {
       content: 'API response goes here',
       name: 'Bot',
       isLoading: true,
-      avatar: patternflyAvatar,
       timestamp: date.toLocaleString()
     });
     setMessages(newMessages);
@@ -70,7 +68,6 @@ export const ChatbotWelcomeInteractionDemo: FunctionComponent = () => {
         content: 'API response goes here',
         name: 'Bot',
         isLoading: false,
-        avatar: patternflyAvatar,
         timestamp: date.toLocaleString(),
         actions: {
           // eslint-disable-next-line no-console

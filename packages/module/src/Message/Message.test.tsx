@@ -242,11 +242,23 @@ describe('Message', () => {
     ).toBeInTheDocument();
   });
   it('should render avatar correctly', () => {
-    render(<Message avatar="./testImg" role="bot" name="Bot" content="Hi" />);
+    render(<Message avatar="./testImg" role="user" name="A" content="Hi" />);
     expect(screen.getByRole('img')).toHaveAttribute('src', './testImg');
   });
   it('should not render avatar if no avatar prop is passed', () => {
+    render(<Message role="user" name="A" content="Hi" />);
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
+  });
+  it('should render bot avatar if no avatar prop is passed', () => {
     render(<Message role="bot" name="Bot" content="Hi" />);
+    expect(screen.queryAllByRole('img', { hidden: true })[0]).toBeVisible();
+  });
+  it('should not render avatar if isAvatarHidden is passed', () => {
+    render(<Message role="user" name="A" content="Hi" isAvatarHidden />);
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
+  });
+  it('should not render bot avatar if isAvatarHidden is passed', () => {
+    render(<Message role="bot" name="Bot" content="Hi" isAvatarHidden />);
     expect(screen.queryByRole('img')).not.toBeInTheDocument();
   });
   it('should render botWord correctly', () => {
