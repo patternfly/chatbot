@@ -85,7 +85,7 @@ export interface MessageProps extends Omit<HTMLProps<HTMLDivElement>, 'role'> {
   extraContent?: MessageExtraContent;
   /** Name of the user */
   name?: string;
-  /** Avatar for the user. Pass a string for an image src, or a ReactNode for custom content like an svg or icon. */
+  /** Avatar for the user. Pass a string for an image src, or a ReactNode for custom content like an svg or icon. Avatars for Messages withrole="bot" are pre-defined and not customizable. */
   avatar?: string | ReactNode;
   /** Flag indicating whether the avatar is hidden */
   isAvatarHidden?: boolean;
@@ -336,7 +336,7 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
 
   /* We are using an empty alt tag intentionally in order to reduce noise on screen readers */
   const botAvatar = (
-    <Avatar className={avatarClasses} alt="" isBordered {...avatarProps}>
+    <Avatar className={avatarClasses} alt="" isBordered {...avatarProps} src={undefined} initials={undefined}>
       <RhUiAiChatbotIcon />
     </Avatar>
   );
@@ -344,7 +344,9 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
   let _avatar: ReactNode | undefined;
 
   if (!isAvatarHidden) {
-    if (avatar) {
+    if (role === 'bot') {
+      _avatar = botAvatar;
+    } else if (avatar) {
       _avatar =
         typeof avatar === 'string' ? (
           <Avatar className={avatarClasses} src={avatar} alt="" {...avatarProps} />
@@ -355,8 +357,6 @@ export const MessageBase: FunctionComponent<MessageProps> = ({
         );
     } else if (avatarProps?.initials) {
       _avatar = <Avatar className={avatarClasses} alt="" {...avatarProps} />;
-    } else if (role === 'bot') {
-      _avatar = botAvatar;
     }
   }
 
