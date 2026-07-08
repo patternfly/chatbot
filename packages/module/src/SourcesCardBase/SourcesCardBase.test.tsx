@@ -264,8 +264,8 @@ describe('SourcesCardBase', () => {
         ]}
       />
     );
-    const firstCard = screen.getByText('How to make an apple pie').closest('.pf-chatbot__sources-card');
-    expect(firstCard).toHaveStyle({ maxWidth: '400px' });
+    const firstListItem = screen.getByText('How to make an apple pie').closest('.pf-chatbot__sources-list-item');
+    expect(firstListItem).toHaveStyle({ '--pf-chatbot-sources-card-max-width': '400px' });
   });
 
   it('should apply custom cardMaxWidth when using wrap layout', () => {
@@ -279,7 +279,7 @@ describe('SourcesCardBase', () => {
         cardMaxWidth="500px"
       />
     );
-    const firstCard = screen.getByText('How to make an apple pie').closest('.pf-chatbot__sources-card');
-    expect(firstCard).toHaveStyle({ maxWidth: '500px' });
+    const firstListItem = screen.getByText('How to make an apple pie').closest('.pf-chatbot__sources-list-item');
+    expect(firstListItem).toHaveStyle({ '--pf-chatbot-sources-card-max-width': '500px' });
   });
 });
