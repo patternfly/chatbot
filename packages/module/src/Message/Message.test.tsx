@@ -118,6 +118,13 @@ const TABLE = `
 
  `;
 
+const TABLE_WITH_INLINE_CODE = `
+| Status | Finding |
+|---|---|
+| \`1/1 Running\`, 0 restarts | Healthy — no crashes |
+| \`1/1 Ready\` | Desired replicas met |
+`;
+
 const ONE_COLUMN_TABLE = `
 
  | Column 1 |
@@ -1040,6 +1047,24 @@ describe('Message', () => {
   it('should render custom table aria label correctly', () => {
     render(<Message avatar="./img" role="user" name="User" content={TABLE} tableProps={{ 'aria-label': 'Test' }} />);
     expect(screen.getByRole('grid', { name: /Test/i })).toBeTruthy();
+  });
+  it('should wrap table cell content so inline code does not break grid layout', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="user"
+        name="User"
+        content={TABLE_WITH_INLINE_CODE}
+        tableProps={{ 'aria-label': 'Inline code table' }}
+      />
+    );
+    const statusCell = screen.getByRole('cell', { name: /1\/1 Running/i });
+    expect(statusCell.querySelector(':scope > .pf-chatbot__message-table-cell-content')).toBeTruthy();
+    expect(statusCell.querySelector(':scope > code')).toBeFalsy();
+    expect(statusCell.querySelector('.pf-chatbot__message-inline-code')).toBeTruthy();
+    expect(
+      screen.getByRole('columnheader', { name: /Status/i }).querySelector('.pf-chatbot__message-table-cell-content')
+    ).toBeTruthy();
   });
   it('should render footnote correctly', () => {
     render(<Message avatar="./img" role="user" name="User" content={FOOTNOTE} />);
