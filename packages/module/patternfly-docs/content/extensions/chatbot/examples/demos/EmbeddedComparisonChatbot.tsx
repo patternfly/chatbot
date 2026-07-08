@@ -18,7 +18,7 @@ import ChatbotFooter from '@patternfly/chatbot/dist/dynamic/ChatbotFooter';
 import MessageBar from '@patternfly/chatbot/dist/dynamic/MessageBar';
 import MessageBox from '@patternfly/chatbot/dist/dynamic/MessageBox';
 import Message, { MessageProps } from '@patternfly/chatbot/dist/dynamic/Message';
-import ChatbotHeader, { ChatbotHeaderMain } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
+import ChatbotHeader, { ChatbotHeaderMain, ChatbotHeaderTitle } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
 import Compare from '@patternfly/chatbot/dist/dynamic/Compare';
 import { BarsIcon } from '@patternfly/react-icons';
 import userAvatar from '../Messages/user_avatar.svg';
@@ -118,7 +118,9 @@ export const CompareChild = ({ name, input, hasNewInput, setIsSendButtonDisabled
   return (
     <Chatbot displayMode={displayMode}>
       <ChatbotHeader>
-        <ChatbotHeaderMain>{name}</ChatbotHeaderMain>
+        <ChatbotHeaderMain>
+          <ChatbotHeaderTitle>{name}</ChatbotHeaderTitle>
+        </ChatbotHeaderMain>
       </ChatbotHeader>
       <ChatbotContent>
         <MessageBox ariaLabel={`Scrollable message log for ${name}`} announcement={announcement}>

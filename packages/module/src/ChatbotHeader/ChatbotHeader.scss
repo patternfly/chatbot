@@ -5,7 +5,6 @@
   display: grid;
 }
 .pf-chatbot__header {
-  font-size: var(--pf-t--global--font--size--md);
   display: grid;
   grid-template-columns: 1fr auto;
   gap: var(--pf-t--global--spacer--sm);
@@ -28,6 +27,7 @@
 
   // Title -or- Brand
   .pf-chatbot__title {
+    font-size:  var(--pf-t--global--font--size--body--lg);
     display: flex;
     align-items: center;
     flex: 1;
