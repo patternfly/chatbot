@@ -47,6 +47,8 @@ export interface MessageBoxProps extends HTMLProps<HTMLDivElement> {
   jumpButtonTopTooltipProps?: TooltipProps;
   /** Props passed to top jump button tooltip */
   jumpButtonBottomTooltipProps?: TooltipProps;
+  /** Whether scrollbar is on the page or message box in embedded mode */
+  hasOuterScrollbar?: boolean;
 }
 
 export interface MessageBoxHandle extends HTMLDivElement {
@@ -115,6 +117,7 @@ export const MessageBox = forwardRef(
       jumpButtonBottomProps,
       jumpButtonBottomTooltipProps,
       jumpButtonTopTooltipProps,
+      hasOuterScrollbar = false,
       ...props
     }: MessageBoxProps,
     ref: ForwardedRef<MessageBoxHandle | null>
@@ -433,7 +436,7 @@ export const MessageBox = forwardRef(
           role="region"
           tabIndex={0}
           aria-label={ariaLabel}
-          className={`pf-chatbot__messagebox ${position === 'bottom' ? 'pf-chatbot__messagebox--bottom' : ''} ${className ?? ''}`}
+          className={`pf-chatbot__messagebox ${position === 'bottom' ? 'pf-chatbot__messagebox--bottom' : ''} ${hasOuterScrollbar ? 'pf-chatbot__messagebox--outer-scroll' : ''} ${className ?? ''}`}
           ref={messageBoxRef}
           {...props}
           {...(enableSmartScroll ? { ...smartScrollHandlers } : {})}
