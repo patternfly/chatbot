@@ -48,7 +48,7 @@
 
   // Drawer menu
   // ----------------------------------------------------------------------------
-  .pf-v6-c-menu {
+  .pf-v6-c-menu.pf-chatbot__history-menu {
     --pf-v6-c-menu--PaddingBlockStart: 0;
     --pf-v6-c-menu--BackgroundColor: var(--pf-t--global--background--color--floating--default);
     // override high contrast style

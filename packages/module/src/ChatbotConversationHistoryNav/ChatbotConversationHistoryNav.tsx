@@ -290,7 +290,13 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
       return <HistoryEmptyState {...noResultsState} />;
     }
     return (
-      <Menu isPlain onSelect={onSelectActiveItem} activeItemId={activeItemId} {...menuProps}>
+      <Menu
+        className="pf-chatbot__history-menu"
+        isPlain
+        onSelect={onSelectActiveItem}
+        activeItemId={activeItemId}
+        {...menuProps}
+      >
         <MenuContent {...menuContentProps}>{buildConversations()}</MenuContent>
       </Menu>
     );
