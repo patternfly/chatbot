@@ -12,7 +12,6 @@
   background-color: var(--pf-t--global--background--color--floating--secondary--default);
   border-radius: var(--pf-t--global--border--radius--medium);
   box-shadow: var(--pf-t--global--box-shadow--lg);
-  font-size: var(--pf-t--global--font--size--md);
   z-index: var(--pf-t--global--z-index--md);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -178,9 +177,3 @@
   }
 }
 
-// ============================================================================
-// Information density styles
-// ============================================================================
-.pf-chatbot.pf-m-compact {
-  font-size: var(--pf-t--global--font--size--sm);
-}

@@ -24,6 +24,7 @@
 
   // Title -or- Brand
   .pf-chatbot__title {
+    font-size:  var(--pf-t--global--font--size--body--lg);
     display: flex;
     align-items: center;
     flex: 1;

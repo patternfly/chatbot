@@ -13,7 +13,7 @@
   padding: var(--pf-t--global--spacer--md) !important;
   border-radius: var(--pf-t--global--border--radius--pill) !important;
   --pf-v6-c-button--MinWidth: 2rem !important;
-  background-color: var(--pf-t--global--background--color--primary--default) !important;
+  background-color: var(--pf-t--global--background--color--floating--default);
   border: 1px solid var(--pf-t--global--border--color--default) !important;
   box-shadow: var(--pf-t--global--box-shadow--sm);
   color: var(--pf-t--global--icon--color--subtle) !important;
@@ -31,7 +31,7 @@
 
   &:hover,
   &:focus {
-    background-color: var(--pf-t--global--background--color--primary--hover) !important;
+    background-color: var(--pf-t--global--background--color--floating--hover);
     box-shadow: var(--pf-t--global--box-shadow--md) !important;
     color: var(--pf-t--global--icon--color--regular) !important;
   }

@@ -1,5 +1,4 @@
 .pf-chatbot__menu.pf-v6-c-menu {
-  --pf-v6-c-menu--BorderRadius: var(--pf-t--global--border--radius--large);
   --pf-v6-c-menu__list-item--hover--BackgroundColor: var(--pf-t--global--background--color--secondary--default);
 }
 
@@ -31,10 +30,6 @@
     --pf-v6-c-menu__item-main--ColumnGap: var(--pf-t--global--spacer--md);
   }
 
-  .pf-v6-c-menu__list {
-    padding: 0rem var(--pf-t--global--spacer--md) 0rem var(--pf-t--global--spacer--md);
-  }
-
   /* handles hover state, which uses a background */
   .pf-v6-c-menu__list-item {
     border-radius: var(--pf-t--global--border--radius--small);
@@ -54,9 +49,5 @@
 
   .pf-v6-c-menu__item-description {
     font-weight: var(--pf-t--global--font--weight--body--bold);
-  }
-
-  .pf-v6-c-divider {
-    padding: 0 var(--pf-t--global--spacer--md) 0 var(--pf-t--global--spacer--md);
   }
 }
