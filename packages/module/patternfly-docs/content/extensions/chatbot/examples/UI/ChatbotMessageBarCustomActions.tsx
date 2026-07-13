@@ -10,7 +10,10 @@ import {
   SelectList,
   SelectOption
 } from '@patternfly/react-core';
-import { PlusIcon, ClipboardIcon, CodeIcon, UploadIcon } from '@patternfly/react-icons';
+import RhUiAddIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-add-icon';
+import RhUiClipboardIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-clipboard-icon';
+import RhUiCodeIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-code-icon';
+import RhUiUploadIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-upload-icon';
 import { useDropzone } from 'react-dropzone';
 
 export const ChatbotMessageBarCustomActionsExample: FunctionComponent = () => {
@@ -45,43 +48,51 @@ export const ChatbotMessageBarCustomActionsExample: FunctionComponent = () => {
   };
 
   const firstMenuItems: ReactNode = (
-    <DropdownList>
-      <DropdownItem value="Logs" id="logs" icon={<ClipboardIcon />}>
-        Logs
-      </DropdownItem>
-      <DropdownItem value="YAML - Status" id="yaml-status" icon={<CodeIcon />}>
-        YAML - Status
-      </DropdownItem>
-      <DropdownItem value="YAML - All contents" id="yaml-all" icon={<CodeIcon />}>
-        YAML - All contents
-      </DropdownItem>
+    <>
+      <DropdownList>
+        <DropdownItem value="Logs" id="logs" icon={<RhUiClipboardIcon />}>
+          Logs
+        </DropdownItem>
+        <DropdownItem value="YAML - Status" id="yaml-status" icon={<RhUiCodeIcon />}>
+          YAML - Status
+        </DropdownItem>
+        <DropdownItem value="YAML - All contents" id="yaml-all" icon={<RhUiCodeIcon />}>
+          YAML - All contents
+        </DropdownItem>
+      </DropdownList>
       <Divider key="divider" />
-      <DropdownItem value="Upload from computer" id="upload" icon={<UploadIcon />} onClick={open}>
-        Upload from computer
-      </DropdownItem>
-    </DropdownList>
+      <DropdownList>
+        <DropdownItem value="Upload from computer" id="upload" icon={<RhUiUploadIcon />} onClick={open}>
+          Upload from computer
+        </DropdownItem>
+      </DropdownList>
+    </>
   );
 
   const secondMenuItems: ReactNode = (
-    <DropdownList>
-      <DropdownItem value="canvas" id="canvas">
-        {showCanvasLabel ? 'Disable' : 'Enable'} Canvas
-      </DropdownItem>
-      <Divider key="divider-1" />
-      <DropdownItem value="Logs" id="logs" icon={<ClipboardIcon />}>
-        Logs
-      </DropdownItem>
-      <DropdownItem value="YAML - Status" id="yaml-status" icon={<CodeIcon />}>
-        YAML - Status
-      </DropdownItem>
-      <DropdownItem value="YAML - All contents" id="yaml-all" icon={<CodeIcon />}>
-        YAML - All contents
-      </DropdownItem>
+    <>
+      <DropdownList>
+        <DropdownItem value="canvas" id="canvas">
+          {showCanvasLabel ? 'Disable' : 'Enable'} Canvas
+        </DropdownItem>
+        <Divider key="divider-1" />
+        <DropdownItem value="Logs" id="logs" icon={<RhUiClipboardIcon />}>
+          Logs
+        </DropdownItem>
+        <DropdownItem value="YAML - Status" id="yaml-status" icon={<RhUiCodeIcon />}>
+          YAML - Status
+        </DropdownItem>
+        <DropdownItem value="YAML - All contents" id="yaml-all" icon={<RhUiCodeIcon />}>
+          YAML - All contents
+        </DropdownItem>
+      </DropdownList>
       <Divider key="divider-2" />
-      <DropdownItem value="Upload from computer" id="upload" icon={<UploadIcon />} onClick={open}>
-        Upload from computer
-      </DropdownItem>
-    </DropdownList>
+      <DropdownList>
+        <DropdownItem value="Upload from computer" id="upload" icon={<RhUiUploadIcon />} onClick={open}>
+          Upload from computer
+        </DropdownItem>
+      </DropdownList>
+    </>
   );
 
   const modelOptions = ['GPT-4', 'GPT-3.5', 'Claude', 'Llama 2'];
@@ -110,7 +121,7 @@ export const ChatbotMessageBarCustomActionsExample: FunctionComponent = () => {
           }}
           buttonProps={{
             attach: {
-              icon: <PlusIcon />,
+              icon: <RhUiAddIcon />,
               tooltipContent: 'Message actions',
               'aria-label': 'Message actions'
             }
@@ -140,7 +151,7 @@ export const ChatbotMessageBarCustomActionsExample: FunctionComponent = () => {
           }}
           buttonProps={{
             attach: {
-              icon: <PlusIcon />,
+              icon: <RhUiAddIcon />,
               tooltipContent: 'Message actions',
               'aria-label': 'Message actions'
             }
