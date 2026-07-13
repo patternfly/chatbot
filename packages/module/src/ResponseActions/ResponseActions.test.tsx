@@ -7,17 +7,21 @@ import Message from '../Message';
 
 // Mock the icon components
 jest.mock('@patternfly/react-icons', () => ({
-  OutlinedThumbsUpIcon: () => <div>OutlinedThumbsUpIcon</div>,
-  ThumbsUpIcon: () => <div>ThumbsUpIcon</div>,
-  OutlinedThumbsDownIcon: () => <div>OutlinedThumbsDownIcon</div>,
-  ThumbsDownIcon: () => <div>ThumbsDownIcon</div>,
-  OutlinedCopyIcon: () => <div>OutlinedCopyIcon</div>,
+  RhUiLikeIcon: () => <div>RhUiLikeIcon</div>,
+  RhUiLikeFillIcon: () => <div>RhUiLikeFillIcon</div>,
+  RhUiDislikeIcon: () => <div>RhUiDislikeIcon</div>,
+  RhUiDislikeFillIcon: () => <div>RhUiDislikeFillIcon</div>,
+  RhUiCopyIcon: () => <div>RhUiCopyIcon</div>,
+  RhUiCopyFillIcon: () => <div>RhUiCopyFillIcon</div>,
+  RhUiEditIcon: () => <div>RhUiEditIcon</div>,
+  RhUiEditFillIcon: () => <div>RhUiEditFillIcon</div>,
+  RhUiVolumeUpIcon: () => <div>RhUiVolumeUpIcon</div>,
+  RhUiVolumeUpFillIcon: () => <div>RhUiVolumeUpFillIcon</div>,
+  RhUiExportIcon: () => <div>RhUiExportIcon</div>,
+  RhUiExportFillIcon: () => <div>RhUiExportFillIcon</div>,
   DownloadIcon: () => <div>DownloadIcon</div>,
   InfoCircleIcon: () => <div>InfoCircleIcon</div>,
-  RedoIcon: () => <div>RedoIcon</div>,
-  ExternalLinkAltIcon: () => <div>ExternalLinkAltIcon</div>,
-  VolumeUpIcon: () => <div>VolumeUpIcon</div>,
-  PencilAltIcon: () => <div>PencilAltIcon</div>
+  RedoIcon: () => <div>RedoIcon</div>
 }));
 
 const ALL_ACTIONS = [
@@ -507,11 +511,11 @@ describe('ResponseActions', () => {
         />
       );
 
-      expect(screen.getByText('OutlinedThumbsUpIcon')).toBeInTheDocument();
-      expect(screen.getByText('OutlinedThumbsDownIcon')).toBeInTheDocument();
+      expect(screen.getByText('RhUiLikeIcon')).toBeInTheDocument();
+      expect(screen.getByText('RhUiDislikeIcon')).toBeInTheDocument();
 
-      expect(screen.queryByText('ThumbsUpIcon')).not.toBeInTheDocument();
-      expect(screen.queryByText('ThumbsDownIcon')).not.toBeInTheDocument();
+      expect(screen.queryByText('RhUiLikeFillIcon')).not.toBeInTheDocument();
+      expect(screen.queryByText('RhUiDislikeFillIcon')).not.toBeInTheDocument();
     });
 
     describe('positive actions', () => {
@@ -529,8 +533,8 @@ describe('ResponseActions', () => {
 
         await user.click(screen.getByRole('button', { name: 'Good response' }));
 
-        expect(screen.getByText('OutlinedThumbsUpIcon')).toBeInTheDocument();
-        expect(screen.queryByText('ThumbsUpIcon')).not.toBeInTheDocument();
+        expect(screen.getByText('RhUiLikeIcon')).toBeInTheDocument();
+        expect(screen.queryByText('RhUiLikeFillIcon')).not.toBeInTheDocument();
       });
 
       it('should swap positive icon from outline to filled when clicked with useFilledIconsOnClick', async () => {
@@ -547,8 +551,8 @@ describe('ResponseActions', () => {
 
         await user.click(screen.getByRole('button', { name: 'Good response' }));
 
-        expect(screen.getByText('ThumbsUpIcon')).toBeInTheDocument();
-        expect(screen.queryByText('OutlinedThumbsUpIcon')).not.toBeInTheDocument();
+        expect(screen.getByText('RhUiLikeFillIcon')).toBeInTheDocument();
+        expect(screen.queryByText('RhUiLikeIcon')).not.toBeInTheDocument();
       });
 
       it('should revert positive icon to outline icon when clicking outside', async () => {
@@ -567,10 +571,10 @@ describe('ResponseActions', () => {
         );
 
         await user.click(screen.getByRole('button', { name: 'Good response' }));
-        expect(screen.getByText('ThumbsUpIcon')).toBeInTheDocument();
+        expect(screen.getByText('RhUiLikeFillIcon')).toBeInTheDocument();
 
         await user.click(screen.getByTestId('outside'));
-        expect(screen.getByText('OutlinedThumbsUpIcon')).toBeInTheDocument();
+        expect(screen.getByText('RhUiLikeIcon')).toBeInTheDocument();
       });
 
       it('should not revert positive icon to outline icon when clicking outside if persistActionSelection is true', async () => {
@@ -590,10 +594,10 @@ describe('ResponseActions', () => {
         );
 
         await user.click(screen.getByRole('button', { name: 'Good response' }));
-        expect(screen.getByText('ThumbsUpIcon')).toBeInTheDocument();
+        expect(screen.getByText('RhUiLikeFillIcon')).toBeInTheDocument();
 
         await user.click(screen.getByTestId('outside'));
-        expect(screen.getByText('ThumbsUpIcon')).toBeInTheDocument();
+        expect(screen.getByText('RhUiLikeFillIcon')).toBeInTheDocument();
       });
 
       describe('negative actions', () => {
@@ -611,8 +615,8 @@ describe('ResponseActions', () => {
 
           await user.click(screen.getByRole('button', { name: 'Bad response' }));
 
-          expect(screen.getByText('OutlinedThumbsDownIcon')).toBeInTheDocument();
-          expect(screen.queryByText('ThumbsDownIcon')).not.toBeInTheDocument();
+          expect(screen.getByText('RhUiDislikeIcon')).toBeInTheDocument();
+          expect(screen.queryByText('RhUiDislikeFillIcon')).not.toBeInTheDocument();
         });
 
         it('should swap negative icon from outline to filled when clicked with useFilledIconsOnClick', async () => {
@@ -629,8 +633,8 @@ describe('ResponseActions', () => {
 
           await user.click(screen.getByRole('button', { name: 'Bad response' }));
 
-          expect(screen.getByText('ThumbsDownIcon')).toBeInTheDocument();
-          expect(screen.queryByText('OutlinedThumbsDownIcon')).not.toBeInTheDocument();
+          expect(screen.getByText('RhUiDislikeFillIcon')).toBeInTheDocument();
+          expect(screen.queryByText('RhUiDislikeIcon')).not.toBeInTheDocument();
         });
 
         it('should revert negative icon to outline when clicking outside', async () => {
@@ -649,10 +653,10 @@ describe('ResponseActions', () => {
           );
 
           await user.click(screen.getByRole('button', { name: 'Bad response' }));
-          expect(screen.getByText('ThumbsDownIcon')).toBeInTheDocument();
+          expect(screen.getByText('RhUiDislikeFillIcon')).toBeInTheDocument();
 
           await user.click(screen.getByTestId('outside'));
-          expect(screen.getByText('OutlinedThumbsDownIcon')).toBeInTheDocument();
+          expect(screen.getByText('RhUiDislikeIcon')).toBeInTheDocument();
         });
 
         it('should not revert negative icon to outline icon when clicking outside if persistActionSelection is true', async () => {
@@ -672,10 +676,10 @@ describe('ResponseActions', () => {
           );
 
           await user.click(screen.getByRole('button', { name: 'Bad response' }));
-          expect(screen.getByText('ThumbsDownIcon')).toBeInTheDocument();
+          expect(screen.getByText('RhUiDislikeFillIcon')).toBeInTheDocument();
 
           await user.click(screen.getByTestId('outside'));
-          expect(screen.getByText('ThumbsDownIcon')).toBeInTheDocument();
+          expect(screen.getByText('RhUiDislikeFillIcon')).toBeInTheDocument();
         });
       });
     });
