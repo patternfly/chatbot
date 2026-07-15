@@ -11,15 +11,18 @@ import { DeepThinkingProps } from '../DeepThinking';
 
 // Mock the icon components
 jest.mock('@patternfly/react-icons', () => ({
-  OutlinedThumbsUpIcon: () => <div>OutlinedThumbsUpIcon</div>,
-  ThumbsUpIcon: () => <div>ThumbsUpIcon</div>,
-  OutlinedThumbsDownIcon: () => <div>OutlinedThumbsDownIcon</div>,
-  ThumbsDownIcon: () => <div>ThumbsDownIcon</div>,
-  OutlinedCopyIcon: () => <div>OutlinedCopyIcon</div>,
-  DownloadIcon: () => <div>DownloadIcon</div>,
-  ExternalLinkAltIcon: () => <div>ExternalLinkAltIcon</div>,
-  VolumeUpIcon: () => <div>VolumeUpIcon</div>,
-  PencilAltIcon: () => <div>PencilAltIcon</div>,
+  RhUiLikeIcon: () => <div>RhUiLikeIcon</div>,
+  RhUiLikeFillIcon: () => <div>RhUiLikeFillIcon</div>,
+  RhUiDislikeIcon: () => <div>RhUiDislikeIcon</div>,
+  RhUiDislikeFillIcon: () => <div>RhUiDislikeFillIcon</div>,
+  RhUiCopyIcon: () => <div>RhUiCopyIcon</div>,
+  RhUiCopyFillIcon: () => <div>RhUiCopyFillIcon</div>,
+  RhUiEditIcon: () => <div>RhUiEditIcon</div>,
+  RhUiEditFillIcon: () => <div>RhUiEditFillIcon</div>,
+  RhUiVolumeUpIcon: () => <div>RhUiVolumeUpIcon</div>,
+  RhUiVolumeUpFillIcon: () => <div>RhUiVolumeUpFillIcon</div>,
+  RhUiExportIcon: () => <div>RhUiExportIcon</div>,
+  RhUiExportFillIcon: () => <div>RhUiExportFillIcon</div>,
   CheckIcon: () => <div>CheckIcon</div>,
   CloseIcon: () => <div>CloseIcon</div>,
   ExternalLinkSquareAltIcon: () => <div>ExternalLinkSquareAltIcon</div>,
@@ -1423,12 +1426,12 @@ describe('Message', () => {
       />
     );
 
-    expect(screen.getByText('OutlinedThumbsUpIcon')).toBeInTheDocument();
+    expect(screen.getByText('RhUiLikeIcon')).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: /Good response/i }));
 
-    expect(screen.getByText('OutlinedThumbsUpIcon')).toBeInTheDocument();
-    expect(screen.queryByText('ThumbsUpIcon')).not.toBeInTheDocument();
+    expect(screen.getByText('RhUiLikeIcon')).toBeInTheDocument();
+    expect(screen.queryByText('RhUiLikeFillIcon')).not.toBeInTheDocument();
   });
 
   it('should swap icons when useFilledIconsOnClick is true', async () => {
@@ -1449,8 +1452,8 @@ describe('Message', () => {
 
     await user.click(screen.getByRole('button', { name: /Good response/i }));
 
-    expect(screen.getByText('ThumbsUpIcon')).toBeInTheDocument();
-    expect(screen.queryByText('OutlinedThumbsUpIcon')).not.toBeInTheDocument();
+    expect(screen.getByText('RhUiLikeFillIcon')).toBeInTheDocument();
+    expect(screen.queryByText('RhUiLikeIcon')).not.toBeInTheDocument();
   });
 
   it('should apply pf-m-visible-interaction class to response actions when showActionsOnInteraction is true', () => {
