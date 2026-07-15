@@ -12,6 +12,8 @@ To use the chatbot extension in your project, run
 npm install @patternfly/chatbot --save
 ```
 
+You will also need to install our peer dependencies: https://github.com/patternfly/chatbot/blob/main/packages/module/package.json#L53.
+
 Make sure to add the CSS imports as the last import in your index file. The extension is intended to override certain PatternFly component styles. However, if it's not the last import, you may not see these.
 
 ```
