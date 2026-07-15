@@ -70,30 +70,16 @@ import { MessageBar } from '@patternfly/chatbot/dist/dynamic/MessageBar';
 import SourceDetailsMenuItem from '@patternfly/chatbot/dist/dynamic/SourceDetailsMenuItem';
 import { ChatbotModal } from '@patternfly/chatbot/dist/dynamic/ChatbotModal';
 import SettingsForm from '@patternfly/chatbot/dist/dynamic/Settings';
-import RhUiAttentionBellIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-attention-bell-icon';
-import RhUiCalendarIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-calendar-icon';
-import RhUiClipboardIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-clipboard-icon';
-import RhUiCodeIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-code-icon';
-import RhUiAddIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-add-icon';
-import { ThumbtackIcon } from '@patternfly/react-icons';
-import RhUiUploadIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-upload-icon';
 import { useDropzone } from 'react-dropzone';
-
 import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
 import { Button, Label, DropdownItem, DropdownList, Checkbox, MenuToggle, Select, SelectList, SelectOption } from '@patternfly/react-core';
-
-import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/outlined-window-restore-icon';
-import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
-import OpenDrawerRightIcon from '@patternfly/react-icons/dist/esm/icons/open-drawer-right-icon';
-import CogIcon from '@patternfly/react-icons/dist/esm/icons/cog-icon';
-import PenToSquareIcon from '@patternfly/react-icons/dist/esm/icons/pen-to-square-icon';
 import PFHorizontalLogoColor from './PF-HorizontalLogo-Color.svg';
 import PFHorizontalLogoReverse from './PF-HorizontalLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import patternflyAvatar from '../Messages/patternfly_avatar.jpg';
 import termsAndConditionsHeader from './PF-TermsAndConditionsHeader.svg';
 import onboardingHeader from './RH-Hat-Image.svg';
-import { CloseIcon, SearchIcon, OutlinedCommentsIcon, FilterIcon, SortAmountDownIcon } from '@patternfly/react-icons';
+import { RhMicronsSortDownLargeToSmallIcon, RhUiAddIcon, RhUiAttentionBellIcon, RhUiCalendarIcon, RhUiClipboardIcon, RhUiCodeIcon, RhUiCommentsIcon, RhUiEditFillIcon, RhUiExpandIcon, RhUiFilterFillIcon, RhUiOpenDrawerRightIcon, RhUiRestoreWindowIcon, RhUiSearchIcon, RhUiSettingsFillIcon, RhUiThumbtackFillIcon, RhUiUploadIcon } from '@patternfly/react-icons';
 import { FunctionComponent, FormEvent, useState, useRef, MouseEvent, isValidElement, cloneElement, Children, ReactNode, Ref, MouseEvent as ReactMouseEvent, CSSProperties, useEffect} from 'react';
 import FilePreview from '@patternfly/chatbot/dist/dynamic/FilePreview';
 

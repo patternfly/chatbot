@@ -13,7 +13,7 @@ import {
   SelectOption,
   Tooltip
 } from '@patternfly/react-core';
-import { FilterIcon, SortAmountDownIcon } from '@patternfly/react-icons';
+import { RhUiFilterFillIcon, RhMicronsSortDownLargeToSmallIcon } from '@patternfly/react-icons';
 
 const initialConversations: { [key: string]: Conversation[] } = {
   Today: [{ id: '1', text: 'Red Hat products and services' }],
@@ -148,7 +148,7 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
                 aria-label="Filter options"
                 // eslint-disable-next-line no-console
                 onClick={() => console.log('Filter button clicked')}
-                icon={<FilterIcon />}
+                icon={<RhUiFilterFillIcon />}
               />
             </Tooltip>
           ) : undefined
@@ -171,7 +171,7 @@ export const ChatbotHeaderTitleDemo: FunctionComponent = () => {
                     variant="plain"
                     aria-label={`${sortLabels[selectedSort]}, Sort conversations`}
                     icon={
-                      <SortAmountDownIcon
+                      <RhMicronsSortDownLargeToSmallIcon
                         style={{
                           transform:
                             selectedSort === 'oldest' || selectedSort === 'alphabetical-asc' ? 'scaleY(-1)' : 'none'

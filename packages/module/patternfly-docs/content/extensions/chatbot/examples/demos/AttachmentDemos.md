@@ -37,9 +37,7 @@ ChatbotHeaderSelectorDropdown,
 ChatbotHeaderOptionsDropdown
 } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
 import ChatbotAlert from '@patternfly/chatbot/dist/dynamic/ChatbotAlert';
-import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
-import OpenDrawerRightIcon from '@patternfly/react-icons/dist/esm/icons/open-drawer-right-icon';
-import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/outlined-window-restore-icon';
+import { RhUiExpandIcon, RhUiOpenDrawerRightIcon, RhUiRestoreWindowIcon } from '@patternfly/react-icons';
 import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
