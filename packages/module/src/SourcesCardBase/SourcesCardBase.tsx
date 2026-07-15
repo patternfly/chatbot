@@ -27,7 +27,7 @@ import {
   Truncate,
   TruncateProps
 } from '@patternfly/react-core';
-import { ExternalLinkSquareAltIcon } from '@patternfly/react-icons';
+import { RhMicronsExternalLinkIcon } from '@patternfly/react-icons';
 
 export interface SourcesCardBaseProps extends CardProps {
   /** Additional classes for the pagination navigation container. */
@@ -139,7 +139,7 @@ const SourcesCardBase: FunctionComponent<SourcesCardBaseProps> = ({
               component="a"
               variant={ButtonVariant.link}
               href={source.link}
-              icon={source.isExternal ? <ExternalLinkSquareAltIcon /> : undefined}
+              icon={source.isExternal ? <RhMicronsExternalLinkIcon /> : undefined}
               iconPosition="end"
               isInline
               rel={source.isExternal ? 'noreferrer' : undefined}
@@ -202,7 +202,7 @@ const SourcesCardBase: FunctionComponent<SourcesCardBaseProps> = ({
               component="a"
               variant={ButtonVariant.link}
               href={sources[page - 1].link}
-              icon={sources[page - 1].isExternal ? <ExternalLinkSquareAltIcon /> : undefined}
+              icon={sources[page - 1].isExternal ? <RhMicronsExternalLinkIcon /> : undefined}
               iconPosition="end"
               isInline
               rel={sources[page - 1].isExternal ? 'noreferrer' : undefined}

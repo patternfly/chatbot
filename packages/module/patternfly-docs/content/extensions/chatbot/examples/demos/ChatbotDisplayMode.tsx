@@ -43,7 +43,12 @@ import ChatbotHeader, {
 } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
 import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
-import { BarsIcon, RhUiExpandIcon, RhUiOpenDrawerRightIcon, RhUiRestoreWindowIcon } from '@patternfly/react-icons';
+import {
+  RhUiMenuBarsIcon,
+  RhUiExpandIcon,
+  RhUiOpenDrawerRightIcon,
+  RhUiRestoreWindowIcon
+} from '@patternfly/react-icons';
 import userAvatar from '../Messages/user_avatar.svg';
 import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
@@ -260,7 +265,7 @@ export const ChatbotDisplayModeDemo: FunctionComponent = () => {
             onSidebarToggle={() => setIsSidebarOpen(!isSidebarOpen)}
             id="fill-nav-toggle"
           >
-            <BarsIcon />
+            <RhUiMenuBarsIcon />
           </PageToggleButton>
         </MastheadToggle>
         <MastheadBrand>

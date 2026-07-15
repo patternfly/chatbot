@@ -24,11 +24,8 @@ jest.mock('@patternfly/react-icons', () => ({
   RhUiExportIcon: () => <div>RhUiExportIcon</div>,
   RhUiExportFillIcon: () => <div>RhUiExportFillIcon</div>,
   RhMicronsInformationFillIcon: () => <div>RhMicronsInformationFillIcon</div>,
-  CheckIcon: () => <div>CheckIcon</div>,
-  CloseIcon: () => <div>CloseIcon</div>,
-  ExternalLinkSquareAltIcon: () => <div>ExternalLinkSquareAltIcon</div>,
-  TimesIcon: () => <div>TimesIcon</div>,
-  RhUiBackwardsIcon: () => <div>RhUiBackwardsIcon</div>
+  RhUiBackwardsIcon: () => <div>RhUiBackwardsIcon</div>,
+  RhMicronsExternalLinkIcon: () => <div>RhMicronsExternalLinkIcon</div>,
 }));
 
 const ALL_ACTIONS = [

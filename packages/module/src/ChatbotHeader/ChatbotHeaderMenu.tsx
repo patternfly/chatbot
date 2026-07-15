@@ -2,7 +2,7 @@ import type { Ref, FunctionComponent } from 'react';
 import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Button, ButtonProps, Icon, Tooltip, TooltipProps } from '@patternfly/react-core';
-import BarsIcon from '@patternfly/react-icons/dist/esm/icons/bars-icon';
+import { RhUiMenuBarsIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-menu-bars-icon';
 
 export interface ChatbotHeaderMenuProps extends ButtonProps {
   /** Callback function to attach to menu toggle on top right of chatbot header. */
@@ -69,7 +69,7 @@ const ChatbotHeaderMenuBase: FunctionComponent<ChatbotHeaderMenuProps> = ({
         ref={innerRef ?? buttonRef}
         icon={
           <Icon size={isCompact ? 'lg' : 'xl'} isInline>
-            <BarsIcon />
+            <RhUiMenuBarsIcon />
           </Icon>
         }
         size={isCompact ? 'sm' : undefined}

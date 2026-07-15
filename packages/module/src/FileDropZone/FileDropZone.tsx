@@ -2,7 +2,7 @@ import { MultipleFileUpload, MultipleFileUploadMain } from '@patternfly/react-co
 import type { FunctionComponent } from 'react';
 import { useState } from 'react';
 import { ChatbotDisplayMode } from '../Chatbot';
-import { UploadIcon } from '@patternfly/react-icons';
+import { RhUiUploadIcon } from '@patternfly/react-icons';
 import { Accept, DropEvent, FileError, FileRejection } from 'react-dropzone';
 
 export interface FileDropZoneProps {
@@ -59,7 +59,7 @@ const FileDropZone: FunctionComponent<FileDropZoneProps> = ({
   const renderDropZone = () => (
     <>
       <MultipleFileUploadMain
-        titleIcon={<UploadIcon />}
+        titleIcon={<RhUiUploadIcon />}
         titleText="Drag and drop your file here"
         infoText={infoText}
         isUploadButtonHidden

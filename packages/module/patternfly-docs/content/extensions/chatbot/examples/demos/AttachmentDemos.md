@@ -24,7 +24,7 @@ import FileDetailsLabel from '@patternfly/chatbot/dist/dynamic/FileDetailsLabel'
 import SourceDetailsMenuItem from '@patternfly/chatbot/dist/dynamic/SourceDetailsMenuItem';
 import PreviewAttachment from '@patternfly/chatbot/dist/dynamic/PreviewAttachment';
 import AttachmentEdit from '@patternfly/chatbot/dist/dynamic/AttachmentEdit';
-import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon, UploadIcon } from '@patternfly/react-icons';
+import { RhUiAttentionBellIcon, RhUiCalendarIcon, RhUiClipboardIcon, RhUiCodeIcon, RhUiUploadIcon } from '@patternfly/react-icons';
 import { useDropzone } from 'react-dropzone';
 import PFHorizontalLogoColor from '../UI/PF-HorizontalLogo-Color.svg';
 import PFHorizontalLogoReverse from '../UI/PF-HorizontalLogo-Reverse.svg';

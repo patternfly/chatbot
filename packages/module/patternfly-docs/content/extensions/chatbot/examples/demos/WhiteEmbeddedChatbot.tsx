@@ -37,7 +37,7 @@ import ChatbotHeader, {
 
 import PFHorizontalLogoColor from '../UI/PF-HorizontalLogo-Color.svg';
 import PFHorizontalLogoReverse from '../UI/PF-HorizontalLogo-Reverse.svg';
-import { BarsIcon } from '@patternfly/react-icons';
+import { RhUiMenuBarsIcon } from '@patternfly/react-icons';
 import userAvatar from '../Messages/user_avatar.svg';
 import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
@@ -296,7 +296,7 @@ export const EmbeddedChatbotDemo: FunctionComponent = () => {
             onSidebarToggle={() => setIsSidebarOpen(!isSidebarOpen)}
             id="fill-nav-toggle"
           >
-            <BarsIcon />
+            <RhUiMenuBarsIcon />
           </PageToggleButton>
         </MastheadToggle>
         <MastheadBrand>

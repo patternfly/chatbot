@@ -20,7 +20,7 @@ import MessageBox from '@patternfly/chatbot/dist/dynamic/MessageBox';
 import Message, { MessageProps } from '@patternfly/chatbot/dist/dynamic/Message';
 import ChatbotHeader, { ChatbotHeaderMain, ChatbotHeaderTitle } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
 import Compare from '@patternfly/chatbot/dist/dynamic/Compare';
-import { BarsIcon } from '@patternfly/react-icons';
+import { RhUiMenuBarsIcon } from '@patternfly/react-icons';
 import userAvatar from '../Messages/user_avatar.svg';
 import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
@@ -155,7 +155,7 @@ export const EmbeddedComparisonChatbotDemo: FunctionComponent = () => {
             onSidebarToggle={() => setIsSidebarOpen(!isSidebarOpen)}
             id="fill-nav-toggle"
           >
-            <BarsIcon />
+            <RhUiMenuBarsIcon />
           </PageToggleButton>
         </MastheadToggle>
         <MastheadBrand>

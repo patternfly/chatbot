@@ -6,7 +6,7 @@ import {
   MenuSearchInputProps,
   MenuSearchProps
 } from '@patternfly/react-core';
-import { BellIcon, CalendarAltIcon, ClipboardIcon, CodeIcon } from '@patternfly/react-icons';
+import { RhUiAttentionBellIcon, RhUiCalendarIcon, RhUiClipboardIcon, RhUiCodeIcon } from '@patternfly/react-icons';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
@@ -43,19 +43,19 @@ const ATTACH_MENU_ITEMS = [
   </DropdownList>,
   <DropdownGroup key="group2">
     <DropdownList>
-      <DropdownItem value="Alerts" id="1" icon={<BellIcon />}>
+      <DropdownItem value="Alerts" id="1" icon={<RhUiAttentionBellIcon />}>
         Alerts
       </DropdownItem>
-      <DropdownItem value="Events" id="2" icon={<CalendarAltIcon />}>
+      <DropdownItem value="Events" id="2" icon={<RhUiCalendarIcon />}>
         Events
       </DropdownItem>
-      <DropdownItem value="Logs" id="3" icon={<ClipboardIcon />}>
+      <DropdownItem value="Logs" id="3" icon={<RhUiClipboardIcon />}>
         Logs
       </DropdownItem>
-      <DropdownItem value="YAML - Status" id="4" icon={<CodeIcon />}>
+      <DropdownItem value="YAML - Status" id="4" icon={<RhUiCodeIcon />}>
         YAML - Status
       </DropdownItem>
-      <DropdownItem value="YAML - All contents" id="5" icon={<CodeIcon />}>
+      <DropdownItem value="YAML - All contents" id="5" icon={<RhUiCodeIcon />}>
         YAML - All contents
       </DropdownItem>
     </DropdownList>
