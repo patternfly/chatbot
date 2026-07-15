@@ -1,8 +1,7 @@
 import { FunctionComponent } from 'react';
 
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
-import InfoCircleIcon from '@patternfly/react-icons/dist/esm/icons/info-circle-icon';
-import RedoIcon from '@patternfly/react-icons/dist/esm/icons/redo-icon';
+import { RhMicronsInformationFillIcon, RhUiRedoIcon } from '@patternfly/react-icons';
 
 export const CustomActionExample: FunctionComponent = () => (
   <Message
@@ -18,14 +17,14 @@ export const CustomActionExample: FunctionComponent = () => (
         onClick: () => console.log('Clicked regenerate'),
         tooltipContent: 'Regenerate',
         clickedTooltipContent: 'Regenerated',
-        icon: <RedoIcon />
+        icon: <RhUiRedoIcon />
       },
       info: {
         ariaLabel: 'Info',
         // eslint-disable-next-line no-console
         onClick: () => console.log('Clicked info'),
         tooltipContent: 'Info',
-        icon: <InfoCircleIcon />
+        icon: <RhMicronsInformationFillIcon />
       }
     }}
   />

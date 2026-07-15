@@ -39,7 +39,7 @@ import {
   TabTitleText,
   Spinner
 } from '@patternfly/react-core';
-import { ArrowCircleDownIcon, ArrowRightIcon, CheckCircleIcon, CubeIcon, CubesIcon } from '@patternfly/react-icons';
+import { RhUiArrowCircleDownFillIcon, RhUiArrowRightIcon, RhUiCheckCircleFillIcon } from '@patternfly/react-icons';
 
 const UserActionEndContent = () => {
   // eslint-disable-next-line no-console
@@ -143,7 +143,7 @@ const LiveProgressSummaryCard = () => {
     const status = getStageStatus(stage);
 
     if (status === 'completed') {
-      return <CheckCircleIcon color="green" aria-label="Complete" />;
+      return <RhUiCheckCircleFillIcon color="green" aria-label="Complete" />;
     } else if (status === 'in-progress') {
       return <Spinner size="sm" aria-valuetext="In progress" />;
     } else {
@@ -374,7 +374,7 @@ Setting up cluster console...`;
           </CardBody>
         </CardExpandableContent>
         <CardFooter>
-          <Button isBlock variant="tertiary" icon={<ArrowRightIcon />} iconPosition="end">
+          <Button isBlock variant="tertiary" icon={<RhUiArrowRightIcon />} iconPosition="end">
             Open in console
           </Button>
         </CardFooter>
@@ -536,34 +536,10 @@ const VersionSelectorCard = () => {
         style={{ '--pf-v6-c-card--child--PaddingBlockEnd': 'var(--pf-t--global--spacer--md)' } as React.CSSProperties}
       >
         <Tabs activeKey={activeTabKey} onSelect={handleTabClick} aria-label="Architecture" role="region" isFilled>
-          <Tab
-            eventKey={0}
-            title={
-              <TabTitleText>
-                <Flex spaceItems={{ default: 'spaceItemsXs' }}>
-                  <FlexItem>
-                    <CubeIcon />
-                  </FlexItem>
-                  <FlexItem>Single arch</FlexItem>
-                </Flex>
-              </TabTitleText>
-            }
-          >
+          <Tab eventKey={0} title={<TabTitleText>Single arch</TabTitleText>}>
             {generateTabContent('x86_64 Intel/AMD only', 'Standard deployments • Most common choice')}
           </Tab>
-          <Tab
-            eventKey={1}
-            title={
-              <TabTitleText>
-                <Flex spaceItems={{ default: 'spaceItemsXs' }}>
-                  <FlexItem>
-                    <CubesIcon />
-                  </FlexItem>
-                  <FlexItem>Multi arch</FlexItem>
-                </Flex>
-              </TabTitleText>
-            }
-          >
+          <Tab eventKey={1} title={<TabTitleText>Multi arch</TabTitleText>}>
             {generateTabContent('Multi arch', 'Standard deployments')}
           </Tab>
         </Tabs>
@@ -584,7 +560,7 @@ const DownloadCard = () => (
         <Flex spaceItems={{ default: 'spaceItemsSm' }}>
           <FlexItem>
             <Icon size="lg" status="success">
-              <CheckCircleIcon />
+              <RhUiCheckCircleFillIcon />
             </Icon>
           </FlexItem>
           <FlexItem>Your discovery ISO is ready</FlexItem>
@@ -602,7 +578,7 @@ const DownloadCard = () => (
 
         <Flex direction={{ default: 'column' }} spaceItems={{ default: 'spaceItemsSm' }}>
           <FlexItem>
-            <Button variant={ButtonVariant.primary} icon={<ArrowCircleDownIcon />} isBlock>
+            <Button variant={ButtonVariant.primary} icon={<RhUiArrowCircleDownFillIcon />} isBlock>
               Download Discovery ISO
             </Button>
           </FlexItem>

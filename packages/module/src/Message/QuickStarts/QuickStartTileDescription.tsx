@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { useRef } from 'react';
 import { Button, Flex, pluralize, Popover } from '@patternfly/react-core';
-import InfoCircleIcon from '@patternfly/react-icons/dist/js/icons/info-circle-icon';
+import { RhMicronsInformationFillIcon } from '@patternfly/react-icons';
 
 interface QuickStartTileDescriptionProps {
   /** QuickStart description */
@@ -57,7 +57,7 @@ const QuickStartTileDescription: FC<QuickStartTileDescriptionProps> = ({
             }}
             aria-label={quickStartButtonAriaLabel}
           >
-            <InfoCircleIcon />
+            <RhMicronsInformationFillIcon />
           </Button>
           <Popover
             aria-label={pluralizedPrereq}

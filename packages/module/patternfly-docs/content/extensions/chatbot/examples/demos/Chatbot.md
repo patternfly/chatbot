@@ -52,8 +52,7 @@ import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
 import OpenDrawerRightIcon from '@patternfly/react-icons/dist/esm/icons/open-drawer-right-icon';
 import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/outlined-window-restore-icon';
 import { BarsIcon } from '@patternfly/react-icons/dist/esm/icons/bars-icon';
-import { CopyIcon } from '@patternfly/react-icons/dist/esm/icons/copy-icon';
-import { WrenchIcon } from '@patternfly/react-icons/dist/esm/icons/wrench-icon';
+import { RhUiBuildFillIcon, RhUiCopyFillIcon } from '@patternfly/react-icons';
 import {
 Button,
 DescriptionList,

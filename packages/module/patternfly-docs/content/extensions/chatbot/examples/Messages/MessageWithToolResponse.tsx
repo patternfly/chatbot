@@ -1,6 +1,6 @@
 import { useState, FunctionComponent, MouseEvent as ReactMouseEvent } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
-import { CopyIcon, WrenchIcon } from '@patternfly/react-icons';
+import { RhUiBuildFillIcon, RhUiCopyFillIcon } from '@patternfly/react-icons';
 import {
   Button,
   DescriptionList,
@@ -41,7 +41,7 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
                   <FlexItem grow={{ default: 'grow' }}>
                     <Flex gap={{ default: 'gapXs' }}>
                       <FlexItem>
-                        <WrenchIcon style={{ color: 'var(--pf-t--global--icon--color--brand--default' }} />
+                        <RhUiBuildFillIcon style={{ color: 'var(--pf-t--global--icon--color--brand--default' }} />
                       </FlexItem>
                       <FlexItem>toolName</FlexItem>
                     </Flex>
@@ -58,7 +58,7 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
                 <Button
                   variant="plain"
                   aria-label="Copy tool response to clipboard"
-                  icon={<CopyIcon style={{ color: 'var(--pf-t--global--icon--color--subtle)' }} />}
+                  icon={<RhUiCopyFillIcon style={{ color: 'var(--pf-t--global--icon--color--subtle)' }} />}
                 ></Button>
               </FlexItem>
             </Flex>
@@ -152,7 +152,7 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
                   <FlexItem grow={{ default: 'grow' }}>
                     <Flex gap={{ default: 'gapXs' }}>
                       <FlexItem>
-                        <WrenchIcon style={{ color: 'var(--pf-t--global--icon--color--brand--default' }} />
+                        <RhUiBuildFillIcon style={{ color: 'var(--pf-t--global--icon--color--brand--default' }} />
                       </FlexItem>
                       <FlexItem>toolName</FlexItem>
                     </Flex>
@@ -169,7 +169,7 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
                 <Button
                   variant="plain"
                   aria-label="Copy tool response to clipboard"
-                  icon={<CopyIcon style={{ color: 'var(--pf-t--global--icon--color--subtle)' }} />}
+                  icon={<RhUiCopyFillIcon style={{ color: 'var(--pf-t--global--icon--color--subtle)' }} />}
                 ></Button>
               </FlexItem>
             </Flex>

@@ -23,6 +23,7 @@ jest.mock('@patternfly/react-icons', () => ({
   RhUiVolumeUpFillIcon: () => <div>RhUiVolumeUpFillIcon</div>,
   RhUiExportIcon: () => <div>RhUiExportIcon</div>,
   RhUiExportFillIcon: () => <div>RhUiExportFillIcon</div>,
+  RhMicronsInformationFillIcon: () => <div>RhMicronsInformationFillIcon</div>,
   CheckIcon: () => <div>CheckIcon</div>,
   CloseIcon: () => <div>CloseIcon</div>,
   ExternalLinkSquareAltIcon: () => <div>ExternalLinkSquareAltIcon</div>,
