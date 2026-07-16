@@ -6,7 +6,7 @@ import type { FunctionComponent } from 'react';
 import { useState, useCallback, useEffect } from 'react';
 
 // Import PatternFly components
-import { Button, ButtonProps, Tooltip, TooltipProps, Icon } from '@patternfly/react-core';
+import { Button, ButtonProps, Tooltip, TooltipProps } from '@patternfly/react-core';
 
 // Import FontAwesome icons
 import { MicrophoneIcon } from '@patternfly/react-icons/dist/esm/icons/microphone-icon';
@@ -106,18 +106,16 @@ export const MicrophoneButton: FunctionComponent<MicrophoneButtonProps> = ({
     >
       <Button
         variant="plain"
-        className={`pf-chatbot__button--microphone ${isListening ? 'pf-chatbot__button--microphone--active' : ''} ${isCompact ? 'pf-m-compact' : ''} ${className ?? ''}`}
+        className={`pf-chatbot__message-bar-button pf-chatbot__button--microphone ${isListening ? 'pf-chatbot__button--microphone--active' : ''} ${isCompact ? 'pf-m-compact' : ''} ${className ?? ''}`}
+        isCircle
         aria-label={props['aria-label'] || (isListening ? 'Stop listening' : 'Use microphone')}
         aria-pressed={isListening}
         onClick={isListening ? stopListening : startListening}
-        icon={
-          <Icon iconSize={isCompact ? 'lg' : 'xl'} isInline>
-            <MicrophoneIcon />
-          </Icon>
-        }
-        size={isCompact ? 'sm' : undefined}
+        size={isCompact ? 'sm' : 'lg'}
         {...props}
-      />
+      >
+        <MicrophoneIcon />
+      </Button>
     </Tooltip>
   );
 };

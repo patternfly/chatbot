@@ -1,24 +1,7 @@
 // ============================================================================
 // Chatbot Footer - Message Bar - Microphone
 // ============================================================================
-.pf-v6-c-button.pf-chatbot__button--microphone {
-  border-radius: var(--pf-t--global--border--radius--pill);
-  padding: var(--pf-t--global--spacer--md);
-  width: 3rem;
-  height: 3rem;
-
-  .pf-v6-c-button__icon {
-    color: var(--pf-t--global--icon--color--subtle);
-  }
-
-  // Interactive states
-  &:hover,
-  &:focus {
-    .pf-v6-c-button__icon {
-      color: var(--pf-t--global--icon--color--regular);
-    }
-  }
-
+.pf-v6-c-button.pf-chatbot__message-bar-button.pf-chatbot__button--microphone {
   // Active state (while recording voice)
   &--active {
     background-color: var(--pf-t--global--color--brand--clicked);
@@ -45,13 +28,4 @@
   100% {
     box-shadow: 0 0 0 16px rgba(0, 102, 204, 0);
   }
-}
-
-// ============================================================================
-// Information density styles
-// ============================================================================
-.pf-v6-c-button.pf-chatbot__button--microphone.pf-m-compact {
-  width: 1.5rem;
-  height: 1.5rem;
-  align-items: center;
 }

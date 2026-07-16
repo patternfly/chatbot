@@ -1,24 +1,13 @@
 // ============================================================================
 // Chatbot Footer - Message Bar - Send
 // ============================================================================
-.pf-v6-c-button.pf-chatbot__button--send {
-  border-radius: var(--pf-t--global--border--radius--pill);
-  padding: var(--pf-t--global--spacer--md);
-  width: 3rem;
-  height: 3rem;
-
-  .pf-v6-c-button__icon {
-    --pf-v6-c-button__icon--Color: var(--pf-t--global--color--brand--default);
-  }
-
+.pf-v6-c-button.pf-chatbot__message-bar-button.pf-chatbot__button--send {
+  color: var(--pf-t--global--color--brand--default);
+  
   &:hover,
   &:focus {
     background-color: rgba(146, 197, 249, 0.25); // --pf-t--global--color--nonstatus--blue--default @ 25%;
     color: var(--pf-t--global--color--brand--hover);
-
-    .pf-v6-c-button__icon {
-      color: var(--pf-t--global--color--brand--hover);
-    }
   }
 }
 
@@ -50,13 +39,4 @@
     opacity: 1;
     transform: translate3d(0, 0, 0);
   }
-}
-
-// ============================================================================
-// Information density styles
-// ============================================================================
-.pf-v6-c-button.pf-chatbot__button--send.pf-m-compact {
-  width: 1.5rem;
-  height: 1.5rem;
-  align-items: center;
 }

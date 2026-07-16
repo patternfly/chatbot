@@ -1,19 +1,9 @@
 // ============================================================================
 // Chatbot Footer - Message Bar - Stop
 // ============================================================================
-.pf-v6-c-button.pf-chatbot__button--stop {
+.pf-v6-c-button.pf-chatbot__message-bar-button.pf-chatbot__button--stop {
   background-color: var(--pf-t--global--color--brand--default);
-  border-radius: var(--pf-t--global--border--radius--pill);
-  padding: var(--pf-t--global--spacer--md);
-  width: 3rem;
-  height: 3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .pf-v6-c-button__icon {
-    color: var(--pf-t--global--icon--color--on-brand--default);
-  }
+  color: var(--pf-t--global--icon--color--on-brand--default);
 
   &:hover {
     background-color: var(--pf-t--global--color--brand--hover);
@@ -21,25 +11,11 @@
 
   &:focus {
     background-color: var(--pf-t--global--color--brand--clicked);
-
-    .pf-v6-c-button__icon {
-      color: var(--pf-t--global--icon--color--on-brand--default);
-    }
+    color: var(--pf-t--global--icon--color--on-brand--default);
 
     &:hover,
     &:focus {
-      .pf-v6-c-button__icon {
-        color: var(--pf-t--global--icon--color--on-brand--default);
-      }
+      color: var(--pf-t--global--icon--color--on-brand--default);
     }
   }
-}
-
-// ============================================================================
-// Information density styles
-// ============================================================================
-.pf-v6-c-button.pf-chatbot__button--stop.pf-m-compact {
-  width: 1.5rem;
-  height: 1.5rem;
-  align-items: center;
 }

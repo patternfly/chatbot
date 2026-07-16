@@ -6,7 +6,7 @@ import type { Ref, FunctionComponent } from 'react';
 import { forwardRef } from 'react';
 
 // Import PatternFly components
-import { Button, ButtonProps, Icon, Tooltip, TooltipProps } from '@patternfly/react-core';
+import { Button, ButtonProps, Tooltip, TooltipProps } from '@patternfly/react-core';
 import { Accept, DropEvent, DropzoneOptions, FileError, FileRejection, useDropzone } from 'react-dropzone';
 import { PaperclipIcon } from '@patternfly/react-icons/dist/esm/icons/paperclip-icon';
 
@@ -110,18 +110,16 @@ const AttachButtonBase: FunctionComponent<AttachButtonProps> = ({
         <Button
           variant="plain"
           ref={innerRef}
-          className={`pf-chatbot__button--attach ${isCompact ? 'pf-m-compact' : ''} ${className ?? ''}`}
+          isCircle
+          className={`pf-chatbot__message-bar-button pf-chatbot__button--attach ${isCompact ? 'pf-m-compact' : ''} ${className ?? ''}`}
           aria-label={props['aria-label'] || 'Attach'}
           isDisabled={isDisabled}
           onClick={onClick ?? open}
-          icon={
-            <Icon iconSize={isCompact ? 'lg' : 'xl'} isInline>
-              {icon}
-            </Icon>
-          }
-          size={isCompact ? 'sm' : undefined}
+          size={isCompact ? 'sm' : 'lg'}
           {...props}
-        />
+        >
+          {icon}
+        </Button>
       </Tooltip>
     </>
   );

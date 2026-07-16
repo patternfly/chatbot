@@ -4,7 +4,7 @@
 import type { FunctionComponent } from 'react';
 
 // Import PatternFly components
-import { Button, Tooltip, Icon, TooltipProps, ButtonProps } from '@patternfly/react-core';
+import { Button, Tooltip, TooltipProps, ButtonProps } from '@patternfly/react-core';
 
 import { ArrowUpIcon } from '@patternfly/react-icons/dist/esm/icons/arrow-up-icon';
 import { ArrowDownIcon } from '@patternfly/react-icons/dist/esm/icons/arrow-down-icon';
@@ -39,13 +39,12 @@ const JumpButton: FunctionComponent<JumpButtonProps> = ({
       <Button
         variant="plain"
         className={`pf-chatbot__jump pf-chatbot__jump--${position}`}
+        isCircle
         aria-label={`Back to ${position}`}
         onClick={onClick}
         {...jumpButtonProps}
       >
-        <Icon iconSize="lg" isInline>
-          {position === 'top' ? <ArrowUpIcon /> : <ArrowDownIcon />}
-        </Icon>
+        {position === 'top' ? <ArrowUpIcon /> : <ArrowDownIcon />}
       </Button>
     </Tooltip>
   );

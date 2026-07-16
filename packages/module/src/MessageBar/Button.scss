@@ -1,0 +1,40 @@
+// ============================================================================
+// Chatbot Footer - Message Bar - Shared button styles
+// ============================================================================
+.pf-v6-c-button.pf-chatbot__message-bar-button {
+  color: var(--pf-t--global--icon--color--subtle);
+
+  .pf-v6-c-button__text,
+  .pf-v6-c-button__icon {
+    svg {
+      font-size: var(--pf-t--global--icon--size--xl);
+      vertical-align: middle;
+    }
+  }
+
+  // Interactive states
+  &:hover {
+    color: var(--pf-t--global--icon--color--regular);
+  }
+
+  &:active,
+  &:focus {
+    background-color: var(--pf-t--global--color--brand--clicked);
+    color: var(--pf-t--global--icon--color--inverse);
+
+    &:hover,
+    &:focus {
+      color: var(--pf-t--global--icon--color--inverse);
+    }
+  }
+}
+
+// ============================================================================
+// Information density styles
+// ============================================================================
+.pf-v6-c-button.pf-chatbot__message-bar-button.pf-m-compact {
+  .pf-v6-c-button__text svg,
+  .pf-v6-c-button__icon svg {
+    font-size: var(--pf-t--global--icon--size--lg);
+  }
+}

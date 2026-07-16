@@ -4,7 +4,7 @@
 import type { FunctionComponent } from 'react';
 
 // Import PatternFly components
-import { Button, ButtonProps, Tooltip, TooltipProps, Icon } from '@patternfly/react-core';
+import { Button, ButtonProps, Tooltip, TooltipProps } from '@patternfly/react-core';
 
 import { PaperPlaneIcon } from '@patternfly/react-icons/dist/esm/icons/paper-plane-icon';
 
@@ -43,17 +43,15 @@ export const SendButton: FunctionComponent<SendButtonProps> = ({
   >
     <Button
       variant="plain"
-      className={`pf-chatbot__button--send ${isCompact ? 'pf-m-compact' : ''} ${className ?? ''}`}
+      isCircle
+      className={`pf-chatbot__message-bar-button pf-chatbot__button--send ${isCompact ? 'pf-m-compact' : ''} ${className ?? ''}`}
       aria-label={props['aria-label'] || 'Send'}
       onClick={onClick}
-      icon={
-        <Icon iconSize={isCompact ? 'lg' : 'xl'} isInline>
-          <PaperPlaneIcon />
-        </Icon>
-      }
-      size={isCompact ? 'sm' : undefined}
+      size={isCompact ? 'sm' : 'lg'}
       {...props}
-    />
+    >
+      <PaperPlaneIcon />
+    </Button>
   </Tooltip>
 );
 

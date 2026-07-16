@@ -11,7 +11,6 @@
   align-items: center !important;
   justify-content: center !important;
   padding: var(--pf-t--global--spacer--md) !important;
-  border-radius: var(--pf-t--global--border--radius--pill) !important;
   --pf-v6-c-button--MinWidth: 2rem !important;
   background-color: var(--pf-t--global--background--color--floating--default);
   border: 1px solid var(--pf-t--global--border--color--default) !important;
@@ -24,6 +23,14 @@
     transform var(--pf-t--global--motion--timing-function--accelerate) var(--pf-t--global--motion--duration--md),
     opacity var(--pf-t--global--motion--timing-function--accelerate) var(--pf-t--global--motion--duration--md) !important;
   z-index: var(--pf-t--global--z-index--md) !important;
+
+  .pf-v6-c-button__text,
+  .pf-v6-c-button__icon {
+    svg {
+      font-size: var(--pf-t--global--icon--size--lg);
+      vertical-align: middle;
+    }
+  }
 
   .pf-v6-c-button__text {
     line-height: 1rem;
