@@ -1,15 +1,18 @@
 import type { FunctionComponent, MouseEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import {
-  ExternalLinkAltIcon,
-  VolumeUpIcon,
-  OutlinedThumbsUpIcon,
-  ThumbsUpIcon,
-  OutlinedThumbsDownIcon,
-  ThumbsDownIcon,
-  OutlinedCopyIcon,
-  DownloadIcon,
-  PencilAltIcon
+  RhUiLikeIcon,
+  RhUiLikeFillIcon,
+  RhUiDislikeIcon,
+  RhUiDislikeFillIcon,
+  RhUiCopyIcon,
+  RhUiCopyFillIcon,
+  RhUiEditIcon,
+  RhUiEditFillIcon,
+  RhUiVolumeUpIcon,
+  RhUiVolumeUpFillIcon,
+  RhUiExportIcon,
+  RhUiExportFillIcon
 } from '@patternfly/react-icons';
 import ResponseActionButton from './ResponseActionButton';
 import { ButtonProps, TooltipProps } from '@patternfly/react-core';
@@ -164,12 +167,28 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
 
   const iconMap = {
     positive: {
-      filled: <ThumbsUpIcon />,
-      outlined: <OutlinedThumbsUpIcon />
+      filled: <RhUiLikeFillIcon />,
+      outlined: <RhUiLikeIcon />
     },
     negative: {
-      filled: <ThumbsDownIcon />,
-      outlined: <OutlinedThumbsDownIcon />
+      filled: <RhUiDislikeFillIcon />,
+      outlined: <RhUiDislikeIcon />
+    },
+    listen: {
+      filled: <RhUiVolumeUpFillIcon />,
+      outlined: <RhUiVolumeUpIcon />
+    },
+    copy: {
+      filled: <RhUiCopyFillIcon />,
+      outlined: <RhUiCopyIcon />
+    },
+    edit: {
+      filled: <RhUiEditFillIcon />,
+      outlined: <RhUiEditIcon />
+    },
+    download: {
+      filled: <RhUiExportFillIcon />,
+      outlined: <RhUiExportIcon />
     }
   };
 
@@ -247,7 +266,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           tooltipContent={copy.tooltipContent ?? 'Copy'}
           clickedTooltipContent={copy.clickedTooltipContent ?? 'Copied'}
           tooltipProps={getTooltipProps(copy.tooltipProps)}
-          icon={<OutlinedCopyIcon />}
+          icon={getIcon('copy')}
           isClicked={activeButton === 'copy'}
           ref={copy.ref}
           aria-expanded={copy['aria-expanded']}
@@ -265,7 +284,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           tooltipContent={edit.tooltipContent ?? 'Edit '}
           clickedTooltipContent={edit.clickedTooltipContent ?? 'Editing'}
           tooltipProps={getTooltipProps(edit.tooltipProps)}
-          icon={<PencilAltIcon />}
+          icon={getIcon('edit')}
           isClicked={activeButton === 'edit'}
           ref={edit.ref}
           aria-expanded={edit['aria-expanded']}
@@ -283,7 +302,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           tooltipContent={share.tooltipContent ?? 'Share'}
           clickedTooltipContent={share.clickedTooltipContent ?? 'Shared'}
           tooltipProps={getTooltipProps(share.tooltipProps)}
-          icon={<ExternalLinkAltIcon />}
+          icon={getIcon('download')}
           isClicked={activeButton === 'share'}
           ref={share.ref}
           aria-expanded={share['aria-expanded']}
@@ -301,7 +320,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           tooltipContent={download.tooltipContent ?? 'Download'}
           clickedTooltipContent={download.clickedTooltipContent ?? 'Downloaded'}
           tooltipProps={getTooltipProps(download.tooltipProps)}
-          icon={<DownloadIcon />}
+          icon={getIcon('download')}
           isClicked={activeButton === 'download'}
           ref={download.ref}
           aria-expanded={download['aria-expanded']}
@@ -319,7 +338,7 @@ export const ResponseActions: FunctionComponent<ResponseActionProps> = ({
           tooltipContent={listen.tooltipContent ?? 'Listen'}
           clickedTooltipContent={listen.clickedTooltipContent ?? 'Listening'}
           tooltipProps={getTooltipProps(listen.tooltipProps)}
-          icon={<VolumeUpIcon />}
+          icon={getIcon('listen')}
           isClicked={activeButton === 'listen'}
           ref={listen.ref}
           aria-expanded={listen['aria-expanded']}

@@ -11,15 +11,18 @@ import { DeepThinkingProps } from '../DeepThinking';
 
 // Mock the icon components
 jest.mock('@patternfly/react-icons', () => ({
-  OutlinedThumbsUpIcon: () => <div>OutlinedThumbsUpIcon</div>,
-  ThumbsUpIcon: () => <div>ThumbsUpIcon</div>,
-  OutlinedThumbsDownIcon: () => <div>OutlinedThumbsDownIcon</div>,
-  ThumbsDownIcon: () => <div>ThumbsDownIcon</div>,
-  OutlinedCopyIcon: () => <div>OutlinedCopyIcon</div>,
-  DownloadIcon: () => <div>DownloadIcon</div>,
-  ExternalLinkAltIcon: () => <div>ExternalLinkAltIcon</div>,
-  VolumeUpIcon: () => <div>VolumeUpIcon</div>,
-  PencilAltIcon: () => <div>PencilAltIcon</div>,
+  RhUiLikeIcon: () => <div>RhUiLikeIcon</div>,
+  RhUiLikeFillIcon: () => <div>RhUiLikeFillIcon</div>,
+  RhUiDislikeIcon: () => <div>RhUiDislikeIcon</div>,
+  RhUiDislikeFillIcon: () => <div>RhUiDislikeFillIcon</div>,
+  RhUiCopyIcon: () => <div>RhUiCopyIcon</div>,
+  RhUiCopyFillIcon: () => <div>RhUiCopyFillIcon</div>,
+  RhUiEditIcon: () => <div>RhUiEditIcon</div>,
+  RhUiEditFillIcon: () => <div>RhUiEditFillIcon</div>,
+  RhUiVolumeUpIcon: () => <div>RhUiVolumeUpIcon</div>,
+  RhUiVolumeUpFillIcon: () => <div>RhUiVolumeUpFillIcon</div>,
+  RhUiExportIcon: () => <div>RhUiExportIcon</div>,
+  RhUiExportFillIcon: () => <div>RhUiExportFillIcon</div>,
   CheckIcon: () => <div>CheckIcon</div>,
   CloseIcon: () => <div>CloseIcon</div>,
   ExternalLinkSquareAltIcon: () => <div>ExternalLinkSquareAltIcon</div>,
@@ -117,6 +120,13 @@ const TABLE = `
  | Cell 3 | Cell 4 |
 
  `;
+
+const TABLE_WITH_INLINE_CODE = `
+| Status | Finding |
+|---|---|
+| \`1/1 Running\`, 0 restarts | Healthy — no crashes |
+| \`1/1 Ready\` | Desired replicas met |
+`;
 
 const ONE_COLUMN_TABLE = `
 
@@ -1041,6 +1051,24 @@ describe('Message', () => {
     render(<Message avatar="./img" role="user" name="User" content={TABLE} tableProps={{ 'aria-label': 'Test' }} />);
     expect(screen.getByRole('grid', { name: /Test/i })).toBeTruthy();
   });
+  it('should wrap table cell content so inline code does not break grid layout', () => {
+    render(
+      <Message
+        avatar="./img"
+        role="user"
+        name="User"
+        content={TABLE_WITH_INLINE_CODE}
+        tableProps={{ 'aria-label': 'Inline code table' }}
+      />
+    );
+    const statusCell = screen.getByRole('cell', { name: /1\/1 Running/i });
+    expect(statusCell.querySelector(':scope > .pf-chatbot__message-table-cell-content')).toBeTruthy();
+    expect(statusCell.querySelector(':scope > code')).toBeFalsy();
+    expect(statusCell.querySelector('.pf-chatbot__message-inline-code')).toBeTruthy();
+    expect(
+      screen.getByRole('columnheader', { name: /Status/i }).querySelector('.pf-chatbot__message-table-cell-content')
+    ).toBeTruthy();
+  });
   it('should render footnote correctly', () => {
     render(<Message avatar="./img" role="user" name="User" content={FOOTNOTE} />);
     expect(screen.getByText(/This is some text with a footnote/i)).toBeTruthy();
@@ -1398,12 +1426,12 @@ describe('Message', () => {
       />
     );
 
-    expect(screen.getByText('OutlinedThumbsUpIcon')).toBeInTheDocument();
+    expect(screen.getByText('RhUiLikeIcon')).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: /Good response/i }));
 
-    expect(screen.getByText('OutlinedThumbsUpIcon')).toBeInTheDocument();
-    expect(screen.queryByText('ThumbsUpIcon')).not.toBeInTheDocument();
+    expect(screen.getByText('RhUiLikeIcon')).toBeInTheDocument();
+    expect(screen.queryByText('RhUiLikeFillIcon')).not.toBeInTheDocument();
   });
 
   it('should swap icons when useFilledIconsOnClick is true', async () => {
@@ -1424,8 +1452,8 @@ describe('Message', () => {
 
     await user.click(screen.getByRole('button', { name: /Good response/i }));
 
-    expect(screen.getByText('ThumbsUpIcon')).toBeInTheDocument();
-    expect(screen.queryByText('OutlinedThumbsUpIcon')).not.toBeInTheDocument();
+    expect(screen.getByText('RhUiLikeFillIcon')).toBeInTheDocument();
+    expect(screen.queryByText('RhUiLikeIcon')).not.toBeInTheDocument();
   });
 
   it('should apply pf-m-visible-interaction class to response actions when showActionsOnInteraction is true', () => {
