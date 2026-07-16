@@ -22,7 +22,8 @@ module.exports = {
     'color-contrast',
     'landmark-no-duplicate-main',
     'landmark-main-is-top-level',
-    'scrollable-region-focusable'
+    'scrollable-region-focusable',
+    'target-size'
   ].join(','),
   ignoreIncomplete: true
 };
