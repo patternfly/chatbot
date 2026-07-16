@@ -22,7 +22,8 @@ module.exports = {
     'color-contrast',
     'landmark-no-duplicate-main',
     'landmark-main-is-top-level',
-    'scrollable-region-focusable'
+    'scrollable-region-focusable',
+    'target-size' // See if we can remove once https://github.com/patternfly/patternfly/issues/8494 is resolved
   ].join(','),
   ignoreIncomplete: true
 };
