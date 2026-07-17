@@ -2,7 +2,7 @@ import type { Ref, FunctionComponent } from 'react';
 import { forwardRef } from 'react';
 
 import { Button, ButtonProps, Icon, Tooltip, TooltipProps } from '@patternfly/react-core';
-import { CloseIcon } from '@patternfly/react-icons';
+import { RhMicronsCloseIcon } from '@patternfly/react-icons';
 
 export interface ChatbotHeaderCloseButtonProps extends ButtonProps {
   /** Callback function for when button is clicked */
@@ -47,7 +47,7 @@ const ChatbotHeaderCloseButtonBase: FunctionComponent<ChatbotHeaderCloseButtonPr
         ref={innerRef}
         icon={
           <Icon size={isCompact ? 'lg' : 'xl'} isInline>
-            <CloseIcon />
+            <RhMicronsCloseIcon />
           </Icon>
         }
         size={isCompact ? 'sm' : undefined}
