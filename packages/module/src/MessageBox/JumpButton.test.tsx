@@ -21,7 +21,7 @@ describe('JumpButton', () => {
   it('should remain in the DOM but visually hidden when isHidden is used', () => {
     render(<JumpButton position="bottom" onClick={jest.fn()} isHidden />);
     const button = screen.getByRole('button', { name: /Back to bottom/i });
-    expect(button).toHaveClass('pf-chatbot-m-hidden');
+    expect(button).toHaveClass('pf-chatbot__jump--hidden');
   });
 
   it('should become visible when focused while hidden', () => {
@@ -29,6 +29,6 @@ describe('JumpButton', () => {
     const button = screen.getByRole('button', { name: /Back to bottom/i });
     button.focus();
     expect(button).toHaveFocus();
-    expect(button).toHaveClass('pf-chatbot-m-hidden');
+    expect(button).toHaveClass('pf-chatbot__jump--hidden');
   });
 });

@@ -37,7 +37,7 @@ const JumpButton: FunctionComponent<JumpButtonProps> = ({
   >
     <Button
       variant="plain"
-      className={`pf-chatbot__jump pf-chatbot__jump--${position} ${isHidden ? 'pf-chatbot-m-hidden' : ''}`}
+      className={`pf-chatbot__jump pf-chatbot__jump--${position} ${isHidden ? 'pf-chatbot__jump--hidden' : ''}`}
       aria-label={`Back to ${position}`}
       onClick={onClick}
       {...jumpButtonProps}
