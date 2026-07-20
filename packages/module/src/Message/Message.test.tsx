@@ -27,7 +27,8 @@ jest.mock('@patternfly/react-icons', () => ({
   CheckIcon: () => <div>CheckIcon</div>,
   CloseIcon: () => <div>CloseIcon</div>,
   ExternalLinkSquareAltIcon: () => <div>ExternalLinkSquareAltIcon</div>,
-  TimesIcon: () => <div>TimesIcon</div>
+  TimesIcon: () => <div>TimesIcon</div>,
+  RhUiBackwardsIcon: () => <div>RhUiBackwardsIcon</div>
 }));
 
 const ALL_ACTIONS = [

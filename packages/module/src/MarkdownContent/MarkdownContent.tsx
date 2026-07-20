@@ -257,6 +257,20 @@ export const MarkdownContent: FunctionComponent<MarkdownContentProps> = ({
       remarkRehypeOptions={{
         // removes sr-only class from footnote labels applied by default
         footnoteLabelProperties: { className: [''] },
+        // omit default ↩ text; backref icon is rendered in LinkMessage
+        footnoteBackContent: (_referenceIndex, rereferenceIndex) => {
+          if (rereferenceIndex > 1) {
+            return [
+              {
+                type: 'element',
+                tagName: 'sup',
+                properties: {},
+                children: [{ type: 'text', value: String(rereferenceIndex) }]
+              }
+            ];
+          }
+          return [];
+        },
         ...reactMarkdownProps?.remarkRehypeOptions
       }}
       disallowedElements={disallowedElements}
