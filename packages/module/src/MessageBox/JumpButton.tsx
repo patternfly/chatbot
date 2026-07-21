@@ -2,12 +2,8 @@
 // Chatbot Main - Messages - Jump to Top
 // ============================================================================
 import type { FunctionComponent } from 'react';
-
-// Import PatternFly components
 import { Button, Tooltip, Icon, TooltipProps, ButtonProps } from '@patternfly/react-core';
-
-import { ArrowUpIcon } from '@patternfly/react-icons/dist/esm/icons/arrow-up-icon';
-import { ArrowDownIcon } from '@patternfly/react-icons/dist/esm/icons/arrow-down-icon';
+import { RhMicronsArrowDownIcon, RhMicronsArrowUpIcon } from '@patternfly/react-icons';
 
 export interface JumpButtonProps {
   /** Position of the Jump Button(top/bottom) */
@@ -44,7 +40,7 @@ const JumpButton: FunctionComponent<JumpButtonProps> = ({
         {...jumpButtonProps}
       >
         <Icon iconSize="lg" isInline>
-          {position === 'top' ? <ArrowUpIcon /> : <ArrowDownIcon />}
+          {position === 'top' ? <RhMicronsArrowUpIcon /> : <RhMicronsArrowDownIcon />}
         </Icon>
       </Button>
     </Tooltip>

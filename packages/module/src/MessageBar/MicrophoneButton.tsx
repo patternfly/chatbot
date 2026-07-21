@@ -2,14 +2,9 @@
 // Chatbot Footer - Message Bar - Microphone
 // ============================================================================
 import type { FunctionComponent } from 'react';
-
 import { useState, useCallback, useEffect } from 'react';
-
-// Import PatternFly components
 import { Button, ButtonProps, Tooltip, TooltipProps, Icon } from '@patternfly/react-core';
-
-// Import FontAwesome icons
-import { MicrophoneIcon } from '@patternfly/react-icons/dist/esm/icons/microphone-icon';
+import { RhUiMicrophoneFillIcon } from '@patternfly/react-icons';
 
 export interface MicrophoneButtonProps extends ButtonProps {
   /** Boolean check if the browser is listening to speech or not */
@@ -112,7 +107,7 @@ export const MicrophoneButton: FunctionComponent<MicrophoneButtonProps> = ({
         onClick={isListening ? stopListening : startListening}
         icon={
           <Icon iconSize={isCompact ? 'lg' : 'xl'} isInline>
-            <MicrophoneIcon />
+            <RhUiMicrophoneFillIcon />
           </Icon>
         }
         size={isCompact ? 'sm' : undefined}

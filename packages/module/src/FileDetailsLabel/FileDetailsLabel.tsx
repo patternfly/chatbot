@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react';
 import { Button, Label, LabelProps } from '@patternfly/react-core';
 import FileDetails from '../FileDetails';
 import { Spinner } from '@patternfly/react-core';
-import { TimesIcon } from '@patternfly/react-icons';
+import { RhMicronsCloseIcon } from '@patternfly/react-icons';
 
 export interface FileDetailsLabelProps extends Omit<LabelProps, 'onClose' | 'onClick'> {
   /** Name of file, including extension */
@@ -40,7 +40,7 @@ export const FileDetailsLabel = ({
   spinnerTestId,
   fileSize,
   hasTruncation = true,
-  closeButtonIcon = <TimesIcon />,
+  closeButtonIcon = <RhMicronsCloseIcon />,
   ...props
 }: PropsWithChildren<FileDetailsLabelProps>) => {
   const handleClose = (event) => {

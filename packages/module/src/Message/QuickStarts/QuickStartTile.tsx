@@ -1,6 +1,4 @@
 import type { FC, ReactNode } from 'react';
-import RocketIcon from '@patternfly/react-icons/dist/js/icons/rocket-icon';
-import OutlinedBookmarkIcon from '@patternfly/react-icons/dist/js/icons/outlined-bookmark-icon';
 import {
   Card,
   CardBody,
@@ -14,11 +12,11 @@ import {
   Label,
   pluralize
 } from '@patternfly/react-core';
-import OutlinedClockIcon from '@patternfly/react-icons/dist/js/icons/outlined-clock-icon';
 import QuickStartTileHeader from './QuickStartTileHeader';
 import QuickStartTileDescription from './QuickStartTileDescription';
 import { QuickStart, QuickstartAction } from './types';
 import FallbackImg from './FallbackImg';
+import { RhUiBookmarkIcon, RhUiClockIcon, RhUiRocketFillIcon } from '@patternfly/react-icons';
 
 export const camelize = (str: string) =>
   str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
@@ -77,7 +75,12 @@ export const QuickStartTile: FC<QuickStartTileProps> = ({
   } else {
     quickStartIcon = (
       <Icon size="2xl">
-        <FallbackImg src={icon as string} alt="" className="pfext-catalog-item-icon__img" fallback={<RocketIcon />} />
+        <FallbackImg
+          src={icon as string}
+          alt=""
+          className="pfext-catalog-item-icon__img"
+          fallback={<RhUiRocketFillIcon />}
+        />
       </Icon>
     );
   }
@@ -91,7 +94,7 @@ export const QuickStartTile: FC<QuickStartTileProps> = ({
     onClick && onClick();
   };
 
-  const ActionIcon = action?.icon || OutlinedBookmarkIcon;
+  const ActionIcon = action?.icon || RhUiBookmarkIcon;
   const additionalAction = action ? (
     <Button
       aria-label={action['aria-label']}
@@ -125,7 +128,7 @@ export const QuickStartTile: FC<QuickStartTileProps> = ({
           <Flex spaceItems={{ default: 'spaceItemsSm' }}>
             {type && <Label color={type.color}>{type.text}</Label>}
             {durationMinutes && (
-              <Label variant="outline" data-test="duration" icon={<OutlinedClockIcon />}>
+              <Label variant="outline" data-test="duration" icon={<RhUiClockIcon />}>
                 {pluralize(durationMinutes, minuteWord, minuteWordPlural)}
               </Label>
             )}

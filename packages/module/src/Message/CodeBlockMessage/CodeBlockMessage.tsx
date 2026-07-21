@@ -17,9 +17,8 @@ import {
   getUniqueId
 } from '@patternfly/react-core';
 
-import { CheckIcon } from '@patternfly/react-icons/dist/esm/icons/check-icon';
 import { css } from '@patternfly/react-styles';
-import { RhUiCopyFillIcon } from '@patternfly/react-icons';
+import { RhMicronsCheckmarkIcon, RhUiCopyFillIcon } from '@patternfly/react-icons';
 
 export interface CodeBlockMessageProps {
   /** Content rendered in code block */
@@ -142,7 +141,7 @@ const CodeBlockMessage = ({
           className="pf-chatbot__button--copy"
           onClick={(event) => handleCopy(event, children)}
         >
-          {copied ? <CheckIcon /> : <RhUiCopyFillIcon />}
+          {copied ? <RhMicronsCheckmarkIcon /> : <RhUiCopyFillIcon />}
         </Button>
         <Tooltip id={tooltipID} content="Copy" position="top" triggerRef={buttonRef} />
       </CodeBlockAction>
