@@ -18,7 +18,7 @@ describe('JumpButton', () => {
     await userEvent.click(screen.getByRole('button', { name: /Back to bottom/i }));
     expect(spy).toHaveBeenCalledTimes(1);
   });
-  it('should be hidden if isHidden prop is used', async () => {
+  it('should be hidden if isHidden prop is used', () => {
     render(<JumpButton position="bottom" onClick={jest.fn()} isHidden />);
     expect(screen.queryByRole('button', { name: /Back to bottom/i })).toBeFalsy();
   });
