@@ -60,9 +60,6 @@ export * from './FilePreview';
 export { default as ImagePreview } from './ImagePreview';
 export * from './ImagePreview';
 
-export { default as LoadingMessage } from './LoadingMessage';
-export * from './LoadingMessage';
-
 export { default as MarkdownContent } from './MarkdownContent';
 export * from './MarkdownContent';
 
