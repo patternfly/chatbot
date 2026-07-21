@@ -21,9 +21,7 @@ import {
   ChatbotHeaderNewChatButton
 } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
 import { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
-import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/outlined-window-restore-icon';
-import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
-import OpenDrawerRightIcon from '@patternfly/react-icons/dist/esm/icons/open-drawer-right-icon';
+import { RhUiExpandIcon, RhUiOpenDrawerRightIcon, RhUiRestoreWindowIcon } from '@patternfly/react-icons';
 
 import PFHorizontalLogoColor from './PF-HorizontalLogo-Color.svg';
 import PFHorizontalLogoReverse from './PF-HorizontalLogo-Reverse.svg';
@@ -170,21 +168,21 @@ export const BasicDemo: FunctionComponent = () => {
                     <DropdownItem
                       value={ChatbotDisplayMode.default}
                       key="switchDisplayOverlay"
-                      icon={<OutlinedWindowRestoreIcon aria-hidden />}
+                      icon={<RhUiRestoreWindowIcon aria-hidden />}
                     >
                       <span>Overlay</span>
                     </DropdownItem>
                     <DropdownItem
                       value={ChatbotDisplayMode.docked}
                       key="switchDisplayDock"
-                      icon={<OpenDrawerRightIcon aria-hidden />}
+                      icon={<RhUiOpenDrawerRightIcon aria-hidden />}
                     >
                       <span>Dock to window</span>
                     </DropdownItem>
                     <DropdownItem
                       value={ChatbotDisplayMode.fullscreen}
                       key="switchDisplayFullscreen"
-                      icon={<ExpandIcon aria-hidden />}
+                      icon={<RhUiExpandIcon aria-hidden />}
                     >
                       <span>Fullscreen</span>
                     </DropdownItem>

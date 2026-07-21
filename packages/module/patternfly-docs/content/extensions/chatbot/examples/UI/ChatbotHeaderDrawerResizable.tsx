@@ -4,7 +4,7 @@ import ChatbotConversationHistoryNav, {
   Conversation
 } from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
 import { Checkbox } from '@patternfly/react-core';
-import { SearchIcon } from '@patternfly/react-icons';
+import { RhUiSearchIcon } from '@patternfly/react-icons';
 
 const initialConversations: { [key: string]: Conversation[] } = {
   Today: [{ id: '1', text: 'Red Hat products and services' }],
@@ -35,7 +35,7 @@ const initialConversations: { [key: string]: Conversation[] } = {
 const NO_RESULTS = {
   bodyText: 'Adjust your search query and try again. Check your spelling or try a more general term.',
   titleText: 'No results found',
-  icon: SearchIcon
+  icon: RhUiSearchIcon
 };
 
 export const ChatbotHeaderDrawerResizableDemo: FunctionComponent = () => {

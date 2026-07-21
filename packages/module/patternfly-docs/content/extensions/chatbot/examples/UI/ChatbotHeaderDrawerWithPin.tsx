@@ -5,7 +5,7 @@ import ChatbotConversationHistoryNav, {
   Conversation
 } from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
 import { Checkbox, DropdownItem, DropdownList } from '@patternfly/react-core';
-import { ThumbtackIcon } from '@patternfly/react-icons';
+import { RhUiThumbtackFillIcon } from '@patternfly/react-icons';
 
 // Sample conversations
 const initialConversations: { [key: string]: Conversation[] } = {
@@ -144,7 +144,7 @@ export const ChatbotHeaderPinDemo: FunctionComponent = () => {
           pinnedItems.push({
             ...conv,
             menuItems: createMenuItems(conv.id),
-            icon: <ThumbtackIcon />,
+            icon: <RhUiThumbtackFillIcon />,
             dropdownId: `pin-demo-${conv.id}-dropdown`
           });
         }

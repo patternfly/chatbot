@@ -45,7 +45,7 @@ import {
   MenuContentProps
 } from '@patternfly/react-core';
 
-import { OutlinedClockIcon, OutlinedCommentAltIcon, PenToSquareIcon } from '@patternfly/react-icons';
+import { RhUiClockIcon, RhUiCommentIcon, RhUiEditFillIcon } from '@patternfly/react-icons';
 import { ChatbotDisplayMode } from '../Chatbot/Chatbot';
 import ConversationHistoryDropdown from './ChatbotConversationHistoryDropdown';
 import LoadingState from './LoadingState';
@@ -195,7 +195,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   isCompact,
   title = 'Chat history',
   navTitleProps,
-  navTitleIcon = <OutlinedClockIcon />,
+  navTitleIcon = <RhUiClockIcon />,
   searchInputScreenReaderText,
   searchActionStart,
   searchActionEnd,
@@ -218,7 +218,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
     <MenuItem
       className={`pf-chatbot__menu-item ${activeItemId && activeItemId === conversation.id ? 'pf-chatbot__menu-item--active' : ''}`}
       itemId={conversation.id}
-      {...(conversation.noIcon ? {} : { icon: conversation.icon ?? <OutlinedCommentAltIcon /> })}
+      {...(conversation.noIcon ? {} : { icon: conversation.icon ?? <RhUiCommentIcon /> })}
       /* eslint-disable indent */
       {...(conversation.menuItems
         ? {
@@ -354,7 +354,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
               <Button
                 size={isCompact ? 'sm' : undefined}
                 onClick={onNewChat}
-                icon={<PenToSquareIcon />}
+                icon={<RhUiEditFillIcon />}
                 {...newChatButtonProps}
               >
                 {newChatButtonText}

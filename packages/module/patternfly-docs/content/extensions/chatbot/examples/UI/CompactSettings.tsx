@@ -20,7 +20,12 @@ import ChatbotHeader, {
   ChatbotHeaderOptionsDropdown,
   ChatbotHeaderTitle
 } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
-import { CogIcon, ExpandIcon, OpenDrawerRightIcon, OutlinedWindowRestoreIcon } from '@patternfly/react-icons';
+import {
+  RhUiExpandIcon,
+  RhUiOpenDrawerRightIcon,
+  RhUiRestoreWindowIcon,
+  RhUiSettingsFillIcon
+} from '@patternfly/react-icons';
 
 export const CompactSettingsDemo: FunctionComponent = () => {
   const [isChecked, setIsChecked] = useState<boolean>(true);
@@ -222,7 +227,7 @@ export const CompactSettingsDemo: FunctionComponent = () => {
               <DropdownItem
                 value={ChatbotDisplayMode.default}
                 key="switchDisplayOverlay"
-                icon={<OutlinedWindowRestoreIcon aria-hidden />}
+                icon={<RhUiRestoreWindowIcon aria-hidden />}
                 isSelected={displayMode === ChatbotDisplayMode.default}
               >
                 <span>Overlay</span>
@@ -230,7 +235,7 @@ export const CompactSettingsDemo: FunctionComponent = () => {
               <DropdownItem
                 value={ChatbotDisplayMode.docked}
                 key="switchDisplayDock"
-                icon={<OpenDrawerRightIcon aria-hidden />}
+                icon={<RhUiOpenDrawerRightIcon aria-hidden />}
                 isSelected={displayMode === ChatbotDisplayMode.docked}
               >
                 <span>Dock to window</span>
@@ -238,7 +243,7 @@ export const CompactSettingsDemo: FunctionComponent = () => {
               <DropdownItem
                 value={ChatbotDisplayMode.fullscreen}
                 key="switchDisplayFullscreen"
-                icon={<ExpandIcon aria-hidden />}
+                icon={<RhUiExpandIcon aria-hidden />}
                 isSelected={displayMode === ChatbotDisplayMode.fullscreen}
               >
                 <span>Fullscreen</span>
@@ -247,7 +252,7 @@ export const CompactSettingsDemo: FunctionComponent = () => {
           </DropdownGroup>
           <Divider />
           <DropdownList>
-            <DropdownItem value="Settings" key="switchSettings" icon={<CogIcon aria-hidden />}>
+            <DropdownItem value="Settings" key="switchSettings" icon={<RhUiSettingsFillIcon aria-hidden />}>
               <span>Settings</span>
             </DropdownItem>
           </DropdownList>

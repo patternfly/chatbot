@@ -7,8 +7,7 @@ import { useState } from 'react';
 
 // Import PatternFly components
 import { MenuToggleElement, Tooltip, MenuToggle, Dropdown, DropdownProps } from '@patternfly/react-core';
-
-import EllipsisIcon from '@patternfly/react-icons/dist/esm/icons/ellipsis-v-icon';
+import { RhUiEllipsisVerticalFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-ellipsis-vertical-fill-icon';
 
 export interface ChatbotConversationHistoryDropdownProps extends Omit<DropdownProps, 'toggle'> {
   /** Dropdown items rendered in conversation settings dropdown */
@@ -53,7 +52,7 @@ export const ChatbotConversationHistoryDropdown: FunctionComponent<ChatbotConver
         id={id}
         role="menuitem"
       >
-        <EllipsisIcon />
+        <RhUiEllipsisVerticalFillIcon />
       </MenuToggle>
     </Tooltip>
   );

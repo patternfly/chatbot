@@ -2,8 +2,7 @@ import type { Ref, FunctionComponent } from 'react';
 import { forwardRef } from 'react';
 
 import { Button, ButtonProps, Icon, Tooltip, TooltipProps } from '@patternfly/react-core';
-import { PenToSquareIcon } from '@patternfly/react-icons/dist/esm/icons/pen-to-square-icon';
-
+import { RhUiEditFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-edit-fill-icon';
 export interface ChatbotHeaderNewChatButtonProps extends ButtonProps {
   /** Callback function for when button is clicked */
   onClick: () => void;
@@ -47,7 +46,7 @@ const ChatbotHeaderNewChatButtonBase: FunctionComponent<ChatbotHeaderNewChatButt
         ref={innerRef}
         icon={
           <Icon size={isCompact ? 'lg' : 'xl'} isInline>
-            <PenToSquareIcon />
+            <RhUiEditFillIcon />
           </Icon>
         }
         size={isCompact ? 'sm' : undefined}

@@ -43,10 +43,7 @@ import ChatbotHeader, {
 } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
 import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
-import { BarsIcon } from '@patternfly/react-icons';
-import ExpandIcon from '@patternfly/react-icons/dist/esm/icons/expand-icon';
-import OpenDrawerRightIcon from '@patternfly/react-icons/dist/esm/icons/open-drawer-right-icon';
-import OutlinedWindowRestoreIcon from '@patternfly/react-icons/dist/esm/icons/outlined-window-restore-icon';
+import { BarsIcon, RhUiExpandIcon, RhUiOpenDrawerRightIcon, RhUiRestoreWindowIcon } from '@patternfly/react-icons';
 import userAvatar from '../Messages/user_avatar.svg';
 import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
@@ -365,7 +362,7 @@ export const ChatbotDisplayModeDemo: FunctionComponent = () => {
                       <DropdownItem
                         value={ChatbotDisplayMode.default}
                         key="switchDisplayOverlay"
-                        icon={<OutlinedWindowRestoreIcon aria-hidden />}
+                        icon={<RhUiRestoreWindowIcon aria-hidden />}
                         isSelected={displayMode === ChatbotDisplayMode.default}
                       >
                         <span>Overlay</span>
@@ -373,7 +370,7 @@ export const ChatbotDisplayModeDemo: FunctionComponent = () => {
                       <DropdownItem
                         value={ChatbotDisplayMode.drawer}
                         key="switchDisplayDock"
-                        icon={<OpenDrawerRightIcon aria-hidden />}
+                        icon={<RhUiOpenDrawerRightIcon aria-hidden />}
                         isSelected={displayMode === ChatbotDisplayMode.drawer}
                       >
                         <span>Drawer</span>
@@ -381,7 +378,7 @@ export const ChatbotDisplayModeDemo: FunctionComponent = () => {
                       <DropdownItem
                         value={ChatbotDisplayMode.fullscreen}
                         key="switchDisplayFullscreen"
-                        icon={<ExpandIcon aria-hidden />}
+                        icon={<RhUiExpandIcon aria-hidden />}
                         isSelected={displayMode === ChatbotDisplayMode.fullscreen}
                       >
                         <span>Fullscreen</span>
