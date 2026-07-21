@@ -86,10 +86,6 @@
     "wait-on": "^7.2.0",
     "whatwg-fetch": "^3.6.20"
   },
-  "overrides": {
-    "puppeteer": "^23.6.1",
-    "puppeteer-cluster": "^0.24.0"
-  },
   "dependencies": {
     "react-dropzone": "^14.3.8"
   }
