@@ -378,8 +378,8 @@ describe('MessageBox', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Back to top/i })).toHaveClass('pf-chatbot__jump--hidden');
-      expect(screen.getByRole('button', { name: /Back to bottom/i })).not.toHaveClass('pf-chatbot__jump--hidden');
+      expect(screen.queryByRole('button', { name: /Back to top/i })).toBeFalsy();
+      expect(screen.getByRole('button', { name: /Back to bottom/i })).toBeTruthy();
     });
   });
 
@@ -400,8 +400,8 @@ describe('MessageBox', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Back to top/i })).not.toHaveClass('pf-chatbot__jump--hidden');
-      expect(screen.getByRole('button', { name: /Back to bottom/i })).toHaveClass('pf-chatbot__jump--hidden');
+      expect(screen.getByRole('button', { name: /Back to top/i })).toBeTruthy();
+      expect(screen.queryByRole('button', { name: /Back to bottom/i })).toBeFalsy();
     });
   });
 });

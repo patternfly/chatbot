@@ -44,28 +44,6 @@
     inset-block-end: var(--pf-t--global--spacer--md) !important;
   }
 
-  // inclusively hidden: stay in tab order but reveal on keyboard focus
-  // https://css-tricks.com/inclusively-hidden/
-  &--hidden:not(:focus):not(:focus-visible):not(:active) {
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    height: 1px !important;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 1px !important;
-  }
-
-  &--hidden:focus,
-  &--hidden:focus-visible,
-  &--hidden:active {
-    clip: auto;
-    clip-path: none;
-    height: 2rem !important;
-    overflow: visible;
-    white-space: normal;
-    width: 2rem !important;
-  }
-
   // allows for zoom conditions; try zooming to 200% to see
   @media screen and (max-height: 518px) {
     display: none;

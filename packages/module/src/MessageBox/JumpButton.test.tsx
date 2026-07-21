@@ -18,17 +18,8 @@ describe('JumpButton', () => {
     await userEvent.click(screen.getByRole('button', { name: /Back to bottom/i }));
     expect(spy).toHaveBeenCalledTimes(1);
   });
-  it('should remain in the DOM but visually hidden when isHidden is used', () => {
+  it('should be hidden if isHidden prop is used', () => {
     render(<JumpButton position="bottom" onClick={jest.fn()} isHidden />);
-    const button = screen.getByRole('button', { name: /Back to bottom/i });
-    expect(button).toHaveClass('pf-chatbot__jump--hidden');
-  });
-
-  it('should become visible when focused while hidden', () => {
-    render(<JumpButton position="bottom" onClick={jest.fn()} isHidden />);
-    const button = screen.getByRole('button', { name: /Back to bottom/i });
-    button.focus();
-    expect(button).toHaveFocus();
-    expect(button).toHaveClass('pf-chatbot__jump--hidden');
+    expect(screen.queryByRole('button', { name: /Back to bottom/i })).toBeFalsy();
   });
 });

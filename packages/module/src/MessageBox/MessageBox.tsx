@@ -166,6 +166,10 @@ export const MessageBox = forwardRef(
       );
       setIsOverflowing(metrics.isOverflowing);
 
+      if (isAtBottom) {
+        programmaticScrollRef.current = false;
+      }
+
       if (!enableSmartScroll || scrollQueued.current) {
         return;
       }
@@ -176,10 +180,6 @@ export const MessageBox = forwardRef(
 
       if (debounceTimeout.current) {
         clearTimeout(debounceTimeout.current);
-      }
-
-      if (isAtBottom) {
-        programmaticScrollRef.current = false;
       }
 
       if (!isAtBottom && !metrics.nearBottom && !pauseAutoScrollRef.current && !programmaticScrollRef.current) {
