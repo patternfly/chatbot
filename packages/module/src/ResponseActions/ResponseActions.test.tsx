@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ResponseActions, { ActionProps } from './ResponseActions';
 import userEvent from '@testing-library/user-event';
-import { DownloadIcon, InfoCircleIcon, RedoIcon } from '@patternfly/react-icons';
+import { RhUiExportIcon, RhMicronsInformationFillIcon, RhUiRedoIcon } from '@patternfly/react-icons';
 import Message from '../Message';
 
 // Mock the icon components
@@ -19,9 +19,8 @@ jest.mock('@patternfly/react-icons', () => ({
   RhUiVolumeUpFillIcon: () => <div>RhUiVolumeUpFillIcon</div>,
   RhUiExportIcon: () => <div>RhUiExportIcon</div>,
   RhUiExportFillIcon: () => <div>RhUiExportFillIcon</div>,
-  DownloadIcon: () => <div>DownloadIcon</div>,
-  InfoCircleIcon: () => <div>InfoCircleIcon</div>,
-  RedoIcon: () => <div>RedoIcon</div>
+  RhMicronsInformationFillIcon: () => <div>RhMicronsInformationFillIcon</div>,
+  RhUiRedoIcon: () => <div>RhUiRedoIcon</div>
 }));
 
 const ALL_ACTIONS = [
@@ -41,7 +40,7 @@ const CUSTOM_ACTIONS = [
       onClick: jest.fn(),
       tooltipContent: 'Regenerate',
       clickedTooltipContent: 'Regenerated',
-      icon: <RedoIcon />
+      icon: <RhUiRedoIcon />
     },
     download: {
       ariaLabel: 'Download',
@@ -49,13 +48,13 @@ const CUSTOM_ACTIONS = [
       onClick: jest.fn(),
       tooltipContent: 'Download',
       clickedTooltipContent: 'Downloaded',
-      icon: <DownloadIcon />
+      icon: <RhUiExportIcon />
     },
     info: {
       ariaLabel: 'Info',
       onClick: jest.fn(),
       tooltipContent: 'Info',
-      icon: <InfoCircleIcon />
+      icon: <RhMicronsInformationFillIcon />
     }
   }
 ];
@@ -428,7 +427,7 @@ describe('ResponseActions', () => {
         onClick: jest.fn(),
         ariaLabel: 'Custom',
         tooltipContent: 'Custom action',
-        icon: <DownloadIcon />
+        icon: <RhUiExportIcon />
       }
     };
     render(<ResponseActions actions={actions} persistActionSelection />);

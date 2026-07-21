@@ -1,6 +1,6 @@
 import { useState, FunctionComponent, MouseEvent as ReactMouseEvent } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
-import { CopyIcon, WrenchIcon } from '@patternfly/react-icons';
+import { RhUiBuildFillIcon, RhUiCopyFillIcon } from '@patternfly/react-icons';
 import {
   Button,
   DescriptionList,
@@ -72,7 +72,7 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
                     }}
                   >
                     <FlexItem>
-                      <WrenchIcon
+                      <RhUiBuildFillIcon
                         style={{
                           color: 'var(--pf-t--global--icon--color--brand--default'
                         }}
@@ -102,7 +102,7 @@ export const MessageWithToolResponseExample: FunctionComponent = () => {
                 variant="plain"
                 aria-label="Copy tool response to clipboard"
                 icon={
-                  <CopyIcon
+                  <RhUiCopyFillIcon
                     style={{
                       color: 'var(--pf-t--global--icon--color--subtle)'
                     }}

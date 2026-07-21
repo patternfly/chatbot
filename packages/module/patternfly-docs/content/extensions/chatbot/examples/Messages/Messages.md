@@ -50,7 +50,7 @@ import ResponseActions, { ResponseActionsGroups } from '@patternfly/chatbot/dist
 import ToolResponse from '@patternfly/chatbot/dist/dynamic/ToolResponse';
 import { rehypeCodeBlockToggle } from '@patternfly/chatbot/dist/esm/Message/Plugins/rehypeCodeBlockToggle';
 import SourcesCard from '@patternfly/chatbot/dist/dynamic/SourcesCard';
-import { ArrowCircleDownIcon, ArrowRightIcon, CheckCircleIcon, CopyIcon, CubeIcon, CubesIcon, DownloadIcon, InfoCircleIcon, OutlinedQuestionCircleIcon, RedoIcon, RobotIcon, WrenchIcon } from '@patternfly/react-icons';
+import { RhUiArrowCircleDownFillIcon, RhUiArrowRightIcon, RhUiCheckCircleFillIcon, RhUiCopyFillIcon, RhUiExportIcon, RhMicronsInformationFillIcon, OutlinedQuestionCircleIcon, RhUiRedoIcon, RhUiBuildFillIcon } from '@patternfly/react-icons';
 import patternflyAvatar from './patternfly_avatar.jpg';
 import AttachmentEdit from '@patternfly/chatbot/dist/dynamic/AttachmentEdit';
 import FileDetails from '@patternfly/chatbot/dist/dynamic/FileDetails';
