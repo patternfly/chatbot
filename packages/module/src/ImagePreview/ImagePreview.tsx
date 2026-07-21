@@ -121,7 +121,11 @@ const ImagePreview: FunctionComponent<ImagePreviewProps> = ({
                 fileSize={images[page - 1].fileSize}
                 hasTruncation={false}
                 onClose={onCloseFileDetailsLabel}
-                closeButtonIcon={<RhUiTrashFillIcon />}
+                closeButtonIcon={
+                  <Icon size="md">
+                    <RhUiTrashFillIcon />
+                  </Icon>
+                }
                 {...fileDetailsLabelProps}
               />
             </StackItem>

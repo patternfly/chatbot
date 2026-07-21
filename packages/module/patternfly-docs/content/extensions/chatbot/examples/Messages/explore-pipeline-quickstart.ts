@@ -1,5 +1,3 @@
-import userAvatar from './user_avatar.svg';
-
 export const explorePipelinesQuickStart = {
   apiVersion: 'console.openshift.io/v1',
   kind: 'QuickStarts',
@@ -10,7 +8,6 @@ export const explorePipelinesQuickStart = {
     version: 4.7,
     displayName: `Installing the Pipelines Operator`,
     durationMinutes: 10,
-    icon: userAvatar,
     description: `Install the OpenShift® Pipelines Operator to build Pipelines using Tekton.`,
     prerequisites: [''],
     introduction: `OpenShift® Pipelines is a cloud-native, continuous integration and continuous delivery (CI/CD) solution based on Kubernetes resources. It uses Tekton building blocks to automate deployments across multiple Kubernetes distributions by abstracting away the underlying implementation details.
