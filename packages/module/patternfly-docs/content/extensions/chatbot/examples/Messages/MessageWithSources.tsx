@@ -1,7 +1,7 @@
 import { FunctionComponent, MouseEvent as ReactMouseEvent, KeyboardEvent as ReactKeyboardEvent } from 'react';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import { Button, Flex, FlexItem, Label, Popover } from '@patternfly/react-core';
-import { OutlinedQuestionCircleIcon } from '@patternfly/react-icons';
+import { RhUiQuestionMarkCircleIcon } from '@patternfly/react-icons';
 
 export const MessageWithSourcesExample: FunctionComponent = () => {
   const onSetPage = (_event: ReactMouseEvent | ReactKeyboardEvent | MouseEvent, newPage: number) => {
@@ -51,7 +51,7 @@ export const MessageWithSourcesExample: FunctionComponent = () => {
                           headerContent={
                             <Flex gap={{ default: 'gapXs' }}>
                               <FlexItem>
-                                <OutlinedQuestionCircleIcon />
+                                <RhUiQuestionMarkCircleIcon />
                               </FlexItem>
                               <FlexItem>Why this confidence score?</FlexItem>
                             </Flex>
@@ -64,7 +64,7 @@ export const MessageWithSourcesExample: FunctionComponent = () => {
                             </>
                           }
                         >
-                          <Button variant="link" icon={<OutlinedQuestionCircleIcon />}>
+                          <Button variant="link" icon={<RhUiQuestionMarkCircleIcon />}>
                             Learn about this score
                           </Button>
                         </Popover>

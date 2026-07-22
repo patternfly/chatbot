@@ -79,24 +79,11 @@
       justify-content: space-between;
       flex: 1;
 
-      .pf-v6-c-button {
-        border-radius: var(--pf-t--global--border--radius--pill);
-        padding: var(--pf-t--global--spacer--sm);
-        width: 2.31rem;
-        height: 2.31rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
       button:disabled,
       button[disabled] {
         .pf-v6-c-icon__content {
           color: var(--pf-t--global--icon--color--disabled);
         }
-      }
-      .pf-v6-c-button__text {
-        display: flex;
-        align-items: center;
       }
       // Interactive states
       .pf-v6-c-button:hover,

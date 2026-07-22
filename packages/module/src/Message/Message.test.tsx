@@ -11,6 +11,7 @@ import { DeepThinkingProps } from '../DeepThinking';
 
 // Mock the icon components
 jest.mock('@patternfly/react-icons', () => ({
+  ...jest.requireActual('@patternfly/react-icons'),
   RhUiLikeIcon: () => <div>RhUiLikeIcon</div>,
   RhUiLikeFillIcon: () => <div>RhUiLikeFillIcon</div>,
   RhUiDislikeIcon: () => <div>RhUiDislikeIcon</div>,
@@ -24,11 +25,8 @@ jest.mock('@patternfly/react-icons', () => ({
   RhUiExportIcon: () => <div>RhUiExportIcon</div>,
   RhUiExportFillIcon: () => <div>RhUiExportFillIcon</div>,
   RhMicronsInformationFillIcon: () => <div>RhMicronsInformationFillIcon</div>,
-  CheckIcon: () => <div>CheckIcon</div>,
-  CloseIcon: () => <div>CloseIcon</div>,
-  ExternalLinkSquareAltIcon: () => <div>ExternalLinkSquareAltIcon</div>,
-  TimesIcon: () => <div>TimesIcon</div>,
-  RhUiBackwardsIcon: () => <div>RhUiBackwardsIcon</div>
+  RhUiBackwardsIcon: () => <div>RhUiBackwardsIcon</div>,
+  RhMicronsExternalLinkIcon: () => <div>RhMicronsExternalLinkIcon</div>
 }));
 
 const ALL_ACTIONS = [

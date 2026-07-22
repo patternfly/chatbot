@@ -48,7 +48,7 @@ ChatbotHeaderOptionsDropdown,
 ChatbotHeaderCloseButton,
 } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
 
-import { RhUiExpandIcon, RhUiOpenDrawerRightIcon, RhUiRestoreWindowIcon } from '@patternfly/react-icons';
+import { RhUiExpandIcon, RhUiOpenDrawerRightIcon, RhUiMenuBarsIcon, RhUiRestoreWindowIcon } from '@patternfly/react-icons';
 import { BarsIcon } from '@patternfly/react-icons/dist/esm/icons/bars-icon';
 import { RhUiBuildFillIcon, RhUiCopyFillIcon } from '@patternfly/react-icons';
 import {
