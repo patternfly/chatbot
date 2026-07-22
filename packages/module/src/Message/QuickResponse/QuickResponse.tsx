@@ -1,7 +1,7 @@
 import type { FunctionComponent } from 'react';
 import { useState } from 'react';
 import { Label, LabelGroup, LabelGroupProps, LabelProps } from '@patternfly/react-core';
-import { CheckIcon } from '@patternfly/react-icons';
+import { RhMicronsCheckmarkIcon } from '@patternfly/react-icons';
 import { css } from '@patternfly/react-styles';
 
 export interface QuickResponse extends Omit<LabelProps, 'children'> {
@@ -42,7 +42,7 @@ export const QuickResponse: FunctionComponent<QuickResponseProps> = ({
       {quickResponses.map(({ id, onClick, content, className, ...props }: QuickResponse) => (
         <Label
           variant={id === selectedQuickResponse ? undefined : 'outline'}
-          icon={id === selectedQuickResponse ? <CheckIcon /> : undefined}
+          icon={id === selectedQuickResponse ? <RhMicronsCheckmarkIcon /> : undefined}
           color="blue"
           key={id}
           onClick={() => handleQuickResponseClick(id, onClick)}

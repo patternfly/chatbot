@@ -20,7 +20,7 @@ import {
 import { ChatbotDisplayMode } from '../Chatbot';
 import ChatbotModal, { ChatbotModalProps } from '../ChatbotModal';
 import FileDetailsLabel, { FileDetailsLabelProps } from '../FileDetailsLabel';
-import { TrashIcon } from '@patternfly/react-icons';
+import { RhUiTrashFillIcon } from '@patternfly/react-icons';
 
 export interface ImagePreviewProps extends Omit<ChatbotModalProps, 'children'> {
   /** Class applied to modal */
@@ -121,7 +121,11 @@ const ImagePreview: FunctionComponent<ImagePreviewProps> = ({
                 fileSize={images[page - 1].fileSize}
                 hasTruncation={false}
                 onClose={onCloseFileDetailsLabel}
-                closeButtonIcon={<TrashIcon />}
+                closeButtonIcon={
+                  <Icon size="md">
+                    <RhUiTrashFillIcon />
+                  </Icon>
+                }
                 {...fileDetailsLabelProps}
               />
             </StackItem>
