@@ -1,7 +1,7 @@
 // ============================================================================
 // Chatbot Header - Chatbot Conversation History Nav
 // ============================================================================
-import type { KeyboardEvent, FunctionComponent } from 'react';
+import type { KeyboardEvent, FunctionComponent, ReactNode } from 'react';
 import { useRef, Fragment } from 'react';
 
 // Import PatternFly components
@@ -42,7 +42,11 @@ import {
   MenuContent,
   MenuItemProps,
   MenuGroupProps,
-  MenuContentProps
+  MenuContentProps,
+  ExpandableSection,
+  ExpandableSectionToggle,
+  ExpandableSectionProps,
+  ExpandableSectionToggleProps
 } from '@patternfly/react-core';
 
 import { RhUiClockIcon, RhUiCommentIcon, RhUiEditFillIcon } from '@patternfly/react-icons';
@@ -73,6 +77,42 @@ export interface Conversation {
   /** Custom dropdown ID to ensure uniqueness across demo instances */
   dropdownId?: string;
 }
+
+export interface ConversationGroupCollapsible {
+  /** Whether the group content is expanded */
+  isExpanded: boolean;
+  /** Callback when the group is toggled */
+  onToggle: (isExpanded: boolean) => void;
+  /** Additional props applied to ExpandableSection */
+  expandableSectionProps?: Omit<ExpandableSectionProps, 'ref'>;
+  /** Additional props applied to ExpandableSectionToggle */
+  expandableSectionToggleProps?: ExpandableSectionToggleProps;
+}
+
+export interface ConversationGroup {
+  /** Unique group id */
+  id: string;
+  /** Group label rendered as a MenuGroup heading or collapsible toggle label */
+  label: ReactNode;
+  /** Conversation items or custom menu content such as a "Show all" action */
+  items: (Conversation | ReactNode)[];
+  /** Content rendered after the group's menu list */
+  footer?: ReactNode;
+  /** Custom group header that replaces the default label or collapsible toggle */
+  header?: ReactNode;
+  /** When set, the group renders as a collapsible section */
+  collapsible?: ConversationGroupCollapsible;
+  /** Additional props applied to the conversation menu group */
+  menuGroupProps?: MenuGroupProps;
+  /** Additional props applied to the conversation list */
+  menuListProps?: Omit<MenuListProps, 'children'>;
+}
+
+export type Conversations =
+  | (Conversation | ReactNode)[]
+  | ConversationGroup[]
+  | { [key: string]: (Conversation | ReactNode)[] };
+
 export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   /** Function called to toggle drawer */
   onDrawerToggle: (event: React.KeyboardEvent | React.MouseEvent | React.TransitionEvent) => void;
@@ -85,7 +125,7 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   /** Callback function for when an item is selected */
   onSelectActiveItem?: (event?: React.MouseEvent, itemId?: string | number) => void;
   /** Items shown in chat history */
-  conversations: Conversation[] | { [key: string]: Conversation[] };
+  conversations: Conversations;
   /** Additional button props for new chat button. */
   newChatButtonProps?: ButtonProps;
   /** Additional props applied to conversation menu group. If conversations is an object, you should pass an object of MenuGroupProps for each group. */
@@ -160,6 +200,15 @@ export interface ChatbotConversationHistoryNavProps extends DrawerProps {
   menuContentProps?: Omit<MenuContentProps, 'ref'>;
 }
 
+const isConversation = (item: unknown): item is Conversation =>
+  Boolean(item && typeof item === 'object' && 'id' in item && 'text' in item && !('items' in item));
+
+const isConversationGroup = (item: unknown): item is ConversationGroup =>
+  Boolean(item && typeof item === 'object' && 'id' in item && 'label' in item && 'items' in item);
+
+const isConversationGroupArray = (items: unknown[]): items is ConversationGroup[] =>
+  items.length > 0 && isConversationGroup(items[0]);
+
 export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversationHistoryNavProps> = ({
   onDrawerToggle,
   isDrawerOpen,
@@ -211,9 +260,6 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
     drawerRef.current && drawerRef.current.focus();
   };
 
-  const isConversation = (item: any): item is Conversation =>
-    item && typeof item === 'object' && 'id' in item && 'text' in item;
-
   const getNavItem = (conversation: Conversation) => (
     <MenuItem
       className={`pf-chatbot__menu-item ${activeItemId && activeItemId === conversation.id ? 'pf-chatbot__menu-item--active' : ''}`}
@@ -238,40 +284,108 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
     </MenuItem>
   );
 
-  const buildConversations = () => {
-    if (Array.isArray(conversations)) {
+  const renderConversationItems = (items: (Conversation | ReactNode)[], keyPrefix = '') =>
+    items.map((item, index) => {
+      if (isConversation(item)) {
+        return <Fragment key={item.id}>{getNavItem(item)}</Fragment>;
+      }
+
+      return <Fragment key={`${keyPrefix}-${index}`}>{item}</Fragment>;
+    });
+
+  const renderGroupBody = (group: ConversationGroup) => (
+    <>
+      <MenuList {...group.menuListProps}>{renderConversationItems(group.items, group.id)}</MenuList>
+      {group.footer}
+    </>
+  );
+
+  const renderConversationGroup = (group: ConversationGroup) => {
+    if (group.header) {
       return (
-        <MenuList {...menuListProps}>
-          {conversations.map((conversation) => {
-            if (isConversation(conversation)) {
-              return <Fragment key={conversation.id}>{getNavItem(conversation)}</Fragment>;
-            } else {
-              return conversation;
-            }
-          })}
-        </MenuList>
-      );
-    } else {
-      return (
-        <>
-          {Object.keys(conversations).map((navGroup) => (
-            <MenuGroup
-              className="pf-chatbot__menu-item-header"
-              label={navGroup}
-              key={navGroup}
-              labelHeadingLevel="h3"
-              {...menuGroupProps?.[navGroup]}
-            >
-              <MenuList {...menuListProps?.[navGroup]}>
-                {conversations[navGroup].map((conversation: Conversation) => (
-                  <Fragment key={conversation.id}>{getNavItem(conversation)}</Fragment>
-                ))}
-              </MenuList>
-            </MenuGroup>
-          ))}
-        </>
+        <div className={`pf-chatbot__menu-item-header ${group.menuGroupProps?.className ?? ''}`} key={group.id}>
+          {group.header}
+          {renderGroupBody(group)}
+        </div>
       );
     }
+
+    if (group.collapsible) {
+      const toggleId = `chatbot-nav-group-${group.id}-toggle`;
+      const contentId = `chatbot-nav-group-${group.id}-content`;
+      const { isExpanded, onToggle, expandableSectionProps, expandableSectionToggleProps } = group.collapsible;
+
+      return (
+        <div
+          className={`pf-chatbot__menu-item-header pf-chatbot__menu-item-header--collapsible ${group.menuGroupProps?.className ?? ''}`}
+          key={group.id}
+        >
+          <ExpandableSectionToggle
+            toggleId={toggleId}
+            contentId={contentId}
+            isExpanded={isExpanded}
+            onToggle={onToggle}
+            toggleWrapper="h3"
+            className="pf-chatbot__menu-group-toggle"
+            {...expandableSectionToggleProps}
+          >
+            {group.label}
+          </ExpandableSectionToggle>
+          <ExpandableSection
+            isDetached
+            isExpanded={isExpanded}
+            toggleId={toggleId}
+            contentId={contentId}
+            {...expandableSectionProps}
+          >
+            {renderGroupBody(group)}
+          </ExpandableSection>
+        </div>
+      );
+    }
+
+    return (
+      <MenuGroup
+        className="pf-chatbot__menu-item-header"
+        label={group.label}
+        key={group.id}
+        labelHeadingLevel="h3"
+        {...group.menuGroupProps}
+      >
+        {renderGroupBody(group)}
+      </MenuGroup>
+    );
+  };
+
+  const normalizeObjectGroups = (groupedConversations: { [key: string]: (Conversation | ReactNode)[] }) =>
+    Object.keys(groupedConversations).map((groupKey) => ({
+      id: groupKey,
+      label: groupKey,
+      items: groupedConversations[groupKey],
+      menuGroupProps:
+        menuGroupProps && typeof menuGroupProps === 'object' && groupKey in menuGroupProps
+          ? (menuGroupProps as { [key: string]: MenuGroupProps })[groupKey]
+          : undefined,
+      menuListProps:
+        menuListProps && typeof menuListProps === 'object' && groupKey in menuListProps
+          ? (menuListProps as { [key: string]: Omit<MenuListProps, 'children'> })[groupKey]
+          : undefined
+    }));
+
+  const buildConversations = () => {
+    if (Array.isArray(conversations)) {
+      if (isConversationGroupArray(conversations)) {
+        return <>{conversations.map(renderConversationGroup)}</>;
+      }
+
+      return (
+        <MenuList {...(menuListProps as Omit<MenuListProps, 'children'>)}>
+          {renderConversationItems(conversations)}
+        </MenuList>
+      );
+    }
+
+    return <>{normalizeObjectGroups(conversations).map(renderConversationGroup)}</>;
   };
 
   // Menu Content

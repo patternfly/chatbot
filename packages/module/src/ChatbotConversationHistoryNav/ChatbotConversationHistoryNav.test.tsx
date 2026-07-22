@@ -2,8 +2,8 @@ import '@testing-library/jest-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { ChatbotDisplayMode } from '../Chatbot/Chatbot';
-import ChatbotConversationHistoryNav, { Conversation } from './ChatbotConversationHistoryNav';
-import { EmptyStateStatus, Spinner } from '@patternfly/react-core';
+import ChatbotConversationHistoryNav, { Conversation, ConversationGroup } from './ChatbotConversationHistoryNav';
+import { EmptyStateStatus, Spinner, MenuItem } from '@patternfly/react-core';
 import { BellIcon, OutlinedCommentsIcon, SearchIcon } from '@patternfly/react-icons';
 import { ComponentType } from 'react';
 
@@ -714,5 +714,146 @@ describe('ChatbotConversationHistoryNav', () => {
       />
     );
     expect(screen.getByTestId('bell')).toBeInTheDocument();
+  });
+
+  it('renders static and collapsible groups from ConversationGroup[]', () => {
+    const groups: ConversationGroup[] = [
+      {
+        id: 'pinned',
+        label: 'Pinned chats',
+        items: initialConversations
+      },
+      {
+        id: 'chats',
+        label: 'Chats',
+        collapsible: {
+          isExpanded: true,
+          onToggle: jest.fn()
+        },
+        items: [{ id: '2', text: 'Chatbot extension' }]
+      }
+    ];
+
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={groups}
+      />
+    );
+
+    expect(screen.getByRole('heading', { name: 'Pinned chats', level: 3 })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Pinned chats' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Chats' })).toBeInTheDocument();
+  });
+
+  it('collapses and expands a group when collapsible.onToggle is called', async () => {
+    const onToggle = jest.fn();
+    const groups: ConversationGroup[] = [
+      {
+        id: 'chats',
+        label: 'Chats',
+        collapsible: {
+          isExpanded: true,
+          onToggle
+        },
+        items: [{ id: '2', text: 'Chatbot extension' }]
+      }
+    ];
+
+    const { rerender } = render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={groups}
+      />
+    );
+
+    expect(screen.getByRole('menuitem', { name: /Chatbot extension/i })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Chats' }));
+    expect(onToggle).toHaveBeenCalledWith(false);
+
+    rerender(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={[
+          {
+            ...groups[0],
+            collapsible: {
+              isExpanded: false,
+              onToggle
+            }
+          }
+        ]}
+      />
+    );
+
+    await waitFor(() => {
+      expect(screen.queryByRole('menuitem', { name: /Chatbot extension/i })).not.toBeInTheDocument();
+    });
+  });
+
+  it('renders custom menu items and footers supplied in ConversationGroup', () => {
+    const groups: ConversationGroup[] = [
+      {
+        id: 'chats',
+        label: 'Chats',
+        items: [
+          initialConversations[0],
+          <MenuItem key="show-all" itemId="show-all">
+            Show all
+          </MenuItem>
+        ],
+        footer: <div data-testid="group-footer">Footer content</div>
+      }
+    ];
+
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={groups}
+      />
+    );
+
+    expect(screen.getByRole('menuitem', { name: 'Show all' })).toBeInTheDocument();
+    expect(screen.getByTestId('group-footer')).toBeInTheDocument();
+  });
+
+  it('passes collapsible expandableSectionProps from ConversationGroup', () => {
+    const groups: ConversationGroup[] = [
+      {
+        id: 'saved',
+        label: 'Saved prompts',
+        collapsible: {
+          isExpanded: true,
+          onToggle: jest.fn(),
+          expandableSectionProps: { className: 'test-expandable-section' }
+        },
+        items: initialConversations
+      }
+    ];
+
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={groups}
+      />
+    );
+
+    expect(document.querySelector('.test-expandable-section')).toBeInTheDocument();
   });
 });

@@ -35,7 +35,8 @@ propComponents:
     'MessageBarWithAttachMenuProps',
     'SourceDetailsMenuItem',
     'ChatbotConversationHistoryNav',
-    'Conversation'
+    'Conversation',
+    'ConversationGroup'
   ]
 sortValue: 2
 ---
@@ -398,6 +399,16 @@ Actions can be added to conversations with `menuItems`. Optionally, you can also
 To help users track important conversations, add a "pin" option to the conversation action menus. This action moves a conversation to a dedicated "pinned" section at the top of the chat history drawer for quick access. Pinned items should contain an "unpin" option, so that users can remove pinned conversations as needed.
 
 ```js file="./ChatbotHeaderDrawerWithPin.tsx"
+
+```
+
+### Grouped and collapsible conversation history
+
+For grouped chat history, pass a `ConversationGroup[]` to describe each section's label, items, and behavior. Each group's `items` array accepts `Conversation` objects or custom menu content such as a **Show all** action. Use `collapsible` on a group to make that section expandable, and `footer` for content rendered after the group's menu list.
+
+The object form `{ [groupLabel: string]: Conversation[] }` remains supported as shorthand for simple static groups.
+
+```js file="./ChatbotHeaderDrawerWithCollapsibleGroups.tsx"
 
 ```
 
