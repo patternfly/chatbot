@@ -88,9 +88,5 @@
     "victory-stack": "^37.1.1",
     "victory-tooltip": "^37.1.1",
     "victory-voronoi-container": "^37.1.1"
-  },
-  "overrides": {
-    "puppeteer": "^23.6.1",
-    "puppeteer-cluster": "^0.24.0"
   }
 }

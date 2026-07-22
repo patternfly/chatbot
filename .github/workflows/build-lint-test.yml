@@ -156,6 +156,6 @@ jobs:
       - name: Build docs
         run: npm run build:docs
       - name: Install Chrome for Puppeteer
-        run: npm exec -w packages/module -- puppeteer browsers install chrome
+        run: npx puppeteer browsers install chrome
       - name: A11y tests
         run: npm run serve:docs & npm run test:a11y
