@@ -123,9 +123,14 @@
     border-radius: var(--pf-t--global--border--radius--small);
   }
 
-  .pf-chatbot__menu-item--show-button {
+  // "Show all" / "Show less" toggle
+  // Rendered as a regular MenuItem positioned after the (conditionally rendered)
+  // overflow items, so it participates in the menu's normal roving tabindex and
+  // arrow-key navigation, and stays in a fixed position at the bottom of the list.
+  .pf-chatbot__menu-show-all-toggle {
     color: var(--pf-t--global--text--color--link--default);
     font-size: var(--pf-t--global--font--size--body--default);
+    font-weight: var(--pf-t--global--font--weight--body--default);
   }
 
   li.pf-chatbot__menu-item:hover::after {

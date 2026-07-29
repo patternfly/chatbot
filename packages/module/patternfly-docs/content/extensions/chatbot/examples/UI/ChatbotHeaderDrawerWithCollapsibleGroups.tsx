@@ -4,7 +4,7 @@ import ChatbotConversationHistoryNav, {
   Conversation,
   ConversationGroup
 } from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
-import { Checkbox, MenuItem } from '@patternfly/react-core';
+import { Checkbox } from '@patternfly/react-core';
 
 const pinnedChats: Conversation[] = [
   {
@@ -54,37 +54,6 @@ export const ChatbotHeaderDrawerWithCollapsibleGroupsDemo: FunctionComponent = (
   const [isSavedPromptsExpanded, setIsSavedPromptsExpanded] = useState(false);
   const [isShowingAllChats, setIsShowingAllChats] = useState(false);
 
-  const visibleChats = isShowingAllChats ? recentChats : recentChats.slice(0, VISIBLE_CHAT_COUNT);
-  const hiddenChatCount = recentChats.length - VISIBLE_CHAT_COUNT;
-
-  const renderExpandButton = () => {
-    if (isShowingAllChats) {
-      return [
-        <MenuItem
-          key="show-some-chats"
-          itemId="show-some-chats"
-          className="pf-chatbot__menu-item pf-chatbot__menu-item--show-button"
-          onClick={() => setIsShowingAllChats(false)}
-        >
-          Show less
-        </MenuItem>
-      ];
-    }
-    if (hiddenChatCount > 0 && !isShowingAllChats) {
-      return [
-        <MenuItem
-          key="show-all-chats"
-          itemId="show-all-chats"
-          className="pf-chatbot__menu-item pf-chatbot__menu-item--show-button"
-          onClick={() => setIsShowingAllChats(true)}
-        >
-          {`Show all (${recentChats.length})`}
-        </MenuItem>
-      ];
-    }
-    return [];
-  };
-
   const conversations: ConversationGroup[] = [
     {
       id: 'pinned',
@@ -94,7 +63,13 @@ export const ChatbotHeaderDrawerWithCollapsibleGroupsDemo: FunctionComponent = (
     {
       id: 'chats',
       label: 'Chats',
-      items: [...visibleChats, ...renderExpandButton()]
+      items: recentChats,
+      showAll: {
+        visibleCount: VISIBLE_CHAT_COUNT,
+        isExpanded: isShowingAllChats,
+        onToggle: setIsShowingAllChats,
+        label: isShowingAllChats ? 'Show less' : 'Show all'
+      }
     },
     {
       id: 'saved-prompts',
