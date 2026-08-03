@@ -1,8 +1,8 @@
 // ============================================================================
 // Chatbot Header - Chatbot Conversation History Nav
 // ============================================================================
-import type { KeyboardEvent, FunctionComponent, ReactNode } from 'react';
-import { useLayoutEffect, useRef, Fragment, isValidElement } from 'react';
+import type { KeyboardEvent, FunctionComponent, ReactNode, Ref, RefObject } from 'react';
+import { useEffect, useLayoutEffect, useRef, Fragment, isValidElement } from 'react';
 
 // Import PatternFly components
 import {
@@ -64,7 +64,11 @@ const isConversationGroup = (item: unknown): item is ConversationGroup =>
 const isConversationGroupArray = (items: unknown[]): items is ConversationGroup[] =>
   items.length > 0 && isConversationGroup(items[0]);
 
-const getCollapsibleGroupContentId = (groupId: string) => `chatbot-nav-group-${groupId}-content`;
+const getExpandableGroupContentId = (groupId: string) => `chatbot-nav-group-${groupId}-content`;
+
+const getGroupLabelId = (groupId: string) => `chatbot-nav-group-${groupId}-label`;
+
+const getExpandableGroupToggleId = (groupId: string) => `chatbot-nav-group-${groupId}-toggle`;
 
 const focusFirstGroupMenuItem = (contentId: string) => {
   document
@@ -91,23 +95,36 @@ const useFocusFirstMenuItemOnExpand = (isExpanded: boolean, contentId: string) =
   }, [isExpanded, contentId]);
 };
 
-// The toggle keeps focus on itself in both directions (rather than moving focus into
-// the revealed content) since it stays mounted at a fixed position in the list.
-const useShowAllFocusManagement = (isExpanded: boolean, toggleId: string, hasOverflowItems: boolean) => {
+// Matches PatternFly's Menu "view more" example: expanding moves focus to the first
+// newly revealed item; collapsing keeps focus on the toggle as it updates to "Show all".
+const useShowAllFocusManagement = (
+  isExpanded: boolean,
+  toggleId: string,
+  firstOverflowItemRef: Ref<HTMLButtonElement | HTMLAnchorElement | null>,
+  hasOverflowItems: boolean
+) => {
   const wasExpandedRef = useRef(isExpanded);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (hasOverflowItems && isExpanded !== wasExpandedRef.current) {
-      focusElementById(toggleId);
+      if (isExpanded) {
+        (firstOverflowItemRef as RefObject<HTMLElement | null>).current?.focus();
+      } else {
+        focusElementById(toggleId);
+      }
     }
 
     wasExpandedRef.current = isExpanded;
-  }, [isExpanded, toggleId, hasOverflowItems]);
+  }, [isExpanded, toggleId, firstOverflowItemRef, hasOverflowItems]);
 };
 
 interface ShowAllGroupBodyProps {
   group: ConversationGroup;
-  getNavItem: (conversation: Conversation) => ReactNode;
+  getNavItem: (
+    conversation: Conversation,
+    itemOverrides?: Partial<MenuItemProps>,
+    itemRef?: Ref<HTMLButtonElement | HTMLAnchorElement>
+  ) => ReactNode;
 }
 
 // The toggle is rendered as a real MenuItem (rather than a standalone button) so it
@@ -123,9 +140,10 @@ const ShowAllGroupBody: FunctionComponent<ShowAllGroupBodyProps> = ({ group, get
   const overflowItems = conversationItems.slice(visibleCount);
   const hasOverflowItems = overflowItems.length > 0;
   const toggleId = getShowAllToggleId(group.id);
+  const firstOverflowItemRef = useRef<HTMLButtonElement | HTMLAnchorElement>(null);
   const toggleLabel = label ?? (isExpanded ? 'Show less' : 'Show all');
 
-  useShowAllFocusManagement(isExpanded, toggleId, hasOverflowItems);
+  useShowAllFocusManagement(isExpanded, toggleId, firstOverflowItemRef, hasOverflowItems);
 
   return (
     <>
@@ -133,7 +151,12 @@ const ShowAllGroupBody: FunctionComponent<ShowAllGroupBodyProps> = ({ group, get
         {alwaysVisibleItems.map((chat) => (
           <Fragment key={chat.id}>{getNavItem(chat)}</Fragment>
         ))}
-        {isExpanded && overflowItems.map((chat) => <Fragment key={chat.id}>{getNavItem(chat)}</Fragment>)}
+        {isExpanded &&
+          overflowItems.map((chat, index) => (
+            <Fragment key={chat.id}>
+              {getNavItem(chat, undefined, index === 0 ? firstOverflowItemRef : undefined)}
+            </Fragment>
+          ))}
         {hasOverflowItems && (
           <MenuItem
             key="show-all-toggle"
@@ -151,33 +174,37 @@ const ShowAllGroupBody: FunctionComponent<ShowAllGroupBodyProps> = ({ group, get
   );
 };
 
-interface CollapsibleConversationGroupProps {
+interface ExpandableConversationGroupProps {
   group: ConversationGroup;
   children: ReactNode;
 }
 
-const CollapsibleConversationGroup: FunctionComponent<CollapsibleConversationGroupProps> = ({ group, children }) => {
-  const toggleId = `chatbot-nav-group-${group.id}-toggle`;
-  const contentId = getCollapsibleGroupContentId(group.id);
-  const { isExpanded, onToggle, expandableSectionProps, expandableSectionToggleProps } = group.collapsible!;
+const ExpandableConversationGroup: FunctionComponent<ExpandableConversationGroupProps> = ({ group, children }) => {
+  const toggleId = getExpandableGroupToggleId(group.id);
+  const contentId = getExpandableGroupContentId(group.id);
+  const { isExpanded, onToggle, expandableSectionProps, expandableSectionToggleProps } = group.expandable!;
 
   useFocusFirstMenuItemOnExpand(isExpanded, contentId);
 
   return (
-    <div
-      className={`pf-chatbot__menu-item-header pf-chatbot__menu-item-header--collapsible ${group.menuGroupProps?.className ?? ''}`}
+    <MenuGroup
+      className={`pf-chatbot__menu-item-header pf-chatbot__menu-item-header--expandable ${group.menuGroupProps?.className ?? ''}`}
+      label={
+        <ExpandableSectionToggle
+          toggleId={toggleId}
+          contentId={contentId}
+          isExpanded={isExpanded}
+          onToggle={onToggle}
+          toggleWrapper="h3"
+          className="pf-chatbot__menu-group-toggle"
+          {...expandableSectionToggleProps}
+        >
+          {group.label}
+        </ExpandableSectionToggle>
+      }
+      aria-labelledby={toggleId}
+      {...group.menuGroupProps}
     >
-      <ExpandableSectionToggle
-        toggleId={toggleId}
-        contentId={contentId}
-        isExpanded={isExpanded}
-        onToggle={onToggle}
-        toggleWrapper="h3"
-        className="pf-chatbot__menu-group-toggle"
-        {...expandableSectionToggleProps}
-      >
-        {group.label}
-      </ExpandableSectionToggle>
       <ExpandableSection
         isDetached
         isExpanded={isExpanded}
@@ -193,7 +220,7 @@ const CollapsibleConversationGroup: FunctionComponent<CollapsibleConversationGro
             - dead-ending keyboard navigation at the preceding item. */}
         {isExpanded && children}
       </ExpandableSection>
-    </div>
+    </MenuGroup>
   );
 };
 
@@ -231,7 +258,7 @@ export interface ConversationGroupShowAll {
   label?: ReactNode;
 }
 
-export interface ConversationGroupCollapsible {
+export interface ConversationGroupExpandable {
   /** Whether the group content is expanded */
   isExpanded: boolean;
   /** Callback when the group is toggled */
@@ -245,16 +272,16 @@ export interface ConversationGroupCollapsible {
 export interface ConversationGroup {
   /** Unique group id */
   id: string;
-  /** Group label rendered as a MenuGroup heading or collapsible toggle label */
+  /** Group label rendered as a MenuGroup heading or expandable toggle label */
   label: ReactNode;
   /** Conversation items or custom menu content such as a "Show all" action */
   items: (Conversation | ReactNode)[];
   /** Content rendered after the group's menu list */
   footer?: ReactNode;
-  /** Custom group header that replaces the default label or collapsible toggle */
+  /** Custom group header that replaces the default label or expandable toggle */
   header?: ReactNode;
-  /** When set, the group renders as a collapsible section */
-  collapsible?: ConversationGroupCollapsible;
+  /** When set, the group renders as an expandable section */
+  expandable?: ConversationGroupExpandable;
   /** When set, truncates the list with an expandable show all / show less section */
   showAll?: ConversationGroupShowAll;
   /** Additional props applied to the conversation menu group */
@@ -406,10 +433,15 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
     drawerRef.current && drawerRef.current.focus();
   };
 
-  const getNavItem = (conversation: Conversation) => (
+  const getNavItem = (
+    conversation: Conversation,
+    itemOverrides?: Partial<MenuItemProps>,
+    itemRef?: Ref<HTMLButtonElement | HTMLAnchorElement>
+  ) => (
     <MenuItem
       className={`pf-chatbot__menu-item ${activeItemId && activeItemId === conversation.id ? 'pf-chatbot__menu-item--active' : ''}`}
       itemId={conversation.id}
+      ref={itemRef}
       {...(conversation.noIcon ? {} : { icon: conversation.icon ?? <RhUiCommentIcon /> })}
       /* eslint-disable indent */
       {...(conversation.menuItems
@@ -425,6 +457,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
           }
         : {})}
       {...conversation.additionalProps}
+      {...itemOverrides}
     >
       {conversation.text}
     </MenuItem>
@@ -464,13 +497,15 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
       );
     }
 
-    if (group.collapsible) {
+    if (group.expandable) {
       return (
-        <CollapsibleConversationGroup group={group} key={group.id}>
+        <ExpandableConversationGroup group={group} key={group.id}>
           {renderGroupBody(group)}
-        </CollapsibleConversationGroup>
+        </ExpandableConversationGroup>
       );
     }
+
+    const labelId = group.menuGroupProps?.titleId ?? getGroupLabelId(group.id);
 
     return (
       <MenuGroup
@@ -479,6 +514,8 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
         key={group.id}
         labelHeadingLevel="h3"
         {...group.menuGroupProps}
+        titleId={labelId}
+        aria-labelledby={group.menuGroupProps?.['aria-labelledby'] ?? labelId}
       >
         {renderGroupBody(group)}
       </MenuGroup>

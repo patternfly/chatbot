@@ -402,13 +402,13 @@ To help users track important conversations, add a "pin" option to the conversat
 
 ```
 
-### Grouped and collapsible conversation history
+### Grouped and expandable conversation history
 
-For grouped chat history, pass a `ConversationGroup[]` to describe each section's label, items, and behavior. Each group's `items` array accepts `Conversation` objects or custom menu content such as a **Show all** action. Use `collapsible` on a group to make that section expandable, and `footer` for content rendered after the group's menu list.
+For grouped chat history, pass a `ConversationGroup[]` to describe each section's label, items, and behavior. Each group's `items` array accepts `Conversation` objects or custom menu content such as a **Show all** action. Use `expandable` on a group to make that section expandable, and `footer` for content rendered after the group's menu list.
 
 The object form `{ [groupLabel: string]: Conversation[] }` remains supported as shorthand for simple static groups.
 
-```js file="./ChatbotHeaderDrawerWithCollapsibleGroups.tsx"
+```js file="./ChatbotHeaderDrawerWithExpandableGroups.tsx"
 
 ```
 

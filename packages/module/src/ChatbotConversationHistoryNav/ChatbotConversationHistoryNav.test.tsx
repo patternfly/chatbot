@@ -716,7 +716,7 @@ describe('ChatbotConversationHistoryNav', () => {
     expect(screen.getByTestId('bell')).toBeInTheDocument();
   });
 
-  it('renders static and collapsible groups from ConversationGroup[]', () => {
+  it('renders static and expandable groups from ConversationGroup[]', () => {
     const groups: ConversationGroup[] = [
       {
         id: 'pinned',
@@ -726,7 +726,7 @@ describe('ChatbotConversationHistoryNav', () => {
       {
         id: 'chats',
         label: 'Chats',
-        collapsible: {
+        expandable: {
           isExpanded: true,
           onToggle: jest.fn()
         },
@@ -749,7 +749,44 @@ describe('ChatbotConversationHistoryNav', () => {
     expect(screen.getByRole('button', { name: 'Chats' })).toBeInTheDocument();
   });
 
-  it('moves focus to the first menu item when a collapsible group is expanded', async () => {
+  it('labels each MenuGroup with aria-labelledby referencing its visible label', () => {
+    const groups: ConversationGroup[] = [
+      {
+        id: 'pinned',
+        label: 'Pinned chats',
+        items: initialConversations
+      },
+      {
+        id: 'chats',
+        label: 'Chats',
+        expandable: {
+          isExpanded: true,
+          onToggle: jest.fn()
+        },
+        items: [{ id: '2', text: 'Chatbot extension' }]
+      }
+    ];
+
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={groups}
+      />
+    );
+
+    const pinnedHeading = screen.getByRole('heading', { name: 'Pinned chats', level: 3 });
+    expect(pinnedHeading).toHaveAttribute('id', 'chatbot-nav-group-pinned-label');
+    expect(pinnedHeading.closest('section')).toHaveAttribute('aria-labelledby', 'chatbot-nav-group-pinned-label');
+
+    const chatsToggle = screen.getByRole('button', { name: 'Chats' });
+    expect(chatsToggle).toHaveAttribute('id', 'chatbot-nav-group-chats-toggle');
+    expect(chatsToggle.closest('section')).toHaveAttribute('aria-labelledby', 'chatbot-nav-group-chats-toggle');
+  });
+
+  it('moves focus to the first menu item when an expandable group is expanded', async () => {
     const ExpandableGroupDemo = () => {
       const [isExpanded, setIsExpanded] = useState(false);
 
@@ -763,7 +800,7 @@ describe('ChatbotConversationHistoryNav', () => {
             {
               id: 'saved-prompts',
               label: 'Saved prompts',
-              collapsible: {
+              expandable: {
                 isExpanded,
                 onToggle: setIsExpanded
               },
@@ -799,7 +836,7 @@ describe('ChatbotConversationHistoryNav', () => {
       {
         id: 'saved-prompts',
         label: 'Saved prompts',
-        collapsible: {
+        expandable: {
           isExpanded: false,
           onToggle: jest.fn()
         },
@@ -835,13 +872,13 @@ describe('ChatbotConversationHistoryNav', () => {
     expect(firstItem).toHaveFocus();
   });
 
-  it('collapses and expands a group when collapsible.onToggle is called', async () => {
+  it('collapses and expands a group when expandable.onToggle is called', async () => {
     const onToggle = jest.fn();
     const groups: ConversationGroup[] = [
       {
         id: 'chats',
         label: 'Chats',
-        collapsible: {
+        expandable: {
           isExpanded: true,
           onToggle
         },
@@ -873,7 +910,7 @@ describe('ChatbotConversationHistoryNav', () => {
         conversations={[
           {
             ...groups[0],
-            collapsible: {
+            expandable: {
               isExpanded: false,
               onToggle
             }
@@ -916,7 +953,7 @@ describe('ChatbotConversationHistoryNav', () => {
     expect(screen.getByTestId('group-footer')).toBeInTheDocument();
   });
 
-  it('keeps focus on the toggle button when show all is expanded', async () => {
+  it('moves focus to the first overflow item when show all is expanded', async () => {
     const recentChats: Conversation[] = [
       { id: '2', text: 'Chat two' },
       { id: '3', text: 'Chat three' },
@@ -956,11 +993,11 @@ describe('ChatbotConversationHistoryNav', () => {
     fireEvent.click(screen.getByRole('menuitem', { name: /Show all/i }));
 
     await waitFor(() => {
-      expect(screen.getByRole('menuitem', { name: 'Show less' })).toHaveFocus();
+      expect(screen.getByRole('menuitem', { name: 'Chat five' })).toHaveFocus();
     });
   });
 
-  it('moves focus back to the toggle when show all is collapsed', async () => {
+  it('keeps focus on the toggle when show all is collapsed', async () => {
     const recentChats: Conversation[] = [
       { id: '2', text: 'Chat two' },
       { id: '3', text: 'Chat three' },
@@ -1129,12 +1166,12 @@ describe('ChatbotConversationHistoryNav', () => {
     expect(screen.getByRole('menuitem', { name: 'Show all' })).toBe(showAllBefore);
   });
 
-  it('passes collapsible expandableSectionProps from ConversationGroup', () => {
+  it('passes expandableSectionProps from expandable ConversationGroup', () => {
     const groups: ConversationGroup[] = [
       {
         id: 'saved',
         label: 'Saved prompts',
-        collapsible: {
+        expandable: {
           isExpanded: true,
           onToggle: jest.fn(),
           expandableSectionProps: { className: 'test-expandable-section' }

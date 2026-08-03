@@ -49,7 +49,7 @@ const savedPrompts: Conversation[] = [
 
 const VISIBLE_CHAT_COUNT = 3;
 
-export const ChatbotHeaderDrawerWithCollapsibleGroupsDemo: FunctionComponent = () => {
+export const ChatbotHeaderDrawerWithExpandableGroupsDemo: FunctionComponent = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [isSavedPromptsExpanded, setIsSavedPromptsExpanded] = useState(false);
   const [isShowingAllChats, setIsShowingAllChats] = useState(false);
@@ -74,7 +74,7 @@ export const ChatbotHeaderDrawerWithCollapsibleGroupsDemo: FunctionComponent = (
     {
       id: 'saved-prompts',
       label: 'Saved prompts',
-      collapsible: {
+      expandable: {
         isExpanded: isSavedPromptsExpanded,
         onToggle: setIsSavedPromptsExpanded
       },
@@ -88,8 +88,8 @@ export const ChatbotHeaderDrawerWithCollapsibleGroupsDemo: FunctionComponent = (
         label="Display drawer"
         isChecked={isOpen}
         onChange={() => setIsOpen(!isOpen)}
-        id="collapsible-groups-drawer-visible"
-        name="collapsible-groups-drawer-visible"
+        id="expandable-groups-drawer-visible"
+        name="expandable-groups-drawer-visible"
       />
       <ChatbotConversationHistoryNav
         displayMode={ChatbotDisplayMode.embedded}
