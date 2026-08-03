@@ -29,7 +29,10 @@
     "lint:fix": "npm run lint:js:fix && npm run lint:md:fix",
     "test": "TZ=EST jest packages --passWithNoTests",
     "test:a11y": "npm run test:a11y -w @patternfly/chatbot",
-    "serve:a11y": "npm run serve:a11y -w @patternfly/chatbot"
+    "serve:a11y": "npm run serve:a11y -w @patternfly/chatbot",
+    "playwright:test": "playwright test",
+    "playwright:test:ui": "playwright test --ui",
+    "playwright:report": "playwright show-report"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
@@ -43,6 +46,7 @@
     "@patternfly/patternfly": "^6.6.0",
     "@patternfly/react-icons": "^6.6.0",
     "@patternfly/react-table": "^6.6.0",
+    "@playwright/test": "^1.62.1",
     "@swc/core": "1.3.96",
     "@testing-library/dom": "^9.3.4",
     "@testing-library/jest-dom": "^6.4.2",
