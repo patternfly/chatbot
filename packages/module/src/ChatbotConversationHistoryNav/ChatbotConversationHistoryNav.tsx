@@ -72,6 +72,35 @@ const getExpandableGroupToggleId = (groupId: string) => `chatbot-nav-group-${gro
 
 const getShowAllToggleId = (groupId: string) => `chatbot-nav-group-${groupId}-show-all-toggle`;
 
+const getStaticMenuLabelId = (group: { id: string; menuGroupProps?: MenuGroupProps }) =>
+  group.menuGroupProps?.titleId ?? getGroupLabelId(group.id);
+
+const getMenuListLabelledBy = (group: {
+  id: string;
+  expandable?: { isExpanded: boolean; onToggle: (isExpanded: boolean) => void };
+  menuGroupProps?: MenuGroupProps;
+}) => {
+  if (group.expandable) {
+    return group.menuGroupProps?.['aria-labelledby'] ?? getExpandableGroupToggleId(group.id);
+  }
+
+  return group.menuGroupProps?.['aria-labelledby'] ?? getStaticMenuLabelId(group);
+};
+
+const getMenuListLabelText = (label: ReactNode) =>
+  typeof label === 'string' || typeof label === 'number' ? String(label) : undefined;
+
+const getMenuListProps = (group: {
+  id: string;
+  label: ReactNode;
+  expandable?: { isExpanded: boolean; onToggle: (isExpanded: boolean) => void };
+  menuGroupProps?: MenuGroupProps;
+  menuListProps?: Omit<MenuListProps, 'children'>;
+}): Omit<MenuListProps, 'children'> => ({
+  ...group.menuListProps,
+  'aria-labelledby': group.menuListProps?.['aria-labelledby'] ?? getMenuListLabelledBy(group)
+});
+
 const focusElementById = (id: string) => {
   document.getElementById(id)?.focus();
 };
@@ -128,7 +157,7 @@ const ShowAllGroupBody: FunctionComponent<ShowAllGroupBodyProps> = ({ group, get
 
   return (
     <>
-      <MenuList {...group.menuListProps}>
+      <MenuList {...getMenuListProps(group)}>
         {alwaysVisibleItems.map((chat) => (
           <Fragment key={chat.id}>{getNavItem(chat)}</Fragment>
         ))}
@@ -211,14 +240,6 @@ const buildConversationMenuSegments = (groups: ConversationGroup[]): Conversatio
 
     return [...segments, { type: 'static', groups: [group] }];
   }, []);
-
-const getStaticMenuLabelId = (group: ConversationGroup) => group.menuGroupProps?.titleId ?? getGroupLabelId(group.id);
-
-const getStaticMenuLabelledBy = (groups: ConversationGroup[]) =>
-  groups
-    .map((group) => group.menuGroupProps?.['aria-labelledby'] ?? getStaticMenuLabelId(group))
-    .join(' ')
-    .trim();
 
 export interface Conversation {
   /** Conversation id */
@@ -477,7 +498,9 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
 
     return (
       <>
-        <MenuList {...group.menuListProps}>{renderConversationItems(group.items, group.id)}</MenuList>
+        <MenuList {...getMenuListProps(group)}>
+          {renderConversationItems(group.items, group.id)}
+        </MenuList>
         {group.footer}
       </>
     );
@@ -510,14 +533,13 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
     );
   };
 
-  const renderConversationMenu = (labelledBy: string | undefined, content: ReactNode, key?: string) => (
+  const renderConversationMenu = (content: ReactNode, key?: string) => (
     <Menu
       key={key}
       className="pf-chatbot__history-menu"
       isPlain
       onSelect={onSelectActiveItem}
       activeItemId={activeItemId}
-      {...(labelledBy ? { 'aria-labelledby': labelledBy } : {})}
       {...menuProps}
     >
       <MenuContent {...menuContentProps}>{content}</MenuContent>
@@ -527,20 +549,14 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   const renderConversationMenuSegment = (segment: ConversationMenuSegment) => {
     if (segment.type === 'static') {
       return renderConversationMenu(
-        getStaticMenuLabelledBy(segment.groups),
         <>{segment.groups.map(renderConversationGroup)}</>,
         segment.groups.map((group) => group.id).join('-')
       );
     }
 
-    const toggleId = getExpandableGroupToggleId(segment.group.id);
-
     return (
       <ExpandableConversationGroup group={segment.group} key={segment.group.id}>
-        {renderConversationMenu(
-          segment.group.menuGroupProps?.['aria-labelledby'] ?? toggleId,
-          renderGroupBody(segment.group)
-        )}
+        {renderConversationMenu(renderGroupBody(segment.group))}
       </ExpandableConversationGroup>
     );
   };
@@ -567,7 +583,6 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
       }
 
       return renderConversationMenu(
-        undefined,
         <MenuList {...menuListProps}>{renderConversationItems(conversations)}</MenuList>
       );
     }

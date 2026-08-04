@@ -749,7 +749,7 @@ describe('ChatbotConversationHistoryNav', () => {
     expect(screen.getByRole('button', { name: 'Chats' })).toBeInTheDocument();
   });
 
-  it('labels each MenuGroup with aria-labelledby referencing its visible label', () => {
+  it('labels each MenuList with aria-labelledby referencing its visible label', () => {
     const groups: ConversationGroup[] = [
       {
         id: 'pinned',
@@ -767,7 +767,7 @@ describe('ChatbotConversationHistoryNav', () => {
       }
     ];
 
-    const { container } = render(
+    render(
       <ChatbotConversationHistoryNav
         onDrawerToggle={onDrawerToggle}
         isDrawerOpen={true}
@@ -781,17 +781,40 @@ describe('ChatbotConversationHistoryNav', () => {
     expect(pinnedHeading).toHaveAttribute('id', 'chatbot-nav-group-pinned-label');
     expect(pinnedHeading.closest('section')).toHaveAttribute('aria-labelledby', 'chatbot-nav-group-pinned-label');
 
-    const staticMenu = container.querySelector('.pf-v6-c-menu.pf-chatbot__history-menu');
-    expect(staticMenu).toHaveAttribute('aria-labelledby', 'chatbot-nav-group-pinned-label');
+    expect(screen.getByRole('menu', { name: 'Pinned chats' })).toHaveAttribute(
+      'aria-labelledby',
+      'chatbot-nav-group-pinned-label'
+    );
+    expect(document.querySelector('ul.pf-v6-c-menu__list[aria-labelledby="chatbot-nav-group-pinned-label"]')).toBeTruthy();
 
     const chatsToggle = screen.getByRole('button', { name: 'Chats' });
     expect(chatsToggle).toHaveAttribute('id', 'chatbot-nav-group-chats-toggle');
 
-    const expandableMenu = container.querySelectorAll('.pf-v6-c-menu.pf-chatbot__history-menu')[1];
-    expect(expandableMenu).toHaveAttribute('aria-labelledby', 'chatbot-nav-group-chats-toggle');
+    expect(screen.getByRole('menu', { name: 'Chats' })).toHaveAttribute(
+      'aria-labelledby',
+      'chatbot-nav-group-chats-toggle'
+    );
+    expect(document.querySelector('ul.pf-v6-c-menu__list[aria-labelledby="chatbot-nav-group-chats-toggle"]')).toBeTruthy();
   });
 
-  it('labels a shared static menu with all group title ids', () => {
+  it('labels grouped object conversations on the menu list element', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={{ Today: initialConversations }}
+      />
+    );
+
+    expect(document.querySelector('ul.pf-v6-c-menu__list')).toHaveAttribute(
+      'aria-labelledby',
+      'chatbot-nav-group-Today-label'
+    );
+  });
+
+  it('labels each menu list in a shared static menu with its group title id', () => {
     const groups: ConversationGroup[] = [
       {
         id: 'pinned',
@@ -805,7 +828,7 @@ describe('ChatbotConversationHistoryNav', () => {
       }
     ];
 
-    const { container } = render(
+    render(
       <ChatbotConversationHistoryNav
         onDrawerToggle={onDrawerToggle}
         isDrawerOpen={true}
@@ -815,9 +838,13 @@ describe('ChatbotConversationHistoryNav', () => {
       />
     );
 
-    expect(container.querySelector('.pf-v6-c-menu.pf-chatbot__history-menu')).toHaveAttribute(
+    expect(screen.getByRole('menu', { name: 'Pinned chats' })).toHaveAttribute(
       'aria-labelledby',
-      'chatbot-nav-group-pinned-label chatbot-nav-group-recent-label'
+      'chatbot-nav-group-pinned-label'
+    );
+    expect(screen.getByRole('menu', { name: 'Recent chats' })).toHaveAttribute(
+      'aria-labelledby',
+      'chatbot-nav-group-recent-label'
     );
   });
 
@@ -883,7 +910,7 @@ describe('ChatbotConversationHistoryNav', () => {
       }
     ];
 
-    const { container } = render(
+    render(
       <ChatbotConversationHistoryNav
         onDrawerToggle={onDrawerToggle}
         isDrawerOpen={true}
@@ -895,8 +922,8 @@ describe('ChatbotConversationHistoryNav', () => {
 
     // Collapsed expandable groups render their toggle outside the menu and omit the menu
     // entirely until expanded, so their items are not part of arrow-key navigation.
-    expect(container.querySelectorAll('.pf-v6-c-menu.pf-chatbot__history-menu')).toHaveLength(1);
-    expect(container.querySelector('.pf-v6-c-menu.pf-chatbot__history-menu')).toHaveAttribute(
+    expect(screen.getAllByRole('menu')).toHaveLength(1);
+    expect(screen.getByRole('menu', { name: 'Chats' })).toHaveAttribute(
       'aria-labelledby',
       'chatbot-nav-group-chats-label'
     );
