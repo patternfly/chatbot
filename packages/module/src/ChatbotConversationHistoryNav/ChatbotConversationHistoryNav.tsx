@@ -2,7 +2,7 @@
 // Chatbot Header - Chatbot Conversation History Nav
 // ============================================================================
 import type { KeyboardEvent, FunctionComponent, ReactNode, Ref, RefObject } from 'react';
-import { useEffect, useLayoutEffect, useRef, Fragment, isValidElement } from 'react';
+import { useEffect, useRef, Fragment, isValidElement } from 'react';
 
 // Import PatternFly components
 import {
@@ -70,29 +70,10 @@ const getGroupLabelId = (groupId: string) => `chatbot-nav-group-${groupId}-label
 
 const getExpandableGroupToggleId = (groupId: string) => `chatbot-nav-group-${groupId}-toggle`;
 
-const focusFirstGroupMenuItem = (contentId: string) => {
-  document
-    .getElementById(contentId)
-    ?.querySelector<HTMLElement>('ul button:not(:disabled), ul a:not([aria-disabled="true"])')
-    ?.focus();
-};
-
 const getShowAllToggleId = (groupId: string) => `chatbot-nav-group-${groupId}-show-all-toggle`;
 
 const focusElementById = (id: string) => {
   document.getElementById(id)?.focus();
-};
-
-const useFocusFirstMenuItemOnExpand = (isExpanded: boolean, contentId: string) => {
-  const wasExpandedRef = useRef(isExpanded);
-
-  useLayoutEffect(() => {
-    if (isExpanded && !wasExpandedRef.current) {
-      focusFirstGroupMenuItem(contentId);
-    }
-
-    wasExpandedRef.current = isExpanded;
-  }, [isExpanded, contentId]);
 };
 
 // Matches PatternFly's Menu "view more" example: expanding moves focus to the first
@@ -184,27 +165,21 @@ const ExpandableConversationGroup: FunctionComponent<ExpandableConversationGroup
   const contentId = getExpandableGroupContentId(group.id);
   const { isExpanded, onToggle, expandableSectionProps, expandableSectionToggleProps } = group.expandable!;
 
-  useFocusFirstMenuItemOnExpand(isExpanded, contentId);
-
   return (
-    <MenuGroup
+    <div
       className={`pf-chatbot__menu-item-header pf-chatbot__menu-item-header--expandable ${group.menuGroupProps?.className ?? ''}`}
-      label={
-        <ExpandableSectionToggle
-          toggleId={toggleId}
-          contentId={contentId}
-          isExpanded={isExpanded}
-          onToggle={onToggle}
-          toggleWrapper="h3"
-          className="pf-chatbot__menu-group-toggle"
-          {...expandableSectionToggleProps}
-        >
-          {group.label}
-        </ExpandableSectionToggle>
-      }
-      aria-labelledby={toggleId}
-      {...group.menuGroupProps}
     >
+      <ExpandableSectionToggle
+        toggleId={toggleId}
+        contentId={contentId}
+        isExpanded={isExpanded}
+        onToggle={onToggle}
+        toggleWrapper="h3"
+        className="pf-chatbot__menu-group-toggle"
+        {...expandableSectionToggleProps}
+      >
+        {group.label}
+      </ExpandableSectionToggle>
       <ExpandableSection
         isDetached
         isExpanded={isExpanded}
@@ -212,17 +187,38 @@ const ExpandableConversationGroup: FunctionComponent<ExpandableConversationGroup
         contentId={contentId}
         {...expandableSectionProps}
       >
-        {/* Only mount the collapsed group's menu items while expanded. ExpandableSection
-            only toggles a `hidden` attribute on its content wrapper, so if the items stayed
-            mounted while collapsed, the Menu's arrow-key handler (which finds navigable
-            elements via getElementsByTagName('LI') across the whole menu) would still see
-            them, try to focus them, and silently fail since hidden elements aren't focusable
-            - dead-ending keyboard navigation at the preceding item. */}
         {isExpanded && children}
       </ExpandableSection>
-    </MenuGroup>
+    </div>
   );
 };
+
+type ConversationMenuSegment =
+  | { type: 'static'; groups: ConversationGroup[] }
+  | { type: 'expandable'; group: ConversationGroup };
+
+const buildConversationMenuSegments = (groups: ConversationGroup[]): ConversationMenuSegment[] =>
+  groups.reduce<ConversationMenuSegment[]>((segments, group) => {
+    if (group.expandable) {
+      return [...segments, { type: 'expandable', group }];
+    }
+
+    const last = segments[segments.length - 1];
+    if (last?.type === 'static') {
+      last.groups.push(group);
+      return segments;
+    }
+
+    return [...segments, { type: 'static', groups: [group] }];
+  }, []);
+
+const getStaticMenuLabelId = (group: ConversationGroup) => group.menuGroupProps?.titleId ?? getGroupLabelId(group.id);
+
+const getStaticMenuLabelledBy = (groups: ConversationGroup[]) =>
+  groups
+    .map((group) => group.menuGroupProps?.['aria-labelledby'] ?? getStaticMenuLabelId(group))
+    .join(' ')
+    .trim();
 
 export interface Conversation {
   /** Conversation id */
@@ -497,15 +493,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
       );
     }
 
-    if (group.expandable) {
-      return (
-        <ExpandableConversationGroup group={group} key={group.id}>
-          {renderGroupBody(group)}
-        </ExpandableConversationGroup>
-      );
-    }
-
-    const labelId = group.menuGroupProps?.titleId ?? getGroupLabelId(group.id);
+    const labelId = getStaticMenuLabelId(group);
 
     return (
       <MenuGroup
@@ -519,6 +507,41 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
       >
         {renderGroupBody(group)}
       </MenuGroup>
+    );
+  };
+
+  const renderConversationMenu = (labelledBy: string | undefined, content: ReactNode, key?: string) => (
+    <Menu
+      key={key}
+      className="pf-chatbot__history-menu"
+      isPlain
+      onSelect={onSelectActiveItem}
+      activeItemId={activeItemId}
+      {...(labelledBy ? { 'aria-labelledby': labelledBy } : {})}
+      {...menuProps}
+    >
+      <MenuContent {...menuContentProps}>{content}</MenuContent>
+    </Menu>
+  );
+
+  const renderConversationMenuSegment = (segment: ConversationMenuSegment) => {
+    if (segment.type === 'static') {
+      return renderConversationMenu(
+        getStaticMenuLabelledBy(segment.groups),
+        <>{segment.groups.map(renderConversationGroup)}</>,
+        segment.groups.map((group) => group.id).join('-')
+      );
+    }
+
+    const toggleId = getExpandableGroupToggleId(segment.group.id);
+
+    return (
+      <ExpandableConversationGroup group={segment.group} key={segment.group.id}>
+        {renderConversationMenu(
+          segment.group.menuGroupProps?.['aria-labelledby'] ?? toggleId,
+          renderGroupBody(segment.group)
+        )}
+      </ExpandableConversationGroup>
     );
   };
 
@@ -540,13 +563,18 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
   const buildConversations = () => {
     if (Array.isArray(conversations)) {
       if (isConversationGroupArray(conversations)) {
-        return <>{conversations.map(renderConversationGroup)}</>;
+        return <>{buildConversationMenuSegments(conversations).map(renderConversationMenuSegment)}</>;
       }
 
-      return <MenuList {...menuListProps}>{renderConversationItems(conversations)}</MenuList>;
+      return renderConversationMenu(
+        undefined,
+        <MenuList {...menuListProps}>{renderConversationItems(conversations)}</MenuList>
+      );
     }
 
-    return <>{normalizeObjectGroups(conversations).map(renderConversationGroup)}</>;
+    return (
+      <>{buildConversationMenuSegments(normalizeObjectGroups(conversations)).map(renderConversationMenuSegment)}</>
+    );
   };
 
   // Menu Content
@@ -564,17 +592,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
     if (noResultsState) {
       return <HistoryEmptyState {...noResultsState} />;
     }
-    return (
-      <Menu
-        className="pf-chatbot__history-menu"
-        isPlain
-        onSelect={onSelectActiveItem}
-        activeItemId={activeItemId}
-        {...menuProps}
-      >
-        <MenuContent {...menuContentProps}>{buildConversations()}</MenuContent>
-      </Menu>
-    );
+    return buildConversations();
   };
 
   const renderDrawerContent = () => (

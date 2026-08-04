@@ -767,7 +767,7 @@ describe('ChatbotConversationHistoryNav', () => {
       }
     ];
 
-    render(
+    const { container } = render(
       <ChatbotConversationHistoryNav
         onDrawerToggle={onDrawerToggle}
         isDrawerOpen={true}
@@ -781,12 +781,47 @@ describe('ChatbotConversationHistoryNav', () => {
     expect(pinnedHeading).toHaveAttribute('id', 'chatbot-nav-group-pinned-label');
     expect(pinnedHeading.closest('section')).toHaveAttribute('aria-labelledby', 'chatbot-nav-group-pinned-label');
 
+    const staticMenu = container.querySelector('.pf-v6-c-menu.pf-chatbot__history-menu');
+    expect(staticMenu).toHaveAttribute('aria-labelledby', 'chatbot-nav-group-pinned-label');
+
     const chatsToggle = screen.getByRole('button', { name: 'Chats' });
     expect(chatsToggle).toHaveAttribute('id', 'chatbot-nav-group-chats-toggle');
-    expect(chatsToggle.closest('section')).toHaveAttribute('aria-labelledby', 'chatbot-nav-group-chats-toggle');
+
+    const expandableMenu = container.querySelectorAll('.pf-v6-c-menu.pf-chatbot__history-menu')[1];
+    expect(expandableMenu).toHaveAttribute('aria-labelledby', 'chatbot-nav-group-chats-toggle');
   });
 
-  it('moves focus to the first menu item when an expandable group is expanded', async () => {
+  it('labels a shared static menu with all group title ids', () => {
+    const groups: ConversationGroup[] = [
+      {
+        id: 'pinned',
+        label: 'Pinned chats',
+        items: initialConversations
+      },
+      {
+        id: 'recent',
+        label: 'Recent chats',
+        items: [{ id: '2', text: 'Chatbot extension' }]
+      }
+    ];
+
+    const { container } = render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={groups}
+      />
+    );
+
+    expect(container.querySelector('.pf-v6-c-menu.pf-chatbot__history-menu')).toHaveAttribute(
+      'aria-labelledby',
+      'chatbot-nav-group-pinned-label chatbot-nav-group-recent-label'
+    );
+  });
+
+  it('does not autofocus the first menu item when an expandable group is expanded', async () => {
     const ExpandableGroupDemo = () => {
       const [isExpanded, setIsExpanded] = useState(false);
 
@@ -819,11 +854,12 @@ describe('ChatbotConversationHistoryNav', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Saved prompts' }));
 
     await waitFor(() => {
-      expect(screen.getByRole('menuitem', { name: 'Summarize this document' })).toHaveFocus();
+      expect(screen.getByRole('menuitem', { name: 'Summarize this document' })).toBeInTheDocument();
     });
+    expect(screen.getByRole('menuitem', { name: 'Summarize this document' })).not.toHaveFocus();
   });
 
-  it("does not render a collapsed group's menu items so they cannot dead-end keyboard navigation", () => {
+  it('does not render a collapsed expandable group menu', () => {
     const groups: ConversationGroup[] = [
       {
         id: 'chats',
@@ -847,7 +883,7 @@ describe('ChatbotConversationHistoryNav', () => {
       }
     ];
 
-    render(
+    const { container } = render(
       <ChatbotConversationHistoryNav
         onDrawerToggle={onDrawerToggle}
         isDrawerOpen={true}
@@ -857,9 +893,13 @@ describe('ChatbotConversationHistoryNav', () => {
       />
     );
 
-    // Collapsed content should not merely be visually hidden - it should not be in the
-    // document at all, otherwise the Menu's LI-based arrow key handler will still see it,
-    // try (and fail) to focus it, and dead-end navigation at the preceding item.
+    // Collapsed expandable groups render their toggle outside the menu and omit the menu
+    // entirely until expanded, so their items are not part of arrow-key navigation.
+    expect(container.querySelectorAll('.pf-v6-c-menu.pf-chatbot__history-menu')).toHaveLength(1);
+    expect(container.querySelector('.pf-v6-c-menu.pf-chatbot__history-menu')).toHaveAttribute(
+      'aria-labelledby',
+      'chatbot-nav-group-chats-label'
+    );
     expect(screen.queryByRole('menuitem', { name: 'Summarize this document' })).not.toBeInTheDocument();
     expect(screen.queryByRole('menuitem', { name: 'Draft a release announcement' })).not.toBeInTheDocument();
 
