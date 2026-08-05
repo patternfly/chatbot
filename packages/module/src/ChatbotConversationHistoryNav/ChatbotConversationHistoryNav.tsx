@@ -87,9 +87,6 @@ const getMenuListLabelledBy = (group: {
   return group.menuGroupProps?.['aria-labelledby'] ?? getStaticMenuLabelId(group);
 };
 
-const getMenuListLabelText = (label: ReactNode) =>
-  typeof label === 'string' || typeof label === 'number' ? String(label) : undefined;
-
 const getMenuListProps = (group: {
   id: string;
   label: ReactNode;
@@ -498,9 +495,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
 
     return (
       <>
-        <MenuList {...getMenuListProps(group)}>
-          {renderConversationItems(group.items, group.id)}
-        </MenuList>
+        <MenuList {...getMenuListProps(group)}>{renderConversationItems(group.items, group.id)}</MenuList>
         {group.footer}
       </>
     );
@@ -582,9 +577,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
         return <>{buildConversationMenuSegments(conversations).map(renderConversationMenuSegment)}</>;
       }
 
-      return renderConversationMenu(
-        <MenuList {...menuListProps}>{renderConversationItems(conversations)}</MenuList>
-      );
+      return renderConversationMenu(<MenuList {...menuListProps}>{renderConversationItems(conversations)}</MenuList>);
     }
 
     return (

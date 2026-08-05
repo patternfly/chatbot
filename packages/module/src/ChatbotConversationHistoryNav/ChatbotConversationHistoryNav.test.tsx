@@ -785,7 +785,9 @@ describe('ChatbotConversationHistoryNav', () => {
       'aria-labelledby',
       'chatbot-nav-group-pinned-label'
     );
-    expect(document.querySelector('ul.pf-v6-c-menu__list[aria-labelledby="chatbot-nav-group-pinned-label"]')).toBeTruthy();
+    expect(
+      document.querySelector('ul.pf-v6-c-menu__list[aria-labelledby="chatbot-nav-group-pinned-label"]')
+    ).toBeTruthy();
 
     const chatsToggle = screen.getByRole('button', { name: 'Chats' });
     expect(chatsToggle).toHaveAttribute('id', 'chatbot-nav-group-chats-toggle');
@@ -794,7 +796,9 @@ describe('ChatbotConversationHistoryNav', () => {
       'aria-labelledby',
       'chatbot-nav-group-chats-toggle'
     );
-    expect(document.querySelector('ul.pf-v6-c-menu__list[aria-labelledby="chatbot-nav-group-chats-toggle"]')).toBeTruthy();
+    expect(
+      document.querySelector('ul.pf-v6-c-menu__list[aria-labelledby="chatbot-nav-group-chats-toggle"]')
+    ).toBeTruthy();
   });
 
   it('labels grouped object conversations on the menu list element', () => {
