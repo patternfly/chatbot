@@ -77,8 +77,8 @@
   }
 
   .pf-chatbot__menu-group-toggle {
-    padding-block-start: var(--pf-t--global--spacer--sm);
-    padding-block-end: var(--pf-t--global--spacer--sm);
+    padding-block-start: var(--pf-t--global--spacer--xs);
+    padding-block-end: var(--pf-t--global--spacer--xs);
   }
 
   .pf-chatbot__menu-item-header > .pf-v6-c-menu__group-title {
@@ -94,8 +94,7 @@
     }
 
     .pf-v6-c-button.pf-m-link {
-      --pf-v6-c-button--PaddingBlockStart: 0;
-      --pf-v6-c-button--PaddingBlockEnd: 0;
+      --pf-v6-c-button--BorderRadius: var(--pf-t--global--border--radius--small);
       --pf-v6-c-button--PaddingInlineStart: var(--pf-t--global--spacer--sm);
       --pf-v6-c-button--PaddingInlineEnd: var(--pf-t--global--spacer--sm);
       color: inherit;
