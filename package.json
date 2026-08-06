@@ -88,5 +88,8 @@
   },
   "dependencies": {
     "react-dropzone": "^14.3.8"
+  },
+  "overrides": {
+    "dompurify": "3.4.13"
   }
 }
