@@ -2,10 +2,10 @@ import '@testing-library/jest-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { ChatbotDisplayMode } from '../Chatbot/Chatbot';
-import ChatbotConversationHistoryNav, { Conversation } from './ChatbotConversationHistoryNav';
-import { EmptyStateStatus, Spinner } from '@patternfly/react-core';
+import ChatbotConversationHistoryNav, { Conversation, ConversationGroup } from './ChatbotConversationHistoryNav';
+import { EmptyStateStatus, Spinner, MenuItem } from '@patternfly/react-core';
 import { BellIcon, OutlinedCommentsIcon, SearchIcon } from '@patternfly/react-icons';
-import { ComponentType } from 'react';
+import { ComponentType, useState } from 'react';
 
 const ERROR = {
   bodyText: (
@@ -714,5 +714,553 @@ describe('ChatbotConversationHistoryNav', () => {
       />
     );
     expect(screen.getByTestId('bell')).toBeInTheDocument();
+  });
+
+  it('renders static and expandable groups from ConversationGroup[]', () => {
+    const groups: ConversationGroup[] = [
+      {
+        id: 'pinned',
+        label: 'Pinned chats',
+        items: initialConversations
+      },
+      {
+        id: 'chats',
+        label: 'Chats',
+        expandable: {
+          isExpanded: true,
+          onToggle: jest.fn()
+        },
+        items: [{ id: '2', text: 'Chatbot extension' }]
+      }
+    ];
+
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={groups}
+      />
+    );
+
+    expect(screen.getByRole('heading', { name: 'Pinned chats', level: 3 })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Pinned chats' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Chats' })).toBeInTheDocument();
+  });
+
+  it('labels each MenuList with aria-labelledby referencing its visible label', () => {
+    const groups: ConversationGroup[] = [
+      {
+        id: 'pinned',
+        label: 'Pinned chats',
+        items: initialConversations
+      },
+      {
+        id: 'chats',
+        label: 'Chats',
+        expandable: {
+          isExpanded: true,
+          onToggle: jest.fn()
+        },
+        items: [{ id: '2', text: 'Chatbot extension' }]
+      }
+    ];
+
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={groups}
+      />
+    );
+
+    const pinnedHeading = screen.getByRole('heading', { name: 'Pinned chats', level: 3 });
+    expect(pinnedHeading).toHaveAttribute('id', 'chatbot-nav-group-pinned-label');
+    expect(pinnedHeading.closest('section')).toHaveAttribute('aria-labelledby', 'chatbot-nav-group-pinned-label');
+
+    expect(screen.getByRole('menu', { name: 'Pinned chats' })).toHaveAttribute(
+      'aria-labelledby',
+      'chatbot-nav-group-pinned-label'
+    );
+    expect(
+      document.querySelector('ul.pf-v6-c-menu__list[aria-labelledby="chatbot-nav-group-pinned-label"]')
+    ).toBeTruthy();
+
+    const chatsToggle = screen.getByRole('button', { name: 'Chats' });
+    expect(chatsToggle).toHaveAttribute('id', 'chatbot-nav-group-chats-toggle');
+
+    expect(screen.getByRole('menu', { name: 'Chats' })).toHaveAttribute(
+      'aria-labelledby',
+      'chatbot-nav-group-chats-toggle'
+    );
+    expect(
+      document.querySelector('ul.pf-v6-c-menu__list[aria-labelledby="chatbot-nav-group-chats-toggle"]')
+    ).toBeTruthy();
+  });
+
+  it('labels grouped object conversations on the menu list element', () => {
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={{ Today: initialConversations }}
+      />
+    );
+
+    expect(document.querySelector('ul.pf-v6-c-menu__list')).toHaveAttribute(
+      'aria-labelledby',
+      'chatbot-nav-group-Today-label'
+    );
+  });
+
+  it('labels each menu list in a shared static menu with its group title id', () => {
+    const groups: ConversationGroup[] = [
+      {
+        id: 'pinned',
+        label: 'Pinned chats',
+        items: initialConversations
+      },
+      {
+        id: 'recent',
+        label: 'Recent chats',
+        items: [{ id: '2', text: 'Chatbot extension' }]
+      }
+    ];
+
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={groups}
+      />
+    );
+
+    expect(screen.getByRole('menu', { name: 'Pinned chats' })).toHaveAttribute(
+      'aria-labelledby',
+      'chatbot-nav-group-pinned-label'
+    );
+    expect(screen.getByRole('menu', { name: 'Recent chats' })).toHaveAttribute(
+      'aria-labelledby',
+      'chatbot-nav-group-recent-label'
+    );
+  });
+
+  it('does not autofocus the first menu item when an expandable group is expanded', async () => {
+    const ExpandableGroupDemo = () => {
+      const [isExpanded, setIsExpanded] = useState(false);
+
+      return (
+        <ChatbotConversationHistoryNav
+          onDrawerToggle={onDrawerToggle}
+          isDrawerOpen={true}
+          displayMode={ChatbotDisplayMode.embedded}
+          setIsDrawerOpen={jest.fn()}
+          conversations={[
+            {
+              id: 'saved-prompts',
+              label: 'Saved prompts',
+              expandable: {
+                isExpanded,
+                onToggle: setIsExpanded
+              },
+              items: [
+                { id: '7', text: 'Summarize this document' },
+                { id: '8', text: 'Draft a release announcement' }
+              ]
+            }
+          ]}
+        />
+      );
+    };
+
+    render(<ExpandableGroupDemo />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Saved prompts' }));
+
+    await waitFor(() => {
+      expect(screen.getByRole('menuitem', { name: 'Summarize this document' })).toBeInTheDocument();
+    });
+    expect(screen.getByRole('menuitem', { name: 'Summarize this document' })).not.toHaveFocus();
+  });
+
+  it('does not render a collapsed expandable group menu', () => {
+    const groups: ConversationGroup[] = [
+      {
+        id: 'chats',
+        label: 'Chats',
+        items: [
+          { id: '2', text: 'Chat two' },
+          { id: '3', text: 'Chat three' }
+        ]
+      },
+      {
+        id: 'saved-prompts',
+        label: 'Saved prompts',
+        expandable: {
+          isExpanded: false,
+          onToggle: jest.fn()
+        },
+        items: [
+          { id: '7', text: 'Summarize this document' },
+          { id: '8', text: 'Draft a release announcement' }
+        ]
+      }
+    ];
+
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.embedded}
+        setIsDrawerOpen={jest.fn()}
+        conversations={groups}
+      />
+    );
+
+    // Collapsed expandable groups render their toggle outside the menu and omit the menu
+    // entirely until expanded, so their items are not part of arrow-key navigation.
+    expect(screen.getAllByRole('menu')).toHaveLength(1);
+    expect(screen.getByRole('menu', { name: 'Chats' })).toHaveAttribute(
+      'aria-labelledby',
+      'chatbot-nav-group-chats-label'
+    );
+    expect(screen.queryByRole('menuitem', { name: 'Summarize this document' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('menuitem', { name: 'Draft a release announcement' })).not.toBeInTheDocument();
+
+    const firstItem = screen.getByRole('menuitem', { name: 'Chat two' });
+    const lastItem = screen.getByRole('menuitem', { name: 'Chat three' });
+
+    lastItem.focus();
+    fireEvent.keyDown(lastItem, { key: 'ArrowDown' });
+
+    expect(firstItem).toHaveFocus();
+  });
+
+  it('collapses and expands a group when expandable.onToggle is called', async () => {
+    const onToggle = jest.fn();
+    const groups: ConversationGroup[] = [
+      {
+        id: 'chats',
+        label: 'Chats',
+        expandable: {
+          isExpanded: true,
+          onToggle
+        },
+        items: [{ id: '2', text: 'Chatbot extension' }]
+      }
+    ];
+
+    const { rerender } = render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={groups}
+      />
+    );
+
+    expect(screen.getByRole('menuitem', { name: /Chatbot extension/i })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Chats' }));
+    expect(onToggle).toHaveBeenCalledWith(false);
+
+    rerender(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={[
+          {
+            ...groups[0],
+            expandable: {
+              isExpanded: false,
+              onToggle
+            }
+          }
+        ]}
+      />
+    );
+
+    await waitFor(() => {
+      expect(screen.queryByRole('menuitem', { name: /Chatbot extension/i })).not.toBeInTheDocument();
+    });
+  });
+
+  it('renders custom menu items and footers supplied in ConversationGroup', () => {
+    const groups: ConversationGroup[] = [
+      {
+        id: 'chats',
+        label: 'Chats',
+        items: [
+          initialConversations[0],
+          <MenuItem key="show-all" itemId="show-all">
+            Show all
+          </MenuItem>
+        ],
+        footer: <div data-testid="group-footer">Footer content</div>
+      }
+    ];
+
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={groups}
+      />
+    );
+
+    expect(screen.getByRole('menuitem', { name: 'Show all' })).toBeInTheDocument();
+    expect(screen.getByTestId('group-footer')).toBeInTheDocument();
+  });
+
+  it('moves focus to the first overflow item when show all is expanded', async () => {
+    const recentChats: Conversation[] = [
+      { id: '2', text: 'Chat two' },
+      { id: '3', text: 'Chat three' },
+      { id: '4', text: 'Chat four' },
+      { id: '5', text: 'Chat five' },
+      { id: '6', text: 'Chat six' }
+    ];
+    const VISIBLE_CHAT_COUNT = 3;
+
+    const ShowAllDemo = () => {
+      const [isShowingAllChats, setIsShowingAllChats] = useState(false);
+
+      return (
+        <ChatbotConversationHistoryNav
+          onDrawerToggle={onDrawerToggle}
+          isDrawerOpen={true}
+          displayMode={ChatbotDisplayMode.embedded}
+          setIsDrawerOpen={jest.fn()}
+          conversations={[
+            {
+              id: 'chats',
+              label: 'Chats',
+              items: recentChats,
+              showAll: {
+                visibleCount: VISIBLE_CHAT_COUNT,
+                isExpanded: isShowingAllChats,
+                onToggle: setIsShowingAllChats
+              }
+            }
+          ]}
+        />
+      );
+    };
+
+    render(<ShowAllDemo />);
+
+    fireEvent.click(screen.getByRole('menuitem', { name: /Show all/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole('menuitem', { name: 'Chat five' })).toHaveFocus();
+    });
+  });
+
+  it('keeps focus on the toggle when show all is collapsed', async () => {
+    const recentChats: Conversation[] = [
+      { id: '2', text: 'Chat two' },
+      { id: '3', text: 'Chat three' },
+      { id: '4', text: 'Chat four' },
+      { id: '5', text: 'Chat five' }
+    ];
+
+    const ShowAllDemo = () => {
+      const [isShowingAllChats, setIsShowingAllChats] = useState(true);
+
+      return (
+        <ChatbotConversationHistoryNav
+          onDrawerToggle={onDrawerToggle}
+          isDrawerOpen={true}
+          displayMode={ChatbotDisplayMode.embedded}
+          setIsDrawerOpen={jest.fn()}
+          conversations={[
+            {
+              id: 'chats',
+              label: 'Chats',
+              items: recentChats,
+              showAll: {
+                visibleCount: 2,
+                isExpanded: isShowingAllChats,
+                onToggle: setIsShowingAllChats
+              }
+            }
+          ]}
+        />
+      );
+    };
+
+    render(<ShowAllDemo />);
+
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Show less' }));
+
+    await waitFor(() => {
+      expect(screen.getByRole('menuitem', { name: /Show all/i })).toHaveFocus();
+    });
+  });
+
+  it('renders overflow items above the show all toggle so it stays in a fixed position', () => {
+    const recentChats: Conversation[] = [
+      { id: '2', text: 'Chat two' },
+      { id: '3', text: 'Chat three' },
+      { id: '4', text: 'Chat four' }
+    ];
+
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.embedded}
+        setIsDrawerOpen={jest.fn()}
+        conversations={[
+          {
+            id: 'chats',
+            label: 'Chats',
+            items: recentChats,
+            showAll: {
+              visibleCount: 1,
+              isExpanded: true,
+              onToggle: jest.fn()
+            }
+          }
+        ]}
+      />
+    );
+
+    const overflowItem = screen.getByRole('menuitem', { name: 'Chat four' });
+    const toggle = screen.getByRole('menuitem', { name: 'Show less' });
+    const isToggleAfterOverflowItem = Boolean(
+      // eslint-disable-next-line no-bitwise
+      overflowItem.compareDocumentPosition(toggle) & Node.DOCUMENT_POSITION_FOLLOWING
+    );
+
+    expect(isToggleAfterOverflowItem).toBe(true);
+  });
+
+  it('allows arrow key navigation to flow through the show all toggle like any other menu item', async () => {
+    const recentChats: Conversation[] = [
+      { id: '2', text: 'Chat two' },
+      { id: '3', text: 'Chat three' },
+      { id: '4', text: 'Chat four' }
+    ];
+
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.embedded}
+        setIsDrawerOpen={jest.fn()}
+        conversations={[
+          {
+            id: 'chats',
+            label: 'Chats',
+            items: recentChats,
+            showAll: {
+              visibleCount: 2,
+              isExpanded: false,
+              onToggle: jest.fn()
+            }
+          }
+        ]}
+      />
+    );
+
+    const lastVisibleItem = screen.getByRole('menuitem', { name: 'Chat three' });
+    const toggle = screen.getByRole('menuitem', { name: /Show all/i });
+
+    lastVisibleItem.focus();
+    fireEvent.keyDown(lastVisibleItem, { key: 'ArrowDown' });
+
+    await waitFor(() => {
+      expect(toggle).toHaveFocus();
+    });
+
+    fireEvent.keyDown(toggle, { key: 'ArrowUp' });
+
+    await waitFor(() => {
+      expect(lastVisibleItem).toHaveFocus();
+    });
+  });
+
+  it('preserves custom menu item identity when preceding items change', () => {
+    const renderShowAll = () => (
+      <MenuItem key="show-all-chats" itemId="show-all-chats">
+        Show all
+      </MenuItem>
+    );
+
+    const { rerender } = render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={[
+          {
+            id: 'chats',
+            label: 'Chats',
+            items: [initialConversations[0], renderShowAll()]
+          }
+        ]}
+      />
+    );
+
+    const showAllBefore = screen.getByRole('menuitem', { name: 'Show all' });
+
+    rerender(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={[
+          {
+            id: 'chats',
+            label: 'Chats',
+            items: [initialConversations[0], initialConversations[1], initialConversations[2], renderShowAll()]
+          }
+        ]}
+      />
+    );
+
+    expect(screen.getByRole('menuitem', { name: 'Show all' })).toBe(showAllBefore);
+  });
+
+  it('passes expandableSectionProps from expandable ConversationGroup', () => {
+    const groups: ConversationGroup[] = [
+      {
+        id: 'saved',
+        label: 'Saved prompts',
+        expandable: {
+          isExpanded: true,
+          onToggle: jest.fn(),
+          expandableSectionProps: { className: 'test-expandable-section' }
+        },
+        items: initialConversations
+      }
+    ];
+
+    render(
+      <ChatbotConversationHistoryNav
+        onDrawerToggle={onDrawerToggle}
+        isDrawerOpen={true}
+        displayMode={ChatbotDisplayMode.fullscreen}
+        setIsDrawerOpen={jest.fn()}
+        conversations={groups}
+      />
+    );
+
+    expect(document.querySelector('.test-expandable-section')).toBeInTheDocument();
   });
 });
