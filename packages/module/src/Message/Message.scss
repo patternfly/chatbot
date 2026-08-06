@@ -200,6 +200,11 @@
     &:not(.pf-m-xl, .pf-m-lg, .pf-m-md, .pf-m-sm) {
       --pf-v6-c-avatar--Width: 1.5rem;
       --pf-v6-c-avatar--Height: 1.5rem;
+
+      .pf-v6-svg {
+        width: 1rem;
+        height: 1rem;
+      }
     }
   }
 

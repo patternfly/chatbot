@@ -21,6 +21,12 @@
     display: contents;
   }
 
+  &.pf-chatbot__button--active {
+    svg {
+      --pf-v6-c-icon__content--svg--VerticalAlign: -1.125em;
+    }
+  }
+
   // Icon
   svg {
     width: var(--pf-t--global--spacer--lg);
