@@ -19,6 +19,7 @@ import {
 } from 'react';
 import JumpButton from './JumpButton';
 import { ButtonProps, getResizeObserver, TooltipProps } from '@patternfly/react-core';
+import { css } from '@patternfly/react-styles';
 
 export interface MessageBoxProps extends HTMLProps<HTMLDivElement> {
   /** Content that can be announced, such as a new message, for screen readers */
@@ -436,7 +437,12 @@ export const MessageBox = forwardRef(
           role="region"
           tabIndex={0}
           aria-label={ariaLabel}
-          className={`pf-chatbot__messagebox ${position === 'bottom' ? 'pf-chatbot__messagebox--bottom' : ''} ${hasOuterScrollbar ? 'pf-chatbot__messagebox--outer-scroll' : ''} ${className ?? ''}`}
+          className={css(
+            'pf-chatbot__messagebox',
+            position === 'bottom' && 'pf-chatbot__messagebox--bottom',
+            hasOuterScrollbar && 'pf-chatbot__messagebox--outer-scroll',
+            className
+          )}
           ref={messageBoxRef}
           {...props}
           {...(enableSmartScroll ? { ...smartScrollHandlers } : {})}
