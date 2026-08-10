@@ -24,7 +24,6 @@
 }
 
 @media screen and (min-width: 64rem) {
-  .pf-chatbot--embedded,
   .pf-chatbot--drawer,
   .pf-chatbot--fullscreen {
     .pf-chatbot__messagebox {
@@ -32,6 +31,21 @@
       width: 100%;
     }
   }
+
+  /*
+   * Moves the scrollbar; see https://github.com/opendatahub-io/odh-dashboard/pull/8199
+   */
+   .pf-chatbot--embedded .pf-chatbot__messagebox.pf-chatbot__messagebox--outer-scroll {
+    width: 100%;
+    max-width: unset;
+    align-items: center;
+  }
+
+  .pf-chatbot--embedded .pf-chatbot__messagebox.pf-chatbot__messagebox--outer-scroll > *:not(.pf-chatbot__messagebox-announcement) {
+    max-width: 60rem;
+    width: 100%;
+  }
+
 }
 
 .pf-chatbot.pf-m-compact {
