@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import MarkdownContent from './MarkdownContent';
 import rehypeExternalLinks from '../__mocks__/rehype-external-links';
+import { expectBoldMarkdownText } from '../test-utils/markdownTestUtils';
 
 const BOLD_TEXT = '**Bold text**';
 const ITALIC_TEXT = '*Italic text*';
@@ -37,10 +38,9 @@ describe('MarkdownContent', () => {
     jest.clearAllMocks();
   });
 
-  it('should render bold text correctly', () => {
-    const { container } = render(<MarkdownContent content={BOLD_TEXT} />);
-    expect(container.querySelector('strong')).toBeTruthy();
-    expect(screen.getByText('Bold text')).toBeTruthy();
+  it('should render bold text correctly', async () => {
+    render(<MarkdownContent content={BOLD_TEXT} />);
+    await expectBoldMarkdownText('Bold text');
   });
 
   it('should render italic text correctly', () => {

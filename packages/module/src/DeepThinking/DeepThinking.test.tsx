@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import DeepThinking from './DeepThinking';
+import { expectBoldMarkdownText } from '../test-utils/markdownTestUtils';
 
 describe('DeepThinking', () => {
   const defaultProps = {
@@ -120,11 +121,10 @@ describe('DeepThinking', () => {
     expect(screen.getByText('Thinking content')).not.toBeVisible();
   });
 
-  it('should render toggleContent as markdown when isToggleContentMarkdown is true', () => {
+  it('should render toggleContent as markdown when isToggleContentMarkdown is true', async () => {
     const toggleContent = '**Bold thinking**';
-    const { container } = render(<DeepThinking toggleContent={toggleContent} isToggleContentMarkdown />);
-    expect(container.querySelector('strong')).toBeTruthy();
-    expect(screen.getByText('Bold thinking')).toBeTruthy();
+    render(<DeepThinking toggleContent={toggleContent} isToggleContentMarkdown />);
+    await expectBoldMarkdownText('Bold thinking');
   });
 
   it('should not render toggleContent as markdown when isToggleContentMarkdown is false', () => {
@@ -134,11 +134,10 @@ describe('DeepThinking', () => {
     expect(screen.getByText('**Bold thinking**')).toBeTruthy();
   });
 
-  it('should render subheading as markdown when isSubheadingMarkdown is true', () => {
+  it('should render subheading as markdown when isSubheadingMarkdown is true', async () => {
     const subheading = '**Bold subheading**';
-    const { container } = render(<DeepThinking {...defaultProps} subheading={subheading} isSubheadingMarkdown />);
-    expect(container.querySelector('strong')).toBeTruthy();
-    expect(screen.getByText('Bold subheading')).toBeTruthy();
+    render(<DeepThinking {...defaultProps} subheading={subheading} isSubheadingMarkdown />);
+    await expectBoldMarkdownText('Bold subheading');
   });
 
   it('should not render subheading as markdown when isSubheadingMarkdown is false', () => {
@@ -147,11 +146,10 @@ describe('DeepThinking', () => {
     expect(screen.getByText('**Bold subheading**')).toBeTruthy();
   });
 
-  it('should render body as markdown when isBodyMarkdown is true', () => {
+  it('should render body as markdown when isBodyMarkdown is true', async () => {
     const body = '**Bold body**';
-    const { container } = render(<DeepThinking {...defaultProps} body={body} isBodyMarkdown />);
-    expect(container.querySelector('strong')).toBeTruthy();
-    expect(screen.getByText('Bold body')).toBeTruthy();
+    render(<DeepThinking {...defaultProps} body={body} isBodyMarkdown />);
+    await expectBoldMarkdownText('Bold body');
   });
 
   it('should not render body as markdown when isBodyMarkdown is false', () => {

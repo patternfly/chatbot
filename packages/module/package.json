@@ -88,5 +88,23 @@
     "victory-stack": "^37.1.1",
     "victory-tooltip": "^37.1.1",
     "victory-voronoi-container": "^37.1.1"
-  }
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/esm/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./dist/css/main.css": "./dist/css/main.css",
+    "./dist/dynamic/*": {
+      "import": "./dist/esm/*/index.js",
+      "require": "./dist/cjs/*/index.js"
+    },
+    "./monaco-environment": "./monaco-environment.js"
+  },
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss",
+    "patternfly-docs/**"
+  ]
 }

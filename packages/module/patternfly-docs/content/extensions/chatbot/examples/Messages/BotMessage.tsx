@@ -17,7 +17,7 @@ import {
   SelectList,
   SelectOption
 } from '@patternfly/react-core';
-import { rehypeCodeBlockToggle } from '@patternfly/chatbot/dist/esm/Message/Plugins/rehypeCodeBlockToggle';
+import { rehypeCodeBlockToggle } from '@patternfly/chatbot/dist/dynamic/Message';
 
 export const BotMessageExample: FunctionComponent = () => {
   const [variant, setVariant] = useState<string>('Code');

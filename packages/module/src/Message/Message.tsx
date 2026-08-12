@@ -3,7 +3,7 @@
 // ============================================================================
 import { forwardRef, ReactNode, useEffect, useState } from 'react';
 import type { FunctionComponent, HTMLProps, MouseEvent as ReactMouseEvent, Ref } from 'react';
-import { Options } from 'react-markdown';
+import type { Options } from 'react-markdown';
 import {
   AlertProps,
   Avatar,
@@ -25,10 +25,8 @@ import { QuickStart, QuickstartAction } from './QuickStarts/types';
 import QuickResponse from './QuickResponse/QuickResponse';
 import UserFeedback, { UserFeedbackProps } from './UserFeedback/UserFeedback';
 import UserFeedbackComplete, { UserFeedbackCompleteProps } from './UserFeedback/UserFeedbackComplete';
-import { TableProps } from '@patternfly/react-table';
-// see the full list of styles here: https://highlightjs.org/examples
-import 'highlight.js/styles/vs2015.css';
-import { PluggableList } from 'unified';
+import type { TableProps } from '@patternfly/react-table';
+import type { PluggableList } from 'unified';
 import ErrorMessage from './ErrorMessage/ErrorMessage';
 import MessageInput from './MessageInput';
 import ToolResponse, { ToolResponseProps } from '../ToolResponse';

@@ -1,0 +1,251 @@
+// ============================================================================
+// Markdown Renderer - Heavy markdown pipeline (dynamically imported)
+// ============================================================================
+import { type FunctionComponent } from 'react';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { ContentVariants } from '@patternfly/react-core';
+import CodeBlockMessage from '../Message/CodeBlockMessage/CodeBlockMessage';
+import TextMessage from '../Message/TextMessage/TextMessage';
+import ListItemMessage from '../Message/ListMessage/ListItemMessage';
+import UnorderedListMessage from '../Message/ListMessage/UnorderedListMessage';
+import OrderedListMessage from '../Message/ListMessage/OrderedListMessage';
+import TableMessage from '../Message/TableMessage/TableMessage';
+import TrMessage from '../Message/TableMessage/TrMessage';
+import TdMessage from '../Message/TableMessage/TdMessage';
+import TbodyMessage from '../Message/TableMessage/TbodyMessage';
+import TheadMessage from '../Message/TableMessage/TheadMessage';
+import ThMessage from '../Message/TableMessage/ThMessage';
+import type { TableProps } from '@patternfly/react-table';
+import ImageMessage from '../Message/ImageMessage/ImageMessage';
+import rehypeUnwrapImages from 'rehype-unwrap-images';
+import rehypeExternalLinks from 'rehype-external-links';
+import rehypeSanitize from 'rehype-sanitize';
+import rehypeHighlight from 'rehype-highlight';
+import 'highlight.js/styles/vs2015.css';
+import type { PluggableList } from 'unified';
+import LinkMessage from '../Message/LinkMessage/LinkMessage';
+import { rehypeMoveImagesOutOfParagraphs } from '../Message/Plugins/rehypeMoveImagesOutOfParagraphs';
+import SuperscriptMessage from '../Message/SuperscriptMessage/SuperscriptMessage';
+import type { ButtonProps } from '@patternfly/react-core';
+import type { Options } from 'react-markdown';
+import { css } from '@patternfly/react-styles';
+import type { CodeBlockMessageProps } from '../Message/CodeBlockMessage/CodeBlockMessage';
+
+export interface MarkdownRendererProps {
+  content?: string;
+  codeBlockProps?: CodeBlockMessageProps;
+  tableProps?: Required<Pick<TableProps, 'aria-label'>> & TableProps;
+  additionalRehypePlugins?: PluggableList;
+  additionalRemarkPlugins?: PluggableList;
+  openLinkInNewTab?: boolean;
+  linkProps?: ButtonProps;
+  reactMarkdownProps?: Options;
+  remarkGfmProps?: Options;
+  hasNoImages?: boolean;
+  isPrimary?: boolean;
+  shouldRetainStyles?: boolean;
+}
+
+const MarkdownRenderer: FunctionComponent<MarkdownRendererProps> = ({
+  content,
+  codeBlockProps,
+  tableProps,
+  openLinkInNewTab = true,
+  additionalRehypePlugins = [],
+  additionalRemarkPlugins = [],
+  linkProps,
+  reactMarkdownProps,
+  remarkGfmProps,
+  hasNoImages = false,
+  isPrimary,
+  shouldRetainStyles
+}) => {
+  let rehypePlugins: PluggableList = [rehypeUnwrapImages, rehypeMoveImagesOutOfParagraphs, rehypeHighlight];
+  if (openLinkInNewTab) {
+    rehypePlugins = rehypePlugins.concat([[rehypeExternalLinks, { target: '_blank' }, rehypeSanitize]]);
+  }
+  if (additionalRehypePlugins) {
+    rehypePlugins.push(...additionalRehypePlugins);
+  }
+
+  const disallowedElements = hasNoImages ? ['img'] : [];
+  if (reactMarkdownProps && reactMarkdownProps.disallowedElements) {
+    disallowedElements.push(...reactMarkdownProps.disallowedElements);
+  }
+
+  return (
+    <Markdown
+      components={{
+        section: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return (
+            <section
+              {...rest}
+              className={css('pf-chatbot__message-text', shouldRetainStyles && 'pf-m-markdown', rest?.className)}
+            />
+          );
+        },
+        p: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return (
+            <TextMessage
+              shouldRetainStyles={shouldRetainStyles}
+              component={ContentVariants.p}
+              {...rest}
+              isPrimary={isPrimary}
+            />
+          );
+        },
+        code: ({ children, ...props }) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...codeProps } = props;
+          return (
+            <CodeBlockMessage
+              {...codeProps}
+              {...codeBlockProps}
+              isPrimary={isPrimary}
+              shouldRetainStyles={shouldRetainStyles}
+            >
+              {children}
+            </CodeBlockMessage>
+          );
+        },
+        h1: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h1} {...rest} />;
+        },
+        h2: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h2} {...rest} />;
+        },
+        h3: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h3} {...rest} />;
+        },
+        h4: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h4} {...rest} />;
+        },
+        h5: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h5} {...rest} />;
+        },
+        h6: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h6} {...rest} />;
+        },
+        blockquote: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return (
+            <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.blockquote} {...rest} />
+          );
+        },
+        ul: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return <UnorderedListMessage shouldRetainStyles={shouldRetainStyles} {...rest} />;
+        },
+        ol: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return <OrderedListMessage shouldRetainStyles={shouldRetainStyles} {...rest} />;
+        },
+        li: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return <ListItemMessage {...rest} />;
+        },
+        // table requires node attribute for calculating headers for mobile breakpoint
+        table: (props) => (
+          <TableMessage shouldRetainStyles={shouldRetainStyles} {...props} {...tableProps} isPrimary={isPrimary} />
+        ),
+        tbody: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return <TbodyMessage {...rest} />;
+        },
+        thead: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return <TheadMessage {...rest} />;
+        },
+        tr: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return <TrMessage {...rest} />;
+        },
+        td: (props) => {
+          // Conflicts with Td type
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, width, ...rest } = props;
+          return <TdMessage {...rest} />;
+        },
+        th: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return <ThMessage {...rest} />;
+        },
+        img: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return <ImageMessage {...rest} />;
+        },
+        a: (props) => {
+          // node is just the details of the document structure - not needed
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return (
+            // some a types conflict with ButtonProps, but it's ok because we are using an a tag
+            // there are too many to handle manually
+            <LinkMessage shouldRetainStyles={shouldRetainStyles} {...(rest as any)} {...linkProps}>
+              {props.children}
+            </LinkMessage>
+          );
+        },
+        // used for footnotes
+        sup: (props) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { node, ...rest } = props;
+          return <SuperscriptMessage {...rest} />;
+        }
+      }}
+      remarkPlugins={[[remarkGfm, { ...remarkGfmProps }], ...additionalRemarkPlugins]}
+      rehypePlugins={rehypePlugins}
+      {...reactMarkdownProps}
+      remarkRehypeOptions={{
+        // removes sr-only class from footnote labels applied by default
+        footnoteLabelProperties: { className: [''] },
+        // omit default ↩ text; backref icon is rendered in LinkMessage
+        footnoteBackContent: (_referenceIndex, rereferenceIndex) => {
+          if (rereferenceIndex > 1) {
+            return [
+              {
+                type: 'element',
+                tagName: 'sup',
+                properties: {},
+                children: [{ type: 'text', value: String(rereferenceIndex) }]
+              }
+            ];
+          }
+          return [];
+        },
+        ...reactMarkdownProps?.remarkRehypeOptions
+      }}
+      disallowedElements={disallowedElements}
+    >
+      {content}
+    </Markdown>
+  );
+};
+
+export default MarkdownRenderer;
