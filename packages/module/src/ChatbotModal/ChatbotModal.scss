@@ -4,6 +4,7 @@
 
 .pf-chatbot__chatbot-modal {
   --pf-v6-c-modal-box--BorderRadius: var(--pf-t--global--border--radius--medium) !important;
+  --pf-v6-c-modal-box--BackgroundColor: var(--pf-t--global--background--color--floating--secondary--default);
   position: fixed !important;
   inset-block-end: var(--pf-t--global--spacer--800); // no associated semantic token
   inset-inline-end: var(--pf-t--global--spacer--lg);
@@ -23,6 +24,15 @@
 
   .pf-v6-c-modal-box__header {
     padding-block-end: var(--pf-t--global--spacer--sm);
+  }
+}
+
+:root:where(.pf-v6-theme-glass) {
+  .pf-chatbot__chatbot-modal {
+    --pf-v6-c-modal-box--BackgroundColor: var(
+      --pf-t--global--background--color--glass--primary--default,
+      var(--pf-t--global--background--color--secondary--default)
+    );
   }
 }
 
