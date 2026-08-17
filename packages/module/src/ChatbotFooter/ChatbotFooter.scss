@@ -17,8 +17,8 @@
   }
 }
 
-.pf-chatbot:not(.pf-chatnot--default) {
-  .pf-chatbot__footer {
+.pf-chatbot:not(.pf-chatbot--default) {
+  .pf-chatbot__footer:not(.pf-m-primary) {
     background-color: var(--pf-t--global--background--color--secondary--default);
 
     @at-root :where(.pf-v6-theme-glass) & {

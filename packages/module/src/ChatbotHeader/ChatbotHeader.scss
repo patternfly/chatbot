@@ -64,6 +64,10 @@
       background-color: var(--pf-t--global--background--color--glass--primary--default);
     }
   }
+
+  &:has(.pf-chatbot__content.pf-m-primary) .pf-chatbot__header {
+    background-color: var(--pf-t--global--background--color--primary--default);
+  }
 }
 
 // ============================================================================

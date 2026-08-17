@@ -19,7 +19,7 @@
 }
 
 .pf-chatbot:not(.pf-chatbot--default) {
-  .pf-chatbot__content {
+  .pf-chatbot__content:not(.pf-m-primary) {
     background-color: var(
       --pf-t--global--background--color--glass--primary--default,
       var(--pf-t--global--background--color--secondary--default)

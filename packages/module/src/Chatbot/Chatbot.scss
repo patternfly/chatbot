@@ -48,6 +48,10 @@
       var(--pf-t--global--background--color--secondary--default)
     );
   }
+
+  &:not(&--default):has(.pf-chatbot__content.pf-m-primary) {
+    background-color: var(--pf-t--global--background--color--primary--default);
+  }
 }
 
 :root:where(.pf-v6-theme-felt):not(.pf-v6-theme-glass) {
