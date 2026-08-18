@@ -37,7 +37,6 @@ export default function App() {
         isChatbotVisible={false}
         onToggleChatbot={() => setIsVisible(!isVisible)}
       />
-      ;
     </>
   );
 }

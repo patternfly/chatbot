@@ -80,6 +80,21 @@ import AttachmentEdit from '@patternfly/chatbot/dist/dynamic/AttachmentEdit';
 
 `monaco-editor` and `@monaco-editor/react` are peer dependencies when you use these components.
 
+## Markdown rendering (`Message`, `MarkdownContent`)
+
+`MarkdownContent` lazy-loads its markdown parser so lightweight imports avoid pulling in `react-markdown`, syntax highlighting, and related dependencies until they are needed. In the tree-shaking demo, that async chunk is roughly 400 KB.
+
+`MessageBox` automatically preloads the markdown renderer and coordinates rendering so existing messages do not each flash an individual loading state — message chrome (avatars, timestamps, and so on) appears immediately, and markdown content fills in once the chunk is ready.
+
+For chatbots that display messages on first render, you can call `preloadMarkdownRenderer()` earlier in your application — such as in your app's entry point or route loader — so the chunk is already loaded by the time the chatbot mounts:
+
+```tsx
+// App.tsx or route loader — call once at startup
+import { preloadMarkdownRenderer } from '@patternfly/chatbot/dist/dynamic/MarkdownContent';
+
+preloadMarkdownRenderer();
+```
+
 ## Migration: root barrel changes
 
 The following modules are **not** re-exported from the root barrel (`@patternfly/chatbot`). They were removed so Monaco and internal utilities stay out of default bundles. Update existing root imports to subpath entry points:

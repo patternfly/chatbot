@@ -16,7 +16,6 @@ import TdMessage from '../Message/TableMessage/TdMessage';
 import TbodyMessage from '../Message/TableMessage/TbodyMessage';
 import TheadMessage from '../Message/TableMessage/TheadMessage';
 import ThMessage from '../Message/TableMessage/ThMessage';
-import type { TableProps } from '@patternfly/react-table';
 import ImageMessage from '../Message/ImageMessage/ImageMessage';
 import rehypeUnwrapImages from 'rehype-unwrap-images';
 import rehypeExternalLinks from 'rehype-external-links';
@@ -27,25 +26,10 @@ import type { PluggableList } from 'unified';
 import LinkMessage from '../Message/LinkMessage/LinkMessage';
 import { rehypeMoveImagesOutOfParagraphs } from '../Message/Plugins/rehypeMoveImagesOutOfParagraphs';
 import SuperscriptMessage from '../Message/SuperscriptMessage/SuperscriptMessage';
-import type { ButtonProps } from '@patternfly/react-core';
-import type { Options } from 'react-markdown';
 import { css } from '@patternfly/react-styles';
-import type { CodeBlockMessageProps } from '../Message/CodeBlockMessage/CodeBlockMessage';
+import type { MarkdownContentProps } from './MarkdownContent';
 
-export interface MarkdownRendererProps {
-  content?: string;
-  codeBlockProps?: CodeBlockMessageProps;
-  tableProps?: Required<Pick<TableProps, 'aria-label'>> & TableProps;
-  additionalRehypePlugins?: PluggableList;
-  additionalRemarkPlugins?: PluggableList;
-  openLinkInNewTab?: boolean;
-  linkProps?: ButtonProps;
-  reactMarkdownProps?: Options;
-  remarkGfmProps?: Options;
-  hasNoImages?: boolean;
-  isPrimary?: boolean;
-  shouldRetainStyles?: boolean;
-}
+export type MarkdownRendererProps = Omit<MarkdownContentProps, 'isMarkdownDisabled' | 'textComponent'>;
 
 const MarkdownRenderer: FunctionComponent<MarkdownRendererProps> = ({
   content,

@@ -227,9 +227,10 @@ ensureChatbotBuilt();
 
 for (const scenario of scenarios) {
   process.stdout.write(`  Building "${scenario.id}"...`);
-  execSync(`npx vite build --mode ${scenario.id}`, {
+  execSync(`vite build --mode ${scenario.id}`, {
     cwd: demoRoot,
-    stdio: ['inherit', 'pipe', 'inherit']
+    // Do not pipe stdout — vite can emit enough build output to fill the pipe buffer and deadlock.
+    stdio: ['inherit', 'ignore', 'inherit']
   });
   console.log(' done');
 }
