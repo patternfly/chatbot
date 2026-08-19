@@ -2,6 +2,9 @@
 import 'whatwg-fetch';
 import 'babel-polyfill';
 import '@testing-library/jest-dom';
+beforeAll(async () => {
+  await import('../packages/module/src/MarkdownContent/MarkdownRenderer');
+});
 
 global.SVGPathElement = function () {};
 

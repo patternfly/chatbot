@@ -1,7 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import MarkdownContent from './MarkdownContent';
+import MarkdownContent, {
+  MarkdownRendererReadyContext,
+  preloadMarkdownRenderer,
+  whenMarkdownRendererReady
+} from './MarkdownContent';
 import rehypeExternalLinks from '../__mocks__/rehype-external-links';
+import { expectBoldMarkdownText, warmupMarkdownRenderer } from '../test-utils/markdownTestUtils';
 
 const BOLD_TEXT = '**Bold text**';
 const ITALIC_TEXT = '*Italic text*';
@@ -33,14 +38,17 @@ const BLOCKQUOTE = '> This is a blockquote';
 const IMAGE = '![Alt text](https://example.com/image.png)';
 
 describe('MarkdownContent', () => {
+  beforeAll(async () => {
+    await warmupMarkdownRenderer();
+  });
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should render bold text correctly', () => {
-    const { container } = render(<MarkdownContent content={BOLD_TEXT} />);
-    expect(container.querySelector('strong')).toBeTruthy();
-    expect(screen.getByText('Bold text')).toBeTruthy();
+  it('should render bold text correctly', async () => {
+    render(<MarkdownContent content={BOLD_TEXT} />);
+    await expectBoldMarkdownText('Bold text');
   });
 
   it('should render italic text correctly', () => {
@@ -203,5 +211,44 @@ const x = 5;
     expect(screen.getByText('italic text')).toBeTruthy();
     expect(screen.getByText(/const x = 5/)).toBeTruthy();
     expect(screen.getByRole('link', { name: /Link/i })).toBeTruthy();
+  });
+});
+
+describe('preloadMarkdownRenderer', () => {
+  it('starts loading the markdown renderer', async () => {
+    preloadMarkdownRenderer();
+    const module = await whenMarkdownRendererReady();
+    expect(module.default).toBeDefined();
+  });
+});
+
+describe('whenMarkdownRendererReady', () => {
+  it('should resolve to the MarkdownRenderer module', async () => {
+    const module = await whenMarkdownRendererReady();
+    expect(module.default).toBeDefined();
+  });
+});
+
+describe('MarkdownContent with MarkdownRendererReadyContext', () => {
+  it('renders nothing while markdown is not ready inside MessageBox', () => {
+    const { container } = render(
+      <MarkdownRendererReadyContext.Provider value={false}>
+        <MarkdownContent content={BOLD_TEXT} />
+      </MarkdownRendererReadyContext.Provider>
+    );
+
+    expect(container).toBeEmptyDOMElement();
+  });
+});
+
+describe('MarkdownContent lazy loading', () => {
+  it('renders nothing while markdown renderer is not ready', () => {
+    const { container } = render(
+      <MarkdownRendererReadyContext.Provider value={false}>
+        <MarkdownContent content={BOLD_TEXT} />
+      </MarkdownRendererReadyContext.Provider>
+    );
+
+    expect(container).toBeEmptyDOMElement();
   });
 });

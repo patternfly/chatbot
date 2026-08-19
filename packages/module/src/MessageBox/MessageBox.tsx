@@ -18,8 +18,16 @@ import {
   WheelEventHandler
 } from 'react';
 import JumpButton from './JumpButton';
+import {
+  MarkdownRendererReadyContext,
+  preloadMarkdownRenderer,
+  useIsMarkdownRendererReady
+} from '../MarkdownContent/MarkdownContent';
 import { ButtonProps, getResizeObserver, TooltipProps } from '@patternfly/react-core';
 import { css } from '@patternfly/react-styles';
+
+// Start fetching the markdown chunk as soon as MessageBox enters the bundle.
+preloadMarkdownRenderer();
 
 export interface MessageBoxProps extends HTMLProps<HTMLDivElement> {
   /** Content that can be announced, such as a new message, for screen readers */
@@ -123,6 +131,8 @@ export const MessageBox = forwardRef(
     }: MessageBoxProps,
     ref: ForwardedRef<MessageBoxHandle | null>
   ) => {
+    const isMarkdownReady = useIsMarkdownRendererReady();
+
     const [atTop, setAtTop] = useState(true);
     const [atBottom, setAtBottom] = useState(false);
     const [isOverflowing, setIsOverflowing] = useState(false);
@@ -447,7 +457,9 @@ export const MessageBox = forwardRef(
           {...props}
           {...(enableSmartScroll ? { ...smartScrollHandlers } : {})}
         >
-          {children}
+          <MarkdownRendererReadyContext.Provider value={isMarkdownReady}>
+            {children}
+          </MarkdownRendererReadyContext.Provider>
           <div className="pf-chatbot__messagebox-announcement pf-chatbot-m-hidden" aria-live="polite">
             {announcement}
           </div>

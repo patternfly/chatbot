@@ -8,6 +8,7 @@ import { monitorSampleAppQuickStartWithImage } from './QuickStarts/monitor-sampl
 import rehypeExternalLinks from '../__mocks__/rehype-external-links';
 import { AlertActionLink, Button, CodeBlockAction } from '@patternfly/react-core';
 import { DeepThinkingProps } from '../DeepThinking';
+import { warmupMarkdownRenderer } from '../test-utils/markdownTestUtils';
 
 // Mock the icon components
 jest.mock('@patternfly/react-icons', () => ({
@@ -222,6 +223,10 @@ const checkListItemsRendered = () => {
 };
 
 describe('Message', () => {
+  beforeAll(async () => {
+    await warmupMarkdownRenderer();
+  });
+
   beforeEach(() => {
     jest.clearAllMocks();
   });

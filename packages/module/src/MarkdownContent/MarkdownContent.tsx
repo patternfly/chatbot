@@ -1,34 +1,76 @@
 // ============================================================================
 // Markdown Content - Shared component for rendering markdown
 // ============================================================================
-import { type FunctionComponent, ReactNode } from 'react';
-import Markdown, { Options } from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import {
+  createContext,
+  useContext,
+  useSyncExternalStore,
+  type ComponentType,
+  type FunctionComponent,
+  type ReactNode
+} from 'react';
+import type { Options } from 'react-markdown';
 import { ContentVariants } from '@patternfly/react-core';
-import CodeBlockMessage, { CodeBlockMessageProps } from '../Message/CodeBlockMessage/CodeBlockMessage';
+import type { CodeBlockMessageProps } from '../Message/CodeBlockMessage/CodeBlockMessage';
+import type { TableProps } from '@patternfly/react-table';
+import type { PluggableList } from 'unified';
+import type { ButtonProps } from '@patternfly/react-core';
 import TextMessage from '../Message/TextMessage/TextMessage';
-import ListItemMessage from '../Message/ListMessage/ListItemMessage';
-import UnorderedListMessage from '../Message/ListMessage/UnorderedListMessage';
-import OrderedListMessage from '../Message/ListMessage/OrderedListMessage';
-import TableMessage from '../Message/TableMessage/TableMessage';
-import TrMessage from '../Message/TableMessage/TrMessage';
-import TdMessage from '../Message/TableMessage/TdMessage';
-import TbodyMessage from '../Message/TableMessage/TbodyMessage';
-import TheadMessage from '../Message/TableMessage/TheadMessage';
-import ThMessage from '../Message/TableMessage/ThMessage';
-import { TableProps } from '@patternfly/react-table';
-import ImageMessage from '../Message/ImageMessage/ImageMessage';
-import rehypeUnwrapImages from 'rehype-unwrap-images';
-import rehypeExternalLinks from 'rehype-external-links';
-import rehypeSanitize from 'rehype-sanitize';
-import rehypeHighlight from 'rehype-highlight';
-import 'highlight.js/styles/vs2015.css';
-import { PluggableList } from 'unified';
-import LinkMessage from '../Message/LinkMessage/LinkMessage';
-import { rehypeMoveImagesOutOfParagraphs } from '../Message/Plugins/rehypeMoveImagesOutOfParagraphs';
-import SuperscriptMessage from '../Message/SuperscriptMessage/SuperscriptMessage';
-import { ButtonProps } from '@patternfly/react-core';
-import { css } from '@patternfly/react-styles';
+
+type MarkdownRendererModule = typeof import('./MarkdownRenderer');
+
+let markdownRendererPromise: Promise<MarkdownRendererModule> | null = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let ResolvedMarkdownRenderer: ComponentType<any> | null = null;
+const markdownRendererListeners = new Set<() => void>();
+
+const importMarkdownRenderer = () => {
+  if (!markdownRendererPromise) {
+    markdownRendererPromise = import('./MarkdownRenderer').then((module) => {
+      ResolvedMarkdownRenderer = module.default;
+      markdownRendererListeners.forEach((listener) => listener());
+      return module;
+    });
+  }
+
+  return markdownRendererPromise;
+};
+
+const subscribeToMarkdownRendererReady = (listener: () => void) => {
+  markdownRendererListeners.add(listener);
+  void importMarkdownRenderer();
+  return () => markdownRendererListeners.delete(listener);
+};
+
+/**
+ * Whether the lazy-loaded markdown renderer chunk has finished loading.
+ */
+export const useIsMarkdownRendererReady = (): boolean =>
+  useSyncExternalStore(
+    subscribeToMarkdownRendererReady,
+    () => ResolvedMarkdownRenderer !== null,
+    () => true
+  );
+
+/**
+ * When provided by `MessageBox`, defers markdown rendering until the shared chunk is ready
+ * so existing messages don't each flash an individual loading state.
+ */
+export const MarkdownRendererReadyContext = createContext<boolean | null>(null);
+
+/**
+ * Eagerly fetches the markdown renderer chunk so the first rendered message
+ * doesn't flash a loading state while the chunk downloads. Safe to call repeatedly
+ * (the dynamic import is cached).
+ */
+export const preloadMarkdownRenderer = (): void => {
+  void importMarkdownRenderer();
+};
+
+/**
+ * Resolves when the markdown renderer chunk has loaded.
+ */
+export const whenMarkdownRendererReady = (): Promise<MarkdownRendererModule> => importMarkdownRenderer();
 
 /**
  * MarkdownContent renders content either as plain text or with content with markdown support.
@@ -69,31 +111,13 @@ export interface MarkdownContentProps {
 export const MarkdownContent: FunctionComponent<MarkdownContentProps> = ({
   content,
   isMarkdownDisabled,
-  codeBlockProps,
-  tableProps,
-  openLinkInNewTab = true,
-  additionalRehypePlugins = [],
-  additionalRemarkPlugins = [],
-  linkProps,
-  reactMarkdownProps,
-  remarkGfmProps,
-  hasNoImages = false,
   isPrimary,
   textComponent,
-  shouldRetainStyles
+  ...markdownProps
 }: MarkdownContentProps) => {
-  let rehypePlugins: PluggableList = [rehypeUnwrapImages, rehypeMoveImagesOutOfParagraphs, rehypeHighlight];
-  if (openLinkInNewTab) {
-    rehypePlugins = rehypePlugins.concat([[rehypeExternalLinks, { target: '_blank' }, rehypeSanitize]]);
-  }
-  if (additionalRehypePlugins) {
-    rehypePlugins.push(...additionalRehypePlugins);
-  }
-
-  const disallowedElements = hasNoImages ? ['img'] : [];
-  if (reactMarkdownProps && reactMarkdownProps.disallowedElements) {
-    disallowedElements.push(...reactMarkdownProps.disallowedElements);
-  }
+  const contextReady = useContext(MarkdownRendererReadyContext);
+  const storeReady = useIsMarkdownRendererReady();
+  const isMarkdownRendererReady = contextReady ?? storeReady;
 
   if (isMarkdownDisabled) {
     if (textComponent) {
@@ -106,178 +130,11 @@ export const MarkdownContent: FunctionComponent<MarkdownContentProps> = ({
     );
   }
 
-  return (
-    <Markdown
-      components={{
-        section: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return (
-            <section
-              {...rest}
-              className={css('pf-chatbot__message-text', shouldRetainStyles && 'pf-m-markdown', rest?.className)}
-            />
-          );
-        },
-        p: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return (
-            <TextMessage
-              shouldRetainStyles={shouldRetainStyles}
-              component={ContentVariants.p}
-              {...rest}
-              isPrimary={isPrimary}
-            />
-          );
-        },
-        code: ({ children, ...props }) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...codeProps } = props;
-          return (
-            <CodeBlockMessage
-              {...codeProps}
-              {...codeBlockProps}
-              isPrimary={isPrimary}
-              shouldRetainStyles={shouldRetainStyles}
-            >
-              {children}
-            </CodeBlockMessage>
-          );
-        },
-        h1: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h1} {...rest} />;
-        },
-        h2: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h2} {...rest} />;
-        },
-        h3: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h3} {...rest} />;
-        },
-        h4: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h4} {...rest} />;
-        },
-        h5: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h5} {...rest} />;
-        },
-        h6: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.h6} {...rest} />;
-        },
-        blockquote: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return (
-            <TextMessage shouldRetainStyles={shouldRetainStyles} component={ContentVariants.blockquote} {...rest} />
-          );
-        },
-        ul: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return <UnorderedListMessage shouldRetainStyles={shouldRetainStyles} {...rest} />;
-        },
-        ol: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return <OrderedListMessage shouldRetainStyles={shouldRetainStyles} {...rest} />;
-        },
-        li: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return <ListItemMessage {...rest} />;
-        },
-        // table requires node attribute for calculating headers for mobile breakpoint
-        table: (props) => (
-          <TableMessage shouldRetainStyles={shouldRetainStyles} {...props} {...tableProps} isPrimary={isPrimary} />
-        ),
-        tbody: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return <TbodyMessage {...rest} />;
-        },
-        thead: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return <TheadMessage {...rest} />;
-        },
-        tr: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return <TrMessage {...rest} />;
-        },
-        td: (props) => {
-          // Conflicts with Td type
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, width, ...rest } = props;
-          return <TdMessage {...rest} />;
-        },
-        th: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return <ThMessage {...rest} />;
-        },
-        img: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return <ImageMessage {...rest} />;
-        },
-        a: (props) => {
-          // node is just the details of the document structure - not needed
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return (
-            // some a types conflict with ButtonProps, but it's ok because we are using an a tag
-            // there are too many to handle manually
-            <LinkMessage shouldRetainStyles={shouldRetainStyles} {...(rest as any)} {...linkProps}>
-              {props.children}
-            </LinkMessage>
-          );
-        },
-        // used for footnotes
-        sup: (props) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { node, ...rest } = props;
-          return <SuperscriptMessage {...rest} />;
-        }
-      }}
-      remarkPlugins={[[remarkGfm, { ...remarkGfmProps }], ...additionalRemarkPlugins]}
-      rehypePlugins={rehypePlugins}
-      {...reactMarkdownProps}
-      remarkRehypeOptions={{
-        // removes sr-only class from footnote labels applied by default
-        footnoteLabelProperties: { className: [''] },
-        // omit default ↩ text; backref icon is rendered in LinkMessage
-        footnoteBackContent: (_referenceIndex, rereferenceIndex) => {
-          if (rereferenceIndex > 1) {
-            return [
-              {
-                type: 'element',
-                tagName: 'sup',
-                properties: {},
-                children: [{ type: 'text', value: String(rereferenceIndex) }]
-              }
-            ];
-          }
-          return [];
-        },
-        ...reactMarkdownProps?.remarkRehypeOptions
-      }}
-      disallowedElements={disallowedElements}
-    >
-      {content}
-    </Markdown>
-  );
+  if (!isMarkdownRendererReady || !ResolvedMarkdownRenderer) {
+    return null;
+  }
+
+  return <ResolvedMarkdownRenderer {...markdownProps} content={content} isPrimary={isPrimary} />;
 };
 
 export default MarkdownContent;
