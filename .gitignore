@@ -36,3 +36,8 @@ lerna-debug.log
 *.swp
 
 public
+
+# Playwright
+playwright-report/
+test-results/
+blob-report/
