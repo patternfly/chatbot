@@ -237,6 +237,8 @@ If a source will open outside of the ChatBot window, add an external link icon v
 
 The API for a source requires a link at minimum, but we strongly recommend providing a more descriptive title and body description so users have enough context. For the best clarity and readability, we strongly recommend limiting the title to 1 line and the body to 2 lines. If the body description is more than 2 lines, use the "long sources" or "very long sources" variant.
 
+To display extra content above a source title, such as a [PatternFly label](/components/label), pass `headerContent`.
+
 ```js file="./MessageWithSources.tsx"
 
 ```

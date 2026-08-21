@@ -58,6 +58,12 @@
   text-overflow: ellipsis;
 }
 
+.pf-chatbot__sources-header-content-container {
+  display: inline-flex;
+  width: fit-content;
+  margin-block-end: var(--pf-t--global--spacer--sm);
+}
+
 .pf-chatbot__sources-card-title-container {
   display: flex;
   flex-direction: column;
