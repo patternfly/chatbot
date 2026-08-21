@@ -25,6 +25,22 @@ describe('SourcesCard', () => {
     screen.getByRole('button', { name: /Go to next page/i });
   });
 
+  it('should render headerContent above the title', () => {
+    render(
+      <SourcesCard
+        sources={[
+          {
+            title: 'How to make an apple pie',
+            link: '',
+            headerContent: <span>Dessert</span>
+          }
+        ]}
+      />
+    );
+    expect(screen.getByText('Dessert')).toBeTruthy();
+    expect(screen.getByText('How to make an apple pie')).toBeTruthy();
+  });
+
   it('should render with wrap layout when layout is set to wrap', () => {
     render(
       <SourcesCard
