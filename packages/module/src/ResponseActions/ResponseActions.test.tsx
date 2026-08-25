@@ -3,7 +3,6 @@ import '@testing-library/jest-dom';
 import ResponseActions, { ActionProps } from './ResponseActions';
 import userEvent from '@testing-library/user-event';
 import { RhUiExportIcon, RhMicronsInformationFillIcon, RhUiRedoIcon } from '@patternfly/react-icons';
-import Message from '../Message';
 
 // Mock the icon components
 jest.mock('@patternfly/react-icons', () => ({
@@ -116,18 +115,16 @@ describe('ResponseActions', () => {
     });
   });
   it('should handle click outside of group of buttons correctly', async () => {
-    // using message just so we have something outside the group that's rendered
     render(
-      <Message
-        name="Bot"
-        role="bot"
-        avatar=""
-        content="I updated your account with those settings. You're ready to set up your first dashboard!"
-        actions={{
-          positive: {},
-          negative: {}
-        }}
-      />
+      <div>
+        <ResponseActions
+          actions={{
+            positive: { onClick: jest.fn() },
+            negative: { onClick: jest.fn() }
+          }}
+        />
+        <div data-testid="outside">Outside</div>
+      </div>
     );
     const goodBtn = screen.getByRole('button', { name: 'Good response' });
     const badBtn = screen.getByRole('button', { name: 'Bad response' });
@@ -145,9 +142,8 @@ describe('ResponseActions', () => {
       'pf-chatbot__button--response-action-clicked'
     );
     expect(goodBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
-    await userEvent.click(
-      screen.getByText("I updated your account with those settings. You're ready to set up your first dashboard!")
-    );
+
+    await userEvent.click(screen.getByTestId('outside'));
     expect(goodBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
     expect(badBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
   });
@@ -343,27 +339,28 @@ describe('ResponseActions', () => {
 
   // we are testing for the reverse case already above
   it('should not deselect when clicking outside when persistActionSelection is true', async () => {
+    const user = userEvent.setup();
+
     render(
-      <Message
-        name="Bot"
-        role="bot"
-        avatar=""
-        content="Test content"
-        actions={{
-          positive: {},
-          negative: {}
-        }}
-        persistActionSelection
-      />
+      <div>
+        <ResponseActions
+          actions={{
+            positive: { onClick: jest.fn() },
+            negative: { onClick: jest.fn() }
+          }}
+          persistActionSelection
+        />
+        <div data-testid="outside">Outside</div>
+      </div>
     );
     const goodBtn = screen.getByRole('button', { name: 'Good response' });
 
-    await userEvent.click(goodBtn);
+    await user.click(goodBtn);
     expect(screen.getByRole('button', { name: 'Good response recorded' })).toHaveClass(
       'pf-chatbot__button--response-action-clicked'
     );
 
-    await userEvent.click(screen.getByText('Test content'));
+    await user.click(screen.getByTestId('outside'));
 
     expect(screen.getByRole('button', { name: 'Good response recorded' })).toHaveClass(
       'pf-chatbot__button--response-action-clicked'
@@ -371,15 +368,13 @@ describe('ResponseActions', () => {
   });
 
   it('should switch selection to another button when persistActionSelection is true', async () => {
+    const user = userEvent.setup();
+
     render(
-      <Message
-        name="Bot"
-        role="bot"
-        avatar=""
-        content="Test content"
+      <ResponseActions
         actions={{
-          positive: {},
-          negative: {}
+          positive: { onClick: jest.fn() },
+          negative: { onClick: jest.fn() }
         }}
         persistActionSelection
       />
@@ -387,38 +382,37 @@ describe('ResponseActions', () => {
     const goodBtn = screen.getByRole('button', { name: 'Good response' });
     const badBtn = screen.getByRole('button', { name: 'Bad response' });
 
-    await userEvent.click(goodBtn);
+    await user.click(goodBtn);
     expect(goodBtn).toHaveClass('pf-chatbot__button--response-action-clicked');
 
-    await userEvent.click(badBtn);
+    await user.click(badBtn);
     expect(badBtn).toHaveClass('pf-chatbot__button--response-action-clicked');
     expect(goodBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
   });
 
   it('should toggle off when clicking the same button when persistActionSelection is true', async () => {
+    const user = userEvent.setup();
+
     render(
-      <Message
-        name="Bot"
-        role="bot"
-        avatar=""
-        content="Test content"
+      <ResponseActions
         actions={{
-          positive: {},
-          negative: {}
+          positive: { onClick: jest.fn() },
+          negative: { onClick: jest.fn() }
         }}
         persistActionSelection
       />
     );
     const goodBtn = screen.getByRole('button', { name: 'Good response' });
 
-    await userEvent.click(goodBtn);
+    await user.click(goodBtn);
     expect(goodBtn).toHaveClass('pf-chatbot__button--response-action-clicked');
 
-    await userEvent.click(goodBtn);
+    await user.click(goodBtn);
     expect(goodBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
   });
 
   it('should work with custom actions when persistActionSelection is true', async () => {
+    const user = userEvent.setup();
     const actions = {
       positive: { 'data-testid': 'positive', onClick: jest.fn() },
       negative: { 'data-testid': 'negative', onClick: jest.fn() },
@@ -433,10 +427,10 @@ describe('ResponseActions', () => {
     render(<ResponseActions actions={actions} persistActionSelection />);
 
     const customBtn = screen.getByTestId('custom');
-    await userEvent.click(customBtn);
+    await user.click(customBtn);
     expect(customBtn).toHaveClass('pf-chatbot__button--response-action-clicked');
 
-    await userEvent.click(customBtn);
+    await user.click(customBtn);
     expect(customBtn).not.toHaveClass('pf-chatbot__button--response-action-clicked');
   });
 

@@ -27,6 +27,12 @@ import ChatbotModal from '../ChatbotModal/ChatbotModal';
 let monacoInstance: typeof import('monaco-editor') | null = null;
 const loadMonaco = async () => {
   if (!monacoInstance) {
+    if (!globalThis.MonacoEnvironment?.getWorker && !globalThis.MonacoEnvironment?.getWorkerUrl) {
+      // eslint-disable-next-line no-console
+      console.error(
+        'Monaco web workers are not configured. Import @patternfly/chatbot/monaco-environment before using CodeModal.'
+      );
+    }
     const [monaco, { loader }] = await Promise.all([import('monaco-editor'), import('@monaco-editor/react')]);
     monacoInstance = monaco;
     loader.config({ monaco });

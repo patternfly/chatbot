@@ -22,6 +22,35 @@ import '@patternfly/chatbot/dist/css/main.css';
 
 If you are using React 17, ChatBot currently has a dependency on [react-markdown](https://github.com/remarkjs/react-markdown) that relies on React 18 and 19. There is an older version of react-markdown (8.0.7) that supports 17, but it does not have support for 19. You should be able to add `"react"` and `"react-dom"` of the appropriate version to the `overrides` section of your `package.json` file if you need to use ChatBot with 17.
 
+### Tree-shaking
+
+Import each component from its dynamic entry point to keep bundle size minimal:
+
+```tsx
+import ChatbotToggle from '@patternfly/chatbot/dist/dynamic/ChatbotToggle';
+```
+
+Named imports from the root barrel also tree-shake to the same size with modern bundlers that respect the package `sideEffects` field.
+
+```tsx
+import { ChatbotToggle } from '@patternfly/chatbot';
+```
+
+`CodeModal`, `PreviewAttachment`, `AttachmentEdit`, and `tracking` are not exported from the root barrel — import them from `dist/dynamic/<Component>` instead. See below for migration details.
+
+| Module | Before | After |
+|--------|--------|-------|
+| `CodeModal` | `import { CodeModal } from '@patternfly/chatbot'` | `import CodeModal from '@patternfly/chatbot/dist/dynamic/CodeModal'` |
+| `PreviewAttachment` | `import { PreviewAttachment } from '@patternfly/chatbot'` | `import PreviewAttachment from '@patternfly/chatbot/dist/dynamic/PreviewAttachment'` |
+| `AttachmentEdit` | `import { AttachmentEdit } from '@patternfly/chatbot'` | `import AttachmentEdit from '@patternfly/chatbot/dist/dynamic/AttachmentEdit'` |
+| `tracking` | `import { getTrackingProviders } from '@patternfly/chatbot'` | `import { getTrackingProviders } from '@patternfly/chatbot/dist/dynamic/tracking'` |
+
+When using `CodeModal`, `PreviewAttachment`, or `AttachmentEdit`, also import the Monaco worker helper once at application startup:
+
+```tsx
+import '@patternfly/chatbot/monaco-environment';
+```
+
 ## Contribution guide
 
 ### AI-assisted development guidelines

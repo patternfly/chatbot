@@ -30,7 +30,8 @@ module.exports = {
   modulePathIgnorePatterns: [
     '<rootDir>/packages/*.*/dist/*.*',
     '<rootDir>/packages/*.*/public/*.*',
-    '<rootDir>/packages/*.*/.cache/*.*'
+    '<rootDir>/packages/*.*/.cache/*.*',
+    '<rootDir>/packages/tree-shaking-demo/*.*'
   ],
   moduleNameMapper: {
     '\\.(css|scss)$': 'identity-obj-proxy',

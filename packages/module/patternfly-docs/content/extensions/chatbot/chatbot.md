@@ -51,6 +51,7 @@ Explore our documentation, which covers both the components you'll need to build
     - [Chat transcripts](/extensions/chatbot/overview/demo#chat-transcripts)
 - [Analytics](/extensions/chatbot/analytics): Tracking for ChatBot interactions
 - [Customizing messages](/extensions/chatbot/customizing-messages): Details for the implementation of custom messages
+- [Tree-shaking](/extensions/chatbot/tree-shaking): Bundle size optimization and import best practices
 
 ---
 

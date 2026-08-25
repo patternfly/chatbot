@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import ToolResponse from './ToolResponse';
+import { expectBoldMarkdownText } from '../test-utils/markdownTestUtils';
 
 describe('ToolResponse', () => {
   const defaultProps = {
@@ -150,13 +151,10 @@ describe('ToolResponse', () => {
     expect(screen.getByText(defaultProps.cardBody)).not.toBeVisible();
   });
 
-  it('should render toggleContent as markdown when isToggleContentMarkdown is true', () => {
+  it('should render toggleContent as markdown when isToggleContentMarkdown is true', async () => {
     const toggleContent = '**Bold toggle**';
-    const { container } = render(
-      <ToolResponse {...defaultProps} toggleContent={toggleContent} isToggleContentMarkdown />
-    );
-    expect(container.querySelector('strong')).toBeTruthy();
-    expect(screen.getByText('Bold toggle')).toBeTruthy();
+    render(<ToolResponse {...defaultProps} toggleContent={toggleContent} isToggleContentMarkdown />);
+    await expectBoldMarkdownText('Bold toggle');
   });
 
   it('should not render toggleContent as markdown when isToggleContentMarkdown is false', () => {
@@ -165,11 +163,10 @@ describe('ToolResponse', () => {
     expect(screen.getByText('**Bold toggle**')).toBeTruthy();
   });
 
-  it('should render subheading as markdown when isSubheadingMarkdown is true', () => {
+  it('should render subheading as markdown when isSubheadingMarkdown is true', async () => {
     const subheading = '**Bold subheading**';
-    const { container } = render(<ToolResponse {...defaultProps} subheading={subheading} isSubheadingMarkdown />);
-    expect(container.querySelector('strong')).toBeTruthy();
-    expect(screen.getByText('Bold subheading')).toBeTruthy();
+    render(<ToolResponse {...defaultProps} subheading={subheading} isSubheadingMarkdown />);
+    await expectBoldMarkdownText('Bold subheading');
   });
 
   it('should not render subheading as markdown when isSubheadingMarkdown is false', () => {
@@ -178,11 +175,10 @@ describe('ToolResponse', () => {
     expect(screen.getByText('**Bold subheading**')).toBeTruthy();
   });
 
-  it('should render body as markdown when isBodyMarkdown is true', () => {
+  it('should render body as markdown when isBodyMarkdown is true', async () => {
     const body = '**Bold body**';
-    const { container } = render(<ToolResponse {...defaultProps} body={body} isBodyMarkdown />);
-    expect(container.querySelector('strong')).toBeTruthy();
-    expect(screen.getByText('Bold body')).toBeTruthy();
+    render(<ToolResponse {...defaultProps} body={body} isBodyMarkdown />);
+    await expectBoldMarkdownText('Bold body');
   });
 
   it('should not render body as markdown when isBodyMarkdown is false', () => {
@@ -191,11 +187,10 @@ describe('ToolResponse', () => {
     expect(screen.getByText('**Bold body**')).toBeTruthy();
   });
 
-  it('should render cardTitle as markdown when isCardTitleMarkdown is true', () => {
+  it('should render cardTitle as markdown when isCardTitleMarkdown is true', async () => {
     const cardTitle = '**Bold card title**';
-    const { container } = render(<ToolResponse {...defaultProps} cardTitle={cardTitle} isCardTitleMarkdown />);
-    expect(container.querySelector('strong')).toBeTruthy();
-    expect(screen.getByText('Bold card title')).toBeTruthy();
+    render(<ToolResponse {...defaultProps} cardTitle={cardTitle} isCardTitleMarkdown />);
+    await expectBoldMarkdownText('Bold card title');
   });
 
   it('should not render cardTitle as markdown when isCardTitleMarkdown is false', () => {
@@ -204,11 +199,10 @@ describe('ToolResponse', () => {
     expect(screen.getByText('**Bold card title**')).toBeTruthy();
   });
 
-  it('should render cardBody as markdown when isCardBodyMarkdown is true', () => {
+  it('should render cardBody as markdown when isCardBodyMarkdown is true', async () => {
     const cardBody = '**Bold card body**';
-    const { container } = render(<ToolResponse {...defaultProps} cardBody={cardBody} isCardBodyMarkdown />);
-    expect(container.querySelector('strong')).toBeTruthy();
-    expect(screen.getByText('Bold card body')).toBeTruthy();
+    render(<ToolResponse {...defaultProps} cardBody={cardBody} isCardBodyMarkdown />);
+    await expectBoldMarkdownText('Bold card body');
   });
 
   it('should not render cardBody as markdown when isCardBodyMarkdown is false', () => {

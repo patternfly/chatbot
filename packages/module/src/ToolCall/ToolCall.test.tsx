@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import ToolCall from './ToolCall';
+import { expectBoldMarkdownText } from '../test-utils/markdownTestUtils';
 
 describe('ToolCall', () => {
   const defaultProps = {
@@ -233,11 +234,10 @@ describe('ToolCall', () => {
     expect(screen.queryByText('Expandable Content')).not.toBeVisible();
   });
 
-  it('should render titleText as markdown when isTitleMarkdown is true', () => {
+  it('should render titleText as markdown when isTitleMarkdown is true', async () => {
     const titleText = '**Bold title**';
-    const { container } = render(<ToolCall titleText={titleText} isTitleMarkdown />);
-    expect(container.querySelector('strong')).toBeTruthy();
-    expect(screen.getByText('Bold title')).toBeTruthy();
+    render(<ToolCall titleText={titleText} isTitleMarkdown />);
+    await expectBoldMarkdownText('Bold title');
   });
 
   it('should not render titleText as markdown when isTitleMarkdown is false', () => {
@@ -249,12 +249,9 @@ describe('ToolCall', () => {
   it('should render expandableContent as markdown when isExpandableContentMarkdown is true', async () => {
     const user = userEvent.setup();
     const expandableContent = '**Bold expandable content**';
-    const { container } = render(
-      <ToolCall {...defaultProps} expandableContent={expandableContent} isExpandableContentMarkdown />
-    );
+    render(<ToolCall {...defaultProps} expandableContent={expandableContent} isExpandableContentMarkdown />);
     await user.click(screen.getByRole('button', { name: defaultProps.titleText }));
-    expect(container.querySelector('strong')).toBeTruthy();
-    expect(screen.getByText('Bold expandable content')).toBeTruthy();
+    await expectBoldMarkdownText('Bold expandable content');
   });
 
   it('should not render expandableContent as markdown when isExpandableContentMarkdown is false', async () => {
