@@ -30,18 +30,26 @@ Import each component from its dynamic entry point to keep bundle size minimal:
 import ChatbotToggle from '@patternfly/chatbot/dist/dynamic/ChatbotToggle';
 ```
 
-Named imports from the root barrel also tree-shake with modern bundlers that respect the package `sideEffects` field.
+Named imports from the root barrel also tree-shake to the same size with modern bundlers that respect the package `sideEffects` field.
 
-`CodeModal`, `PreviewAttachment`, `AttachmentEdit`, and `tracking` are not exported from the root barrel — import them from `dist/dynamic/<Component>` instead. See `packages/module/patternfly-docs/content/extensions/chatbot/tree-shaking.md` for migration details.
-
-To verify tree-shaking in this repo:
-
-```bash
-npm run build -w @patternfly/chatbot
-npm run analyze:tree-shaking
+```tsx
+import { ChatbotToggle } from '@patternfly/chatbot';
 ```
 
-See `packages/tree-shaking-demo/README.md` for full results and best practices.
+`CodeModal`, `PreviewAttachment`, `AttachmentEdit`, and `tracking` are not exported from the root barrel — import them from `dist/dynamic/<Component>` instead. See below for migration details.
+
+| Module | Before | After |
+|--------|--------|-------|
+| `CodeModal` | `import { CodeModal } from '@patternfly/chatbot'` | `import CodeModal from '@patternfly/chatbot/dist/dynamic/CodeModal'` |
+| `PreviewAttachment` | `import { PreviewAttachment } from '@patternfly/chatbot'` | `import PreviewAttachment from '@patternfly/chatbot/dist/dynamic/PreviewAttachment'` |
+| `AttachmentEdit` | `import { AttachmentEdit } from '@patternfly/chatbot'` | `import AttachmentEdit from '@patternfly/chatbot/dist/dynamic/AttachmentEdit'` |
+| `tracking` | `import { getTrackingProviders } from '@patternfly/chatbot'` | `import { getTrackingProviders } from '@patternfly/chatbot/dist/dynamic/tracking'` |
+
+When using `CodeModal`, `PreviewAttachment`, or `AttachmentEdit`, also import the Monaco worker helper once at application startup:
+
+```tsx
+import '@patternfly/chatbot/monaco-environment';
+```
 
 ## Contribution guide
 

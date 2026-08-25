@@ -50,7 +50,7 @@ import * as Chatbot from '@patternfly/chatbot';
 
 ## Icon imports
 
-Which PatternFly icons end up in your bundle depends on **which ChatBot components you import**, not on whether ChatBot source code or your app uses barrel or deep icon paths. Importing `ChatbotToggle` via `dist/dynamic` includes only the icons that component uses — currently four icons in the tree-shaking demo.
+Which PatternFly icons end up in your bundle depends on **which ChatBot components you import**, not on whether ChatBot source code or your app uses barrel or deep icon paths. Importing `ChatbotToggle` via `dist/dynamic` includes only the icons that component uses.
 
 ## CSS import
 
@@ -82,7 +82,7 @@ import AttachmentEdit from '@patternfly/chatbot/dist/dynamic/AttachmentEdit';
 
 ## Markdown rendering (`Message`, `MarkdownContent`)
 
-`MarkdownContent` lazy-loads its markdown parser so lightweight imports avoid pulling in `react-markdown`, syntax highlighting, and related dependencies until they are needed. In the tree-shaking demo, that async chunk is roughly 400 KB.
+`MarkdownContent` lazy-loads its markdown parser so lightweight imports avoid pulling in `react-markdown`, syntax highlighting, and related dependencies until they are needed. That async chunk is roughly 400 KB.
 
 `MessageBox` automatically preloads the markdown renderer and coordinates rendering so existing messages do not each flash an individual loading state — message chrome (avatars, timestamps, and so on) appears immediately, and markdown content fills in once the chunk is ready.
 
@@ -113,25 +113,6 @@ When using `CodeModal`, `PreviewAttachment`, or `AttachmentEdit`, also import th
 ```tsx
 import '@patternfly/chatbot/monaco-environment';
 ```
-
-## Verify tree-shaking in your project
-
-The repository includes a tree-shaking demo at `packages/tree-shaking-demo/` that builds four scenarios and compares bundle size, icon count, and component count:
-
-```bash
-npm run build -w @patternfly/chatbot
-npm run analyze:tree-shaking
-```
-
-Open the generated `dist/<scenario>/stats.html` files for interactive bundle visualizations.
-
-Example results from the demo (Vite 6):
-
-| Scenario | JS size | Icons | ChatBot components |
-|----------|---------|-------|--------------------|
-| `ChatbotToggle` via `dist/dynamic` | ~184 KB | 4 | 1 |
-| `ChatbotToggle` via root barrel | ~184 KB | 4 | 1 |
-| Multi-component UI (7 imports) | ~895 KB | 49 | 17 |
 
 ## How ChatBot supports tree-shaking
 

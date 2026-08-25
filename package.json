@@ -29,8 +29,7 @@
     "lint:fix": "npm run lint:js:fix && npm run lint:md:fix",
     "test": "TZ=EST jest packages --passWithNoTests",
     "test:a11y": "npm run test:a11y -w @patternfly/chatbot",
-    "serve:a11y": "npm run serve:a11y -w @patternfly/chatbot",
-    "analyze:tree-shaking": "npm run analyze -w @patternfly/chatbot-tree-shaking-demo"
+    "serve:a11y": "npm run serve:a11y -w @patternfly/chatbot"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
