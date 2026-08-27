@@ -81,6 +81,37 @@ export const MessageWithSourcesExample: FunctionComponent = () => {
       <Message
         name="Bot"
         role="bot"
+        content="This example has a PatternFly label above the title:"
+        sources={{
+          sources: [
+            {
+              title: 'Getting started with Red Hat OpenShift',
+              link: '#',
+              body: 'Red Hat OpenShift on IBM Cloud is a managed offering to create your own cluster of compute hosts where you can deploy and manage containerized apps on IBM Cloud ...',
+              isExternal: true,
+              headerContent: <Label>Documentation</Label>
+            },
+            {
+              title: 'Azure Red Hat OpenShift documentation',
+              link: '#',
+              body: 'Microsoft Azure Red Hat OpenShift allows you to deploy a production ready Red Hat OpenShift cluster in Azure ...',
+              isExternal: true,
+              headerContent: <Label>Knowledge base</Label>
+            },
+            {
+              title: 'OKD Documentation: Home',
+              link: '#',
+              body: 'OKD is a distribution of Kubernetes optimized for continuous application development and multi-tenant deployment. OKD also serves as the upstream code base upon ...',
+              isExternal: true,
+              headerContent: <Label>Tutorial</Label>
+            }
+          ],
+          onSetPage
+        }}
+      />
+      <Message
+        name="Bot"
+        role="bot"
         content="This example has a body description that's within the recommended limit of 2 lines:"
         sources={{
           sources: [

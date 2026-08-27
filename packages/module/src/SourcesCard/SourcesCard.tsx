@@ -49,6 +49,8 @@ export interface SourcesCardProps extends CardProps {
     footer?: React.ReactNode;
     /** Additional props passed to Truncate component */
     truncateProps?: TruncateProps;
+    /** Additional content applied to the beginning of the sources card header, such as a label */
+    headerContent?: React.ReactNode;
   }[];
   /** Label for the English word "source" */
   sourceWord?: string;
