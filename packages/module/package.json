@@ -41,7 +41,7 @@
     "@segment/analytics-next": "^1.76.0",
     "clsx": "^2.1.0",
     "path-browserify": "^1.0.1",
-    "posthog-js": "^1.194.4",
+    "posthog-js": "^1.298.0",
     "react-markdown": "^9.0.1",
     "rehype-external-links": "^3.0.0",
     "rehype-highlight": "^7.0.0",

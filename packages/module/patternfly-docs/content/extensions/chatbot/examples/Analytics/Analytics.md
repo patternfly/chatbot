@@ -98,7 +98,7 @@ When using the providers, you might need to add additional dependencies to your 
 ```nolive
 "dependencies": {
   "@segment/analytics-next": "^1.76.0",
-  "posthog-js": "^1.194.4"
+  "posthog-js": "^1.298.0"
 ```
 
 Depending on your local setup, this might not be necessary. For example, if you pull the ChatBot codebase as a dependency into your project, you don't need to add it as an additional dependency in your package.json.
