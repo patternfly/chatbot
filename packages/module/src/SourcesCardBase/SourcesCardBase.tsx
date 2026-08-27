@@ -63,6 +63,8 @@ export interface SourcesCardBaseProps extends CardProps {
     footer?: React.ReactNode;
     /** Additional props passed to Truncate component */
     truncateProps?: TruncateProps;
+    /** Additional content applied to the beginning of the sources card header, such as a label */
+    headerContent?: React.ReactNode;
   }[];
   /** Accessible label for the button which moves to the next page. */
   toNextPageAriaLabel?: string;
@@ -133,6 +135,9 @@ const SourcesCardBase: FunctionComponent<SourcesCardBaseProps> = ({
     >
       <Card isFullHeight isCompact={isCompact} className="pf-chatbot__sources-card" {...props}>
         <CardTitle className="pf-chatbot__sources-card-title" {...cardTitleProps}>
+          {source.headerContent && (
+            <div className="pf-chatbot__sources-header-content-container">{source.headerContent}</div>
+          )}
           <div className="pf-chatbot__sources-card-title-container">
             <Button
               component="a"
@@ -196,6 +201,9 @@ const SourcesCardBase: FunctionComponent<SourcesCardBaseProps> = ({
     <div className="pf-chatbot__sources-card-base">
       <Card isCompact={isCompact} className="pf-chatbot__sources-card" {...props}>
         <CardTitle className="pf-chatbot__sources-card-title" {...cardTitleProps}>
+          {sources[page - 1].headerContent && (
+            <div className="pf-chatbot__sources-header-content-container">{sources[page - 1].headerContent}</div>
+          )}
           <div className="pf-chatbot__sources-card-title-container">
             <Button
               component="a"

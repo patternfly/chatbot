@@ -234,6 +234,68 @@ describe('SourcesCardBase', () => {
     expect(screen.getByRole('link', { name: /How to make an apple pie/i })).toHaveClass('test');
   });
 
+  it('should render headerContent above the title', () => {
+    render(
+      <SourcesCardBase
+        sources={[
+          {
+            title: 'How to make an apple pie',
+            link: '',
+            headerContent: <span>Dessert</span>
+          }
+        ]}
+      />
+    );
+    expect(screen.getByText('Dessert')).toBeTruthy();
+    expect(screen.getByText('How to make an apple pie')).toBeTruthy();
+  });
+
+  it('should update headerContent when navigating between sources', async () => {
+    render(
+      <SourcesCardBase
+        sources={[
+          {
+            title: 'How to make an apple pie',
+            link: '',
+            headerContent: <span>Dessert</span>
+          },
+          {
+            title: 'How to make cookies',
+            link: '',
+            headerContent: <span>Snack</span>
+          }
+        ]}
+      />
+    );
+    expect(screen.getByText('Dessert')).toBeTruthy();
+    expect(screen.queryByText('Snack')).toBeFalsy();
+    await userEvent.click(screen.getByRole('button', { name: /Go to next page/i }));
+    expect(screen.queryByText('Dessert')).toBeFalsy();
+    expect(screen.getByText('Snack')).toBeTruthy();
+  });
+
+  it('should render headerContent when using wrap layout', () => {
+    render(
+      <SourcesCardBase
+        layout="wrap"
+        sources={[
+          {
+            title: 'How to make an apple pie',
+            link: '',
+            headerContent: <span>Dessert</span>
+          },
+          {
+            title: 'How to make cookies',
+            link: '',
+            headerContent: <span>Snack</span>
+          }
+        ]}
+      />
+    );
+    expect(screen.getByText('Dessert')).toBeTruthy();
+    expect(screen.getByText('Snack')).toBeTruthy();
+  });
+
   it('should render with wrap layout when layout prop is set to wrap', () => {
     render(
       <SourcesCardBase
