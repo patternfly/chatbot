@@ -7,38 +7,7 @@
   width: 3rem;
   height: 3rem;
 
-  .pf-v6-c-button__icon {
-    --pf-v6-c-button__icon--Color: var(--pf-t--global--color--brand--default);
-  }
-
-  &:hover,
-  &:focus {
-    background-color: rgba(146, 197, 249, 0.25); // --pf-t--global--color--nonstatus--blue--default @ 25%;
-    color: var(--pf-t--global--color--brand--hover);
-
-    .pf-v6-c-button__icon {
-      color: var(--pf-t--global--color--brand--hover);
-    }
-  }
-}
-
-.pf-v6-theme-dark {
-  .pf-v6-c-button.pf-chatbot__button--send {
-    background-color: var(--pf-t--global--color--brand--default);
-    .pf-v6-c-button__icon {
-      --pf-v6-c-button__icon--Color: var(--pf-t--global--icon--color--inverse);
-    }
-  }
-
-  .pf-v6-c-button:disabled.pf-chatbot__button--send:disabled {
-    --pf-v6-c-button--disabled--Color: var(--pf-t--global--icon--color--disabled);
-    background-color: var(--pf-t--global--background--color--disabled--default);
-  }
-
-  .pf-v6-c-button.pf-chatbot__button--send:hover,
-  .pf-v6-c-button.pf-chatbot__button--send:focus {
-    background-color: rgba(146, 197, 249, 0.25); // --pf-t--global--color--nonstatus--blue--default @ 25%;
-  }
+  --pf-v6-c-button--m-plain__icon--Color: var(--pf-t--global--color--brand--default);
 }
 
 @keyframes motionSendButton {

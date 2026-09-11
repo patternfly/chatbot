@@ -6,7 +6,7 @@ import type { FunctionComponent } from 'react';
 // Import PatternFly components
 import { Button, ButtonProps, Tooltip, TooltipProps, Icon } from '@patternfly/react-core';
 
-import { PaperPlaneIcon } from '@patternfly/react-icons/dist/esm/icons/paper-plane-icon';
+import { RhUiSendIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-send-icon';
 
 export interface SendButtonProps extends ButtonProps {
   /** Callback for when button is clicked */
@@ -48,7 +48,7 @@ export const SendButton: FunctionComponent<SendButtonProps> = ({
       onClick={onClick}
       icon={
         <Icon iconSize={isCompact ? 'lg' : 'xl'} isInline>
-          <PaperPlaneIcon />
+          <RhUiSendIcon />
         </Icon>
       }
       size={isCompact ? 'sm' : undefined}
