@@ -191,6 +191,9 @@ describe('Message bar', () => {
         }}
       />
     );
+    const attachButton = screen.getByRole('button', { name: 'Attach' });
+    expect(attachButton).toHaveClass('pf-m-clicked');
+    expect(attachButton).toHaveAttribute('aria-expanded', 'true');
     expect(screen.getByRole('textbox', { name: /Filter menu items/i })).toBeTruthy();
     expect(screen.getByRole('menuitem', { name: /auth-operator/i })).toBeTruthy();
     expect(screen.getByRole('menuitem', { name: /Alerts/i })).toBeTruthy();

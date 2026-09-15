@@ -419,6 +419,8 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
           validator={validator}
           dropzoneProps={dropzoneProps}
           {...buttonProps?.attach}
+          isClicked={attachMenuProps.isAttachMenuOpen}
+          aria-expanded={attachMenuProps.isAttachMenuOpen}
         />
       );
     }

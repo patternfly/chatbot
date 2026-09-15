@@ -7,30 +7,13 @@
   width: 3rem;
   height: 3rem;
 
-  .pf-v6-c-button__icon {
-    color: var(--pf-t--global--icon--color--subtle);
-  }
-
-  // Interactive states
-  &:hover {
-    .pf-v6-c-button__icon {
-      color: var(--pf-t--global--icon--color--regular);
-    }
-  }
-
-  &:active,
-  &:focus {
+  &.pf-m-clicked,
+  &.pf-m-clicked:hover,
+  &.pf-m-clicked:focus {
     background-color: var(--pf-t--global--color--brand--clicked);
 
     .pf-v6-c-button__icon {
-      color: var(--pf-t--global--icon--color--inverse);
-    }
-
-    &:hover,
-    &:focus {
-      .pf-v6-c-button__icon {
-        color: var(--pf-t--global--icon--color--inverse);
-      }
+      color: var(--pf-t--global--icon--color--on-brand--default);
     }
   }
 }
