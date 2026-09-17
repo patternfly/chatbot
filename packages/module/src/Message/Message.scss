@@ -55,6 +55,7 @@
 
     // Author name
     .pf-chatbot__message-name {
+      display: flex;
       font-family: var(
         --pf-v6-c-content--heading--FontFamily,
         redhatdisplayvf,
@@ -65,6 +66,14 @@
       );
       font-weight: 600;
       font-size: var(--pf-t--global--font--size--sm);
+
+      // Truncate measures this container and treats textWidth >= parentWidth as
+      // truncated. This extra space keeps full names stay untruncated and out of
+      // the tab flow.
+      &::after {
+        content: '';
+        flex: 0 0 1px;
+      }
     }
 
     // Badge
