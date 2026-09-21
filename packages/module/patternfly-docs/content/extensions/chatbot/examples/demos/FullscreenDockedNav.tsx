@@ -134,7 +134,11 @@ export const FullscreenDockedNav: FunctionComponent = () => {
           drawerContent={
             <div className="pf-chatbot__canvas-column">
               <ChatbotContent>
-                <MessageBox ariaLabel="Scrollable message log for ChatBot" announcement={announcement} position="bottom">
+                <MessageBox
+                  ariaLabel="Scrollable message log for ChatBot"
+                  announcement={announcement}
+                  position="bottom"
+                >
                   <ChatbotWelcomePrompt
                     title="Hello, Chatbot User"
                     description="How may I help you today?"
