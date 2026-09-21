@@ -58,6 +58,8 @@ import RhUiUploadIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-upload-
 import { BarsIcon } from '@patternfly/react-icons/dist/esm/icons/bars-icon';
 import { RhUiBuildFillIcon, RhUiCopyFillIcon } from '@patternfly/react-icons';
 import RhUiImageFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-image-fill-icon';
+import { RhUiEditFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-edit-fill-icon';
+import { RhUiSettingsFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-settings-fill-icon';
 import {
 Button,
 Divider,
@@ -185,6 +187,14 @@ This demo showcases how the ChatBot can be rendered in different display modes t
 4. A [basic ChatBot](#basic-chatbot) with a header, welcome prompt, and message bar to populate the different layouts.
 
 ```js file="./ChatbotDisplayMode.tsx" isFullscreen
+
+```
+
+### Fullscreen ChatBot with docked navigation
+
+This demo shows a headerless fullscreen ChatBot with a vertical navigation rail for switching between chat history, a new chat, and settings.
+
+```js file="./FullscreenDockedNav.tsx" isFullscreen
 
 ```
 
