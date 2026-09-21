@@ -6,6 +6,7 @@ source: demo
 
 import { useState, useRef, useCallback, useEffect, FunctionComponent, ReactNode } from 'react';
 import {
+  Avatar,
 Brand,
 Divider,
 Drawer,
@@ -21,6 +22,9 @@ Flex,
 FlexItem,
 Label,
 MenuToggle,
+  Nav,
+  NavItem,
+  NavList,
 Popover,
 Select,
 SelectList,
@@ -44,8 +48,16 @@ ChatbotHeaderMenu,
 ChatbotHeaderTitle
 } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
 import RhUiImageFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-image-fill-icon';
-import RhUiAddIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-add-icon';
-import RhUiTaskFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-task-fill-icon';
+import { BarsIcon } from '@patternfly/react-icons/dist/esm/icons/bars-icon';
+import { RhUiAddIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-add-icon';
+import { RhUiTaskFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-task-fill-icon';
+import { RhUiEditFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-edit-fill-icon';
+import { RhUiSettingsFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-settings-fill-icon';
+import { RhUiUploadIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-upload-icon';
+import { RhUiCopyFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-copy-fill-icon';
+import { RhUiDownloadIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-download-icon';
+import { RhUiPlayFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-play-fill-icon';
+import { RhUiBackupIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-backup-icon';
 import RhUiNotificationFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-notification-fill-icon';
 import RhUiCalendarFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-calendar-fill-icon';
 import RhUiExportIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-export-icon';
@@ -97,6 +109,7 @@ The general recommended structure is as follows:
 | `pf-chatbot__canvas-panel-body` | Provides the canvas panel content area and its spacing. |
 | `pf-chatbot__canvas-head` | Styles and positions the canvas panel header and close action. |
 | `pf-chatbot__canvas-editor` | Makes the code editor fill the available canvas space. |
+| `pf-chatbot__canvas-docked-nav` | Optional vertical navigation rail for a canvas layout. |
 
 ## Demos
 
@@ -105,5 +118,13 @@ The general recommended structure is as follows:
 This demo shows canvas mode being used to render a PatternFly [code editor](/components/code-editor). Canvas mode is launched by clicking a file chip below a message or the "Canvas" label below the message bar. You can also enable or disable canvas mode from the attach menu and dismiss the label to exit canvas mode.
 
 ```js file="./Canvas.tsx" isFullscreen
+
+```
+
+### With docked navigation
+
+This demo shows canvas mode with an optional docked navigation rail. The rail can toggle chat history and start a new chat without closing the canvas.
+
+```js file="./CanvasWithDockedNav.tsx" isFullscreen
 
 ```

@@ -20,6 +20,8 @@ export interface ChatbotProps {
   ariaLabel?: string;
   /** Density of information within the ChatBot */
   isCompact?: boolean;
+  /** Optional navigation rail displayed before the chatbot content */
+  dockedNav?: React.ReactNode;
 }
 
 export enum ChatbotDisplayMode {
@@ -38,10 +40,11 @@ const ChatbotBase: FunctionComponent<ChatbotProps> = ({
   innerRef,
   ariaLabel,
   isCompact,
+  dockedNav,
   ...props
 }: ChatbotProps) => (
   <div
-    className={`pf-chatbot pf-chatbot--${displayMode} ${!isVisible ? 'pf-chatbot--hidden' : 'pf-chatbot--visible'}  ${isCompact ? 'pf-m-compact' : ''} ${className ?? ''}`}
+    className={`pf-chatbot pf-chatbot--${displayMode} ${dockedNav ? 'pf-chatbot--docked-nav' : ''} ${!isVisible ? 'pf-chatbot--hidden' : 'pf-chatbot--visible'}  ${isCompact ? 'pf-m-compact' : ''} ${className ?? ''}`}
     {...props}
   >
     {/* Ref is intended for use with skip to chatbot links, etc. */}
@@ -52,6 +55,7 @@ const ChatbotBase: FunctionComponent<ChatbotProps> = ({
         tabIndex={-1}
         ref={innerRef}
       >
+        {dockedNav && <aside className="pf-chatbot__docked-nav">{dockedNav}</aside>}
         {children}
       </section>
     ) : undefined}

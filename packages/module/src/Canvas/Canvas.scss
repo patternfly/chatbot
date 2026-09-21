@@ -17,6 +17,10 @@
   --pf-chatbot__canvas--BackgroundColor: var(--pf-t--global--background--color--glass--primary--default);
 }
 
+.pf-chatbot__canvas-docked-nav {
+  border-inline-end: var(--pf-t--global--border--width--regular) solid var(--pf-t--global--border--color--subtle);
+}
+
 // Drawer
 // ----------------------------------------------------------------------------
 .pf-chatbot__canvas-drawer {
@@ -54,6 +58,14 @@
   flex-direction: column;
   height: 100%;
   min-height: 0;
+}
+
+.pf-chatbot__canvas-chat-content {
+  padding-block-start: var(--pf-t--global--spacer--lg);
+}
+
+.pf-chatbot__canvas-chat-footer {
+  padding-block-end: var(--pf-t--global--spacer--md);
 }
 
 // Panel

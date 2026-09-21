@@ -141,6 +141,19 @@
   }
 }
 
+// ============================================================================
+// Chatbot With Docked Nav
+// ============================================================================
+.pf-chatbot--docked-nav {
+  .pf-chatbot-container {
+    flex-direction: row;
+  }
+
+  .pf-chatbot__header-container {
+    display: none;
+  }
+}
+
 .pf-chatbot-container--embedded {
   min-height: 100%;
 }
@@ -180,4 +193,3 @@
     border: unset;
   }
 }
-
