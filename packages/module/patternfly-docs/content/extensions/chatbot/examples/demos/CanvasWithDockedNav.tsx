@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   Avatar,
   Brand,
@@ -13,6 +13,12 @@ import {
   Flex,
   FlexItem,
   Label,
+  Masthead,
+  MastheadBrand,
+  MastheadContent,
+  MastheadLogo,
+  MastheadMain,
+  MastheadToggle,
   MenuToggle,
   Nav,
   NavItem,
@@ -20,7 +26,9 @@ import {
   Select,
   SelectList,
   SelectOption,
-  Title
+  Title,
+  PageToggleButton,
+  Tooltip
 } from '@patternfly/react-core';
 import { CodeEditor, CodeEditorControl, Language } from '@patternfly/react-code-editor';
 import Chatbot, { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
@@ -30,12 +38,6 @@ import MessageBar from '@patternfly/chatbot/dist/dynamic/MessageBar';
 import MessageBox from '@patternfly/chatbot/dist/dynamic/MessageBox';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
-import ChatbotHeader, {
-  ChatbotHeaderMain,
-  ChatbotHeaderMenu,
-  ChatbotHeaderTitle
-} from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
-import { BarsIcon } from '@patternfly/react-icons/dist/esm/icons/bars-icon';
 import { RhUiAddIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-add-icon';
 import { RhUiCopyFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-copy-fill-icon';
 import { RhUiDownloadIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-download-icon';
@@ -46,7 +48,6 @@ import { RhUiPlayFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-p
 import { RhUiSettingsFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-settings-fill-icon';
 import { RhUiUploadIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-upload-icon';
 import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
-import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
@@ -83,12 +84,20 @@ const conversations = [
   { id: '2', text: 'Review deployment options' }
 ];
 
-const iconLogo = (
-  <>
-    <Brand className="show-light" src={PFIconLogoColor} alt="PatternFly" />
-    <Brand className="show-dark" src={PFIconLogoReverse} alt="PatternFly" />
-  </>
-);
+const hamburgerHoverStyles = `
+  .pf-chatbot__canvas-history-toggle.pf-v6-c-button.pf-m-hamburger:is(:hover, :focus-visible) {
+    --pf-v6-c-button--hamburger-icon--top--path: path("M5,1 L9,1");
+    --pf-v6-c-button--hamburger-icon--arrow--path: path("M3,7 L1,5 L3,3");
+    --pf-v6-c-button--hamburger-icon--bottom--path: path("M9,9 L5,9");
+    --pf-v6-c-button--hover__icon--ScaleX: -1;
+    --pf-v6-c-button__icon--TransitionDelay: 0s;
+    --pf-v6-c-button--hover__icon--TransitionDelay: 0s;
+  }
+
+  .pf-chatbot__canvas-history-toggle.pf-v6-c-button.pf-m-hamburger[aria-expanded="true"]:is(:hover, :focus-visible) {
+    --pf-v6-c-button--hover__icon--ScaleX: 1;
+  }
+`;
 
 export const CanvasWithDockedNavDemo = () => {
   const [messages, setMessages] = useState(initialMessages);
@@ -98,6 +107,7 @@ export const CanvasWithDockedNavDemo = () => {
   const [isModelSelectOpen, setIsModelSelectOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState('Granite 7B');
   const [announcement, setAnnouncement] = useState();
+  const newChatRef = useRef<HTMLAnchorElement>(null);
 
   const startNewChat = () => {
     setMessages([]);
@@ -119,47 +129,69 @@ export const CanvasWithDockedNavDemo = () => {
   };
 
   const dockedNav = (
-    <Nav variant="docked" aria-label="Canvas navigation" className="pf-chatbot__canvas-docked-nav pf-v6-u-h-100">
-      <Flex direction={{ default: 'column' }} className="pf-v6-u-h-100 pf-v6-u-p-sm">
-        <NavList>
-          <NavItem
-            itemId="history"
-            isActive={isDrawerOpen}
-            icon={<BarsIcon />}
-            component="button"
-            preventDefault
-            onClick={() => setIsDrawerOpen((open) => !open)}
-          >
-            Chat history
-          </NavItem>
-        </NavList>
-        <Brand
-          className="pf-v6-u-my-md"
-          src={PFIconLogoColor}
-          alt="PatternFly"
-          widths={{ default: '37px' }}
-          heights={{ default: '37px' }}
-        />
-        <Divider />
-        <NavList>
-          <NavItem
-            itemId="new-chat"
-            icon={<RhUiEditFillIcon />}
-            component="button"
-            preventDefault
-            onClick={startNewChat}
-          >
-            New chat
-          </NavItem>
-        </NavList>
-        <NavList className="pf-v6-u-mt-auto">
-          <NavItem itemId="settings" icon={<RhUiSettingsFillIcon />} component="button" preventDefault>
-            Settings
-          </NavItem>
-        </NavList>
-        <Avatar className="pf-v6-u-mt-md pf-v6-u-mb-md pf-v6-u-mx-auto" src={userAvatar} alt="User profile" size="md" />
-      </Flex>
-    </Nav>
+    <>
+      <style>{hamburgerHoverStyles}</style>
+      <div className="pf-chatbot__canvas-docked-nav pf-v6-u-h-100 pf-v6-u-p-sm">
+        <Masthead variant="docked">
+          <MastheadMain>
+            <MastheadToggle>
+              <PageToggleButton
+                className="pf-chatbot__canvas-history-toggle"
+                aria-label="Chat history"
+                isHamburgerButton
+                isSidebarOpen={isDrawerOpen}
+                onSidebarToggle={() => setIsDrawerOpen((open) => !open)}
+              />
+            </MastheadToggle>
+            <MastheadBrand>
+              <MastheadLogo isCompact>
+                <Brand src={PFIconLogoColor} alt="PatternFly" heights={{ default: '37px' }} />
+              </MastheadLogo>
+            </MastheadBrand>
+          </MastheadMain>
+          <MastheadContent>
+            <Divider />
+            <Nav
+              variant="docked"
+              aria-label="Canvas navigation"
+              className="pf-v6-u-flex-1 pf-v6-u-align-content-space-between"
+            >
+              <NavList>
+                <NavItem
+                  itemId="new-chat"
+                  aria-label="New chat"
+                  icon={<RhUiEditFillIcon />}
+                  component="button"
+                  preventDefault
+                  anchorRef={newChatRef}
+                  onClick={startNewChat}
+                >
+                  New chat
+                </NavItem>
+              </NavList>
+              <NavList className="pf-v6-u-mt-auto">
+                <NavItem
+                  itemId="settings"
+                  aria-label="Settings"
+                  icon={<RhUiSettingsFillIcon />}
+                  component="button"
+                  preventDefault
+                >
+                  Settings
+                </NavItem>
+              </NavList>
+            </Nav>
+            <Tooltip aria="none" aria-live="off" triggerRef={newChatRef} content="New chat" />
+            <Avatar
+              className="pf-v6-u-mt-md pf-v6-u-mb-md pf-v6-u-mx-auto"
+              src={userAvatar}
+              alt="User profile"
+              size="md"
+            />
+          </MastheadContent>
+        </Masthead>
+      </div>
+    </>
   );
 
   const editorControls = [
@@ -227,17 +259,6 @@ export const CanvasWithDockedNavDemo = () => {
               <DrawerContent panelContent={canvasPanel}>
                 <DrawerContentBody className="pf-chatbot__canvas-body">
                   <div className="pf-chatbot__canvas-column">
-                    <ChatbotHeader>
-                      <ChatbotHeaderMain>
-                        <ChatbotHeaderMenu
-                          aria-expanded={isDrawerOpen}
-                          onMenuToggle={() => setIsDrawerOpen((open) => !open)}
-                          tooltipContent="Chat history"
-                          menuAriaLabel="Chat history"
-                        />
-                        <ChatbotHeaderTitle>{iconLogo}</ChatbotHeaderTitle>
-                      </ChatbotHeaderMain>
-                    </ChatbotHeader>
                     <ChatbotContent className="pf-chatbot__canvas-chat-content">
                       <MessageBox
                         ariaLabel="Scrollable message log for ChatBot"

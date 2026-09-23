@@ -1,5 +1,20 @@
-import { FunctionComponent, useState } from 'react';
-import { Avatar, Brand, Divider, Flex, Nav, NavItem, NavList } from '@patternfly/react-core';
+import { FunctionComponent, useRef, useState } from 'react';
+import {
+  Avatar,
+  Brand,
+  Divider,
+  Masthead,
+  MastheadBrand,
+  MastheadContent,
+  MastheadLogo,
+  MastheadMain,
+  MastheadToggle,
+  Nav,
+  NavItem,
+  NavList,
+  PageToggleButton,
+  Tooltip
+} from '@patternfly/react-core';
 import Chatbot, { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
 import ChatbotContent from '@patternfly/chatbot/dist/dynamic/ChatbotContent';
 import ChatbotWelcomePrompt from '@patternfly/chatbot/dist/dynamic/ChatbotWelcomePrompt';
@@ -10,7 +25,6 @@ import Message, { MessageProps } from '@patternfly/chatbot/dist/dynamic/Message'
 import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
 import { RhUiEditFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-edit-fill-icon';
 import { RhUiSettingsFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-settings-fill-icon';
-import { BarsIcon } from '@patternfly/react-icons/dist/esm/icons/bars-icon';
 import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import '@patternfly/react-core/dist/styles/base.css';
@@ -51,10 +65,26 @@ const conversations = [
   { id: '2', text: 'Review deployment options' }
 ];
 
+const hamburgerHoverStyles = `
+  .pf-chatbot__canvas-history-toggle.pf-v6-c-button.pf-m-hamburger:is(:hover, :focus-visible) {
+    --pf-v6-c-button--hamburger-icon--top--path: path("M5,1 L9,1");
+    --pf-v6-c-button--hamburger-icon--arrow--path: path("M3,7 L1,5 L3,3");
+    --pf-v6-c-button--hamburger-icon--bottom--path: path("M9,9 L5,9");
+    --pf-v6-c-button--hover__icon--ScaleX: -1;
+    --pf-v6-c-button__icon--TransitionDelay: 0s;
+    --pf-v6-c-button--hover__icon--TransitionDelay: 0s;
+  }
+
+  .pf-chatbot__canvas-history-toggle.pf-v6-c-button.pf-m-hamburger[aria-expanded="true"]:is(:hover, :focus-visible) {
+    --pf-v6-c-button--hover__icon--ScaleX: 1;
+  }
+`;
+
 export const FullscreenDockedNav: FunctionComponent = () => {
   const [messages, setMessages] = useState<MessageProps[]>(initialMessages);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [announcement, setAnnouncement] = useState<string>();
+  const newChatRef = useRef<HTMLAnchorElement>(null);
 
   const startNewChat = () => {
     setMessages([]);
@@ -76,47 +106,69 @@ export const FullscreenDockedNav: FunctionComponent = () => {
   };
 
   const dockedNav = (
-    <Nav variant="docked" aria-label="Chatbot navigation" className="pf-chatbot__canvas-docked-nav pf-v6-u-h-100">
-      <Flex direction={{ default: 'column' }} className="pf-v6-u-h-100 pf-v6-u-p-sm">
-        <NavList>
-          <NavItem
-            itemId="history"
-            isActive={isDrawerOpen}
-            icon={<BarsIcon />}
-            component="button"
-            preventDefault
-            onClick={() => setIsDrawerOpen((open) => !open)}
-          >
-            Chat history
-          </NavItem>
-        </NavList>
-        <Brand
-          className="pf-v6-u-my-md"
-          src={PFIconLogoColor}
-          alt="PatternFly"
-          widths={{ default: '37px' }}
-          heights={{ default: '37px' }}
-        />
-        <Divider />
-        <NavList>
-          <NavItem
-            itemId="new-chat"
-            icon={<RhUiEditFillIcon />}
-            component="button"
-            preventDefault
-            onClick={startNewChat}
-          >
-            New chat
-          </NavItem>
-        </NavList>
-        <NavList className="pf-v6-u-mt-auto">
-          <NavItem itemId="settings" icon={<RhUiSettingsFillIcon />} component="button" preventDefault>
-            Settings
-          </NavItem>
-        </NavList>
-        <Avatar className="pf-v6-u-mt-md pf-v6-u-mb-md pf-v6-u-mx-auto" src={userAvatar} alt="User profile" size="md" />
-      </Flex>
-    </Nav>
+    <>
+      <style>{hamburgerHoverStyles}</style>
+      <div className="pf-chatbot__canvas-docked-nav pf-v6-u-h-100 pf-v6-u-p-sm">
+        <Masthead variant="docked">
+          <MastheadMain>
+            <MastheadToggle>
+              <PageToggleButton
+                className="pf-chatbot__canvas-history-toggle"
+                aria-label="Chat history"
+                isHamburgerButton
+                isSidebarOpen={isDrawerOpen}
+                onSidebarToggle={() => setIsDrawerOpen((open) => !open)}
+              />
+            </MastheadToggle>
+            <MastheadBrand>
+              <MastheadLogo isCompact>
+                <Brand src={PFIconLogoColor} alt="PatternFly" heights={{ default: '37px' }} />
+              </MastheadLogo>
+            </MastheadBrand>
+          </MastheadMain>
+          <MastheadContent>
+            <Divider />
+            <Nav
+              variant="docked"
+              aria-label="Chatbot navigation"
+              className="pf-v6-u-flex-1 pf-v6-u-align-content-space-between"
+            >
+              <NavList>
+                <NavItem
+                  itemId="new-chat"
+                  aria-label="New chat"
+                  icon={<RhUiEditFillIcon />}
+                  component="button"
+                  preventDefault
+                  anchorRef={newChatRef}
+                  onClick={startNewChat}
+                >
+                  New chat
+                </NavItem>
+              </NavList>
+              <NavList className="pf-v6-u-mt-auto">
+                <NavItem
+                  itemId="settings"
+                  aria-label="Settings"
+                  icon={<RhUiSettingsFillIcon />}
+                  component="button"
+                  preventDefault
+                >
+                  Settings
+                </NavItem>
+              </NavList>
+            </Nav>
+            <Tooltip aria="none" aria-live="off" triggerRef={newChatRef} content="New chat" />
+            <Avatar
+              className="pf-v6-u-mt-md pf-v6-u-mb-md pf-v6-u-mx-auto"
+              src={userAvatar}
+              alt="User profile"
+              size="md"
+            />
+          </MastheadContent>
+        </Masthead>
+      </div>
+    </>
   );
 
   return (
