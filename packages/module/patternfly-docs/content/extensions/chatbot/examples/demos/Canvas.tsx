@@ -43,7 +43,7 @@ import RhUiAiInfoIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-ai-info
 import RhUiImageFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-image-fill-icon';
 import RhUiAddIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-add-icon';
 import RhUiTaskFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-task-fill-icon';
-import RhUiExportIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-export-icon';
+import RhUiSaveIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-save-icon';
 import RhUiRedoIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-redo-icon';
 import RhUiUndoIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-undo-icon';
 import RhUiServerUploadFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-server-upload-fill-icon';
@@ -335,10 +335,10 @@ export const Canvas: FunctionComponent = () => {
     />,
     <CodeEditorControl
       key="export"
-      icon={<RhUiExportIcon />}
-      aria-label="Export"
+      icon={<RhUiSaveIcon />}
+      aria-label="Save"
       tooltipProps={{
-        content: 'Export',
+        content: 'Save',
         // prevents VO announcements of both aria label and tooltip
         aria: 'none'
       }}
