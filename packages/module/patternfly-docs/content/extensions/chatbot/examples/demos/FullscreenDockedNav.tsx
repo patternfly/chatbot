@@ -76,17 +76,24 @@ const conversations = [
 ];
 
 const hamburgerHoverStyles = `
+  .pf-chatbot__canvas-docked-nav .pf-v6-c-masthead__logo.pf-m-compact {
+    display: revert;
+  }
+
+  .pf-chatbot__canvas-docked-nav .pf-v6-c-nav.pf-m-docked .pf-v6-c-nav__link-text {
+    display: none;
+  }
+
   .pf-chatbot__canvas-history-toggle.pf-v6-c-button.pf-m-hamburger:is(:hover, :focus-visible) {
-    --pf-v6-c-button--hamburger-icon--top--path: path("M5,1 L9,1");
-    --pf-v6-c-button--hamburger-icon--arrow--path: path("M3,7 L1,5 L3,3");
-    --pf-v6-c-button--hamburger-icon--bottom--path: path("M9,9 L5,9");
-    --pf-v6-c-button--hover__icon--ScaleX: -1;
+    --pf-v6-c-button--hamburger-icon--top--path: var(--pf-v6-c-button--hamburger-icon--top--collapse--path);
+    --pf-v6-c-button--hamburger-icon--arrow--path: var(--pf-v6-c-button--hamburger-icon--arrow--collapse--path);
+    --pf-v6-c-button--hamburger-icon--bottom--path: var(--pf-v6-c-button--hamburger-icon--bottom--collapse--path);
     --pf-v6-c-button__icon--TransitionDelay: 0s;
-    --pf-v6-c-button--hover__icon--TransitionDelay: 0s;
+    --pf-v6-c-button__icon--ScaleX: var(--pf-v6-c-button--m-hamburger__icon--m-expand--ScaleX);
   }
 
   .pf-chatbot__canvas-history-toggle.pf-v6-c-button.pf-m-hamburger[aria-expanded="true"]:is(:hover, :focus-visible) {
-    --pf-v6-c-button--hover__icon--ScaleX: 1;
+    --pf-v6-c-button__icon--ScaleX: var(--pf-v6-c-button--m-hamburger__icon--m-collapse--ScaleX);
   }
 `;
 
@@ -271,6 +278,7 @@ export const FullscreenDockedNav: FunctionComponent = () => {
               src={userAvatar}
               alt="User profile"
               size="md"
+              isBordered
             />
           </MastheadContent>
         </Masthead>
@@ -314,7 +322,14 @@ export const FullscreenDockedNav: FunctionComponent = () => {
                   </ChatbotContent>
                   <ChatbotFooter>
                     <MessageBar onSendMessage={sendMessage} attachButtonPosition="start" alwayShowSendButton />
-                    <ChatbotFootnote label="Always review AI-generated content prior to use." />
+                    <ChatbotFootnote
+                      label="Always review AI-generated content prior to use."
+                      popover={{
+                        title: 'AI-generated content',
+                        description: 'Always review AI-generated content prior to use.',
+                        showClose: true
+                      }}
+                    />
                   </ChatbotFooter>
                 </div>
               )}

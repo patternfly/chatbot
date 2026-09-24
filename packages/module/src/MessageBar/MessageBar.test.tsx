@@ -227,6 +227,23 @@ describe('Message bar', () => {
     await userEvent.click(attachButton);
     expect(attachToggleClickSpy).toHaveBeenCalledTimes(1);
   });
+  it('can toggle attach menu without an optional toggle callback', async () => {
+    const setIsAttachMenuOpen = jest.fn();
+    render(
+      <MessageBar
+        onSendMessage={jest.fn}
+        attachMenuProps={{
+          isAttachMenuOpen: false,
+          setIsAttachMenuOpen,
+          attachMenuItems: ATTACH_MENU_ITEMS
+        }}
+      />
+    );
+
+    await userEvent.click(screen.getByRole('button', { name: 'Attach' }));
+
+    expect(setIsAttachMenuOpen).toHaveBeenCalledWith(true);
+  });
   it('can pass searchInputProps to search input in AttachMenu', () => {
     render(
       <MessageBar

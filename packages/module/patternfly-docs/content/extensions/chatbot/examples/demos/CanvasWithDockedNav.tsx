@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { useDropzone } from 'react-dropzone';
 import {
   Avatar,
   Brand,
@@ -33,6 +34,7 @@ import {
   Switch,
   Title,
   PageToggleButton,
+  Popover,
   Tooltip
 } from '@patternfly/react-core';
 import { CodeEditor, CodeEditorControl, Language } from '@patternfly/react-code-editor';
@@ -45,27 +47,30 @@ import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
 import SettingsForm from '@patternfly/chatbot/dist/dynamic/Settings';
 import { RhUiAddIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-add-icon';
-import { RhUiCopyFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-copy-fill-icon';
-import { RhUiDownloadIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-download-icon';
-import { RhUiEditFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-edit-fill-icon';
+import { RhUiAiInfoIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-ai-info-icon';
+import { RhUiCalendarFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-calendar-fill-icon';
+import { RhUiExportIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-export-icon';
 import { RhUiImageFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-image-fill-icon';
-import { RhUiBackupIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-backup-icon';
-import { RhUiPlayFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-play-fill-icon';
+import { RhUiNotificationFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-notification-fill-icon';
+import { RhUiEditFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-edit-fill-icon';
+import { RhUiRedoIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-redo-icon';
+import { RhUiServerUploadFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-server-upload-fill-icon';
 import { RhUiSettingsFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-settings-fill-icon';
-import { RhUiUploadIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-upload-icon';
+import { RhUiTaskFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-task-fill-icon';
+import { RhUiUndoIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-undo-icon';
 import { RhMicronsCloseIcon } from '@patternfly/react-icons/dist/esm/icons/rh-microns-close-icon';
 import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
 
-const sampleCode = `<!DOCTYPE html>
-<html>
-  <body>
-    <p>This is a paragraph.</p>
-    <p>This is another paragraph.</p>
-  </body>
-</html>`;
+const sampleCode = `apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: canvas-demo
+data:
+  greeting: Hello, how can I help you today?
+`;
 
 const initialMessages = [
   {
@@ -83,6 +88,14 @@ const initialMessages = [
     avatar: userAvatar,
     avatarProps: { isBordered: true },
     timestamp: '1:30 PM'
+  },
+  {
+    id: '3',
+    role: 'bot',
+    content: 'The canvas mode text editor is ready. Edit, share or ask me to change something for you.',
+    name: 'Bot',
+    timestamp: '1:30 PM',
+    attachments: [{ name: 'canvas mode.yaml', id: 'canvas-mode' }]
   }
 ];
 
@@ -92,17 +105,24 @@ const conversations = [
 ];
 
 const hamburgerHoverStyles = `
+  .pf-chatbot__canvas-docked-nav .pf-v6-c-masthead__logo.pf-m-compact {
+    display: revert;
+  }
+
+  .pf-chatbot__canvas-docked-nav .pf-v6-c-nav.pf-m-docked .pf-v6-c-nav__link-text {
+    display: none;
+  }
+
   .pf-chatbot__canvas-history-toggle.pf-v6-c-button.pf-m-hamburger:is(:hover, :focus-visible) {
-    --pf-v6-c-button--hamburger-icon--top--path: path("M5,1 L9,1");
-    --pf-v6-c-button--hamburger-icon--arrow--path: path("M3,7 L1,5 L3,3");
-    --pf-v6-c-button--hamburger-icon--bottom--path: path("M9,9 L5,9");
-    --pf-v6-c-button--hover__icon--ScaleX: -1;
+    --pf-v6-c-button--hamburger-icon--top--path: var(--pf-v6-c-button--hamburger-icon--top--collapse--path);
+    --pf-v6-c-button--hamburger-icon--arrow--path: var(--pf-v6-c-button--hamburger-icon--arrow--collapse--path);
+    --pf-v6-c-button--hamburger-icon--bottom--path: var(--pf-v6-c-button--hamburger-icon--bottom--collapse--path);
     --pf-v6-c-button__icon--TransitionDelay: 0s;
-    --pf-v6-c-button--hover__icon--TransitionDelay: 0s;
+    --pf-v6-c-button__icon--ScaleX: var(--pf-v6-c-button--m-hamburger__icon--m-expand--ScaleX);
   }
 
   .pf-chatbot__canvas-history-toggle.pf-v6-c-button.pf-m-hamburger[aria-expanded="true"]:is(:hover, :focus-visible) {
-    --pf-v6-c-button--hover__icon--ScaleX: 1;
+    --pf-v6-c-button__icon--ScaleX: var(--pf-v6-c-button--m-hamburger__icon--m-collapse--ScaleX);
   }
 `;
 
@@ -178,7 +198,7 @@ const SettingsPanel = ({ onClose }) => {
   ];
 
   return (
-    <div className="pf-v6-u-w-100">
+    <div className="pf-chatbot__canvas">
       <div className="pf-v6-u-w-100 pf-v6-u-mx-auto" style={{ maxWidth: '60rem' }}>
         <Flex
           justifyContent={{ default: 'justifyContentSpaceBetween' }}
@@ -203,10 +223,21 @@ export const CanvasWithDockedNavDemo = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [areSettingsOpen, setAreSettingsOpen] = useState(false);
   const [isCanvasOpen, setIsCanvasOpen] = useState(true);
+  const [showCanvasLabel, setShowCanvasLabel] = useState(true);
+  const [isGeneratedAiPopoverOpen, setIsGeneratedAiPopoverOpen] = useState(false);
+  const [isAttachMenuOpen, setIsAttachMenuOpen] = useState(false);
   const [isModelSelectOpen, setIsModelSelectOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState('Granite 7B');
   const [announcement, setAnnouncement] = useState();
+  const [isSendButtonDisabled, setIsSendButtonDisabled] = useState(false);
   const newChatRef = useRef<HTMLAnchorElement>(null);
+  const scrollToBottomRef = useRef<HTMLDivElement>(null);
+  const messageActionsRef = useRef<HTMLButtonElement>(null);
+  const { open, getInputProps } = useDropzone({
+    multiple: true,
+    // eslint-disable-next-line no-console
+    onDropAccepted: () => console.log('fileUploaded')
+  });
 
   const startNewChat = () => {
     setMessages([]);
@@ -214,19 +245,91 @@ export const CanvasWithDockedNavDemo = () => {
     setAreSettingsOpen(false);
   };
 
+  const openCanvas = () => {
+    setShowCanvasLabel(true);
+    setIsCanvasOpen(true);
+  };
+
+  const closeCanvasMode = () => {
+    setShowCanvasLabel(false);
+    setIsCanvasOpen(false);
+  };
+
   const sendMessage = (content) => {
-    const message = {
+    const date = new Date();
+    const userMessage = {
       id: Date.now().toString(),
       role: 'user',
       content,
       name: 'You',
       avatar: userAvatar,
       avatarProps: { isBordered: true },
-      timestamp: new Date().toLocaleTimeString()
+      timestamp: `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
     };
-    setMessages((currentMessages) => [...currentMessages, message]);
-    setAnnouncement(`Message from You: ${content}`);
+    const newMessages = [...messages, userMessage];
+    newMessages.push({
+      id: `${Date.now()}-loading`,
+      role: 'bot',
+      name: 'Bot',
+      isLoading: true,
+      timestamp: `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
+    });
+    setMessages(newMessages);
+    setAnnouncement(`Message from You: ${content}. Message from Bot is loading.`);
+    setIsSendButtonDisabled(true);
+    setTimeout(() => {
+      const loadedMessages = [...newMessages];
+      loadedMessages.pop();
+      loadedMessages.push({
+        id: `${Date.now()}-bot`,
+        role: 'bot',
+        content: 'API response from Bot goes here',
+        name: 'Bot',
+        isLoading: false,
+        actions: {
+          // eslint-disable-next-line no-console
+          positive: { onClick: () => console.log('Good response') },
+          // eslint-disable-next-line no-console
+          negative: { onClick: () => console.log('Bad response') },
+          // eslint-disable-next-line no-console
+          copy: { onClick: () => console.log('Copy') },
+          // eslint-disable-next-line no-console
+          download: { onClick: () => console.log('Download') },
+          // eslint-disable-next-line no-console
+          listen: { onClick: () => console.log('Listen') }
+        },
+        timestamp: date.toLocaleString()
+      });
+      setMessages(loadedMessages);
+      setAnnouncement('Message from Bot: API response from Bot goes here');
+      setIsSendButtonDisabled(false);
+    }, 5000);
   };
+
+  const attachMenuItems = (
+    <>
+      <DropdownList>
+        <DropdownItem value="Alerts" id="alerts" icon={<RhUiNotificationFillIcon />}>
+          Alerts
+        </DropdownItem>
+        <DropdownItem value="Events" id="events" icon={<RhUiCalendarFillIcon />}>
+          Events
+        </DropdownItem>
+        <DropdownItem value="Logs" id="logs" icon={<RhUiTaskFillIcon />}>
+          Logs
+        </DropdownItem>
+      </DropdownList>
+      <Divider />
+      <DropdownList>
+        <DropdownItem value="Upload from computer" id="upload" icon={<RhUiServerUploadFillIcon />} onClick={open}>
+          Upload from computer
+        </DropdownItem>
+        <DropdownItem value="canvas" id="canvas" icon={<RhUiImageFillIcon />}>
+          {`${isCanvasOpen ? 'Disable' : 'Enable'} canvas mode`}
+        </DropdownItem>
+      </DropdownList>
+    </>
+  );
 
   const dockedNav = (
     <>
@@ -291,6 +394,7 @@ export const CanvasWithDockedNavDemo = () => {
               src={userAvatar}
               alt="User profile"
               size="md"
+              isBordered
             />
           </MastheadContent>
         </Masthead>
@@ -299,11 +403,9 @@ export const CanvasWithDockedNavDemo = () => {
   );
 
   const editorControls = [
-    { icon: <RhUiUploadIcon />, label: 'Upload' },
-    { icon: <RhUiCopyFillIcon />, label: 'Copy' },
-    { icon: <RhUiDownloadIcon />, label: 'Download' },
-    { icon: <RhUiPlayFillIcon />, label: 'Run' },
-    { icon: <RhUiBackupIcon />, label: 'Backup' }
+    { icon: <RhUiUndoIcon />, label: 'Undo' },
+    { icon: <RhUiRedoIcon />, label: 'Redo' },
+    { icon: <RhUiExportIcon />, label: 'Export' }
   ].map(({ icon, label }) => (
     <CodeEditorControl key={label} icon={icon} aria-label={label} tooltipProps={{ content: label, aria: 'none' }} />
   ));
@@ -319,13 +421,31 @@ export const CanvasWithDockedNavDemo = () => {
               </Title>
             </FlexItem>
             <FlexItem>
-              <Label variant="outline" icon={<RhUiImageFillIcon aria-hidden />}>
-                Generated with AI
-              </Label>
+              <Popover
+                headerContent="What is canvas mode?"
+                bodyContent="This canvas is a collaborative workspace that blends AI-generated content with manual human edits."
+                onShow={() => setIsGeneratedAiPopoverOpen(true)}
+                onHide={() => setIsGeneratedAiPopoverOpen(false)}
+              >
+                <Label
+                  isClickable
+                  variant="outline"
+                  icon={<RhUiAiInfoIcon aria-hidden />}
+                  role="button"
+                  tabIndex={0}
+                  aria-expanded={isGeneratedAiPopoverOpen}
+                >
+                  Generated with AI
+                </Label>
+              </Popover>
             </FlexItem>
           </Flex>
           <DrawerActions>
-            <DrawerCloseButton aria-label="Exit canvas mode" onClose={() => setIsCanvasOpen(false)} />
+            <Tooltip content="Close canvas" position="bottom" aria="none">
+              <span>
+                <DrawerCloseButton aria-label="Exit canvas mode" onClose={closeCanvasMode} />
+              </span>
+            </Tooltip>
           </DrawerActions>
         </DrawerHead>
         <div className="pf-chatbot__canvas-panel-body">
@@ -334,10 +454,12 @@ export const CanvasWithDockedNavDemo = () => {
               isFullHeight
               isLineNumbersVisible
               isLanguageLabelVisible
+              isCopyEnabled
+              isDownloadEnabled
               downloadFileName="canvas-mode"
               customControls={editorControls}
               code={code}
-              language={Language.html}
+              language={Language.yaml}
               onCodeChange={setCode}
             />
           </div>
@@ -347,94 +469,138 @@ export const CanvasWithDockedNavDemo = () => {
   );
 
   return (
-    <Chatbot displayMode={ChatbotDisplayMode.fullscreen} dockedNav={dockedNav}>
-      <div className="pf-chatbot__canvas">
-        <ChatbotConversationHistoryNav
-          displayMode={ChatbotDisplayMode.fullscreen}
-          isDrawerOpen={isDrawerOpen}
-          setIsDrawerOpen={setIsDrawerOpen}
-          onDrawerToggle={() => setIsDrawerOpen((open) => !open)}
-          activeItemId="1"
-          conversations={{ Today: conversations }}
-          onNewChat={startNewChat}
-          drawerCloseButtonProps={{ 'aria-label': 'Close chat history' }}
-          drawerContent={
-            <div className="pf-chatbot__canvas">
-              {areSettingsOpen ? (
-                <SettingsPanel onClose={() => setAreSettingsOpen(false)} />
-              ) : (
-                <Drawer isExpanded={isCanvasOpen} isInline position="end">
-                  <DrawerContent panelContent={canvasPanel}>
-                    <DrawerContentBody className="pf-chatbot__canvas-body">
-                      <div className="pf-chatbot__canvas-column">
-                        <ChatbotContent className="pf-chatbot__canvas-chat-content">
-                          <MessageBox
-                            ariaLabel="Scrollable message log for ChatBot"
-                            announcement={announcement}
-                            position="bottom"
-                          >
-                            {messages.map((message) => (
-                              <Message key={message.id} {...message} />
-                            ))}
-                          </MessageBox>
-                        </ChatbotContent>
-                        <ChatbotFooter className="pf-chatbot__canvas-chat-footer">
-                          <MessageBar
-                            onSendMessage={sendMessage}
-                            attachButtonPosition="start"
-                            alwayShowSendButton
-                            buttonProps={{
-                              attach: {
-                                icon: <RhUiAddIcon />,
-                                tooltipContent: 'Message actions',
-                                'aria-label': 'Message actions'
-                              }
-                            }}
-                            additionalActions={
-                              <>
-                                <Label icon={<RhUiImageFillIcon aria-hidden />}>Canvas</Label>
-                                <Select
-                                  isOpen={isModelSelectOpen}
-                                  selected={selectedModel}
-                                  onSelect={(_event, value) => {
-                                    setSelectedModel(String(value));
-                                    setIsModelSelectOpen(false);
-                                  }}
-                                  onOpenChange={setIsModelSelectOpen}
-                                  toggle={(toggleRef) => (
-                                    <MenuToggle
-                                      ref={toggleRef}
-                                      variant="plainText"
-                                      onClick={() => setIsModelSelectOpen((open) => !open)}
-                                      isExpanded={isModelSelectOpen}
-                                      aria-label={`${selectedModel}, Select a model`}
+    <>
+      <input {...getInputProps()} hidden />
+      <Chatbot displayMode={ChatbotDisplayMode.fullscreen} dockedNav={dockedNav}>
+        <div className="pf-chatbot__canvas">
+          <ChatbotConversationHistoryNav
+            displayMode={ChatbotDisplayMode.fullscreen}
+            isDrawerOpen={isDrawerOpen}
+            setIsDrawerOpen={setIsDrawerOpen}
+            onDrawerToggle={() => setIsDrawerOpen((open) => !open)}
+            activeItemId="1"
+            conversations={{ Today: conversations }}
+            onNewChat={startNewChat}
+            drawerCloseButtonProps={{ 'aria-label': 'Close chat history' }}
+            drawerContent={
+              <div style={{ display: 'contents' }}>
+                {areSettingsOpen ? (
+                  <SettingsPanel onClose={() => setAreSettingsOpen(false)} />
+                ) : (
+                  <Drawer isExpanded={isCanvasOpen} isInline position="end">
+                    <DrawerContent panelContent={canvasPanel}>
+                      <DrawerContentBody className="pf-chatbot__canvas-body">
+                        <div className="pf-chatbot__canvas-column">
+                          <ChatbotContent className="pf-chatbot__canvas-chat-content">
+                            <MessageBox
+                              ariaLabel="Scrollable message log for ChatBot"
+                              announcement={announcement}
+                              position="bottom"
+                            >
+                              {messages.map((message) => (
+                                <Message
+                                  key={message.id}
+                                  {...message}
+                                  attachments={message.attachments?.map((attachment) => ({
+                                    ...attachment,
+                                    onClick: openCanvas
+                                  }))}
+                                />
+                              ))}
+                              <div ref={scrollToBottomRef}></div>
+                            </MessageBox>
+                          </ChatbotContent>
+                          <ChatbotFooter className="pf-chatbot__canvas-chat-footer">
+                            <MessageBar
+                              onSendMessage={sendMessage}
+                              attachButtonPosition="start"
+                              alwayShowSendButton
+                              isSendButtonDisabled={isSendButtonDisabled}
+                              attachMenuProps={{
+                                isAttachMenuOpen,
+                                setIsAttachMenuOpen,
+                                attachMenuItems,
+                                onAttachMenuOnOpenChangeKeys: ['Escape', 'Tab'],
+                                onAttachMenuSelect: (_event, value) => {
+                                  if (value === 'canvas') {
+                                    if (showCanvasLabel) {
+                                      closeCanvasMode();
+                                    } else {
+                                      openCanvas();
+                                    }
+                                  }
+                                  setIsAttachMenuOpen(false);
+                                }
+                              }}
+                              buttonProps={{
+                                attach: {
+                                  innerRef: messageActionsRef,
+                                  icon: <RhUiAddIcon />,
+                                  tooltipContent: 'Message actions',
+                                  'aria-label': 'Message actions'
+                                }
+                              }}
+                              additionalActions={
+                                <>
+                                  {showCanvasLabel && (
+                                    <Label
+                                      closeBtnAriaLabel="Exit canvas mode"
+                                      onClose={closeCanvasMode}
+                                      icon={<RhUiImageFillIcon aria-hidden />}
                                     >
-                                      {selectedModel}
-                                    </MenuToggle>
+                                      Canvas
+                                    </Label>
                                   )}
-                                >
-                                  <SelectList>
-                                    {['Granite 7B', 'Granite 8B', 'Llama 3'].map((option) => (
-                                      <SelectOption key={option} value={option}>
-                                        {option}
-                                      </SelectOption>
-                                    ))}
-                                  </SelectList>
-                                </Select>
-                              </>
-                            }
-                          />
-                          <ChatbotFootnote label="Always review AI-generated content prior to use." />
-                        </ChatbotFooter>
-                      </div>
-                    </DrawerContentBody>
-                  </DrawerContent>
-                </Drawer>
-              )}
-            </div>
-          }
-        />
-      </div>
-    </Chatbot>
+                                  <Select
+                                    isOpen={isModelSelectOpen}
+                                    selected={selectedModel}
+                                    onSelect={(_event, value) => {
+                                      setSelectedModel(String(value));
+                                      setIsModelSelectOpen(false);
+                                    }}
+                                    onOpenChange={setIsModelSelectOpen}
+                                    toggle={(toggleRef) => (
+                                      <MenuToggle
+                                        ref={toggleRef}
+                                        variant="plainText"
+                                        onClick={() => setIsModelSelectOpen((open) => !open)}
+                                        isExpanded={isModelSelectOpen}
+                                        aria-label={`${selectedModel}, Select a model`}
+                                      >
+                                        {selectedModel}
+                                      </MenuToggle>
+                                    )}
+                                  >
+                                    <SelectList>
+                                      {['Granite 7B', 'Granite 8B', 'Llama 3'].map((option) => (
+                                        <SelectOption key={option} value={option}>
+                                          {option}
+                                        </SelectOption>
+                                      ))}
+                                    </SelectList>
+                                  </Select>
+                                </>
+                              }
+                            />
+                            <ChatbotFootnote
+                              label="Always review AI-generated content prior to use."
+                              popover={{
+                                title: 'AI-generated content',
+                                description: 'Always review AI-generated content prior to use.',
+                                showClose: true
+                              }}
+                            />
+                          </ChatbotFooter>
+                        </div>
+                      </DrawerContentBody>
+                    </DrawerContent>
+                  </Drawer>
+                )}
+              </div>
+            }
+          />
+        </div>
+      </Chatbot>
+    </>
   );
 };
