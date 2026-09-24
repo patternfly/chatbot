@@ -6,7 +6,7 @@ source: demo
 
 import { useState, useRef, useCallback, useEffect, FunctionComponent, ReactNode } from 'react';
 import {
-  Avatar,
+Avatar,
 Brand,
 Divider,
 Drawer,
@@ -22,9 +22,9 @@ Flex,
 FlexItem,
 Label,
 MenuToggle,
-  Nav,
-  NavItem,
-  NavList,
+Nav,
+NavItem,
+NavList,
 Popover,
 Select,
 SelectList,
@@ -47,6 +47,7 @@ ChatbotHeaderMain,
 ChatbotHeaderMenu,
 ChatbotHeaderTitle
 } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
+import SettingsForm from '@patternfly/chatbot/dist/dynamic/Settings';
 import RhUiImageFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-image-fill-icon';
 import { BarsIcon } from '@patternfly/react-icons/dist/esm/icons/bars-icon';
 import { RhUiAddIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-add-icon';
@@ -65,6 +66,7 @@ import RhUiRedoIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-redo-icon
 import RhUiUndoIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-undo-icon';
 import RhUiServerUploadFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-server-upload-fill-icon';
 import RhUiAiInfoIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-ai-info-icon';
+import { RhMicronsCloseIcon } from '@patternfly/react-icons/dist/esm/icons/rh-microns-close-icon';
 import { useDropzone } from 'react-dropzone';
 import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';

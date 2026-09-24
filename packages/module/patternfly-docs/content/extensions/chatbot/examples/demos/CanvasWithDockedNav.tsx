@@ -2,7 +2,11 @@ import { useRef, useState } from 'react';
 import {
   Avatar,
   Brand,
+  Button,
   Divider,
+  Dropdown,
+  DropdownItem,
+  DropdownList,
   Drawer,
   DrawerActions,
   DrawerCloseButton,
@@ -26,6 +30,7 @@ import {
   Select,
   SelectList,
   SelectOption,
+  Switch,
   Title,
   PageToggleButton,
   Tooltip
@@ -38,6 +43,7 @@ import MessageBar from '@patternfly/chatbot/dist/dynamic/MessageBar';
 import MessageBox from '@patternfly/chatbot/dist/dynamic/MessageBox';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
+import SettingsForm from '@patternfly/chatbot/dist/dynamic/Settings';
 import { RhUiAddIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-add-icon';
 import { RhUiCopyFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-copy-fill-icon';
 import { RhUiDownloadIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-download-icon';
@@ -47,6 +53,7 @@ import { RhUiBackupIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-bac
 import { RhUiPlayFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-play-fill-icon';
 import { RhUiSettingsFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-settings-fill-icon';
 import { RhUiUploadIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-upload-icon';
+import { RhMicronsCloseIcon } from '@patternfly/react-icons/dist/esm/icons/rh-microns-close-icon';
 import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import '@patternfly/react-core/dist/styles/base.css';
@@ -99,10 +106,102 @@ const hamburgerHoverStyles = `
   }
 `;
 
+const SettingsPanel = ({ onClose }) => {
+  const [openDropdown, setOpenDropdown] = useState<string>();
+  const [theme, setTheme] = useState('System');
+  const [language, setLanguage] = useState('Auto-detect');
+  const [voice, setVoice] = useState('Bot');
+  const [isAnalyticsShared, setIsAnalyticsShared] = useState(true);
+
+  const dropdownField = (id, value, options, onSelect) => (
+    <Dropdown
+      isOpen={openDropdown === id}
+      onSelect={(_event, selectedValue) => {
+        onSelect(String(selectedValue));
+        setOpenDropdown(undefined);
+      }}
+      onOpenChange={(isOpen: boolean) => setOpenDropdown(isOpen ? id : undefined)}
+      shouldFocusToggleOnSelect
+      shouldFocusFirstItemOnOpen
+      toggle={(toggleRef) => (
+        <MenuToggle
+          id={id}
+          ref={toggleRef}
+          onClick={() => setOpenDropdown(openDropdown === id ? undefined : id)}
+          isExpanded={openDropdown === id}
+        >
+          {value}
+        </MenuToggle>
+      )}
+    >
+      <DropdownList>
+        {options.map((option) => (
+          <DropdownItem value={option} key={option}>
+            {option}
+          </DropdownItem>
+        ))}
+      </DropdownList>
+    </Dropdown>
+  );
+
+  const fields = [
+    { id: 'theme', label: 'Theme', field: dropdownField('theme', theme, ['System', 'Light', 'Dark'], setTheme) },
+    {
+      id: 'language',
+      label: 'Language',
+      field: dropdownField('language', language, ['Auto-detect', 'English'], setLanguage)
+    },
+    { id: 'voice', label: 'Voice', field: dropdownField('voice', voice, ['Bot', 'User'], setVoice) },
+    {
+      id: 'analytics',
+      label: 'Share analytics',
+      field: (
+        <Switch
+          id="analytics"
+          aria-label="Toggle sharing analytics"
+          isChecked={isAnalyticsShared}
+          onChange={(_event, checked) => setIsAnalyticsShared(checked)}
+        />
+      )
+    },
+    { id: 'archived-chat', label: 'Archived chats', field: <Button id="archived-chat">Manage</Button> },
+    { id: 'archive-all', label: 'Archived all chats', field: <Button id="archive-all">Archive all</Button> },
+    {
+      id: 'delete-all',
+      label: 'Delete all chats',
+      field: (
+        <Button id="delete-all" variant="danger">
+          Delete all
+        </Button>
+      )
+    }
+  ];
+
+  return (
+    <div className="pf-v6-u-w-100">
+      <div className="pf-v6-u-w-100 pf-v6-u-mx-auto" style={{ maxWidth: '60rem' }}>
+        <Flex
+          justifyContent={{ default: 'justifyContentSpaceBetween' }}
+          alignItems={{ default: 'alignItemsCenter' }}
+          className="pf-v6-u-p-lg"
+        >
+          <Title headingLevel="h1" size="2xl">
+            Settings
+          </Title>
+          <Button variant="plain" icon={<RhMicronsCloseIcon />} aria-label="Close settings" onClick={onClose} />
+        </Flex>
+        <Divider />
+        <SettingsForm fields={fields} />
+      </div>
+    </div>
+  );
+};
+
 export const CanvasWithDockedNavDemo = () => {
   const [messages, setMessages] = useState(initialMessages);
   const [code, setCode] = useState(sampleCode);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [areSettingsOpen, setAreSettingsOpen] = useState(false);
   const [isCanvasOpen, setIsCanvasOpen] = useState(true);
   const [isModelSelectOpen, setIsModelSelectOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState('Granite 7B');
@@ -112,6 +211,7 @@ export const CanvasWithDockedNavDemo = () => {
   const startNewChat = () => {
     setMessages([]);
     setIsDrawerOpen(false);
+    setAreSettingsOpen(false);
   };
 
   const sendMessage = (content) => {
@@ -176,6 +276,10 @@ export const CanvasWithDockedNavDemo = () => {
                   icon={<RhUiSettingsFillIcon />}
                   component="button"
                   preventDefault
+                  onClick={() => {
+                    setIsDrawerOpen(false);
+                    setAreSettingsOpen(true);
+                  }}
                 >
                   Settings
                 </NavItem>
@@ -255,73 +359,79 @@ export const CanvasWithDockedNavDemo = () => {
           onNewChat={startNewChat}
           drawerCloseButtonProps={{ 'aria-label': 'Close chat history' }}
           drawerContent={
-            <Drawer isExpanded={isCanvasOpen} isInline position="end">
-              <DrawerContent panelContent={canvasPanel}>
-                <DrawerContentBody className="pf-chatbot__canvas-body">
-                  <div className="pf-chatbot__canvas-column">
-                    <ChatbotContent className="pf-chatbot__canvas-chat-content">
-                      <MessageBox
-                        ariaLabel="Scrollable message log for ChatBot"
-                        announcement={announcement}
-                        position="bottom"
-                      >
-                        {messages.map((message) => (
-                          <Message key={message.id} {...message} />
-                        ))}
-                      </MessageBox>
-                    </ChatbotContent>
-                    <ChatbotFooter className="pf-chatbot__canvas-chat-footer">
-                      <MessageBar
-                        onSendMessage={sendMessage}
-                        attachButtonPosition="start"
-                        alwayShowSendButton
-                        buttonProps={{
-                          attach: {
-                            icon: <RhUiAddIcon />,
-                            tooltipContent: 'Message actions',
-                            'aria-label': 'Message actions'
-                          }
-                        }}
-                        additionalActions={
-                          <>
-                            <Label icon={<RhUiImageFillIcon aria-hidden />}>Canvas</Label>
-                            <Select
-                              isOpen={isModelSelectOpen}
-                              selected={selectedModel}
-                              onSelect={(_event, value) => {
-                                setSelectedModel(String(value));
-                                setIsModelSelectOpen(false);
-                              }}
-                              onOpenChange={setIsModelSelectOpen}
-                              toggle={(toggleRef) => (
-                                <MenuToggle
-                                  ref={toggleRef}
-                                  variant="plainText"
-                                  onClick={() => setIsModelSelectOpen((open) => !open)}
-                                  isExpanded={isModelSelectOpen}
-                                  aria-label={`${selectedModel}, Select a model`}
+            <div className="pf-chatbot__canvas">
+              {areSettingsOpen ? (
+                <SettingsPanel onClose={() => setAreSettingsOpen(false)} />
+              ) : (
+                <Drawer isExpanded={isCanvasOpen} isInline position="end">
+                  <DrawerContent panelContent={canvasPanel}>
+                    <DrawerContentBody className="pf-chatbot__canvas-body">
+                      <div className="pf-chatbot__canvas-column">
+                        <ChatbotContent className="pf-chatbot__canvas-chat-content">
+                          <MessageBox
+                            ariaLabel="Scrollable message log for ChatBot"
+                            announcement={announcement}
+                            position="bottom"
+                          >
+                            {messages.map((message) => (
+                              <Message key={message.id} {...message} />
+                            ))}
+                          </MessageBox>
+                        </ChatbotContent>
+                        <ChatbotFooter className="pf-chatbot__canvas-chat-footer">
+                          <MessageBar
+                            onSendMessage={sendMessage}
+                            attachButtonPosition="start"
+                            alwayShowSendButton
+                            buttonProps={{
+                              attach: {
+                                icon: <RhUiAddIcon />,
+                                tooltipContent: 'Message actions',
+                                'aria-label': 'Message actions'
+                              }
+                            }}
+                            additionalActions={
+                              <>
+                                <Label icon={<RhUiImageFillIcon aria-hidden />}>Canvas</Label>
+                                <Select
+                                  isOpen={isModelSelectOpen}
+                                  selected={selectedModel}
+                                  onSelect={(_event, value) => {
+                                    setSelectedModel(String(value));
+                                    setIsModelSelectOpen(false);
+                                  }}
+                                  onOpenChange={setIsModelSelectOpen}
+                                  toggle={(toggleRef) => (
+                                    <MenuToggle
+                                      ref={toggleRef}
+                                      variant="plainText"
+                                      onClick={() => setIsModelSelectOpen((open) => !open)}
+                                      isExpanded={isModelSelectOpen}
+                                      aria-label={`${selectedModel}, Select a model`}
+                                    >
+                                      {selectedModel}
+                                    </MenuToggle>
+                                  )}
                                 >
-                                  {selectedModel}
-                                </MenuToggle>
-                              )}
-                            >
-                              <SelectList>
-                                {['Granite 7B', 'Granite 8B', 'Llama 3'].map((option) => (
-                                  <SelectOption key={option} value={option}>
-                                    {option}
-                                  </SelectOption>
-                                ))}
-                              </SelectList>
-                            </Select>
-                          </>
-                        }
-                      />
-                      <ChatbotFootnote label="Always review AI-generated content prior to use." />
-                    </ChatbotFooter>
-                  </div>
-                </DrawerContentBody>
-              </DrawerContent>
-            </Drawer>
+                                  <SelectList>
+                                    {['Granite 7B', 'Granite 8B', 'Llama 3'].map((option) => (
+                                      <SelectOption key={option} value={option}>
+                                        {option}
+                                      </SelectOption>
+                                    ))}
+                                  </SelectList>
+                                </Select>
+                              </>
+                            }
+                          />
+                          <ChatbotFootnote label="Always review AI-generated content prior to use." />
+                        </ChatbotFooter>
+                      </div>
+                    </DrawerContentBody>
+                  </DrawerContent>
+                </Drawer>
+              )}
+            </div>
           }
         />
       </div>
