@@ -1,6 +1,9 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import ChatbotFootnote from './ChatbotFootnote';
 
+const POPOVER_CLOSE_ERROR =
+  'ChatbotFootnote: You must provide either the popover.cta or popover.showClose props in order to render a button that can close the popover.';
+
 describe('ChatbotFooternote', () => {
   const onClick = jest.fn();
   const popoverProps = {
@@ -20,9 +23,56 @@ describe('ChatbotFooternote', () => {
     }
   };
 
+  let consoleErrorSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(jest.fn());
+  });
+
+  afterEach(() => {
+    consoleErrorSpy.mockRestore();
+  });
+
   it('should render ChatbotFooternote', () => {
     render(<ChatbotFootnote label="Chatbot footer" />);
     expect(screen.getByText('Chatbot footer')).toBeTruthy();
+  });
+
+  it('should not log a console error when no popover is provided', () => {
+    render(<ChatbotFootnote label="Chatbot footer" />);
+    expect(consoleErrorSpy).not.toHaveBeenCalledWith(POPOVER_CLOSE_ERROR);
+  });
+
+  it('should not log a console error when popover has a cta', () => {
+    render(<ChatbotFootnote label="Chatbot footer" popover={popoverProps} />);
+    expect(consoleErrorSpy).not.toHaveBeenCalledWith(POPOVER_CLOSE_ERROR);
+  });
+
+  it('should not log a console error when popover has showClose', () => {
+    render(
+      <ChatbotFootnote
+        label="Chatbot footer"
+        popover={{
+          title: 'Verify accuracy',
+          description: 'description',
+          showClose: true
+        }}
+      />
+    );
+    expect(consoleErrorSpy).not.toHaveBeenCalledWith(POPOVER_CLOSE_ERROR);
+  });
+
+  it('should log a console error when popover is provided without cta or showClose', () => {
+    render(
+      <ChatbotFootnote
+        label="Chatbot footer"
+        popover={{
+          title: 'Verify accuracy',
+          description: 'description'
+        }}
+      />
+    );
+    expect(consoleErrorSpy).toHaveBeenCalledWith(POPOVER_CLOSE_ERROR);
   });
 
   it('should render ChatbotFooternote with popover', async () => {

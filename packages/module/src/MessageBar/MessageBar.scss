@@ -46,14 +46,14 @@
 
   &:hover {
     &::after {
-      border-color: var(--pf-t--global--border--color--control--hover);
+      border-color: var(--pf-t--global--border--color--hover);
       border-width: var(--pf-t--global--border--width--control--hover);
     }
   }
 
   &:focus-within {
     &::after {
-      border-color: var(--pf-t--global--border--color--control--clicked);
+      border-color: var(--pf-t--global--border--color--clicked);
       border-width: var(--pf-t--global--border--width--control--clicked);
     }
   }

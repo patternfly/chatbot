@@ -63,7 +63,7 @@ export const ChatbotFootnote: FunctionComponent<ChatbotFootnoteProps> = ({
   className,
   ...props
 }: ChatbotFootnoteProps) => {
-  if (!popover?.cta && !popover?.showClose) {
+  if (popover && !popover.cta && !popover.showClose) {
     // eslint-disable-next-line no-console
     console.error(
       'ChatbotFootnote: You must provide either the popover.cta or popover.showClose props in order to render a button that can close the popover.'
