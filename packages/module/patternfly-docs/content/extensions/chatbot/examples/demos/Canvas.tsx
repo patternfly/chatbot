@@ -39,16 +39,16 @@ import ChatbotHeader, {
   ChatbotHeaderMenu,
   ChatbotHeaderTitle
 } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
-import RhUiAiInfoIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-ai-info-icon';
-import RhUiImageFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-image-fill-icon';
-import RhUiAddIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-add-icon';
-import RhUiTaskFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-task-fill-icon';
-import RhUiSaveIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-save-icon';
-import RhUiRedoIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-redo-icon';
-import RhUiUndoIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-undo-icon';
-import RhUiServerUploadFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-server-upload-fill-icon';
-import RhUiNotificationFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-notification-fill-icon';
-import RhUiCalendarFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-calendar-fill-icon';
+import { RhUiAiInfoIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-ai-info-icon';
+import { RhUiImageFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-image-fill-icon';
+import { RhUiAddIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-add-icon';
+import { RhUiTaskFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-task-fill-icon';
+import { RhUiSaveIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-save-icon';
+import { RhUiRedoIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-redo-icon';
+import { RhUiUndoIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-undo-icon';
+import { RhUiServerUploadFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-server-upload-fill-icon';
+import { RhUiNotificationFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-notification-fill-icon';
+import { RhUiCalendarFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-calendar-fill-icon';
 import { useDropzone } from 'react-dropzone';
 import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';

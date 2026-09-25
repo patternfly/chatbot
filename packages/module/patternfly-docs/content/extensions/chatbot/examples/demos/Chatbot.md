@@ -37,6 +37,7 @@ import MessageBox from '@patternfly/chatbot/dist/dynamic/MessageBox';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import Compare from '@patternfly/chatbot/dist/dynamic/Compare';
 import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
+import SettingsForm from '@patternfly/chatbot/dist/dynamic/Settings';
 
 import ChatbotHeader, {
 ChatbotHeaderMain,
@@ -55,9 +56,12 @@ import RhUiAddIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-add-icon';
 import RhUiClipboardIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-clipboard-icon';
 import RhUiCodeIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-code-icon';
 import RhUiUploadIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-upload-icon';
-import { BarsIcon } from '@patternfly/react-icons/dist/esm/icons/bars-icon';
-import { RhUiBuildFillIcon, RhUiCopyFillIcon } from '@patternfly/react-icons';
+import RhUiBuildFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-build-fill-icon';
+import RhUiCopyFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-copy-fill-icon';
 import RhUiImageFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-image-fill-icon';
+import RhUiEditFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-edit-fill-icon';
+import RhUiSettingsFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-settings-fill-icon';
+import RhMicronsCloseIcon from '@patternfly/react-icons/dist/esm/icons/rh-microns-close-icon';
 import {
 Button,
 Divider,
@@ -185,6 +189,14 @@ This demo showcases how the ChatBot can be rendered in different display modes t
 4. A [basic ChatBot](#basic-chatbot) with a header, welcome prompt, and message bar to populate the different layouts.
 
 ```js file="./ChatbotDisplayMode.tsx" isFullscreen
+
+```
+
+### Fullscreen ChatBot with docked navigation
+
+This demo shows a headerless fullscreen ChatBot with a vertical navigation rail for switching between chat history, a new chat, and settings.
+
+```js file="./FullscreenDockedNav.tsx" isFullscreen
 
 ```
 

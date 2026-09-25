@@ -28,7 +28,7 @@ export interface MessageBarWithAttachMenuProps {
   /** Items in menu */
   attachMenuItems: React.ReactNode;
   /** A callback for when the attachment menu toggle is clicked */
-  onAttachMenuToggleClick: () => void;
+  onAttachMenuToggleClick?: () => void;
   /** A callback for when the input value in the menu changes. */
   onAttachMenuInputChange?: (value: string) => void;
   /** Function callback called when user selects item in menu. */
@@ -368,7 +368,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
 
   const handleAttachMenuToggle = () => {
     attachMenuProps?.setIsAttachMenuOpen && attachMenuProps?.setIsAttachMenuOpen(!attachMenuProps?.isAttachMenuOpen);
-    attachMenuProps?.onAttachMenuToggleClick();
+    attachMenuProps?.onAttachMenuToggleClick?.();
   };
 
   const handleSpeechRecognition = (message) => {
@@ -525,7 +525,9 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
         {...(attachMenuProps && { handleTextInputChange: attachMenuProps.onAttachMenuInputChange })}
         popperProps={{ direction: 'up', distance: 8 }}
         searchInputPlaceholder={attachMenuProps?.attachMenuInputPlaceholder}
-        {...attachMenuProps}
+        menuSearchProps={attachMenuProps?.menuSearchProps}
+        menuSearchInputProps={attachMenuProps?.menuSearchInputProps}
+        searchInputProps={attachMenuProps?.searchInputProps}
       />
     );
   }

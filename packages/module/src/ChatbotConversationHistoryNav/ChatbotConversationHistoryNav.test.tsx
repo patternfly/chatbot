@@ -161,17 +161,23 @@ describe('ChatbotConversationHistoryNav', () => {
   });
 
   it('should close the drawer when escape key is pressed', async () => {
-    render(
-      <ChatbotConversationHistoryNav
-        onDrawerToggle={onDrawerToggle}
-        isDrawerOpen={true}
-        displayMode={ChatbotDisplayMode.fullscreen}
-        setIsDrawerOpen={jest.fn()}
-        reverseButtonOrder={false}
-        handleTextInputChange={jest.fn()}
-        conversations={initialConversations}
-      />
-    );
+    const HistoryNavigationTest = () => {
+      const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+
+      return (
+        <ChatbotConversationHistoryNav
+          onDrawerToggle={onDrawerToggle}
+          isDrawerOpen={isDrawerOpen}
+          displayMode={ChatbotDisplayMode.fullscreen}
+          setIsDrawerOpen={setIsDrawerOpen}
+          reverseButtonOrder={false}
+          handleTextInputChange={jest.fn()}
+          conversations={initialConversations}
+        />
+      );
+    };
+
+    render(<HistoryNavigationTest />);
 
     fireEvent.keyDown(screen.getByPlaceholderText(/Search/i), {
       key: 'Escape',
@@ -180,8 +186,8 @@ describe('ChatbotConversationHistoryNav', () => {
       charCode: 27
     });
 
-    waitFor(() => {
-      expect(screen.queryByText('ChatBot documentation')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByRole('dialog', { hidden: true })).toHaveAttribute('hidden');
     });
   });
 

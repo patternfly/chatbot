@@ -36,4 +36,15 @@ describe('Chatbot', () => {
     );
     expect(screen.getByTestId('chatbot')).toHaveClass('pf-m-compact');
   });
+
+  it('should render docked navigation and apply the docked navigation class', () => {
+    render(
+      <Chatbot data-testid="chatbot" dockedNav={<nav aria-label="Chatbot navigation">Navigation</nav>}>
+        Chatbot Content
+      </Chatbot>
+    );
+
+    expect(screen.getByTestId('chatbot')).toHaveClass('pf-chatbot--docked-nav');
+    expect(screen.getByRole('navigation', { name: 'Chatbot navigation' })).toBeInTheDocument();
+  });
 });
