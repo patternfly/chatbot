@@ -1,4 +1,4 @@
-import { FunctionComponent, useRef, useState } from 'react';
+import { FunctionComponent, ReactNode, useEffect, useRef, useState } from 'react';
 import {
   Avatar,
   Brand,
@@ -31,7 +31,6 @@ import MessageBar from '@patternfly/chatbot/dist/dynamic/MessageBar';
 import MessageBox from '@patternfly/chatbot/dist/dynamic/MessageBox';
 import Message, { MessageProps } from '@patternfly/chatbot/dist/dynamic/Message';
 import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
-import SettingsForm from '@patternfly/chatbot/dist/dynamic/Settings';
 import { RhUiEditFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-edit-fill-icon';
 import { RhUiSettingsFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-settings-fill-icon';
 import { RhMicronsCloseIcon } from '@patternfly/react-icons/dist/esm/icons/rh-microns-close-icon';
@@ -75,6 +74,25 @@ const conversations = [
   { id: '2', text: 'Review deployment options' }
 ];
 
+interface PlainTextSettingsFormProps {
+  fields: { id: string; label: string; field: ReactNode }[];
+}
+
+const PlainTextSettingsForm = ({ fields }: PlainTextSettingsFormProps) => (
+  <div className="pf-chatbot__settings-form-container">
+    <form className="pf-chatbot__settings-form">
+      {fields.map(({ id, label, field }) => (
+        <div className="pf-chatbot__settings-form-row" key={id}>
+          <div className="pf-chatbot__settings-label" id={`${id}-label`}>
+            {label}
+          </div>
+          {field}
+        </div>
+      ))}
+    </form>
+  </div>
+);
+
 const hamburgerHoverStyles = `
   .pf-chatbot__canvas-docked-nav .pf-v6-c-masthead__logo.pf-m-compact {
     display: revert;
@@ -103,8 +121,13 @@ const SettingsPanel = ({ onClose }) => {
   const [language, setLanguage] = useState('Auto-detect');
   const [voice, setVoice] = useState('Bot');
   const [isAnalyticsShared, setIsAnalyticsShared] = useState(true);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  const dropdownField = (id, value, options, onSelect) => (
+  useEffect(() => {
+    window.requestAnimationFrame(() => closeButtonRef.current?.focus());
+  }, []);
+
+  const dropdownField = (id, label, value, options, onSelect) => (
     <Dropdown
       isOpen={openDropdown === id}
       onSelect={(_event, selectedValue) => {
@@ -120,6 +143,7 @@ const SettingsPanel = ({ onClose }) => {
           ref={toggleRef}
           onClick={() => setOpenDropdown(openDropdown === id ? undefined : id)}
           isExpanded={openDropdown === id}
+          aria-label={`${value}, ${label}`}
         >
           {value}
         </MenuToggle>
@@ -136,20 +160,24 @@ const SettingsPanel = ({ onClose }) => {
   );
 
   const fields = [
-    { id: 'theme', label: 'Theme', field: dropdownField('theme', theme, ['System', 'Light', 'Dark'], setTheme) },
+    {
+      id: 'theme',
+      label: 'Theme',
+      field: dropdownField('theme', 'Theme', theme, ['System', 'Light', 'Dark'], setTheme)
+    },
     {
       id: 'language',
       label: 'Language',
-      field: dropdownField('language', language, ['Auto-detect', 'English'], setLanguage)
+      field: dropdownField('language', 'Language', language, ['Auto-detect', 'English'], setLanguage)
     },
-    { id: 'voice', label: 'Voice', field: dropdownField('voice', voice, ['Bot', 'User'], setVoice) },
+    { id: 'voice', label: 'Voice', field: dropdownField('voice', 'Voice', voice, ['Bot', 'User'], setVoice) },
     {
       id: 'analytics',
       label: 'Share analytics',
       field: (
         <Switch
           id="analytics"
-          aria-label="Toggle sharing analytics"
+          aria-labelledby="analytics-label"
           isChecked={isAnalyticsShared}
           onChange={(_event, checked) => setIsAnalyticsShared(checked)}
         />
@@ -179,10 +207,17 @@ const SettingsPanel = ({ onClose }) => {
           <Title headingLevel="h1" size="2xl">
             Settings
           </Title>
-          <Button variant="plain" icon={<RhMicronsCloseIcon />} aria-label="Close settings" onClick={onClose} />
+          <Tooltip triggerRef={closeButtonRef} content="Close settings" position="bottom" aria="none" />
+          <Button
+            ref={closeButtonRef}
+            variant="plain"
+            icon={<RhMicronsCloseIcon />}
+            aria-label="Close settings"
+            onClick={onClose}
+          />
         </Flex>
         <Divider />
-        <SettingsForm fields={fields} />
+        <PlainTextSettingsForm fields={fields} />
       </div>
     </div>
   );
@@ -194,6 +229,12 @@ export const FullscreenDockedNav: FunctionComponent = () => {
   const [areSettingsOpen, setAreSettingsOpen] = useState(false);
   const [announcement, setAnnouncement] = useState<string>();
   const newChatRef = useRef<HTMLAnchorElement>(null);
+  const settingsRef = useRef<HTMLAnchorElement>(null);
+
+  const closeSettings = () => {
+    setAreSettingsOpen(false);
+    window.requestAnimationFrame(() => settingsRef.current?.focus());
+  };
 
   const startNewChat = () => {
     setMessages([]);
@@ -263,6 +304,7 @@ export const FullscreenDockedNav: FunctionComponent = () => {
                   icon={<RhUiSettingsFillIcon />}
                   component="button"
                   preventDefault
+                  anchorRef={settingsRef}
                   onClick={() => {
                     setIsDrawerOpen(false);
                     setAreSettingsOpen(true);
@@ -273,6 +315,7 @@ export const FullscreenDockedNav: FunctionComponent = () => {
               </NavList>
             </Nav>
             <Tooltip aria="none" aria-live="off" triggerRef={newChatRef} content="New chat" />
+            <Tooltip aria="none" aria-live="off" triggerRef={settingsRef} content="Settings" />
             <Avatar
               className="pf-v6-u-mt-md pf-v6-u-mb-md pf-v6-u-mx-auto"
               src={userAvatar}
@@ -301,7 +344,7 @@ export const FullscreenDockedNav: FunctionComponent = () => {
           drawerContent={
             <div className="pf-chatbot__canvas">
               {areSettingsOpen ? (
-                <SettingsPanel onClose={() => setAreSettingsOpen(false)} />
+                <SettingsPanel onClose={closeSettings} />
               ) : (
                 <div className="pf-chatbot__canvas-column">
                   <ChatbotContent>

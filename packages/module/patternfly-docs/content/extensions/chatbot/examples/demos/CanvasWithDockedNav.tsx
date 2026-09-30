@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import {
   Avatar,
@@ -10,7 +10,6 @@ import {
   DropdownList,
   Drawer,
   DrawerActions,
-  DrawerCloseButton,
   DrawerContent,
   DrawerContentBody,
   DrawerHead,
@@ -45,7 +44,6 @@ import MessageBar from '@patternfly/chatbot/dist/dynamic/MessageBar';
 import MessageBox from '@patternfly/chatbot/dist/dynamic/MessageBox';
 import Message from '@patternfly/chatbot/dist/dynamic/Message';
 import ChatbotConversationHistoryNav from '@patternfly/chatbot/dist/dynamic/ChatbotConversationHistoryNav';
-import SettingsForm from '@patternfly/chatbot/dist/dynamic/Settings';
 import { RhUiAddIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-add-icon';
 import { RhUiAiInfoIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-ai-info-icon';
 import { RhUiCalendarFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-calendar-fill-icon';
@@ -104,6 +102,25 @@ const conversations = [
   { id: '2', text: 'Review deployment options' }
 ];
 
+interface PlainTextSettingsFormProps {
+  fields: { id: string; label: string; field: ReactNode }[];
+}
+
+const PlainTextSettingsForm = ({ fields }: PlainTextSettingsFormProps) => (
+  <div className="pf-chatbot__settings-form-container">
+    <form className="pf-chatbot__settings-form">
+      {fields.map(({ id, label, field }) => (
+        <div className="pf-chatbot__settings-form-row" key={id}>
+          <div className="pf-chatbot__settings-label" id={`${id}-label`}>
+            {label}
+          </div>
+          {field}
+        </div>
+      ))}
+    </form>
+  </div>
+);
+
 const hamburgerHoverStyles = `
   .pf-chatbot__canvas-docked-nav .pf-v6-c-masthead__logo.pf-m-compact {
     display: revert;
@@ -132,8 +149,13 @@ const SettingsPanel = ({ onClose }) => {
   const [language, setLanguage] = useState('Auto-detect');
   const [voice, setVoice] = useState('Bot');
   const [isAnalyticsShared, setIsAnalyticsShared] = useState(true);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  const dropdownField = (id, value, options, onSelect) => (
+  useEffect(() => {
+    window.requestAnimationFrame(() => closeButtonRef.current?.focus());
+  }, []);
+
+  const dropdownField = (id, label, value, options, onSelect) => (
     <Dropdown
       isOpen={openDropdown === id}
       onSelect={(_event, selectedValue) => {
@@ -149,6 +171,7 @@ const SettingsPanel = ({ onClose }) => {
           ref={toggleRef}
           onClick={() => setOpenDropdown(openDropdown === id ? undefined : id)}
           isExpanded={openDropdown === id}
+          aria-label={`${value}, ${label}`}
         >
           {value}
         </MenuToggle>
@@ -165,20 +188,24 @@ const SettingsPanel = ({ onClose }) => {
   );
 
   const fields = [
-    { id: 'theme', label: 'Theme', field: dropdownField('theme', theme, ['System', 'Light', 'Dark'], setTheme) },
+    {
+      id: 'theme',
+      label: 'Theme',
+      field: dropdownField('theme', 'Theme', theme, ['System', 'Light', 'Dark'], setTheme)
+    },
     {
       id: 'language',
       label: 'Language',
-      field: dropdownField('language', language, ['Auto-detect', 'English'], setLanguage)
+      field: dropdownField('language', 'Language', language, ['Auto-detect', 'English'], setLanguage)
     },
-    { id: 'voice', label: 'Voice', field: dropdownField('voice', voice, ['Bot', 'User'], setVoice) },
+    { id: 'voice', label: 'Voice', field: dropdownField('voice', 'Voice', voice, ['Bot', 'User'], setVoice) },
     {
       id: 'analytics',
       label: 'Share analytics',
       field: (
         <Switch
           id="analytics"
-          aria-label="Toggle sharing analytics"
+          aria-labelledby="analytics-label"
           isChecked={isAnalyticsShared}
           onChange={(_event, checked) => setIsAnalyticsShared(checked)}
         />
@@ -208,10 +235,17 @@ const SettingsPanel = ({ onClose }) => {
           <Title headingLevel="h1" size="2xl">
             Settings
           </Title>
-          <Button variant="plain" icon={<RhMicronsCloseIcon />} aria-label="Close settings" onClick={onClose} />
+          <Tooltip triggerRef={closeButtonRef} content="Close settings" position="bottom" aria="none" />
+          <Button
+            ref={closeButtonRef}
+            variant="plain"
+            icon={<RhMicronsCloseIcon />}
+            aria-label="Close settings"
+            onClick={onClose}
+          />
         </Flex>
         <Divider />
-        <SettingsForm fields={fields} />
+        <PlainTextSettingsForm fields={fields} />
       </div>
     </div>
   );
@@ -231,8 +265,40 @@ export const CanvasWithDockedNavDemo = () => {
   const [announcement, setAnnouncement] = useState();
   const [isSendButtonDisabled, setIsSendButtonDisabled] = useState(false);
   const newChatRef = useRef<HTMLAnchorElement>(null);
+  const settingsRef = useRef<HTMLAnchorElement>(null);
+  const messageInputRef = useRef<HTMLTextAreaElement>(null);
+  const canvasSectionRef = useRef<HTMLElement>(null);
   const scrollToBottomRef = useRef<HTMLDivElement>(null);
   const messageActionsRef = useRef<HTMLButtonElement>(null);
+  const canvasCloseButtonRef = useRef<HTMLButtonElement>(null);
+  const focusCanvasAfterAttachSelection = useRef(false);
+
+  const closeSettings = () => {
+    setAreSettingsOpen(false);
+    window.requestAnimationFrame(() => settingsRef.current?.focus());
+  };
+
+  const focusMessageInput = () => {
+    window.requestAnimationFrame(() => messageInputRef.current?.focus());
+  };
+
+  const focusMessageActions = () => {
+    window.requestAnimationFrame(() => messageActionsRef.current?.focus());
+  };
+
+  const focusCanvasSection = () => {
+    window.requestAnimationFrame(() => {
+      canvasSectionRef.current?.focus();
+      focusCanvasAfterAttachSelection.current = false;
+    });
+  };
+
+  const handleGeneratedAiLabelKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      event.currentTarget.click();
+    }
+  };
   const { open, getInputProps } = useDropzone({
     multiple: true,
     // eslint-disable-next-line no-console
@@ -248,11 +314,13 @@ export const CanvasWithDockedNavDemo = () => {
   const openCanvas = () => {
     setShowCanvasLabel(true);
     setIsCanvasOpen(true);
+    focusCanvasSection();
   };
 
   const closeCanvasMode = () => {
     setShowCanvasLabel(false);
     setIsCanvasOpen(false);
+    focusMessageInput();
   };
 
   const sendMessage = (content) => {
@@ -379,6 +447,7 @@ export const CanvasWithDockedNavDemo = () => {
                   icon={<RhUiSettingsFillIcon />}
                   component="button"
                   preventDefault
+                  anchorRef={settingsRef}
                   onClick={() => {
                     setIsDrawerOpen(false);
                     setAreSettingsOpen(true);
@@ -389,6 +458,7 @@ export const CanvasWithDockedNavDemo = () => {
               </NavList>
             </Nav>
             <Tooltip aria="none" aria-live="off" triggerRef={newChatRef} content="New chat" />
+            <Tooltip aria="none" aria-live="off" triggerRef={settingsRef} content="Settings" />
             <Avatar
               className="pf-v6-u-mt-md pf-v6-u-mb-md pf-v6-u-mx-auto"
               src={userAvatar}
@@ -412,7 +482,7 @@ export const CanvasWithDockedNavDemo = () => {
 
   const canvasPanel = (
     <DrawerPanelContent isResizable isGlass defaultSize="60%" minSize="30%" className="pf-chatbot__canvas-panel">
-      <section className="pf-chatbot__canvas-section" tabIndex={-1} aria-label="Canvas">
+      <section ref={canvasSectionRef} className="pf-chatbot__canvas-section" tabIndex={-1} aria-label="Canvas">
         <DrawerHead className="pf-chatbot__canvas-head">
           <Flex spaceItems={{ default: 'spaceItemsMd' }} alignItems={{ default: 'alignItemsCenter' }}>
             <FlexItem>
@@ -434,6 +504,7 @@ export const CanvasWithDockedNavDemo = () => {
                   role="button"
                   tabIndex={0}
                   aria-expanded={isGeneratedAiPopoverOpen}
+                  onKeyDown={handleGeneratedAiLabelKeyDown}
                 >
                   Generated with AI
                 </Label>
@@ -441,11 +512,16 @@ export const CanvasWithDockedNavDemo = () => {
             </FlexItem>
           </Flex>
           <DrawerActions>
-            <Tooltip content="Close canvas" position="bottom" aria="none">
-              <span>
-                <DrawerCloseButton aria-label="Exit canvas mode" onClose={closeCanvasMode} />
-              </span>
-            </Tooltip>
+            <Tooltip triggerRef={canvasCloseButtonRef} content="Close canvas" position="bottom" aria="none" />
+            <div className="pf-v6-c-drawer__close">
+              <Button
+                ref={canvasCloseButtonRef}
+                variant="plain"
+                aria-label="Exit canvas mode"
+                icon={<RhMicronsCloseIcon />}
+                onClick={closeCanvasMode}
+              />
+            </div>
           </DrawerActions>
         </DrawerHead>
         <div className="pf-chatbot__canvas-panel-body">
@@ -461,6 +537,7 @@ export const CanvasWithDockedNavDemo = () => {
               code={code}
               language={Language.yaml}
               onCodeChange={setCode}
+              options={{ automaticLayout: false }}
             />
           </div>
         </div>
@@ -485,7 +562,7 @@ export const CanvasWithDockedNavDemo = () => {
             drawerContent={
               <div style={{ display: 'contents' }}>
                 {areSettingsOpen ? (
-                  <SettingsPanel onClose={() => setAreSettingsOpen(false)} />
+                  <SettingsPanel onClose={closeSettings} />
                 ) : (
                   <Drawer isExpanded={isCanvasOpen} isInline position="end">
                     <DrawerContent panelContent={canvasPanel}>
@@ -516,20 +593,34 @@ export const CanvasWithDockedNavDemo = () => {
                               attachButtonPosition="start"
                               alwayShowSendButton
                               isSendButtonDisabled={isSendButtonDisabled}
+                              innerRef={messageInputRef}
                               attachMenuProps={{
                                 isAttachMenuOpen,
                                 setIsAttachMenuOpen,
                                 attachMenuItems,
                                 onAttachMenuOnOpenChangeKeys: ['Escape', 'Tab'],
+                                onAttachMenuOpenChange: (isOpen) => {
+                                  if (!isOpen) {
+                                    if (focusCanvasAfterAttachSelection.current) {
+                                      focusCanvasAfterAttachSelection.current = false;
+                                    } else {
+                                      focusMessageActions();
+                                    }
+                                  }
+                                },
                                 onAttachMenuSelect: (_event, value) => {
                                   if (value === 'canvas') {
                                     if (showCanvasLabel) {
                                       closeCanvasMode();
                                     } else {
+                                      focusCanvasAfterAttachSelection.current = true;
                                       openCanvas();
+                                      setIsAttachMenuOpen(false);
+                                      return;
                                     }
                                   }
                                   setIsAttachMenuOpen(false);
+                                  focusMessageActions();
                                 }
                               }}
                               buttonProps={{
@@ -558,6 +649,7 @@ export const CanvasWithDockedNavDemo = () => {
                                       setSelectedModel(String(value));
                                       setIsModelSelectOpen(false);
                                     }}
+                                    shouldFocusToggleOnSelect
                                     onOpenChange={setIsModelSelectOpen}
                                     toggle={(toggleRef) => (
                                       <MenuToggle
