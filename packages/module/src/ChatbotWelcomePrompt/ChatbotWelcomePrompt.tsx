@@ -64,9 +64,11 @@ export const ChatbotWelcomePrompt: FunctionComponent<ChatbotWelcomePromptProps> 
                 selectableActionAriaLabelledby: `welcome-prompt-title-${index}`
               }}
             >
-              <CardTitle id={`welcome-prompt-title-${index}`}>{prompt.title}</CardTitle>
+              <CardTitle className="pf-chatbot__prompt-suggestion-title" id={`welcome-prompt-title-${index}`}>
+                {prompt.title}
+              </CardTitle>
             </CardHeader>
-            {prompt.message && <CardBody>{prompt.message}</CardBody>}
+            {prompt.message && <CardBody className="pf-chatbot__prompt-suggestion-body">{prompt.message}</CardBody>}
           </Card>
         ))}
       </div>

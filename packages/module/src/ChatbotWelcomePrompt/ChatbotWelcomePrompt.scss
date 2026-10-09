@@ -30,6 +30,12 @@
     flex: 1;
     overflow: visible;
     height: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .pf-chatbot__prompt-suggestion-title {
+    overflow-wrap: anywhere;
   }
 }
 
