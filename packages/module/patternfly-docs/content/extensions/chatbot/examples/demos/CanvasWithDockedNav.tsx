@@ -537,7 +537,6 @@ export const CanvasWithDockedNavDemo = () => {
               code={code}
               language={Language.yaml}
               onCodeChange={setCode}
-              options={{ automaticLayout: false }}
             />
           </div>
         </div>

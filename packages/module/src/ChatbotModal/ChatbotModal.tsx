@@ -32,6 +32,7 @@ export const ChatbotModal: FunctionComponent<ChatbotModalProps> = ({
       aria-describedby="chatbot-modal"
       className={`pf-chatbot__chatbot-modal pf-chatbot__chatbot-modal--${displayMode} ${isCompact ? 'pf-m-compact' : ''} ${className}`}
       backdropClassName="pf-chatbot__chatbot-modal-backdrop"
+      hasAnimations={false}
       {...props}
     >
       {children}
