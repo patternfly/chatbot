@@ -37,6 +37,7 @@ const JumpButton: FunctionComponent<JumpButtonProps> = ({
         className={`pf-chatbot__jump pf-chatbot__jump--${position}`}
         aria-label={`Back to ${position}`}
         onClick={onClick}
+        isCircle
         {...jumpButtonProps}
       >
         <Icon iconSize="lg" isInline>
