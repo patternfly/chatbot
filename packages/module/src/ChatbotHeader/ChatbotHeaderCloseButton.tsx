@@ -40,17 +40,17 @@ const ChatbotHeaderCloseButtonBase: FunctionComponent<ChatbotHeaderCloseButtonPr
       {...tooltipProps}
     >
       <Button
-        className={`pf-chatbot__button--toggle-menu ${isCompact ? 'pf-m-compact' : ''}`}
         variant="plain"
         onClick={onClick}
         aria-label={menuAriaLabel}
         ref={innerRef}
         icon={
-          <Icon size={isCompact ? 'lg' : 'xl'} isInline>
+          <Icon>
             <RhMicronsCloseIcon />
           </Icon>
         }
         size={isCompact ? 'sm' : undefined}
+        isCircle
         {...props}
       />
     </Tooltip>

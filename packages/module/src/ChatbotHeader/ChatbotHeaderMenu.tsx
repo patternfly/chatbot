@@ -68,12 +68,13 @@ const ChatbotHeaderMenuBase: FunctionComponent<ChatbotHeaderMenuProps> = ({
         aria-label={menuAriaLabel}
         ref={innerRef ?? buttonRef}
         icon={
-          <Icon size={isCompact ? 'lg' : 'xl'} isInline>
+          <Icon>
             <RhUiMenuBarsIcon />
           </Icon>
         }
         size={isCompact ? 'sm' : undefined}
         {...props}
+        isCircle
       />
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
