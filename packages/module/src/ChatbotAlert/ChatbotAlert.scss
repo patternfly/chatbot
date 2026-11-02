@@ -1,5 +1,7 @@
 .pf-chatbot__alert {
+  background-color: var(--pf-t--global--background--color--floating--default);
   position: sticky;
   top: var(--pf-t--global--spacer--lg);
   z-index: var(--pf-t--global--z-index--sm);
+  border-radius: var(--pf-t--global--border--radius--medium);
 }
