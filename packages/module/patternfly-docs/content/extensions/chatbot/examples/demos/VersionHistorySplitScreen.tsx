@@ -28,7 +28,6 @@ import { RhUiAiInfoIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-ai-
 import { CheckIcon } from '@patternfly/react-icons/dist/esm/icons/check-icon';
 import { TimesIcon } from '@patternfly/react-icons/dist/esm/icons/times-icon';
 import { EllipsisVIcon } from '@patternfly/react-icons/dist/esm/icons/ellipsis-v-icon';
-import { RhMicronsCloseIcon } from '@patternfly/react-icons/dist/esm/icons/rh-microns-close-icon';
 import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
 import './VersionHistory.css';
@@ -221,134 +220,124 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
       </div>
 
       <div className="version-history-content">
-        <Flex direction={{ default: 'column' }} style={{ height: '100%' }}>
-          <FlexItem flex={{ default: 'flex_1' }} style={{ overflow: 'auto' }}>
-            <DataList aria-label="Version history list" isCompact>
-              {[...versions]
-                .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
-                .map((version) => (
-                  <DataListItem
-                    key={version.id}
-                    id={version.id}
-                    aria-labelledby={`version-${version.id}`}
-                    isExpanded={selectedVersionId === version.id}
-                    className={selectedVersionId === version.id ? 'pf-m-selected' : ''}
-                    onClick={() => handleVersionSelect(version.id)}
-                  >
-                    <DataListItemRow>
-                      <DataListItemCells
-                        dataListCells={[
-                          <DataListCell key="primary">
-                            {editingVersionId === version.id ? (
-                              <Flex
-                                spaceItems={{ default: 'spaceItemsSm' }}
-                                alignItems={{ default: 'alignItemsCenter' }}
-                              >
-                                <FlexItem flex={{ default: 'flex_1' }}>
-                                  <TextInput
-                                    value={editingName}
-                                    onChange={(_event, value) => setEditingName(value)}
-                                    aria-label="Version name"
-                                    autoFocus
-                                    onKeyDown={(e) => {
-                                      if (e.key === 'Enter') handleSaveRename(version.id);
-                                      if (e.key === 'Escape') handleCancelRename();
-                                    }}
-                                  />
-                                </FlexItem>
+        <DataList aria-label="Version history list" isCompact>
+          {[...versions]
+            .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+            .map((version) => (
+              <DataListItem
+                key={version.id}
+                id={version.id}
+                aria-labelledby={`version-${version.id}`}
+                isExpanded={selectedVersionId === version.id}
+                className={selectedVersionId === version.id ? 'pf-m-selected' : ''}
+                onClick={() => handleVersionSelect(version.id)}
+              >
+                <DataListItemRow>
+                  <DataListItemCells
+                    dataListCells={[
+                      <DataListCell key="primary">
+                        {editingVersionId === version.id ? (
+                          <Flex spaceItems={{ default: 'spaceItemsSm' }} alignItems={{ default: 'alignItemsCenter' }}>
+                            <FlexItem flex={{ default: 'flex_1' }}>
+                              <TextInput
+                                value={editingName}
+                                onChange={(_event, value) => setEditingName(value)}
+                                aria-label="Version name"
+                                autoFocus
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') handleSaveRename(version.id);
+                                  if (e.key === 'Escape') handleCancelRename();
+                                }}
+                              />
+                            </FlexItem>
+                            <FlexItem>
+                              <Button
+                                variant="plain"
+                                aria-label="Save name"
+                                icon={<CheckIcon />}
+                                onClick={() => handleSaveRename(version.id)}
+                              />
+                            </FlexItem>
+                            <FlexItem>
+                              <Button
+                                variant="plain"
+                                aria-label="Cancel rename"
+                                icon={<TimesIcon />}
+                                onClick={handleCancelRename}
+                              />
+                            </FlexItem>
+                          </Flex>
+                        ) : (
+                          <Flex direction={{ default: 'column' }} spaceItems={{ default: 'spaceItemsXs' }}>
+                            <FlexItem>
+                              <Content component={ContentVariants.p} className="pf-v6-u-font-weight-bold">
+                                {version.name}
+                              </Content>
+                            </FlexItem>
+                            <FlexItem>
+                              <Flex spaceItems={{ default: 'spaceItemsSm' }} alignItems={{ default: 'alignItemsCenter' }}>
                                 <FlexItem>
-                                  <Button
-                                    variant="plain"
-                                    aria-label="Save name"
-                                    icon={<CheckIcon />}
-                                    onClick={() => handleSaveRename(version.id)}
-                                  />
-                                </FlexItem>
-                                <FlexItem>
-                                  <Button
-                                    variant="plain"
-                                    aria-label="Cancel rename"
-                                    icon={<TimesIcon />}
-                                    onClick={handleCancelRename}
-                                  />
-                                </FlexItem>
-                              </Flex>
-                            ) : (
-                              <Flex direction={{ default: 'column' }} spaceItems={{ default: 'spaceItemsXs' }}>
-                                <FlexItem>
-                                  <Content component={ContentVariants.p} className="pf-v6-u-font-weight-bold">
-                                    {version.name}
+                                  <Content component={ContentVariants.small}>
+                                    {version.author === 'bot' ? 'Bot' : 'You'} · {formatTimestamp(version.timestamp)}
                                   </Content>
                                 </FlexItem>
-                                <FlexItem>
-                                  <Flex
-                                    spaceItems={{ default: 'spaceItemsSm' }}
-                                    alignItems={{ default: 'alignItemsCenter' }}
-                                  >
-                                    <FlexItem>
-                                      <Content component={ContentVariants.small} className="pf-v6-u-color-200">
-                                        {version.author === 'bot' ? 'Bot' : 'You'} · {formatTimestamp(version.timestamp)}
-                                      </Content>
-                                    </FlexItem>
-                                    {version.author === 'bot' && (
-                                      <FlexItem>
-                                        <Label isCompact variant="outline">
-                                          AI
-                                        </Label>
-                                      </FlexItem>
-                                    )}
-                                  </Flex>
-                                </FlexItem>
+                                {version.author === 'bot' && (
+                                  <FlexItem>
+                                    <Label isCompact variant="outline">
+                                      AI
+                                    </Label>
+                                  </FlexItem>
+                                )}
                               </Flex>
-                            )}
-                          </DataListCell>
-                        ]}
-                      />
-                      {editingVersionId !== version.id && (
-                        <DataListAction
-                          aria-labelledby={`version-${version.id}`}
-                          id={`version-action-${version.id}`}
-                          aria-label="Version actions"
-                        >
-                          <Dropdown
-                            isOpen={openMenuVersionId === version.id}
-                            onOpenChange={(isOpen) => setOpenMenuVersionId(isOpen ? version.id : null)}
-                            toggle={(toggleRef) => (
-                              <MenuToggle
-                                ref={toggleRef}
-                                variant="plain"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleMenuToggle(version.id);
-                                }}
-                                isExpanded={openMenuVersionId === version.id}
-                                aria-label="Version options"
-                              >
-                                <EllipsisVIcon />
-                              </MenuToggle>
-                            )}
-                            popperProps={{ position: 'right' }}
+                            </FlexItem>
+                          </Flex>
+                        )}
+                      </DataListCell>
+                    ]}
+                  />
+                  {editingVersionId !== version.id && (
+                    <DataListAction
+                      aria-labelledby={`version-${version.id}`}
+                      id={`version-action-${version.id}`}
+                      aria-label="Version actions"
+                    >
+                      <Dropdown
+                        isOpen={openMenuVersionId === version.id}
+                        onOpenChange={(isOpen) => setOpenMenuVersionId(isOpen ? version.id : null)}
+                        toggle={(toggleRef) => (
+                          <MenuToggle
+                            ref={toggleRef}
+                            variant="plain"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleMenuToggle(version.id);
+                            }}
+                            isExpanded={openMenuVersionId === version.id}
+                            aria-label="Version options"
                           >
-                            <DropdownList>
-                              <DropdownItem key="name" onClick={() => handleStartRename(version.id, version.name)}>
-                                Name this version
-                              </DropdownItem>
-                              <DropdownItem key="restore" onClick={() => handleRestoreVersion(version.id)}>
-                                Restore this version
-                              </DropdownItem>
-                              <DropdownItem key="duplicate" onClick={() => handleDuplicateVersion(version.id)}>
-                                Duplicate
-                              </DropdownItem>
-                            </DropdownList>
-                          </Dropdown>
-                        </DataListAction>
-                      )}
-                    </DataListItemRow>
-                  </DataListItem>
-                ))}
-            </DataList>
-          </FlexItem>
-        </Flex>
+                            <EllipsisVIcon />
+                          </MenuToggle>
+                        )}
+                        popperProps={{ position: 'right' }}
+                      >
+                        <DropdownList>
+                          <DropdownItem key="name" onClick={() => handleStartRename(version.id, version.name)}>
+                            Name this version
+                          </DropdownItem>
+                          <DropdownItem key="restore" onClick={() => handleRestoreVersion(version.id)}>
+                            Restore this version
+                          </DropdownItem>
+                          <DropdownItem key="duplicate" onClick={() => handleDuplicateVersion(version.id)}>
+                            Duplicate
+                          </DropdownItem>
+                        </DropdownList>
+                      </Dropdown>
+                    </DataListAction>
+                  )}
+                </DataListItemRow>
+              </DataListItem>
+            ))}
+        </DataList>
       </div>
     </div>
   );
