@@ -2,8 +2,8 @@
 // Chatbot Main - Message - Content - Code Block
 // ============================================================================
 .pf-chatbot__message-code-block {
-  background-color: var(--pf-t--color--gray--80); // same in light + dark theme
-  color: var(--pf-t--color--white); // same in light + dark theme
+  background-color: var(--pf-t--global--background--color--inverse--default); 
+  color: var(--pf-t--global--text--color--inverse);
   border-radius: var(--pf-t--global--border--radius--small);
 
   // Code block
@@ -14,14 +14,14 @@
 
   // Code block header
   .pf-v6-c-code-block__header {
-    color: var(--pf-t--color--white); // same in light + dark theme
+    color: var(--pf-t--global--text--color--inverse);
 
     .pf-v6-c-code-block__actions-item > .pf-v6-c-button.pf-m-plain {
-      color: var(--pf-t--color--white); // same in light + dark theme
+      color: var(--pf-t--global--text--color--inverse);
 
       &:hover,
       &:focus {
-        color: var(--pf-t--color--white); // same in light + dark theme
+        color: var(--pf-t--global--text--color--inverse);
       }
     }
   }
