@@ -2,7 +2,6 @@
 // Chatbot Main - Message - Content - Code Block
 // ============================================================================
 .pf-chatbot__message-code-block {
-  width: 100%;
   background-color: var(--pf-t--color--gray--80); // same in light + dark theme
   color: var(--pf-t--color--white); // same in light + dark theme
   border-radius: var(--pf-t--global--border--radius--small);
@@ -15,30 +14,7 @@
 
   // Code block header
   .pf-v6-c-code-block__header {
-    --pf-v6-c-code-block__header--PaddingBlockStart: var(--pf-t--global--spacer--sm);
-    --pf-v6-c-code-block__header--PaddingBlockEnd: var(--pf-t--global--spacer--sm);
-    --pf-v6-c-code-block__header--PaddingInlineStart: var(--pf-t--global--spacer--md);
-    --pf-v6-c-code-block__header--PaddingInlineEnd: var(--pf-t--global--spacer--md);
     color: var(--pf-t--color--white); // same in light + dark theme
-
-    .pf-v6-c-code-block__actions {
-      width: 100%;
-    }
-
-    .pf-chatbot__message-code-block-language {
-      text-transform: uppercase;
-      font-family: var(--pf-t--global--font--family--body);
-    }
-
-    // we are overriding some default PatternFly positioning here - it's only necessary for the first two items
-    .pf-chatbot__message-code-block-default-action {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      font-size: var(--pf-t--global--font--size--sm);
-      font-weight: var(--pf-t--global--font--weight--body--bold);
-    }
 
     .pf-v6-c-code-block__actions-item > .pf-v6-c-button.pf-m-plain {
       color: var(--pf-t--color--white); // same in light + dark theme
@@ -52,27 +28,10 @@
 
   // Code block content
   .pf-v6-c-code-block__content {
-    --pf-v6-c-code-block__content--PaddingBlockStart: var(--pf-t--global--spacer--md);
-    --pf-v6-c-code-block__content--PaddingBlockEnd: var(--pf-t--global--spacer--md);
-    --pf-v6-c-code-block__content--PaddingInlineStart: var(--pf-t--global--spacer--md);
-    --pf-v6-c-code-block__content--PaddingInlineEnd: var(--pf-t--global--spacer--md);
     font-size: var(--pf-t--global--font--size--sm);
 
-    pre,
-    pre:hover {
-      overflow: hidden;
-      white-space: pre-wrap;
-      word-break: break-all;
-    }
     pre code {
-      display: block;
-      overflow: hidden;
       font-size: var(--pf-t--global--font--size--sm);
-    }
-
-    .pf-v6-c-code-block__code > div {
-      padding: 0 !important;
-      overflow: hidden !important;
     }
   }
 

@@ -2,7 +2,6 @@
 // Chatbot Main - Message - Content - Code Block
 // ============================================================================
 import { useState, useRef, useCallback, useEffect } from 'react';
-// Import PatternFly components
 import {
   CodeBlock,
   CodeBlockAction,
@@ -71,8 +70,6 @@ const CodeBlockMessage = ({
   const contentId = getUniqueId();
   const codeBlockRef = useRef<HTMLDivElement>(null);
 
-  const language = /language-(\w+)/.exec(className || '')?.[1];
-
   // Get custom toggle text from data attributes if available - for use with rehype plugins
   const customExpandedText = props['data-expanded-text'];
   const customCollapsedText = props['data-collapsed-text'];
@@ -133,7 +130,6 @@ const CodeBlockMessage = ({
   const actions = (
     <>
       <CodeBlockAction className="pf-chatbot__message-code-block-default-action">
-        {language && <div className="pf-chatbot__message-code-block-language">{language}</div>}
         <Button
           ref={buttonRef}
           aria-label={ariaLabel ?? 'Copy code'}
@@ -150,7 +146,10 @@ const CodeBlockMessage = ({
   );
 
   return (
-    <div className={css('pf-chatbot__message-code-block', shouldRetainStyles && 'pf-m-markdown')} ref={codeBlockRef}>
+    <div
+      className={css('pf-chatbot__message-code-block', shouldRetainStyles && 'pf-m-markdown', className)}
+      ref={codeBlockRef}
+    >
       <CodeBlock actions={actions}>
         <CodeBlockCode>
           <>

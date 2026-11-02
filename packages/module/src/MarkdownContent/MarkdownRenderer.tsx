@@ -20,8 +20,6 @@ import ImageMessage from '../Message/ImageMessage/ImageMessage';
 import rehypeUnwrapImages from 'rehype-unwrap-images';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeSanitize from 'rehype-sanitize';
-import rehypeHighlight from 'rehype-highlight';
-import 'highlight.js/styles/vs2015.css';
 import type { PluggableList } from 'unified';
 import LinkMessage from '../Message/LinkMessage/LinkMessage';
 import { rehypeMoveImagesOutOfParagraphs } from '../Message/Plugins/rehypeMoveImagesOutOfParagraphs';
@@ -45,7 +43,7 @@ const MarkdownRenderer: FunctionComponent<MarkdownRendererProps> = ({
   isPrimary,
   shouldRetainStyles
 }) => {
-  let rehypePlugins: PluggableList = [rehypeUnwrapImages, rehypeMoveImagesOutOfParagraphs, rehypeHighlight];
+  let rehypePlugins: PluggableList = [rehypeUnwrapImages, rehypeMoveImagesOutOfParagraphs];
   if (openLinkInNewTab) {
     rehypePlugins = rehypePlugins.concat([[rehypeExternalLinks, { target: '_blank' }, rehypeSanitize]]);
   }
