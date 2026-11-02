@@ -246,6 +246,7 @@ export const VersionHistory: FunctionComponent = () => {
 
   const { open, getInputProps } = useDropzone({
     multiple: true,
+    // eslint-disable-next-line no-console
     onDropAccepted: () => console.log('fileUploaded')
   });
 
@@ -291,10 +292,15 @@ export const VersionHistory: FunctionComponent = () => {
           name: 'Bot',
           isLoading: false,
           actions: {
+            // eslint-disable-next-line no-console
             positive: { onClick: () => console.log('Good response') },
+            // eslint-disable-next-line no-console
             negative: { onClick: () => console.log('Bad response') },
+            // eslint-disable-next-line no-console
             copy: { onClick: () => console.log('Copy') },
+            // eslint-disable-next-line no-console
             download: { onClick: () => console.log('Download') },
+            // eslint-disable-next-line no-console
             listen: { onClick: () => console.log('Listen') }
           },
           timestamp: date.toLocaleString()
