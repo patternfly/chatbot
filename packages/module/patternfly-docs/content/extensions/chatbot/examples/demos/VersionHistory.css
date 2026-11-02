@@ -1,0 +1,143 @@
+/* Version history layouts masthead - separate from chatbot */
+.version-history-masthead {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  padding: var(--pf-t--global--spacer--md);
+  background-color: var(--pf-t--global--background--color--secondary--default);
+  border-bottom: 1px solid var(--pf-t--global--border--color--default);
+}
+
+/* Ensure chatbot fills available space below toggle header */
+.version-history-demo .pf-chatbot--fullscreen {
+  top: 58px !important;
+  height: calc(100% - 58px) !important;
+}
+
+/* Version History Panel Styles */
+.version-history-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--pf-t--global--spacer--lg);
+  background-color: var(--pf-t--global--background--color--primary--default);
+}
+
+.version-history-header {
+  padding-bottom: var(--pf-t--global--spacer--md);
+  border-bottom: 1px solid var(--pf-t--global--border--color--default);
+  flex-shrink: 0;
+}
+
+.version-history-content {
+  flex: 1;
+  overflow: hidden;
+}
+
+.version-history-panel .pf-v6-c-data-list__item.pf-m-selected {
+  background-color: var(--pf-t--global--background--color--secondary--default);
+}
+
+/* Remove top border from first data list item */
+.version-history-panel .pf-v6-c-data-list {
+  border-top: none;
+}
+
+.version-history-panel .pf-v6-c-data-list__item:first-child {
+  border-block-start: none;
+}
+
+.version-history-panel .pf-v6-c-data-list__item:hover {
+  background-color: var(--pf-t--global--background--color--secondary--hover);
+}
+
+/* Make version list items clickable */
+.version-history-panel .pf-v6-c-data-list__item {
+  cursor: pointer;
+}
+
+/* Option 2: Split-screen layout styles */
+.version-history-split-screen {
+  display: flex;
+  position: fixed;
+  top: 58px; /* Below masthead */
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.version-history-split-canvas {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.version-history-split-canvas .pf-chatbot__canvas-section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--pf-t--global--background--color--secondary--default);
+}
+
+.version-history-split-canvas .pf-chatbot__canvas-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--pf-t--global--spacer--md);
+  padding-top: var(--pf-t--global--spacer--lg);
+  padding-bottom: var(--pf-t--global--spacer--md);
+  background-color: var(--pf-t--global--background--color--secondary--default);
+  flex-shrink: 0;
+}
+
+.version-history-split-canvas .pf-chatbot__canvas-panel-body {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: var(--pf-t--global--spacer--md);
+}
+
+.version-history-split-canvas .pf-chatbot__canvas-editor {
+  flex: 1;
+  overflow: hidden;
+  border-radius: var(--pf-t--global--border--radius--medium);
+}
+
+.version-history-split-canvas .pf-v6-c-code-editor {
+  height: 100%;
+}
+
+.version-history-split-panel {
+  width: 400px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-left: 1px solid var(--pf-t--global--border--color--default);
+}
+
+.version-history-split-panel .version-history-panel {
+  height: 100%;
+}
+
+/* Option 3: Floating Version History Panel */
+.pf-chatbot__canvas-panel:has(.version-history-floating-panel) {
+  position: relative;
+}
+
+.version-history-floating-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 75%;
+  z-index: 100;
+  background-color: var(--pf-t--global--background--color--floating--default);
+  box-shadow: var(--pf-t--global--box-shadow--md);
+}
+
+.version-history-floating-panel .version-history-panel {
+  height: 100%;
+}
