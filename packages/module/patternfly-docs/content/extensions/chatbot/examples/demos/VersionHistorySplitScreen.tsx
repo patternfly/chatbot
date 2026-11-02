@@ -23,11 +23,13 @@ import {
   Content,
   ContentVariants
 } from '@patternfly/react-core';
-import { CodeEditor, Language } from '@patternfly/react-code-editor';
+import { CodeEditor, CodeEditorControl, Language } from '@patternfly/react-code-editor';
 import { RhUiAiInfoIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-ai-info-icon';
 import { CheckIcon } from '@patternfly/react-icons/dist/esm/icons/check-icon';
 import { TimesIcon } from '@patternfly/react-icons/dist/esm/icons/times-icon';
 import { EllipsisVIcon } from '@patternfly/react-icons/dist/esm/icons/ellipsis-v-icon';
+import { RhMicronsCloseIcon } from '@patternfly/react-icons/dist/esm/icons/rh-microns-close-icon';
+import { RhUiHistoryIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-history-icon';
 import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/chatbot/dist/css/main.css';
 import './VersionHistory.css';
@@ -111,7 +113,25 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
   const [openMenuVersionId, setOpenMenuVersionId] = useState<string | null>(null);
   const [isRestoreModalOpen, setIsRestoreModalOpen] = useState(false);
   const [versionToRestore, setVersionToRestore] = useState<Version | null>(null);
-  const [previewCode, setPreviewCode] = useState<string>(initialVersions[2].code);
+  const [previewCode, setPreviewCode] = useState<string | null>(initialVersions[2].code);
+  const [isVersionHistoryOpen, setIsVersionHistoryOpen] = useState(true);
+
+  const openVersionHistory = () => {
+    setIsVersionHistoryOpen(true);
+    const sortedVersions = [...versions].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+    if (sortedVersions.length > 0) {
+      setSelectedVersionId(sortedVersions[0].id);
+      setPreviewCode(sortedVersions[0].code);
+    }
+  };
+
+  const closeVersionHistory = () => {
+    setIsVersionHistoryOpen(false);
+    setSelectedVersionId(null);
+    setEditingVersionId(null);
+    setOpenMenuVersionId(null);
+    setPreviewCode(null);
+  };
 
   const handleVersionSelect = (versionId: string) => {
     setSelectedVersionId(versionId);
@@ -207,6 +227,16 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
 
   const selectedVersion = versions.find((v) => v.id === selectedVersionId);
 
+  const historyControl = (
+    <CodeEditorControl
+      key="history"
+      icon={<RhUiHistoryIcon />}
+      aria-label="Version history"
+      tooltipProps={{ content: 'Version history', aria: 'none' }}
+      onClick={openVersionHistory}
+    />
+  );
+
   const versionHistoryPanel = (
     <div className="version-history-panel">
       <div className="version-history-header">
@@ -215,6 +245,14 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
             <Title headingLevel="h2" size="lg">
               Version History
             </Title>
+          </FlexItem>
+          <FlexItem>
+            <Button
+              variant="plain"
+              aria-label="Close version history"
+              icon={<RhMicronsCloseIcon />}
+              onClick={closeVersionHistory}
+            />
           </FlexItem>
         </Flex>
       </div>
@@ -382,12 +420,12 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
                 <Flex spaceItems={{ default: 'spaceItemsMd' }} alignItems={{ default: 'alignItemsCenter' }}>
                   <FlexItem>
                     <Title headingLevel="h2" size="lg">
-                      {selectedVersion?.name || 'Edit code'}
+                      {isVersionHistoryOpen ? selectedVersion?.name || 'Edit code' : 'Edit code'}
                     </Title>
                   </FlexItem>
                   <FlexItem>
                     <Label variant="outline" icon={<RhUiAiInfoIcon aria-hidden />}>
-                      Preview mode
+                      {isVersionHistoryOpen ? 'Preview mode' : 'Generated with AI'}
                     </Label>
                   </FlexItem>
                 </Flex>
@@ -399,9 +437,13 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
                   isFullHeight
                   isLineNumbersVisible
                   isLanguageLabelVisible
-                  isReadOnly
-                  code={previewCode}
+                  isReadOnly={isVersionHistoryOpen}
+                  isCopyEnabled={!isVersionHistoryOpen}
+                  isDownloadEnabled={!isVersionHistoryOpen}
+                  customControls={isVersionHistoryOpen ? undefined : [historyControl]}
+                  code={isVersionHistoryOpen ? previewCode || code : code}
                   language={Language.yaml}
+                  onCodeChange={setCode}
                 />
               </div>
             </div>
@@ -409,7 +451,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
         </div>
 
         {/* Right side: Version History Panel */}
-        <div className="version-history-split-panel">{versionHistoryPanel}</div>
+        {isVersionHistoryOpen && <div className="version-history-split-panel">{versionHistoryPanel}</div>}
       </div>
     </>
   );
