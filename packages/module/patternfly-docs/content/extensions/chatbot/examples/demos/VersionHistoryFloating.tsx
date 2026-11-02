@@ -26,8 +26,6 @@ import {
   SelectOption,
   Title,
   Tooltip,
-  ToggleGroup,
-  ToggleGroupItem,
   TextInput,
   DataList,
   DataListItem,
@@ -132,7 +130,6 @@ interface CanvasEditor {
   trigger: (source: string, handlerId: string, payload?: unknown) => void;
 }
 
-// Version History Types
 interface Version {
   id: string;
   timestamp: Date;
@@ -142,11 +139,10 @@ interface Version {
   name: string;
 }
 
-// Initial versions for demo
 const initialVersions: Version[] = [
   {
     id: 'v1',
-    timestamp: new Date(Date.now() - 3600000 * 2), // 2 hours ago
+    timestamp: new Date(Date.now() - 3600000 * 2),
     author: 'bot',
     authorName: 'Bot',
     code: `apiVersion: v1
@@ -160,7 +156,7 @@ data:
   },
   {
     id: 'v2',
-    timestamp: new Date(Date.now() - 3600000), // 1 hour ago
+    timestamp: new Date(Date.now() - 3600000),
     author: 'user',
     authorName: 'You',
     code: `apiVersion: v1
@@ -177,7 +173,7 @@ data:
   },
   {
     id: 'v3',
-    timestamp: new Date(Date.now() - 1800000), // 30 mins ago
+    timestamp: new Date(Date.now() - 1800000),
     author: 'bot',
     authorName: 'Bot',
     code: `apiVersion: v1
@@ -203,7 +199,7 @@ const iconLogo = (
   </>
 );
 
-export const VersionHistory: FunctionComponent = () => {
+export const VersionHistoryFloating: FunctionComponent = () => {
   const [messages, setMessages] = useState<MessageProps[]>(initialMessages);
   const [announcement, setAnnouncement] = useState<string>();
   const [isSendButtonDisabled, setIsSendButtonDisabled] = useState(false);
@@ -219,10 +215,6 @@ export const VersionHistory: FunctionComponent = () => {
     initialConversations
   );
   const [code, setCode] = useState(sampleCode);
-  // State for version history toggle
-  const [selectedOption, setSelectedOption] = useState('option1');
-  
-  // Version History State
   const [isVersionHistoryOpen, setIsVersionHistoryOpen] = useState(false);
   const [versions, setVersions] = useState<Version[]>(initialVersions);
   const [selectedVersionId, setSelectedVersionId] = useState<string | null>(null);
@@ -231,8 +223,7 @@ export const VersionHistory: FunctionComponent = () => {
   const [openMenuVersionId, setOpenMenuVersionId] = useState<string | null>(null);
   const [isRestoreModalOpen, setIsRestoreModalOpen] = useState(false);
   const [versionToRestore, setVersionToRestore] = useState<Version | null>(null);
-  const [previewCode, setPreviewCode] = useState<string | null>(null);
-  
+
   const scrollToBottomRef = useRef<HTMLDivElement>(null);
   const historyRef = useRef<HTMLButtonElement>(null);
   const editorRef = useRef<CanvasEditor>(null);
@@ -258,7 +249,7 @@ export const VersionHistory: FunctionComponent = () => {
   const handleSend = useCallback(
     (input: string | number) => {
       const inputStr = String(input);
-      const date = new Date();
+      const newDate = new Date();
       const newMessages: MessageProps[] = [];
       messages.forEach((message) => newMessages.push(message));
       newMessages.push({
@@ -268,13 +259,13 @@ export const VersionHistory: FunctionComponent = () => {
         name: 'You',
         role: 'user',
         content: inputStr,
-        timestamp: `${date?.toLocaleDateString()} ${date?.toLocaleTimeString()}`
+        timestamp: `${newDate?.toLocaleDateString()} ${newDate?.toLocaleTimeString()}`
       });
       newMessages.push({
         id: generateId(),
         name: 'Bot',
         role: 'bot',
-        timestamp: `${date?.toLocaleDateString()} ${date?.toLocaleTimeString()}`,
+        timestamp: `${newDate?.toLocaleDateString()} ${newDate?.toLocaleTimeString()}`,
         isLoading: true
       });
       setMessages(newMessages);
@@ -303,7 +294,7 @@ export const VersionHistory: FunctionComponent = () => {
             // eslint-disable-next-line no-console
             listen: { onClick: () => console.log('Listen') }
           },
-          timestamp: date.toLocaleString()
+          timestamp: newDate.toLocaleString()
         });
         setMessages(loadedMessages);
         setAnnouncement('Message from Bot: API response goes here');
@@ -371,25 +362,9 @@ export const VersionHistory: FunctionComponent = () => {
     }
   };
 
-  const handleOptionChange = (event: React.MouseEvent<any> | React.KeyboardEvent | MouseEvent) => {
-    const id = (event.currentTarget as HTMLElement).id;
-    setSelectedOption(id);
-  };
-
-  // Version History Handlers
   const openVersionHistory = () => {
     setIsVersionHistoryOpen(true);
     setSelectedVersionId(null);
-    setPreviewCode(null);
-    
-    // For Option 2, select the most recent version by default
-    if (selectedOption === 'option2') {
-      const sortedVersions = [...versions].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
-      if (sortedVersions.length > 0) {
-        setSelectedVersionId(sortedVersions[0].id);
-        setPreviewCode(sortedVersions[0].code);
-      }
-    }
   };
 
   const closeVersionHistory = () => {
@@ -397,23 +372,14 @@ export const VersionHistory: FunctionComponent = () => {
     setSelectedVersionId(null);
     setEditingVersionId(null);
     setOpenMenuVersionId(null);
-    setPreviewCode(null);
   };
 
   const handleVersionSelect = (versionId: string) => {
     setSelectedVersionId(versionId);
-    
-    // For Option 2, update the preview code
-    if (selectedOption === 'option2') {
-      const version = versions.find(v => v.id === versionId);
-      if (version) {
-        setPreviewCode(version.code);
-      }
-    }
   };
 
   const handleRestoreVersion = (versionId: string) => {
-    const version = versions.find(v => v.id === versionId);
+    const version = versions.find((v) => v.id === versionId);
     if (version) {
       setVersionToRestore(version);
       setIsRestoreModalOpen(true);
@@ -435,15 +401,19 @@ export const VersionHistory: FunctionComponent = () => {
     setVersionToRestore(null);
   };
 
-  const formatModalTimestamp = (date: Date) => {
-    return date.toLocaleDateString('en-US', { 
-      month: 'long', 
-      day: 'numeric' 
-    }) + ' at ' + date.toLocaleTimeString('en-US', { 
-      hour: 'numeric', 
-      minute: '2-digit',
-      hour12: true 
-    });
+  const formatModalTimestamp = (timestamp: Date) => {
+    return (
+      timestamp.toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric'
+      }) +
+      ' at ' +
+      timestamp.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      })
+    );
   };
 
   const handleStartRename = (versionId: string, currentName: string) => {
@@ -453,9 +423,7 @@ export const VersionHistory: FunctionComponent = () => {
   };
 
   const handleSaveRename = (versionId: string) => {
-    setVersions(prev => prev.map(v => 
-      v.id === versionId ? { ...v, name: editingName } : v
-    ));
+    setVersions((prev) => prev.map((v) => (v.id === versionId ? { ...v, name: editingName } : v)));
     setEditingVersionId(null);
     setEditingName('');
   };
@@ -466,7 +434,7 @@ export const VersionHistory: FunctionComponent = () => {
   };
 
   const handleDuplicateVersion = (versionId: string) => {
-    const version = versions.find(v => v.id === versionId);
+    const version = versions.find((v) => v.id === versionId);
     if (version) {
       const newVersion: Version = {
         ...version,
@@ -474,29 +442,29 @@ export const VersionHistory: FunctionComponent = () => {
         name: `${version.name} (copy)`,
         timestamp: new Date()
       };
-      setVersions(prev => [newVersion, ...prev]);
+      setVersions((prev) => [newVersion, ...prev]);
     }
     setOpenMenuVersionId(null);
   };
 
   const handleMenuToggle = (versionId: string) => {
-    setOpenMenuVersionId(prev => prev === versionId ? null : versionId);
+    setOpenMenuVersionId((prev) => (prev === versionId ? null : versionId));
   };
 
-  const formatTimestamp = (date: Date) => {
+  const formatTimestamp = (timestamp: Date) => {
     const now = new Date();
-    const diff = now.getTime() - date.getTime();
+    const diff = now.getTime() - timestamp.getTime();
     const minutes = Math.floor(diff / 60000);
     const hours = Math.floor(diff / 3600000);
-    
+
     if (minutes < 1) return 'Just now';
     if (minutes < 60) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
     if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-    return date.toLocaleString();
+    return timestamp.toLocaleString();
   };
 
   const findMatchingItems = (targetValue: string) => {
-    let filteredConversations: { [key: string]: Conversation[] } = Object.entries(initialConversations).reduce(
+    const filteredConversations: { [key: string]: Conversation[] } = Object.entries(initialConversations).reduce(
       (acc: { [key: string]: Conversation[] }, [key, items]) => {
         const filteredItems = items.filter((item) => item.text.toLowerCase().includes(targetValue.toLowerCase()));
         if (filteredItems.length > 0) {
@@ -543,163 +511,172 @@ export const VersionHistory: FunctionComponent = () => {
       key="undo"
       icon={<RhUiUndoIcon />}
       aria-label="Undo"
-      tooltipProps={{
-        content: 'Undo',
-        aria: 'none'
-      }}
+      tooltipProps={{ content: 'Undo', aria: 'none' }}
       onClick={() => editorRef.current?.trigger('keyboard', 'undo', null)}
     />,
     <CodeEditorControl
       key="redo"
       icon={<RhUiRedoIcon />}
       aria-label="Redo"
-      tooltipProps={{
-        content: 'Redo',
-        aria: 'none'
-      }}
+      tooltipProps={{ content: 'Redo', aria: 'none' }}
       onClick={() => editorRef.current?.trigger('keyboard', 'redo', null)}
     />,
     <CodeEditorControl
       key="history"
       icon={<RhUiHistoryIcon />}
       aria-label="Version history"
-      tooltipProps={{
-        content: 'Version history',
-        aria: 'none'
-      }}
+      tooltipProps={{ content: 'Version history', aria: 'none' }}
       onClick={openVersionHistory}
     />
   ];
 
-  // Version History Panel component (shared between options)
+  // Version History Floating Panel
   const versionHistoryPanel = (
     <div className="version-history-panel">
       <div className="version-history-header">
         <Flex justifyContent={{ default: 'justifyContentSpaceBetween' }} alignItems={{ default: 'alignItemsCenter' }}>
           <FlexItem>
-            <Title headingLevel="h2" size="lg">Version History</Title>
+            <Title headingLevel="h2" size="lg">
+              Version History
+            </Title>
           </FlexItem>
           <FlexItem>
-            <Button variant="plain" aria-label="Close version history" icon={<RhMicronsCloseIcon />} onClick={closeVersionHistory} />
+            <Button
+              variant="plain"
+              aria-label="Close version history"
+              icon={<RhMicronsCloseIcon />}
+              onClick={closeVersionHistory}
+            />
           </FlexItem>
         </Flex>
       </div>
-      
+
       <div className="version-history-content">
         <Flex direction={{ default: 'column' }} style={{ height: '100%' }}>
           <FlexItem flex={{ default: 'flex_1' }} style={{ overflow: 'auto' }}>
             <DataList aria-label="Version history list" isCompact>
-              {[...versions].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()).map((version) => (
-                <DataListItem
-                  key={version.id}
-                  id={version.id}
-                  aria-labelledby={`version-${version.id}`}
-                  isExpanded={selectedVersionId === version.id}
-                  className={selectedVersionId === version.id ? 'pf-m-selected' : ''}
-                  onClick={() => handleVersionSelect(version.id)}
-                >
-                  <DataListItemRow>
-                    <DataListItemCells
-                      dataListCells={[
-                        <DataListCell key="primary">
-                          {editingVersionId === version.id ? (
-                            <Flex spaceItems={{ default: 'spaceItemsSm' }} alignItems={{ default: 'alignItemsCenter' }}>
-                              <FlexItem flex={{ default: 'flex_1' }}>
-                                <TextInput
-                                  value={editingName}
-                                  onChange={(_event, value) => setEditingName(value)}
-                                  aria-label="Version name"
-                                  autoFocus
-                                  onKeyDown={(e) => {
-                                    if (e.key === 'Enter') handleSaveRename(version.id);
-                                    if (e.key === 'Escape') handleCancelRename();
-                                  }}
-                                />
-                              </FlexItem>
-                              <FlexItem>
-                                <Button variant="plain" aria-label="Save name" icon={<CheckIcon />} onClick={() => handleSaveRename(version.id)} />
-                              </FlexItem>
-                              <FlexItem>
-                                <Button variant="plain" aria-label="Cancel rename" icon={<TimesIcon />} onClick={handleCancelRename} />
-                              </FlexItem>
-                            </Flex>
-                          ) : (
-                            <Flex direction={{ default: 'column' }} spaceItems={{ default: 'spaceItemsXs' }}>
-                              <FlexItem>
-                                <Content component={ContentVariants.p} className="pf-v6-u-font-weight-bold">
-                                  {version.name}
-                                </Content>
-                              </FlexItem>
-                              <FlexItem>
-                                <Flex spaceItems={{ default: 'spaceItemsSm' }} alignItems={{ default: 'alignItemsCenter' }}>
-                                  <FlexItem>
-                                    <Content component={ContentVariants.small} className="pf-v6-u-color-200">
-                                      {version.author === 'bot' ? 'Bot' : 'You'} · {formatTimestamp(version.timestamp)}
-                                    </Content>
-                                  </FlexItem>
-                                  {version.author === 'bot' && (
+              {[...versions]
+                .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+                .map((version) => (
+                  <DataListItem
+                    key={version.id}
+                    id={version.id}
+                    aria-labelledby={`version-${version.id}`}
+                    isExpanded={selectedVersionId === version.id}
+                    className={selectedVersionId === version.id ? 'pf-m-selected' : ''}
+                    onClick={() => handleVersionSelect(version.id)}
+                  >
+                    <DataListItemRow>
+                      <DataListItemCells
+                        dataListCells={[
+                          <DataListCell key="primary">
+                            {editingVersionId === version.id ? (
+                              <Flex
+                                spaceItems={{ default: 'spaceItemsSm' }}
+                                alignItems={{ default: 'alignItemsCenter' }}
+                              >
+                                <FlexItem flex={{ default: 'flex_1' }}>
+                                  <TextInput
+                                    value={editingName}
+                                    onChange={(_event, value) => setEditingName(value)}
+                                    aria-label="Version name"
+                                    autoFocus
+                                    onKeyDown={(e) => {
+                                      if (e.key === 'Enter') handleSaveRename(version.id);
+                                      if (e.key === 'Escape') handleCancelRename();
+                                    }}
+                                  />
+                                </FlexItem>
+                                <FlexItem>
+                                  <Button
+                                    variant="plain"
+                                    aria-label="Save name"
+                                    icon={<CheckIcon />}
+                                    onClick={() => handleSaveRename(version.id)}
+                                  />
+                                </FlexItem>
+                                <FlexItem>
+                                  <Button
+                                    variant="plain"
+                                    aria-label="Cancel rename"
+                                    icon={<TimesIcon />}
+                                    onClick={handleCancelRename}
+                                  />
+                                </FlexItem>
+                              </Flex>
+                            ) : (
+                              <Flex direction={{ default: 'column' }} spaceItems={{ default: 'spaceItemsXs' }}>
+                                <FlexItem>
+                                  <Content component={ContentVariants.p} className="pf-v6-u-font-weight-bold">
+                                    {version.name}
+                                  </Content>
+                                </FlexItem>
+                                <FlexItem>
+                                  <Flex
+                                    spaceItems={{ default: 'spaceItemsSm' }}
+                                    alignItems={{ default: 'alignItemsCenter' }}
+                                  >
                                     <FlexItem>
-                                      <Label isCompact variant="outline">AI</Label>
+                                      <Content component={ContentVariants.small} className="pf-v6-u-color-200">
+                                        {version.author === 'bot' ? 'Bot' : 'You'} · {formatTimestamp(version.timestamp)}
+                                      </Content>
                                     </FlexItem>
-                                  )}
-                                </Flex>
-                              </FlexItem>
-                            </Flex>
-                          )}
-                        </DataListCell>
-                      ]}
-                    />
-                    {editingVersionId !== version.id && (
-                      <DataListAction
-                        aria-labelledby={`version-${version.id}`}
-                        id={`version-action-${version.id}`}
-                        aria-label="Version actions"
-                      >
-                        <Dropdown
-                          isOpen={openMenuVersionId === version.id}
-                          onOpenChange={(isOpen) => setOpenMenuVersionId(isOpen ? version.id : null)}
-                          toggle={(toggleRef) => (
-                            <MenuToggle
-                              ref={toggleRef}
-                              variant="plain"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleMenuToggle(version.id);
-                              }}
-                              isExpanded={openMenuVersionId === version.id}
-                              aria-label="Version options"
-                            >
-                              <EllipsisVIcon />
-                            </MenuToggle>
-                          )}
-                          popperProps={{ position: 'right' }}
+                                    {version.author === 'bot' && (
+                                      <FlexItem>
+                                        <Label isCompact variant="outline">
+                                          AI
+                                        </Label>
+                                      </FlexItem>
+                                    )}
+                                  </Flex>
+                                </FlexItem>
+                              </Flex>
+                            )}
+                          </DataListCell>
+                        ]}
+                      />
+                      {editingVersionId !== version.id && (
+                        <DataListAction
+                          aria-labelledby={`version-${version.id}`}
+                          id={`version-action-${version.id}`}
+                          aria-label="Version actions"
                         >
-                          <DropdownList>
-                            <DropdownItem
-                              key="name"
-                              onClick={() => handleStartRename(version.id, version.name)}
-                            >
-                              Name this version
-                            </DropdownItem>
-                            <DropdownItem
-                              key="restore"
-                              onClick={() => handleRestoreVersion(version.id)}
-                            >
-                              Restore this version
-                            </DropdownItem>
-                            <DropdownItem
-                              key="duplicate"
-                              onClick={() => handleDuplicateVersion(version.id)}
-                            >
-                              Duplicate
-                            </DropdownItem>
-                          </DropdownList>
-                        </Dropdown>
-                      </DataListAction>
-                    )}
-                  </DataListItemRow>
-                </DataListItem>
-              ))}
+                          <Dropdown
+                            isOpen={openMenuVersionId === version.id}
+                            onOpenChange={(isOpen) => setOpenMenuVersionId(isOpen ? version.id : null)}
+                            toggle={(toggleRef) => (
+                              <MenuToggle
+                                ref={toggleRef}
+                                variant="plain"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleMenuToggle(version.id);
+                                }}
+                                isExpanded={openMenuVersionId === version.id}
+                                aria-label="Version options"
+                              >
+                                <EllipsisVIcon />
+                              </MenuToggle>
+                            )}
+                            popperProps={{ position: 'right' }}
+                          >
+                            <DropdownList>
+                              <DropdownItem key="name" onClick={() => handleStartRename(version.id, version.name)}>
+                                Name this version
+                              </DropdownItem>
+                              <DropdownItem key="restore" onClick={() => handleRestoreVersion(version.id)}>
+                                Restore this version
+                              </DropdownItem>
+                              <DropdownItem key="duplicate" onClick={() => handleDuplicateVersion(version.id)}>
+                                Duplicate
+                              </DropdownItem>
+                            </DropdownList>
+                          </Dropdown>
+                        </DataListAction>
+                      )}
+                    </DataListItemRow>
+                  </DataListItem>
+                ))}
             </DataList>
           </FlexItem>
         </Flex>
@@ -716,292 +693,96 @@ export const VersionHistory: FunctionComponent = () => {
       resizeAriaLabel="Resize canvas"
       className="pf-chatbot__canvas-panel"
     >
-      {isVersionHistoryOpen && selectedOption === 'option1' ? (
-        // Option 1: Version History Panel - Full overlay
-        versionHistoryPanel
-      ) : isVersionHistoryOpen && selectedOption === 'option3' ? (
-        // Option 3: Version History Panel - Floating 75% overlay
-        <>
-          {/* Normal Canvas Section with Code Editor */}
-          <section
-            ref={canvasSectionRef}
-            className="pf-chatbot__canvas-section"
-            tabIndex={-1}
-            aria-label="Canvas"
-            aria-labelledby="chatbot-canvas-section chatbot-canvas-title"
-            id="chatbot-canvas-section"
-          >
-            <DrawerHead className="pf-chatbot__canvas-head">
-              <Flex spaceItems={{ default: 'spaceItemsMd' }} alignItems={{ default: 'alignItemsCenter' }}>
-                <FlexItem>
-                  <Title id="chatbot-canvas-title" headingLevel="h2" size="lg">
-                    Edit code
-                  </Title>
-                </FlexItem>
-                <FlexItem>
-                  <Popover
-                    headerContent={
-                      <Flex spaceItems={{ default: 'spaceItemsSm' }}>
-                        <FlexItem>
-                          <RhUiAiInfoIcon aria-hidden />
-                        </FlexItem>
-                        <FlexItem>What is canvas mode?</FlexItem>
-                      </Flex>
-                    }
-                    bodyContent={
-                      <>
-                        <div className="pf-v6-u-font-size-sm pf-v6-u-mb-md">
-                          This canvas is a collaborative workspace that blends AI-generated content with manual human edits.
-                        </div>
-                        <div className="pf-v6-u-font-size-xs">Always review AI-generated code prior to use.</div>
-                      </>
-                    }
-                    onShow={() => setIsGeneratedAiPopoverOpen(true)}
-                    onHide={() => setIsGeneratedAiPopoverOpen(false)}
-                  >
-                    <Label
-                      isClickable
-                      variant="outline"
-                      icon={<RhUiAiInfoIcon aria-hidden />}
-                      role="button"
-                      tabIndex={0}
-                      aria-expanded={isGeneratedAiPopoverOpen}
-                      onKeyDown={handleGeneratedAiLabelKeyDown}
-                    >
-                      Generated with AI
-                    </Label>
-                  </Popover>
-                </FlexItem>
-              </Flex>
-              <DrawerActions>
-                <Tooltip triggerRef={canvasCloseButtonRef} content="Close canvas" position="bottom" aria="none" />
-                <div className="pf-v6-c-drawer__close">
-                  <Button
-                    ref={canvasCloseButtonRef}
-                    variant="plain"
-                    aria-label="Exit canvas mode"
-                    icon={<RhMicronsCloseIcon />}
-                    onClick={closeCanvasMode}
-                  />
-                </div>
-              </DrawerActions>
-            </DrawerHead>
-            <div className="pf-chatbot__canvas-panel-body">
-              <div className="pf-chatbot__canvas-editor">
-                <CodeEditor
-                  isFullHeight
-                  isLineNumbersVisible
-                  isLanguageLabelVisible
-                  isCopyEnabled
-                  isDownloadEnabled
-                  downloadFileName="canvas-mode"
-                  customControls={customControls}
-                  code={code}
-                  language={Language.yaml}
-                  onCodeChange={setCode}
-                  onEditorDidMount={(editor) => {
-                    editorRef.current = editor;
-                  }}
-                />
-              </div>
-            </div>
-          </section>
-          {/* Floating Version History Panel */}
-          <div className="version-history-floating-panel">
-            {versionHistoryPanel}
-          </div>
-        </>
-      ) : (
-        // Normal Canvas Section with Code Editor
-        <section
-          ref={canvasSectionRef}
-          className="pf-chatbot__canvas-section"
-          tabIndex={-1}
-          aria-label="Canvas"
-          aria-labelledby="chatbot-canvas-section chatbot-canvas-title"
-          id="chatbot-canvas-section"
-        >
-          <DrawerHead className="pf-chatbot__canvas-head">
-            <Flex spaceItems={{ default: 'spaceItemsMd' }} alignItems={{ default: 'alignItemsCenter' }}>
-              <FlexItem>
-                <Title id="chatbot-canvas-title" headingLevel="h2" size="lg">
-                  Edit code
-                </Title>
-              </FlexItem>
-              <FlexItem>
-                <Popover
-                  headerContent={
-                    <Flex spaceItems={{ default: 'spaceItemsSm' }}>
-                      <FlexItem>
-                        <RhUiAiInfoIcon aria-hidden />
-                      </FlexItem>
-                      <FlexItem>What is canvas mode?</FlexItem>
-                    </Flex>
-                  }
-                  bodyContent={
-                    <>
-                      <div className="pf-v6-u-font-size-sm pf-v6-u-mb-md">
-                        This canvas is a collaborative workspace that blends AI-generated content with manual human edits.
-                      </div>
-                      <div className="pf-v6-u-font-size-xs">Always review AI-generated code prior to use.</div>
-                    </>
-                  }
-                  onShow={() => setIsGeneratedAiPopoverOpen(true)}
-                  onHide={() => setIsGeneratedAiPopoverOpen(false)}
+      <section
+        ref={canvasSectionRef}
+        className="pf-chatbot__canvas-section"
+        tabIndex={-1}
+        aria-label="Canvas"
+        aria-labelledby="chatbot-canvas-section chatbot-canvas-title"
+        id="chatbot-canvas-section"
+      >
+        <DrawerHead className="pf-chatbot__canvas-head">
+          <Flex spaceItems={{ default: 'spaceItemsMd' }} alignItems={{ default: 'alignItemsCenter' }}>
+            <FlexItem>
+              <Title id="chatbot-canvas-title" headingLevel="h2" size="lg">
+                Edit code
+              </Title>
+            </FlexItem>
+            <FlexItem>
+              <Popover
+                headerContent={
+                  <Flex spaceItems={{ default: 'spaceItemsSm' }}>
+                    <FlexItem>
+                      <RhUiAiInfoIcon aria-hidden />
+                    </FlexItem>
+                    <FlexItem>What is canvas mode?</FlexItem>
+                  </Flex>
+                }
+                bodyContent={
+                  <>
+                    <div className="pf-v6-u-font-size-sm pf-v6-u-mb-md">
+                      This canvas is a collaborative workspace that blends AI-generated content with manual human edits.
+                    </div>
+                    <div className="pf-v6-u-font-size-xs">Always review AI-generated code prior to use.</div>
+                  </>
+                }
+                onShow={() => setIsGeneratedAiPopoverOpen(true)}
+                onHide={() => setIsGeneratedAiPopoverOpen(false)}
+              >
+                <Label
+                  isClickable
+                  variant="outline"
+                  icon={<RhUiAiInfoIcon aria-hidden />}
+                  role="button"
+                  tabIndex={0}
+                  aria-expanded={isGeneratedAiPopoverOpen}
+                  onKeyDown={handleGeneratedAiLabelKeyDown}
                 >
-                  <Label
-                    isClickable
-                    variant="outline"
-                    icon={<RhUiAiInfoIcon aria-hidden />}
-                    role="button"
-                    tabIndex={0}
-                    aria-expanded={isGeneratedAiPopoverOpen}
-                    onKeyDown={handleGeneratedAiLabelKeyDown}
-                  >
-                    Generated with AI
-                  </Label>
-                </Popover>
-              </FlexItem>
-            </Flex>
-            <DrawerActions>
-              <Tooltip triggerRef={canvasCloseButtonRef} content="Close canvas" position="bottom" aria="none" />
-              <div className="pf-v6-c-drawer__close">
-                <Button
-                  ref={canvasCloseButtonRef}
-                  variant="plain"
-                  aria-label="Exit canvas mode"
-                  icon={<RhMicronsCloseIcon />}
-                  onClick={closeCanvasMode}
-                />
-              </div>
-            </DrawerActions>
-          </DrawerHead>
-          <div className="pf-chatbot__canvas-panel-body">
-            <div className="pf-chatbot__canvas-editor">
-              <CodeEditor
-                isFullHeight
-                isLineNumbersVisible
-                isLanguageLabelVisible
-                isCopyEnabled
-                isDownloadEnabled
-                downloadFileName="canvas-mode"
-                customControls={customControls}
-                code={code}
-                language={Language.yaml}
-                onCodeChange={setCode}
-                onEditorDidMount={(editor) => {
-                  editorRef.current = editor;
-                }}
+                  Generated with AI
+                </Label>
+              </Popover>
+            </FlexItem>
+          </Flex>
+          <DrawerActions>
+            <Tooltip triggerRef={canvasCloseButtonRef} content="Close canvas" position="bottom" aria="none" />
+            <div className="pf-v6-c-drawer__close">
+              <Button
+                ref={canvasCloseButtonRef}
+                variant="plain"
+                aria-label="Exit canvas mode"
+                icon={<RhMicronsCloseIcon />}
+                onClick={closeCanvasMode}
               />
             </div>
+          </DrawerActions>
+        </DrawerHead>
+        <div className="pf-chatbot__canvas-panel-body">
+          <div className="pf-chatbot__canvas-editor">
+            <CodeEditor
+              isFullHeight
+              isLineNumbersVisible
+              isLanguageLabelVisible
+              isCopyEnabled
+              isDownloadEnabled
+              downloadFileName="canvas-mode"
+              customControls={customControls}
+              code={code}
+              language={Language.yaml}
+              onCodeChange={setCode}
+              onEditorDidMount={(editor) => {
+                editorRef.current = editor;
+              }}
+            />
           </div>
-        </section>
-      )}
+        </div>
+      </section>
+      {/* Floating Version History Panel - 75% overlay */}
+      {isVersionHistoryOpen && <div className="version-history-floating-panel">{versionHistoryPanel}</div>}
     </DrawerPanelContent>
   );
 
-  // Option 2: Split-screen layout (Canvas left | Version History right)
-  if (selectedOption === 'option2' && isVersionHistoryOpen) {
-    return (
-      <div className="version-history-demo">
-        {/* Restore Version Modal */}
-        <Modal
-          isOpen={isRestoreModalOpen}
-          onClose={cancelRestore}
-          aria-labelledby="restore-modal-title"
-          aria-describedby="restore-modal-body"
-          variant="small"
-          appendTo={document.body}
-        >
-          <ModalHeader title="Restore this version?" labelId="restore-modal-title" />
-          <ModalBody id="restore-modal-body">
-            {versionToRestore && (
-              <p>Your current document will revert to the version from {formatModalTimestamp(versionToRestore.timestamp)}.</p>
-            )}
-          </ModalBody>
-          <ModalFooter>
-            <Button key="cancel" variant="link" onClick={cancelRestore}>
-              Cancel
-            </Button>
-            <Button key="restore" variant="primary" onClick={confirmRestore}>
-              Restore
-            </Button>
-          </ModalFooter>
-        </Modal>
-
-        <input {...getInputProps()} hidden />
-        
-        {/* Version History Layouts Masthead */}
-        <div className="version-history-masthead">
-          <Flex alignItems={{ default: 'alignItemsCenter' }} gap={{ default: 'gapMd' }}>
-            <FlexItem>
-              <span>Version history layouts</span>
-            </FlexItem>
-            <FlexItem>
-              <ToggleGroup aria-label="Version history layout options">
-                <ToggleGroupItem text="Option 1" buttonId="option1" isSelected={(selectedOption as string) === 'option1'} onChange={handleOptionChange} />
-                <ToggleGroupItem text="Option 2" buttonId="option2" isSelected={(selectedOption as string) === 'option2'} onChange={handleOptionChange} />
-                <ToggleGroupItem text="Option 3" buttonId="option3" isSelected={(selectedOption as string) === 'option3'} onChange={handleOptionChange} />
-              </ToggleGroup>
-            </FlexItem>
-          </Flex>
-        </div>
-
-        {/* Option 2: Split-screen layout */}
-        <div className="version-history-split-screen">
-          {/* Left side: Canvas/Code Editor */}
-          <div className="version-history-split-canvas pf-chatbot__canvas-panel">
-            <section
-              className="pf-chatbot__canvas-section"
-              tabIndex={-1}
-              aria-label="Canvas"
-            >
-              <div className="pf-chatbot__canvas-head">
-                <Flex justifyContent={{ default: 'justifyContentSpaceBetween' }} alignItems={{ default: 'alignItemsCenter' }}>
-                  <Flex spaceItems={{ default: 'spaceItemsMd' }} alignItems={{ default: 'alignItemsCenter' }}>
-                    <FlexItem>
-                      <Title headingLevel="h2" size="lg">
-                        {selectedVersionId ? versions.find(v => v.id === selectedVersionId)?.name || 'Edit code' : 'Edit code'}
-                      </Title>
-                    </FlexItem>
-                    <FlexItem>
-                      <Label
-                        variant="outline"
-                        icon={<RhUiAiInfoIcon aria-hidden />}
-                      >
-                        Preview mode
-                      </Label>
-                    </FlexItem>
-                  </Flex>
-                </Flex>
-              </div>
-              <div className="pf-chatbot__canvas-panel-body">
-                <div className="pf-chatbot__canvas-editor">
-                  <CodeEditor
-                    isFullHeight
-                    isLineNumbersVisible
-                    isLanguageLabelVisible
-                    isReadOnly
-                    code={previewCode || code}
-                    language={Language.yaml}
-                  />
-                </div>
-              </div>
-            </section>
-          </div>
-          
-          {/* Right side: Version History Panel */}
-          <div className="version-history-split-panel">
-            {versionHistoryPanel}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="version-history-demo">
-      {/* Restore Version Modal */}
+    <>
       <Modal
         isOpen={isRestoreModalOpen}
         onClose={cancelRestore}
@@ -1013,7 +794,9 @@ export const VersionHistory: FunctionComponent = () => {
         <ModalHeader title="Restore this version?" labelId="restore-modal-title" />
         <ModalBody id="restore-modal-body">
           {versionToRestore && (
-            <p>Your current document will revert to the version from {formatModalTimestamp(versionToRestore.timestamp)}.</p>
+            <p>
+              Your current document will revert to the version from {formatModalTimestamp(versionToRestore.timestamp)}.
+            </p>
           )}
         </ModalBody>
         <ModalFooter>
@@ -1027,22 +810,6 @@ export const VersionHistory: FunctionComponent = () => {
       </Modal>
 
       <input {...getInputProps()} hidden />
-      
-      {/* Version History Layouts Masthead */}
-      <div className="version-history-masthead">
-        <Flex alignItems={{ default: 'alignItemsCenter' }} gap={{ default: 'gapMd' }}>
-          <FlexItem>
-            <span>Version history layouts</span>
-          </FlexItem>
-          <FlexItem>
-            <ToggleGroup aria-label="Version history layout options">
-              <ToggleGroupItem text="Option 1" buttonId="option1" isSelected={selectedOption === 'option1'} onChange={handleOptionChange} />
-              <ToggleGroupItem text="Option 2" buttonId="option2" isSelected={selectedOption === 'option2'} onChange={handleOptionChange} />
-              <ToggleGroupItem text="Option 3" buttonId="option3" isSelected={selectedOption === 'option3'} onChange={handleOptionChange} />
-            </ToggleGroup>
-          </FlexItem>
-        </Flex>
-      </div>
 
       <Chatbot displayMode={displayMode} isVisible={chatbotVisible}>
         <div className="pf-chatbot__canvas">
@@ -1127,7 +894,6 @@ export const VersionHistory: FunctionComponent = () => {
                             attachMenuItems,
                             onAttachMenuOnOpenChangeKeys: ['Escape', 'Tab'],
                             onAttachMenuSelect: (_ev, value) => {
-                              console.log('selected', value);
                               if (value === 'canvas') {
                                 if (showCanvasLabel) {
                                   closeCanvasMode();
@@ -1152,11 +918,7 @@ export const VersionHistory: FunctionComponent = () => {
                           additionalActions={
                             <>
                               {showCanvasLabel && (
-                                <Label
-                                  closeBtnAriaLabel="Exit canvas mode"
-                                  onClose={closeCanvasMode}
-                                  icon={<RhUiImageFillIcon />}
-                                >
+                                <Label closeBtnAriaLabel="Exit canvas mode" onClose={closeCanvasMode} icon={<RhUiImageFillIcon />}>
                                   Canvas
                                 </Label>
                               )}
@@ -1200,6 +962,6 @@ export const VersionHistory: FunctionComponent = () => {
           />
         </div>
       </Chatbot>
-    </div>
+    </>
   );
 };

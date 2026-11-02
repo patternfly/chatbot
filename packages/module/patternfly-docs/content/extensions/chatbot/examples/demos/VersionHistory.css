@@ -59,10 +59,16 @@
 }
 
 /* Option 2: Split-screen layout styles */
+.version-history-split-screen-demo {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
 .version-history-split-screen {
   display: flex;
   position: fixed;
-  top: 58px; /* Below masthead */
+  top: 58px;
   left: 0;
   right: 0;
   bottom: 0;

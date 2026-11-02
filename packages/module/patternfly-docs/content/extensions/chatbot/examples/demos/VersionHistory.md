@@ -32,8 +32,6 @@ SelectList,
 SelectOption,
 Title,
 Tooltip,
-ToggleGroup,
-ToggleGroupItem,
 TextInput,
 DataList,
 DataListItem,
@@ -88,31 +86,6 @@ Version history is useful when:
 - Users need to compare different iterations of AI-generated content
 - Teams collaborate on AI-assisted documents or code
 
-## Layout options
-
-This demo provides three layout options for displaying version history, which can be toggled using the selector at the top of the page:
-
-### Option 1: Full overlay
-
-The version history panel completely replaces the canvas panel. This option:
-- Maximizes space for the version list
-- Provides a focused view of version history
-- Temporarily hides the code editor until version history is closed
-
-### Option 2: Split-screen
-
-The chatbot hides and the screen splits into two panels—canvas on the left and version history on the right. This option:
-- Allows side-by-side comparison of versions with the code preview
-- Shows a read-only preview of the selected version in the canvas area
-- Provides the most comprehensive view for reviewing changes
-
-### Option 3: Floating panel
-
-A 75% width floating panel appears over the canvas with a floating background color and medium drop shadow. This option:
-- Keeps the canvas partially visible behind the panel
-- Uses PatternFly's floating background color token for visual distinction
-- Provides a balance between version list visibility and canvas context
-
 ## Version list features
 
 Each version in the list displays:
@@ -126,10 +99,32 @@ Version actions include:
 - **Restore this version**: Revert the canvas to this version's content
 - **Duplicate**: Create a copy of the version
 
-## Demo
+## Demos
 
-Click the clock icon in the code editor toolbar to open version history. Use the toggle at the top to switch between layout options.
+### Full overlay
 
-```js file="./VersionHistory.tsx" isFullscreen
+The version history panel completely replaces the canvas panel. This option maximizes space for the version list and provides a focused view of version history. The code editor is temporarily hidden until version history is closed.
+
+Click the clock icon in the code editor toolbar to open version history.
+
+```js file="./VersionHistoryOverlay.tsx" isFullscreen
+
+```
+
+### Split-screen
+
+The screen splits into two panels—a read-only code preview on the left and version history on the right. This option allows side-by-side comparison of versions and provides the most comprehensive view for reviewing changes. Select different versions to preview their content.
+
+```js file="./VersionHistorySplitScreen.tsx" isFullscreen
+
+```
+
+### Floating panel
+
+A 75% width floating panel appears over the canvas using PatternFly's floating background color token and medium drop shadow. This option keeps the canvas partially visible behind the panel and provides a balance between version list visibility and canvas context.
+
+Click the clock icon in the code editor toolbar to open version history.
+
+```js file="./VersionHistoryFloating.tsx" isFullscreen
 
 ```
