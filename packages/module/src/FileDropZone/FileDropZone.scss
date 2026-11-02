@@ -21,10 +21,6 @@
   margin-inline-end: var(--pf-t--global--spacer--lg);
 
   .pf-v6-c-multiple-file-upload__main {
-    --pf-v6-c-multiple-file-upload__main--BorderWidth: var(--pf-t--global--border--width--regular);
-    --pf-v6-c-multiple-file-upload__main--BorderStyle: dashed;
-    --pf-v6-c-multiple-file-upload__main--BorderColor: var(--pf-t--global--border--color--default);
-    --pf-v6-c-multiple-file-upload__main--BorderRadius: var(--pf-t--global--border--radius--medium);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -38,19 +34,4 @@
   height: 100vh;
   width: 100%;
   padding: var(--pf-t--global--spacer--md);
-}
-
-.pf-chatbot--default {
-  // allows for zoom conditions; try zooming to 200% to see
-  .pf-chatbot__dropzone--visible.pf-chatbot__dropzone {
-    @media screen and (max-height: 518px) {
-      display: flex;
-      height: 100%;
-      overflow: hidden;
-
-      .pf-v6-c-multiple-file-upload__main {
-        width: 100%;
-      }
-    }
-  }
 }
