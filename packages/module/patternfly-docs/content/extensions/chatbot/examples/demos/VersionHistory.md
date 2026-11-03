@@ -103,9 +103,7 @@ Version actions include:
 
 ### Split-screen
 
-The screen splits into two panels—a read-only code preview on the left and version history on the right. This option allows side-by-side comparison of versions and provides the most comprehensive view for reviewing changes. Select different versions to preview their content.
-
-Close version history with the X in the panel header, then reopen it with the history icon button in the canvas panel header.
+Starts with the fullscreen chatbot and canvas. Open version history with the history icon button in the canvas panel header. The chatbot hides and the screen splits into two panels—a read-only code preview on the left and version history on the right. Select different versions to preview their content. Close version history with the X in the panel header to return to the chatbot and canvas.
 
 ```js file="./VersionHistorySplitScreen.tsx" isFullscreen
 
