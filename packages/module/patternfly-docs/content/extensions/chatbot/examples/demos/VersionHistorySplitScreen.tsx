@@ -13,6 +13,7 @@ import {
   ModalFooter,
   ModalHeader,
   Title,
+  Tooltip,
   TextInput,
   DataList,
   DataListItem,
@@ -23,7 +24,7 @@ import {
   Content,
   ContentVariants
 } from '@patternfly/react-core';
-import { CodeEditor, CodeEditorControl, Language } from '@patternfly/react-code-editor';
+import { CodeEditor, Language } from '@patternfly/react-code-editor';
 import { RhUiAiInfoIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-ai-info-icon';
 import { CheckIcon } from '@patternfly/react-icons/dist/esm/icons/check-icon';
 import { TimesIcon } from '@patternfly/react-icons/dist/esm/icons/times-icon';
@@ -227,16 +228,6 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
 
   const selectedVersion = versions.find((v) => v.id === selectedVersionId);
 
-  const historyControl = (
-    <CodeEditorControl
-      key="history"
-      icon={<RhUiHistoryIcon />}
-      aria-label="Version history"
-      tooltipProps={{ content: 'Version history', aria: 'none' }}
-      onClick={openVersionHistory}
-    />
-  );
-
   const versionHistoryPanel = (
     <div className="version-history-panel">
       <div className="version-history-header">
@@ -429,6 +420,18 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
                     </Label>
                   </FlexItem>
                 </Flex>
+                {!isVersionHistoryOpen && (
+                  <FlexItem>
+                    <Tooltip content="Version history">
+                      <Button
+                        variant="plain"
+                        aria-label="Version history"
+                        icon={<RhUiHistoryIcon />}
+                        onClick={openVersionHistory}
+                      />
+                    </Tooltip>
+                  </FlexItem>
+                )}
               </Flex>
             </div>
             <div className="pf-chatbot__canvas-panel-body">
@@ -440,7 +443,6 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
                   isReadOnly={isVersionHistoryOpen}
                   isCopyEnabled={!isVersionHistoryOpen}
                   isDownloadEnabled={!isVersionHistoryOpen}
-                  customControls={isVersionHistoryOpen ? undefined : [historyControl]}
                   code={isVersionHistoryOpen ? previewCode || code : code}
                   language={Language.yaml}
                   onCodeChange={setCode}
