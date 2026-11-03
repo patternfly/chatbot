@@ -101,16 +101,6 @@ Version actions include:
 
 ## Demos
 
-### Full overlay
-
-The version history panel completely replaces the canvas panel. This option maximizes space for the version list and provides a focused view of version history. The code editor is temporarily hidden until version history is closed.
-
-Click the clock icon in the code editor toolbar to open version history.
-
-```js file="./VersionHistoryOverlay.tsx" isFullscreen
-
-```
-
 ### Split-screen
 
 The screen splits into two panels—a read-only code preview on the left and version history on the right. This option allows side-by-side comparison of versions and provides the most comprehensive view for reviewing changes. Select different versions to preview their content.
@@ -119,7 +109,7 @@ The screen splits into two panels—a read-only code preview on the left and ver
 
 ```
 
-### Floating panel
+### Partial overlay
 
 A 75% width floating panel appears over the canvas using PatternFly's floating background color token and medium drop shadow. This option keeps the canvas partially visible behind the panel and provides a balance between version list visibility and canvas context.
 
