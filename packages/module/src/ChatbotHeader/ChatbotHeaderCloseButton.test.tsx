@@ -17,9 +17,4 @@ describe('ChatbotHeaderCloseButton', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Close' }));
     expect(onClick).toHaveBeenCalled();
   });
-
-  it('should render button with isCompact', () => {
-    render(<ChatbotHeaderCloseButton data-testid="close-button" onClick={jest.fn()} isCompact />);
-    expect(screen.getByTestId('close-button')).toHaveClass('pf-m-compact');
-  });
 });

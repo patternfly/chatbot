@@ -55,13 +55,14 @@ export const ChatbotHeaderOptionsDropdown: FunctionComponent<ChatbotHeaderOption
         aria-label={menuToggleAriaLabel}
         ref={toggleRef}
         icon={
-          <Icon size={isCompact ? 'lg' : 'xl'} isInline>
+          <Icon>
             <RhUiEllipsisHorizontalFillIcon />
           </Icon>
         }
         isExpanded={isOptionsMenuOpen}
         onClick={() => setIsOptionsMenuOpen(!isOptionsMenuOpen)}
         size={isCompact ? 'sm' : undefined}
+        isCircle
         {...toggleProps}
       />
     </Tooltip>
