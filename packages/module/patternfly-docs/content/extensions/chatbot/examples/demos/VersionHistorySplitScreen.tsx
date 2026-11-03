@@ -4,6 +4,7 @@ import {
   Button,
   Divider,
   Drawer,
+  DrawerActions,
   DrawerContent,
   DrawerContentBody,
   DrawerHead,
@@ -537,7 +538,6 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
 
   const selectedVersion = versions.find((v) => v.id === selectedVersionId);
 
-  // Version History Panel
   const versionHistoryPanel = (
     <div className="version-history-panel">
       <div className="version-history-header">
@@ -699,77 +699,67 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
         id="chatbot-canvas-section"
       >
         <DrawerHead className="pf-chatbot__canvas-head">
-          <Flex
-            justifyContent={{ default: 'justifyContentSpaceBetween' }}
-            alignItems={{ default: 'alignItemsCenter' }}
-            style={{ width: '100%' }}
-          >
-            <Flex spaceItems={{ default: 'spaceItemsMd' }} alignItems={{ default: 'alignItemsCenter' }}>
-              <FlexItem>
-                <Title id="chatbot-canvas-title" headingLevel="h2" size="lg">
-                  Edit code
-                </Title>
-              </FlexItem>
-              <FlexItem>
-                <Popover
-                  headerContent={
-                    <Flex spaceItems={{ default: 'spaceItemsSm' }}>
-                      <FlexItem>
-                        <RhUiAiInfoIcon aria-hidden />
-                      </FlexItem>
-                      <FlexItem>What is canvas mode?</FlexItem>
-                    </Flex>
-                  }
-                  bodyContent={
-                    <>
-                      <div className="pf-v6-u-font-size-sm pf-v6-u-mb-md">
-                        This canvas is a collaborative workspace that blends AI-generated content with manual human edits.
-                      </div>
-                      <div className="pf-v6-u-font-size-xs">Always review AI-generated code prior to use.</div>
-                    </>
-                  }
-                  onShow={() => setIsGeneratedAiPopoverOpen(true)}
-                  onHide={() => setIsGeneratedAiPopoverOpen(false)}
+          <Flex spaceItems={{ default: 'spaceItemsMd' }} alignItems={{ default: 'alignItemsCenter' }}>
+            <FlexItem>
+              <Title id="chatbot-canvas-title" headingLevel="h2" size="lg">
+                Edit code
+              </Title>
+            </FlexItem>
+            <FlexItem>
+              <Popover
+                headerContent={
+                  <Flex spaceItems={{ default: 'spaceItemsSm' }}>
+                    <FlexItem>
+                      <RhUiAiInfoIcon aria-hidden />
+                    </FlexItem>
+                    <FlexItem>What is canvas mode?</FlexItem>
+                  </Flex>
+                }
+                bodyContent={
+                  <>
+                    <div className="pf-v6-u-font-size-sm pf-v6-u-mb-md">
+                      This canvas is a collaborative workspace that blends AI-generated content with manual human edits.
+                    </div>
+                    <div className="pf-v6-u-font-size-xs">Always review AI-generated code prior to use.</div>
+                  </>
+                }
+                onShow={() => setIsGeneratedAiPopoverOpen(true)}
+                onHide={() => setIsGeneratedAiPopoverOpen(false)}
+              >
+                <Label
+                  isClickable
+                  variant="outline"
+                  icon={<RhUiAiInfoIcon aria-hidden />}
+                  role="button"
+                  tabIndex={0}
+                  aria-expanded={isGeneratedAiPopoverOpen}
+                  onKeyDown={handleGeneratedAiLabelKeyDown}
                 >
-                  <Label
-                    isClickable
-                    variant="outline"
-                    icon={<RhUiAiInfoIcon aria-hidden />}
-                    role="button"
-                    tabIndex={0}
-                    aria-expanded={isGeneratedAiPopoverOpen}
-                    onKeyDown={handleGeneratedAiLabelKeyDown}
-                  >
-                    Generated with AI
-                  </Label>
-                </Popover>
-              </FlexItem>
-            </Flex>
-            <Flex spaceItems={{ default: 'spaceItemsNone' }} alignItems={{ default: 'alignItemsCenter' }}>
-              <FlexItem>
-                <Tooltip content="Version history">
-                  <Button
-                    variant="plain"
-                    aria-label="Version history"
-                    icon={<RhUiHistoryIcon />}
-                    onClick={openVersionHistory}
-                  />
-                </Tooltip>
-              </FlexItem>
-              <FlexItem>
-                <Tooltip triggerRef={canvasCloseButtonRef} content="Close canvas" position="bottom" aria="none" />
-                <div className="pf-v6-c-drawer__close">
-                  <Button
-                    ref={canvasCloseButtonRef}
-                    variant="plain"
-                    aria-label="Exit canvas mode"
-                    icon={<RhMicronsCloseIcon />}
-                    onClick={closeCanvasMode}
-                  />
-                </div>
-              </FlexItem>
-            </Flex>
+                  Generated with AI
+                </Label>
+              </Popover>
+            </FlexItem>
           </Flex>
+          <DrawerActions>
+            <Tooltip content="Version history">
+              <Button
+                variant="plain"
+                aria-label="Version history"
+                icon={<RhUiHistoryIcon />}
+                onClick={openVersionHistory}
+              />
+            </Tooltip>
+            <Tooltip triggerRef={canvasCloseButtonRef} content="Close canvas" position="bottom" aria="none" />
+            <div className="pf-v6-c-drawer__close">
+              <Button
+                ref={canvasCloseButtonRef}
+                variant="plain"
+                aria-label="Exit canvas mode"
+                icon={<RhMicronsCloseIcon />}
+                onClick={closeCanvasMode}
+              />
+            </div>
+          </DrawerActions>
         </DrawerHead>
         <div className="pf-chatbot__canvas-panel-body">
           <div className="pf-chatbot__canvas-editor">
@@ -794,7 +784,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     </DrawerPanelContent>
   );
 
-  // Split-screen layout when version history is open (chatbot hides)
+  // Matches localhost option 2: chatbot hides; canvas + version history side by side
   if (isVersionHistoryOpen) {
     return (
       <>
@@ -828,22 +818,17 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
           <div className="version-history-split-canvas pf-chatbot__canvas-panel">
             <section className="pf-chatbot__canvas-section" tabIndex={-1} aria-label="Canvas">
               <div className="pf-chatbot__canvas-head">
-                <Flex
-                  justifyContent={{ default: 'justifyContentSpaceBetween' }}
-                  alignItems={{ default: 'alignItemsCenter' }}
-                >
-                  <Flex spaceItems={{ default: 'spaceItemsMd' }} alignItems={{ default: 'alignItemsCenter' }}>
-                    <FlexItem>
-                      <Title headingLevel="h2" size="lg">
-                        {selectedVersion?.name || 'Edit code'}
-                      </Title>
-                    </FlexItem>
-                    <FlexItem>
-                      <Label variant="outline" icon={<RhUiAiInfoIcon aria-hidden />}>
-                        Preview mode
-                      </Label>
-                    </FlexItem>
-                  </Flex>
+                <Flex spaceItems={{ default: 'spaceItemsMd' }} alignItems={{ default: 'alignItemsCenter' }}>
+                  <FlexItem>
+                    <Title headingLevel="h2" size="lg">
+                      {selectedVersion?.name || 'Edit code'}
+                    </Title>
+                  </FlexItem>
+                  <FlexItem>
+                    <Label variant="outline" icon={<RhUiAiInfoIcon aria-hidden />}>
+                      Preview mode
+                    </Label>
+                  </FlexItem>
                 </Flex>
               </div>
               <div className="pf-chatbot__canvas-panel-body">
