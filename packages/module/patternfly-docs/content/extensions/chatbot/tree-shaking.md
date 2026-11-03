@@ -82,7 +82,7 @@ import AttachmentEdit from '@patternfly/chatbot/dist/dynamic/AttachmentEdit';
 
 ## Markdown rendering (`Message`, `MarkdownContent`)
 
-`MarkdownContent` lazy-loads its markdown parser so lightweight imports avoid pulling in `react-markdown`, syntax highlighting, and related dependencies until they are needed. That async chunk is roughly 400 KB.
+`MarkdownContent` lazy-loads its markdown parser so lightweight imports avoid pulling in `react-markdown` and related dependencies until they are needed.
 
 `MessageBox` automatically preloads the markdown renderer and coordinates rendering so existing messages do not each flash an individual loading state — message chrome (avatars, timestamps, and so on) appears immediately, and markdown content fills in once the chunk is ready.
 

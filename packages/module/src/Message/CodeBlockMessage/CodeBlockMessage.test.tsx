@@ -29,12 +29,6 @@ describe('CodeBlockMessage', () => {
     expect(codeElement?.textContent).toBe(multilineCode);
   });
 
-  it('should display language label', () => {
-    const code = 'const x = 5;\nconst y = 10;';
-    render(<CodeBlockMessage className="language-javascript">{code}</CodeBlockMessage>);
-    expect(screen.getByText('javascript')).toBeInTheDocument();
-  });
-
   it('should render copy button', () => {
     const code = 'const x = 5;\nconst y = 10;';
     render(<CodeBlockMessage>{code}</CodeBlockMessage>);
