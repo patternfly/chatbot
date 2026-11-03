@@ -5,18 +5,8 @@
 .pf-chatbot__jump {
   position: absolute !important;
   inset-inline-start: 75% !important;
-  width: 2rem !important;
-  height: 2rem !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: var(--pf-t--global--spacer--md) !important;
-  border-radius: var(--pf-t--global--border--radius--pill) !important;
-  --pf-v6-c-button--MinWidth: 2rem !important;
   background-color: var(--pf-t--global--background--color--floating--default);
-  border: 1px solid var(--pf-t--global--border--color--default) !important;
   box-shadow: var(--pf-t--global--box-shadow--sm);
-  color: var(--pf-t--global--icon--color--subtle) !important;
   transform: translate3d(-50%, 0, 0) !important;
   transition:
     background-color var(--pf-t--global--motion--timing-function--accelerate) var(--pf-t--global--motion--duration--sm),
@@ -25,15 +15,10 @@
     opacity var(--pf-t--global--motion--timing-function--accelerate) var(--pf-t--global--motion--duration--md) !important;
   z-index: var(--pf-t--global--z-index--md) !important;
 
-  .pf-v6-c-button__text {
-    line-height: 1rem;
-  }
-
   &:hover,
   &:focus {
     background-color: var(--pf-t--global--background--color--floating--hover);
     box-shadow: var(--pf-t--global--box-shadow--md) !important;
-    color: var(--pf-t--global--icon--color--regular) !important;
   }
 
   &--top {
