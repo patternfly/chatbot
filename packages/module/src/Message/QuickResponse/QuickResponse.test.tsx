@@ -73,6 +73,55 @@ test('Renders with pf-chatbot__message-quick-response--selected class after clic
   );
 });
 
+test('Moves selection to another response and restores the previous outline', async () => {
+  const user = userEvent.setup();
+  const quickResponses = [
+    { id: '1', content: 'Response 1' },
+    { id: '2', content: 'Response 2' }
+  ];
+  render(<QuickResponse quickResponses={quickResponses} />);
+
+  const firstResponse = screen.getByRole('button', { name: 'Response 1' });
+  const secondResponse = screen.getByRole('button', { name: 'Response 2' });
+  const firstLabel = firstResponse.closest('.pf-v6-c-label');
+  const secondLabel = secondResponse.closest('.pf-v6-c-label');
+
+  expect(firstLabel).toHaveClass('pf-m-outline');
+  expect(secondLabel).toHaveClass('pf-m-outline');
+
+  await user.click(firstResponse);
+
+  expect(firstLabel).toHaveClass('pf-chatbot__message-quick-response--selected');
+  expect(firstLabel).not.toHaveClass('pf-m-outline');
+  expect(secondLabel).toHaveClass('pf-m-outline');
+
+  await user.click(secondResponse);
+
+  expect(secondLabel).toHaveClass('pf-chatbot__message-quick-response--selected');
+  expect(secondLabel).not.toHaveClass('pf-m-outline');
+  expect(firstLabel).not.toHaveClass('pf-chatbot__message-quick-response--selected');
+  expect(firstLabel).toHaveClass('pf-m-outline');
+});
+
+test.each(['{Enter}', ' '])('Selects a response using the keyboard with %s', async (key) => {
+  const user = userEvent.setup();
+  const onClick = jest.fn();
+  const onSelect = jest.fn();
+  render(<QuickResponse quickResponses={[{ id: '1', content: 'Response 1', onClick }]} onSelect={onSelect} />);
+
+  const response = screen.getByRole('button', { name: 'Response 1' });
+  await user.tab();
+  expect(response).toHaveFocus();
+
+  await user.keyboard(key);
+
+  expect(response.closest('.pf-v6-c-label')).toHaveClass('pf-chatbot__message-quick-response--selected');
+  expect(onClick).toHaveBeenCalledTimes(1);
+  expect(onSelect).toHaveBeenCalledTimes(1);
+  expect(onSelect).toHaveBeenCalledWith('1');
+  expect(response).toHaveFocus();
+});
+
 test('Does not calls onClick handler when not passed', async () => {
   const user = userEvent.setup();
   const handleClick = jest.fn();
