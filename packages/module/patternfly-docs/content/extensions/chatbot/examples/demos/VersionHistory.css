@@ -109,23 +109,3 @@
 .version-history-split-panel .version-history-panel {
   height: 100%;
 }
-
-/* Option 3: Floating Version History Panel */
-.pf-chatbot__canvas-panel:has(.version-history-floating-panel) {
-  position: relative;
-}
-
-.version-history-floating-panel {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 75%;
-  z-index: 100;
-  background-color: var(--pf-t--global--background--color--floating--default);
-  box-shadow: var(--pf-t--global--box-shadow--md);
-}
-
-.version-history-floating-panel .version-history-panel {
-  height: 100%;
-}

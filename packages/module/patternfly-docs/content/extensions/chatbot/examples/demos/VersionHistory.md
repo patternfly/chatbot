@@ -108,13 +108,3 @@ Matches the canvas split-screen layout: chatbot and canvas side by side by defau
 ```js file="./VersionHistorySplitScreen.tsx" isFullscreen
 
 ```
-
-### Partial overlay
-
-A 75% width floating panel appears over the canvas using PatternFly's floating background color token and medium drop shadow. This option keeps the canvas partially visible behind the panel and provides a balance between version list visibility and canvas context.
-
-Click the clock icon in the code editor toolbar to open version history.
-
-```js file="./VersionHistoryFloating.tsx" isFullscreen
-
-```
