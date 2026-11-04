@@ -16,6 +16,7 @@ import {
   FlexItem,
   Label,
   MenuToggle,
+  MenuToggleAction,
   Modal,
   ModalBody,
   ModalFooter,
@@ -224,6 +225,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
   const [isRestoreModalOpen, setIsRestoreModalOpen] = useState(false);
   const [versionToRestore, setVersionToRestore] = useState<Version | null>(null);
   const [previewCode, setPreviewCode] = useState<string | null>(null);
+  const [isVersionHistoryMenuOpen, setIsVersionHistoryMenuOpen] = useState(false);
 
   const scrollToBottomRef = useRef<HTMLDivElement>(null);
   const historyRef = useRef<HTMLButtonElement>(null);
@@ -741,14 +743,53 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
             </FlexItem>
           </Flex>
           <DrawerActions>
-            <Tooltip content="Version history">
-              <Button
-                variant="plain"
-                aria-label="Version history"
-                icon={<RhUiHistoryIcon />}
-                onClick={openVersionHistory}
-              />
-            </Tooltip>
+            <Dropdown
+              isOpen={isVersionHistoryMenuOpen}
+              onOpenChange={(isOpen) => setIsVersionHistoryMenuOpen(isOpen)}
+              onSelect={() => setIsVersionHistoryMenuOpen(false)}
+              popperProps={{ position: 'right' }}
+              toggle={(toggleRef) => (
+                <MenuToggle
+                  ref={toggleRef}
+                  variant="secondary"
+                  isExpanded={isVersionHistoryMenuOpen}
+                  onClick={() => setIsVersionHistoryMenuOpen(!isVersionHistoryMenuOpen)}
+                  aria-label="Version history options"
+                  splitButtonItems={[
+                    <MenuToggleAction
+                      id="version-history-split-action"
+                      key="version-history-action"
+                      aria-label="Version history"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        setIsVersionHistoryMenuOpen(false);
+                        openVersionHistory();
+                      }}
+                    >
+                      <Flex
+                        spaceItems={{ default: 'spaceItemsSm' }}
+                        alignItems={{ default: 'alignItemsCenter' }}
+                        flexWrap={{ default: 'nowrap' }}
+                      >
+                        <FlexItem>
+                          <RhUiHistoryIcon aria-hidden />
+                        </FlexItem>
+                        <FlexItem>Version history</FlexItem>
+                      </Flex>
+                    </MenuToggleAction>
+                  ]}
+                />
+              )}
+            >
+              <DropdownList>
+                <DropdownItem key="show-full-history" onClick={openVersionHistory}>
+                  Show full history
+                </DropdownItem>
+                <DropdownItem key="restore-latest-version">Restore latest version</DropdownItem>
+                <DropdownItem key="name-current-version">Name current version</DropdownItem>
+                <DropdownItem key="make-a-copy">Make a copy</DropdownItem>
+              </DropdownList>
+            </Dropdown>
             <Tooltip triggerRef={canvasCloseButtonRef} content="Close canvas" position="bottom" aria="none" />
             <div className="pf-v6-c-drawer__close">
               <Button
