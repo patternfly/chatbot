@@ -810,8 +810,7 @@ export const VersionHistorySplitScreenV1: FunctionComponent = () => {
           <ModalBody id="restore-modal-body">
             {versionToRestore && (
               <p>
-                Your current document will revert to the version from{' '}
-                {formatModalTimestamp(versionToRestore.timestamp)}.
+                Your current document will revert to the version from {formatModalTimestamp(versionToRestore.timestamp)}.
               </p>
             )}
           </ModalBody>
@@ -876,8 +875,7 @@ export const VersionHistorySplitScreenV1: FunctionComponent = () => {
         <ModalBody id="restore-modal-body">
           {versionToRestore && (
             <p>
-              Your current document will revert to the version from{' '}
-              {formatModalTimestamp(versionToRestore.timestamp)}.
+              Your current document will revert to the version from {formatModalTimestamp(versionToRestore.timestamp)}.
             </p>
           )}
         </ModalBody>
