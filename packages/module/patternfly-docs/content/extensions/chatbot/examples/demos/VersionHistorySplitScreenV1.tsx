@@ -414,20 +414,17 @@ export const VersionHistorySplitScreenV1: FunctionComponent = () => {
     setVersionToRestore(null);
   };
 
-  const formatModalTimestamp = (timestamp: Date) => {
-    return (
-      timestamp.toLocaleDateString('en-US', {
-        month: 'long',
-        day: 'numeric'
-      }) +
-      ' at ' +
-      timestamp.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      })
-    );
-  };
+  const formatModalTimestamp = (timestamp: Date) =>
+    timestamp.toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric'
+    }) +
+    ' at ' +
+    timestamp.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
 
   const handleStartRename = (versionId: string, currentName: string) => {
     setEditingVersionId(versionId);
@@ -470,9 +467,15 @@ export const VersionHistorySplitScreenV1: FunctionComponent = () => {
     const minutes = Math.floor(diff / 60000);
     const hours = Math.floor(diff / 3600000);
 
-    if (minutes < 1) return 'Just now';
-    if (minutes < 60) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-    if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    if (minutes < 1) {
+      return 'Just now';
+    }
+    if (minutes < 60) {
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    }
+    if (hours < 24) {
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    }
     return timestamp.toLocaleString();
   };
 
@@ -584,8 +587,12 @@ export const VersionHistorySplitScreenV1: FunctionComponent = () => {
                                 aria-label="Version name"
                                 autoFocus
                                 onKeyDown={(e) => {
-                                  if (e.key === 'Enter') handleSaveRename(version.id);
-                                  if (e.key === 'Escape') handleCancelRename();
+                                  if (e.key === 'Enter') {
+                                    handleSaveRename(version.id);
+                                  }
+                                  if (e.key === 'Escape') {
+                                    handleCancelRename();
+                                  }
                                 }}
                               />
                             </FlexItem>
@@ -614,7 +621,10 @@ export const VersionHistorySplitScreenV1: FunctionComponent = () => {
                               </Content>
                             </FlexItem>
                             <FlexItem>
-                              <Flex spaceItems={{ default: 'spaceItemsSm' }} alignItems={{ default: 'alignItemsCenter' }}>
+                              <Flex
+                                spaceItems={{ default: 'spaceItemsSm' }}
+                                alignItems={{ default: 'alignItemsCenter' }}
+                              >
                                 <FlexItem>
                                   <Content component={ContentVariants.small}>
                                     {version.author === 'bot' ? 'Bot' : 'You'} · {formatTimestamp(version.timestamp)}
@@ -800,7 +810,8 @@ export const VersionHistorySplitScreenV1: FunctionComponent = () => {
           <ModalBody id="restore-modal-body">
             {versionToRestore && (
               <p>
-                Your current document will revert to the version from {formatModalTimestamp(versionToRestore.timestamp)}.
+                Your current document will revert to the version from{' '}
+                {formatModalTimestamp(versionToRestore.timestamp)}.
               </p>
             )}
           </ModalBody>
@@ -865,7 +876,8 @@ export const VersionHistorySplitScreenV1: FunctionComponent = () => {
         <ModalBody id="restore-modal-body">
           {versionToRestore && (
             <p>
-              Your current document will revert to the version from {formatModalTimestamp(versionToRestore.timestamp)}.
+              Your current document will revert to the version from{' '}
+              {formatModalTimestamp(versionToRestore.timestamp)}.
             </p>
           )}
         </ModalBody>
@@ -988,7 +1000,11 @@ export const VersionHistorySplitScreenV1: FunctionComponent = () => {
                           additionalActions={
                             <>
                               {showCanvasLabel && (
-                                <Label closeBtnAriaLabel="Exit canvas mode" onClose={closeCanvasMode} icon={<RhUiImageFillIcon />}>
+                                <Label
+                                  closeBtnAriaLabel="Exit canvas mode"
+                                  onClose={closeCanvasMode}
+                                  icon={<RhUiImageFillIcon />}
+                                >
                                   Canvas
                                 </Label>
                               )}
