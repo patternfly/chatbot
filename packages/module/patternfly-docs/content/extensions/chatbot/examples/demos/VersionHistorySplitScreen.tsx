@@ -59,6 +59,7 @@ import { RhUiImageFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-
 import { RhUiAddIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-add-icon';
 import { RhUiTaskFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-task-fill-icon';
 import { RhUiHistoryIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-history-icon';
+import { RhUiSaveIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-save-icon';
 import { CheckIcon } from '@patternfly/react-icons/dist/esm/icons/check-icon';
 import { TimesIcon } from '@patternfly/react-icons/dist/esm/icons/times-icon';
 import { EllipsisVIcon } from '@patternfly/react-icons/dist/esm/icons/ellipsis-v-icon';
@@ -73,6 +74,7 @@ import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import '@patternfly/react-core/dist/styles/base.css';
+import '@patternfly/react-styles/css/components/InlineEdit/inline-edit.css';
 import '@patternfly/chatbot/dist/css/main.css';
 import './VersionHistory.css';
 
@@ -226,6 +228,9 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
   const [versionToRestore, setVersionToRestore] = useState<Version | null>(null);
   const [previewCode, setPreviewCode] = useState<string | null>(null);
   const [isVersionHistoryMenuOpen, setIsVersionHistoryMenuOpen] = useState(false);
+  const [canvasTitle, setCanvasTitle] = useState('Edit code');
+  const [isEditingCanvasTitle, setIsEditingCanvasTitle] = useState(false);
+  const [editingCanvasTitle, setEditingCanvasTitle] = useState('Edit code');
 
   const scrollToBottomRef = useRef<HTMLDivElement>(null);
   const historyRef = useRef<HTMLButtonElement>(null);
@@ -402,6 +407,43 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     }
   };
 
+  const handleRestoreLatestVersion = () => {
+    const sortedVersions = [...versions].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+    if (sortedVersions.length > 0) {
+      handleRestoreVersion(sortedVersions[0].id);
+    }
+  };
+
+  const handleNameCurrentVersion = () => {
+    setEditingCanvasTitle(canvasTitle);
+    setIsEditingCanvasTitle(true);
+  };
+
+  const handleSaveCanvasTitle = () => {
+    const nextTitle = editingCanvasTitle.trim() || 'Edit code';
+    setCanvasTitle(nextTitle);
+    setEditingCanvasTitle(nextTitle);
+    setIsEditingCanvasTitle(false);
+  };
+
+  const handleCancelCanvasTitle = () => {
+    setEditingCanvasTitle(canvasTitle);
+    setIsEditingCanvasTitle(false);
+  };
+
+  const handleSaveCurrentVersion = () => {
+    const newVersion: Version = {
+      id: `v${Date.now()}`,
+      timestamp: new Date(),
+      author: 'user',
+      authorName: 'You',
+      code,
+      name: canvasTitle === 'Edit code' ? 'Untitled version' : canvasTitle
+    };
+    setVersions((prev) => [newVersion, ...prev]);
+    openVersionHistory();
+  };
+
   const confirmRestore = () => {
     if (versionToRestore) {
       setCode(versionToRestore.code);
@@ -535,10 +577,64 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
       aria-label="Redo"
       tooltipProps={{ content: 'Redo', aria: 'none' }}
       onClick={() => editorRef.current?.trigger('keyboard', 'redo', null)}
+    />,
+    <CodeEditorControl
+      key="save"
+      icon={<RhUiSaveIcon />}
+      aria-label="Save"
+      tooltipProps={{ content: 'Save', aria: 'none' }}
+      onClick={handleSaveCurrentVersion}
     />
   ];
 
   const selectedVersion = versions.find((v) => v.id === selectedVersionId);
+
+  const canvasTitleHeading = isEditingCanvasTitle ? (
+    <form
+      className="pf-v6-c-inline-edit pf-m-inline-editable"
+      id="canvas-title-inline-edit"
+      onSubmit={(event) => {
+        event.preventDefault();
+        handleSaveCanvasTitle();
+      }}
+    >
+      <div className="pf-v6-c-inline-edit__group">
+        <div className="pf-v6-c-inline-edit__input">
+          <TextInput
+            id="canvas-title-input"
+            value={editingCanvasTitle}
+            onChange={(_event, value) => setEditingCanvasTitle(value)}
+            aria-label="Canvas title"
+            autoFocus
+            onKeyDown={(event) => {
+              if (event.key === 'Escape') {
+                event.preventDefault();
+                handleCancelCanvasTitle();
+              }
+            }}
+          />
+        </div>
+        <div className="pf-v6-c-inline-edit__group pf-m-action-group pf-m-icon-group">
+          <div className="pf-v6-c-inline-edit__action pf-m-valid">
+            <Button type="submit" variant="plain" aria-label="Save edits" icon={<CheckIcon />} />
+          </div>
+          <div className="pf-v6-c-inline-edit__action">
+            <Button
+              type="button"
+              variant="plain"
+              aria-label="Cancel edits"
+              icon={<TimesIcon />}
+              onClick={handleCancelCanvasTitle}
+            />
+          </div>
+        </div>
+      </div>
+    </form>
+  ) : (
+    <Title id="chatbot-canvas-title" headingLevel="h2" size="lg">
+      {canvasTitle}
+    </Title>
+  );
 
   const versionHistoryPanel = (
     <div className="version-history-panel">
@@ -561,7 +657,13 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
       </div>
 
       <div className="version-history-content">
-        <DataList aria-label="Version history list" isCompact>
+        <DataList
+          aria-label="Version history list"
+          isCompact
+          selectedDataListItemId={selectedVersionId || ''}
+          onSelectDataListItem={(_event, id) => handleVersionSelect(id)}
+          onSelectableRowChange={(_event, id) => handleVersionSelect(id)}
+        >
           {[...versions]
             .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
             .map((version) => (
@@ -569,9 +671,6 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
                 key={version.id}
                 id={version.id}
                 aria-labelledby={`version-${version.id}`}
-                isExpanded={selectedVersionId === version.id}
-                className={selectedVersionId === version.id ? 'pf-m-selected' : ''}
-                onClick={() => handleVersionSelect(version.id)}
               >
                 <DataListItemRow>
                   <DataListItemCells
@@ -611,7 +710,11 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
                         ) : (
                           <Flex direction={{ default: 'column' }} spaceItems={{ default: 'spaceItemsXs' }}>
                             <FlexItem>
-                              <Content component={ContentVariants.p} className="pf-v6-u-font-weight-bold">
+                              <Content
+                                id={`version-${version.id}`}
+                                component={ContentVariants.p}
+                                className="pf-v6-u-font-weight-bold"
+                              >
                                 {version.name}
                               </Content>
                             </FlexItem>
@@ -702,11 +805,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
       >
         <DrawerHead className="pf-chatbot__canvas-head">
           <Flex spaceItems={{ default: 'spaceItemsMd' }} alignItems={{ default: 'alignItemsCenter' }}>
-            <FlexItem>
-              <Title id="chatbot-canvas-title" headingLevel="h2" size="lg">
-                Edit code
-              </Title>
-            </FlexItem>
+            <FlexItem>{canvasTitleHeading}</FlexItem>
             <FlexItem>
               <Popover
                 headerContent={
@@ -751,7 +850,6 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
               toggle={(toggleRef) => (
                 <MenuToggle
                   ref={toggleRef}
-                  variant="secondary"
                   isExpanded={isVersionHistoryMenuOpen}
                   onClick={() => setIsVersionHistoryMenuOpen(!isVersionHistoryMenuOpen)}
                   aria-label="Version history options"
@@ -785,9 +883,15 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
                 <DropdownItem key="show-full-history" onClick={openVersionHistory}>
                   Show full history
                 </DropdownItem>
-                <DropdownItem key="restore-latest-version">Restore latest version</DropdownItem>
-                <DropdownItem key="name-current-version">Name current version</DropdownItem>
-                <DropdownItem key="make-a-copy">Make a copy</DropdownItem>
+                <DropdownItem key="restore-latest-version" onClick={handleRestoreLatestVersion}>
+                  Restore latest version
+                </DropdownItem>
+                <DropdownItem key="name-current-version" onClick={handleNameCurrentVersion}>
+                  Name current version
+                </DropdownItem>
+                <DropdownItem key="save-current-version" onClick={handleSaveCurrentVersion}>
+                  Save current version
+                </DropdownItem>
               </DropdownList>
             </Dropdown>
             <Tooltip triggerRef={canvasCloseButtonRef} content="Close canvas" position="bottom" aria="none" />
@@ -879,6 +983,9 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
                     isLineNumbersVisible
                     isLanguageLabelVisible
                     isReadOnly
+                    isCopyEnabled
+                    isDownloadEnabled
+                    downloadFileName="canvas-mode"
                     code={previewCode || code}
                     language={Language.yaml}
                   />

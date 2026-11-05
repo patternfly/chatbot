@@ -22,10 +22,6 @@
   overflow: auto;
 }
 
-.version-history-panel .pf-v6-c-data-list__item.pf-m-selected {
-  background-color: var(--pf-t--global--background--color--secondary--default);
-}
-
 /* Remove top border from first data list item */
 .version-history-panel .pf-v6-c-data-list {
   border-top: none;
@@ -33,15 +29,6 @@
 
 .version-history-panel .pf-v6-c-data-list__item:first-child {
   border-block-start: none;
-}
-
-.version-history-panel .pf-v6-c-data-list__item:hover {
-  background-color: var(--pf-t--global--background--color--secondary--hover);
-}
-
-/* Make version list items clickable */
-.version-history-panel .pf-v6-c-data-list__item {
-  cursor: pointer;
 }
 
 /* Option 2: Split-screen layout styles */
@@ -76,6 +63,10 @@
   padding-bottom: var(--pf-t--global--spacer--md);
   background-color: var(--pf-t--global--background--color--secondary--default);
   flex-shrink: 0;
+}
+
+.version-history-split-canvas .pf-chatbot__canvas-head .pf-v6-c-drawer__actions {
+  gap: var(--pf-t--global--spacer--md);
 }
 
 .version-history-split-canvas .pf-chatbot__canvas-panel-body {
