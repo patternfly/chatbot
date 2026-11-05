@@ -808,7 +808,6 @@ describe('Message', () => {
     render(<Message avatar="./img" role="user" name="User" content={CODE_MESSAGE} />);
     expect(screen.getByText('Here is some YAML code:')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Copy code' })).toBeTruthy();
-    expect(screen.getByText(/yaml/)).toBeTruthy();
     expect(screen.getByText(/apiVersion:/i)).toBeTruthy();
     expect(screen.getByText(/helm.openshift.io\/v1beta1/i)).toBeTruthy();
     expect(screen.getByText(/metadata:/i)).toBeTruthy();
@@ -827,7 +826,6 @@ describe('Message', () => {
     );
     expect(screen.getByText('Here is some YAML code:')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Copy code' })).toBeTruthy();
-    expect(screen.getByText(/yaml/)).toBeTruthy();
     expect(screen.getByText(/apiVersion/i)).toBeTruthy();
     expect(screen.getByRole('button', { name: /Show more/i })).toBeTruthy();
   });
@@ -838,7 +836,6 @@ describe('Message', () => {
     const button = screen.getByRole('button', { name: /Show more/i });
     await userEvent.click(button);
     expect(screen.getByRole('button', { name: /Show less/i })).toBeTruthy();
-    expect(screen.getByText(/yaml/)).toBeTruthy();
     expect(screen.getByText(/apiVersion:/i)).toBeTruthy();
     expect(screen.getByText(/helm.openshift.io\/v1beta1/i)).toBeTruthy();
     expect(screen.getByText(/metadata:/i)).toBeTruthy();

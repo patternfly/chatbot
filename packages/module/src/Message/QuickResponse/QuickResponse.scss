@@ -1,9 +1,5 @@
 .pf-chatbot__message-quick-response {
   .pf-v6-c-label {
-    &:not(.pf-m-compact) {
-      --pf-v6-c-label--FontSize: var(--pf-t--global--font--size--md);
-    }
-
     @media screen and (min-width: 401px) and (max-width: 600px) {
       --pf-v6-c-label__text--MaxWidth: 20ch;
     }
@@ -11,25 +7,5 @@
     @media screen and (max-width: 400px) {
       --pf-v6-c-label__text--MaxWidth: 15ch;
     }
-  }
-
-  .pf-chatbot__message-quick-response--selected {
-    .pf-v6-c-label__content:is(:hover, :focus) {
-      --pf-v6-c-label--m-clickable--hover--BorderWidth: 0;
-      --pf-v6-c-label--BackgroundColor: var(--pf-v6-c-label--m-blue--BackgroundColor);
-    }
-  }
-
-  .pf-chatbot__message-quick-response--selected:hover,
-  .pf-chatbot__message-quick-response--selected:focus {
-    --pf-v6-c-label--m-clickable--hover--BorderWidth: 0;
-    --pf-v6-c-label--BackgroundColor: var(--pf-v6-c-label--m-blue--BackgroundColor);
-  }
-
-  // active state right before selection
-  .pf-v6-c-label.pf-m-blue.pf-m-clickable .pf-v6-c-label__content:is(:active) {
-    --pf-v6-c-label--BackgroundColor: var(--pf-v6-c-label--m-blue--BackgroundColor);
-    --pf-v6-c-label--m-clickable--hover--BackgroundColor: var(--pf-v6-c-label--m-blue--BackgroundColor);
-    --pf-v6-c-label--m-clickable--hover--BorderWidth: 0;
   }
 }
