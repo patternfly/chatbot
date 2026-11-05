@@ -7,11 +7,6 @@
     border-radius: var(--pf-t--global--border--radius--large);
   }
 
-  .pf-chatbot__heading-divider {
-    padding-inline-start: var(--pf-t--global--spacer--lg);
-    padding-inline-end: var(--pf-t--global--spacer--lg);
-  }
-
   // Drawer title
   // ----------------------------------------------------------------------------
   .pf-chatbot__heading-container {
@@ -34,14 +29,6 @@
     gap: var(--pf-t--global--spacer--gap--text-to-element--default);
   }
 
-  // Drawer search and actions
-  .pf-chatbot__history-search-actions {
-    .pf-v6-c-button.pf-m-control {
-      --pf-v6-c-button--m-control--PaddingInlineStart: var(--pf-t--global--spacer--control--horizontal--compact);
-      --pf-v6-c-button--m-control--PaddingInlineEnd: var(--pf-t--global--spacer--control--horizontal--compact);
-    }
-  }
-
   .pf-chatbot__input {
     width: 100%;
   }
@@ -49,15 +36,10 @@
   // Drawer menu
   // ----------------------------------------------------------------------------
   .pf-v6-c-menu.pf-chatbot__history-menu {
-    --pf-v6-c-menu--PaddingBlockStart: 0;
-    --pf-v6-c-menu--BackgroundColor: var(--pf-t--global--background--color--floating--default);
     // override high contrast style
     --pf-v6-c-menu--BorderWidth: 0;
     overflow: initial;
     position: relative;
-  }
-  .pf-v6-c-menu__item-main {
-    --pf-v6-c-menu__item-main--ColumnGap: var(--pf-t--global--spacer--md);
   }
 
   .pf-chatbot__menu-item-header > .pf-v6-c-menu__group-title,
@@ -71,7 +53,6 @@
 
   .pf-chatbot__menu-item-header > .pf-v6-c-menu__group-title,
   .pf-chatbot__menu-item-header--expandable .pf-chatbot__menu-group-toggle > .pf-v6-c-expandable-section__toggle {
-    color: var(--pf-t--global--text--color--subtle);
     font-weight: var(--pf-t--global--font--weight--body--bold);
     font-size: var(--pf-t--global--icon--size--font--sm);
   }
@@ -95,17 +76,11 @@
 
     .pf-v6-c-button.pf-m-link {
       --pf-v6-c-button--BorderRadius: var(--pf-t--global--border--radius--small);
-      --pf-v6-c-button--PaddingInlineStart: var(--pf-t--global--spacer--sm);
-      --pf-v6-c-button--PaddingInlineEnd: var(--pf-t--global--spacer--sm);
       color: inherit;
       font-weight: inherit;
       font-size: inherit;
       justify-content: flex-start;
       width: 100%;
-    }
-
-    .pf-v6-c-expandable-section__toggle-icon {
-      color: var(--pf-t--global--text--color--subtle);
     }
   }
 
@@ -114,12 +89,7 @@
     --pf-v6-c-menu__item--PaddingInlineEnd: var(--pf-t--global--spacer--sm);
     // override high contrast style
     --pf-v6-c-menu__list-item--BorderWidth: 0;
-    padding-block-start: var(--pf-t--global--spacer--xs);
-    padding-block-end: var(--pf-t--global--spacer--xs);
-    color: var(--pf-t--global--text--color--regular);
     font-size: var(--pf-t--global--font--size--body--lg);
-    font-weight: var(--pf-t--global--font--weight--body--default);
-    border-radius: var(--pf-t--global--border--radius--small);
   }
 
   // "Show all" / "Show less" toggle
@@ -132,37 +102,9 @@
     font-weight: var(--pf-t--global--font--weight--body--default);
   }
 
-  li.pf-chatbot__menu-item:hover::after {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    content: '';
-    border: var(--pf-t--global--border--width--action--plain--hover) solid
-      var(--pf-t--global--border--color--high-contrast);
-    border-radius: inherit;
-  }
-
-  // allows focus state to have border radius
-  .pf-v6-c-menu__list-item.pf-chatbot__menu-item {
-    overflow: hidden;
-  }
-
-  .pf-chatbot__history-actions {
-    transform: rotate(90deg);
-  }
-
   .pf-chatbot__menu-item--active {
     background-color: var(--pf-t--global--background--color--action--plain--clicked);
-  }
-
-  li.pf-chatbot__menu-item--active::after {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    content: '';
-    border: var(--pf-t--global--border--width--action--plain--clicked) solid
-      var(--pf-t--global--border--color--high-contrast);
-    border-radius: inherit;
+    border-radius: var(--pf-v6-c-menu__item--BorderRadius);
   }
 
   button.pf-chatbot__menu-item--active {
@@ -191,22 +133,13 @@
 
     // Drawer head
     .pf-v6-c-drawer__head {
-      --pf-v6-c-drawer__head--PaddingBlockStart: 0;
-      --pf-v6-c-drawer__head--PaddingBlockEnd: 0;
-      --pf-v6-c-drawer__head--PaddingInlineStart: var(--pf-t--global--spacer--lg);
-      --pf-v6-c-drawer__head--PaddingInlineEnd: var(--pf-t--global--spacer--lg);
-
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: var(--pf-t--global--spacer--2xl);
     }
 
     // Drawer actions
     .pf-v6-c-drawer__actions {
-      --pf-v6-c-drawer__actions--MarginBlockStart: 0;
-      --pf-v6-c-drawer__actions--MarginInlineEnd: 0;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -219,24 +152,9 @@
       flex-direction: row-reverse;
     }
 
-    // Close drawer
-    .pf-v6-c-drawer__close {
-      .pf-v6-c-button {
-        width: var(--pf-t--global--spacer--2xl);
-        height: var(--pf-t--global--spacer--2xl);
-        border-radius: var(--pf-t--global--border--radius--pill);
-        justify-content: center;
-        align-items: center;
-      }
-    }
-
     // Drawer body
     .pf-v6-c-drawer__body {
       --pf-v6-c-drawer__panel__body--PaddingBlockStart: 0;
-      --pf-v6-c-drawer__panel__body--PaddingBlockEnd: 0;
-      --pf-v6-c-drawer__panel__body--PaddingInlineStart: var(--pf-t--global--spacer--lg);
-      --pf-v6-c-drawer__panel__body--PaddingInlineEnd: var(--pf-t--global--spacer--lg);
-
       overflow-y: auto;
       display: flex;
       flex-direction: column;
@@ -257,20 +175,6 @@
     flex-direction: column;
     height: 70vh;
   }
-}
-
-.pf-chatbot:is(.pf-chatbot--drawer, .pf-chatbot--docked) .pf-chatbot__history {
-  // .pf-v6-c-menu {
-  //   @at-root :where(.pf-v6-theme-glass) & {
-  //     --pf-v6-c-menu--BackgroundColor: var(--pf-t--global--background--color--floating--default);
-  //   }
-  // }
-
-  // .pf-chatbot__menu-item-header > .pf-v6-c-menu__group-title {
-  //   @at-root :where(.pf-v6-theme-glass) & {
-  //     background-color: var(--pf-t--global--background--color--floating--default);
-  //   }
-  // }
 }
 
 // ============================================================================
@@ -348,27 +252,6 @@
     --pf-v6-c-drawer__head--PaddingInlineStart: var(--pf-t--global--spacer--md);
     --pf-v6-c-drawer__head--PaddingInlineEnd: var(--pf-t--global--spacer--md);
     --pf-v6-c-drawer__panel--RowGap: var(--pf-t--global--spacer--md);
-
-    .pf-v6-c-drawer__body {
-      --pf-v6-c-drawer__panel__body--PaddingInlineStart: var(--pf-t--global--spacer--md);
-      --pf-v6-c-drawer__panel__body--PaddingInlineEnd: var(--pf-t--global--spacer--md);
-    }
-
-    .pf-v6-c-drawer__head {
-      --pf-v6-c-drawer__head--PaddingInlineStart: var(--pf-t--global--spacer--lg);
-      --pf-v6-c-drawer__head--PaddingInlineEnd: var(--pf-t--global--spacer--lg);
-    }
-
-    .pf-v6-c-drawer__close {
-      .pf-v6-c-button {
-        width: 2rem;
-        height: 2rem;
-        --pf-v6-c-button--m-plain--PaddingInlineEnd: var(--pf-t--global--spacer--xs);
-        --pf-v6-c-button--m-plain--PaddingInlineStart: var(--pf-t--global--spacer--xs);
-        --pf-v6-c-button--PaddingBlockStart: var(--pf-t--global--spacer--xs);
-        --pf-v6-c-button--PaddingBlockEnd: var(--pf-t--global--spacer--xs);
-      }
-    }
   }
 
   .pf-chatbot__menu-item {
