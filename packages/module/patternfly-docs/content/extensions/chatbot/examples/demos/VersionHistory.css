@@ -65,7 +65,7 @@
   flex-shrink: 0;
 }
 
-.version-history-split-canvas .pf-chatbot__canvas-head .pf-v6-c-drawer__actions {
+.pf-chatbot__canvas-head .pf-v6-c-drawer__actions {
   gap: var(--pf-t--global--spacer--md);
 }
 
