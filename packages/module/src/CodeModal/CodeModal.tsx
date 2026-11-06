@@ -194,7 +194,6 @@ export const CodeModal: FunctionComponent<CodeModalProps> = ({
     if (isMonacoLoaded) {
       return (
         <CodeEditor
-          isDarkTheme
           isLineNumbersVisible={isLineNumbersVisible}
           isLanguageLabelVisible
           isCopyEnabled={isCopyEnabled}
