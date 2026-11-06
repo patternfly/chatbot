@@ -2,8 +2,57 @@ import { render, screen } from '@testing-library/react';
 import ChatbotModal from './ChatbotModal';
 import '@testing-library/jest-dom';
 import { ModalBody, ModalHeader } from '@patternfly/react-core';
+import { ChatbotDisplayMode } from '../Chatbot';
 
 describe('ChatbotModal', () => {
+  it.each(Object.values(ChatbotDisplayMode))('preserves the %s display mode and custom classes', (displayMode) => {
+    render(
+      <ChatbotModal
+        isOpen
+        displayMode={displayMode}
+        className="custom-modal"
+        aria-labelledby="chatbot-modal-title"
+        aria-describedby="chatbot-modal"
+      >
+        <ModalHeader title="Chatbot modal" labelId="chatbot-modal-title" />
+        <ModalBody tabIndex={0} id="chatbot-modal">
+          Modal content
+        </ModalBody>
+      </ChatbotModal>
+    );
+
+    expect(screen.getByRole('dialog', { name: 'Chatbot modal' })).toHaveClass(
+      'pf-chatbot__chatbot-modal',
+      `pf-chatbot__chatbot-modal--${displayMode}`,
+      'custom-modal'
+    );
+    expect(screen.getByText('Modal content')).toBeVisible();
+  });
+
+  it.each(Object.values(ChatbotDisplayMode))('preserves the %s backdrop behavior', (displayMode) => {
+    const { container, rerender } = render(
+      <ChatbotModal isOpen displayMode={displayMode} aria-label="Chatbot modal">
+        <ModalBody tabIndex={0}>Modal content</ModalBody>
+      </ChatbotModal>
+    );
+
+    const backdrop = container.querySelector('.pf-chatbot__backdrop');
+    if (displayMode === ChatbotDisplayMode.fullscreen || displayMode === ChatbotDisplayMode.embedded) {
+      expect(backdrop).toBeInTheDocument();
+    } else {
+      expect(backdrop).not.toBeInTheDocument();
+    }
+
+    rerender(
+      <ChatbotModal isOpen={false} displayMode={displayMode} aria-label="Chatbot modal">
+        <ModalBody tabIndex={0}>Modal content</ModalBody>
+      </ChatbotModal>
+    );
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(container.querySelector('.pf-chatbot__backdrop')).not.toBeInTheDocument();
+  });
+
   it('should render compact modal', () => {
     render(
       <ChatbotModal data-testid="modal" isCompact isOpen>
