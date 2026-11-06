@@ -10,7 +10,7 @@
   width: 30rem;
   height: 70vh;
   background-color: var(--pf-t--global--background--color--floating--secondary--default);
-  border-radius: var(--pf-t--global--border--radius--medium);
+  border-radius: var(--pf-t--global--border--radius--large);
   box-shadow: var(--pf-t--global--box-shadow--lg);
   z-index: var(--pf-t--global--z-index--md);
   -webkit-font-smoothing: antialiased;
@@ -127,7 +127,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  border-radius: var(--pf-t--global--border--radius--medium);
+  border-radius: var(--pf-t--global--border--radius--large);
   overflow: hidden;
 
   // Hide chatbot
