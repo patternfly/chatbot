@@ -650,7 +650,7 @@ export const ChatbotConversationHistoryNav: FunctionComponent<ChatbotConversatio
             className={reverseButtonOrder ? 'pf-v6-c-drawer__actions--reversed' : ''}
             {...drawerActionsProps}
           >
-            <DrawerCloseButton onClick={onDrawerToggle} {...drawerCloseButtonProps} />
+            <DrawerCloseButton onClick={onDrawerToggle} buttonProps={{ isCircle: true }} {...drawerCloseButtonProps} />
             {onNewChat && (
               <Button
                 size={isCompact ? 'sm' : undefined}
