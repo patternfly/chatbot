@@ -13,3 +13,4 @@ import '@patternfly/documentation-framework/global.css';
 
 // Add your extension CSS below
 import '@patternfly/chatbot/dist/css/main.css';
+import './content/extensions/chatbot/examples/demos/VersionHistory.css';

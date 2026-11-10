@@ -1,0 +1,102 @@
+/* Version History Panel Styles */
+.version-history-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  padding: var(--pf-t--global--spacer--lg);
+  background-color: var(--pf-t--global--background--color--primary--default);
+  box-sizing: border-box;
+}
+
+.version-history-header {
+  padding-bottom: var(--pf-t--global--spacer--md);
+  border-bottom: 1px solid var(--pf-t--global--border--color--default);
+  flex-shrink: 0;
+}
+
+.version-history-content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* Remove top border from first data list item */
+.version-history-panel .pf-v6-c-data-list {
+  border-top: none;
+}
+
+.version-history-panel .pf-v6-c-data-list__item:first-child {
+  border-block-start: none;
+}
+
+/* Option 2: Split-screen layout styles */
+.version-history-split-screen-demo {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background-color: var(--pf-t--global--background--color--secondary--default);
+}
+
+.version-history-split-canvas {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.version-history-split-canvas .pf-chatbot__canvas-section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--pf-t--global--background--color--secondary--default);
+}
+
+.version-history-split-canvas .pf-chatbot__canvas-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--pf-t--global--spacer--md);
+  padding-top: var(--pf-t--global--spacer--lg);
+  padding-bottom: var(--pf-t--global--spacer--md);
+  background-color: var(--pf-t--global--background--color--secondary--default);
+  flex-shrink: 0;
+}
+
+.pf-chatbot__canvas-head .pf-v6-c-drawer__actions {
+  gap: var(--pf-t--global--spacer--md);
+}
+
+.version-history-split-canvas .pf-chatbot__canvas-panel-body {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: var(--pf-t--global--spacer--md);
+  min-height: 0;
+}
+
+.version-history-split-canvas .pf-chatbot__canvas-editor {
+  flex: 1;
+  overflow: hidden;
+  border-radius: var(--pf-t--global--border--radius--medium);
+  min-height: 0;
+}
+
+.version-history-split-canvas .pf-v6-c-code-editor {
+  height: 100%;
+}
+
+.version-history-split-panel {
+  width: 400px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-left: 1px solid var(--pf-t--global--border--color--default);
+  background-color: var(--pf-t--global--background--color--primary--default);
+}
+
+.version-history-split-panel .version-history-panel {
+  height: 100%;
+}
