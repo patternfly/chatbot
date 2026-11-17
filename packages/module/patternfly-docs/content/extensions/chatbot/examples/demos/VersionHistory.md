@@ -103,7 +103,7 @@ Version actions include:
 
 ## Class names
 
-This demo reuses the [canvas](/patterns/canvas) `pf-chatbot__canvas*` classes from `@patternfly/chatbot` for the canvas and editor chrome. The classes below are defined in this demo's stylesheet (`VersionHistory.css`) and are used for the version history panel and split-screen layout. They are not exported from `@patternfly/chatbot`.
+This demo reuses the [canvas](/patterns/canvas) `pf-chatbot__canvas*` classes from `@patternfly/chatbot` for the canvas and editor chrome. The classes below are used for the version history panel and split-screen layout, and are exported from `@patternfly/chatbot` (in `main.css`).
 
 | Class name                          | Purpose                                                                 |
 | ----------------------------------- | ----------------------------------------------------------------------- |

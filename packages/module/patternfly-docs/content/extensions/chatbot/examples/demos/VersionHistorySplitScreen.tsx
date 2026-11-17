@@ -76,7 +76,6 @@ import userAvatar from '../Messages/user_avatar.svg';
 import '@patternfly/react-core/dist/styles/base.css';
 import '@patternfly/react-styles/css/components/InlineEdit/inline-edit.css';
 import '@patternfly/chatbot/dist/css/main.css';
-import './VersionHistory.css';
 
 const sampleCode = `apiVersion: v1
 kind: ConfigMap
