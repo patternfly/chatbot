@@ -639,8 +639,8 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
   );
 
   const versionHistoryPanel = (
-    <div className="version-history-panel">
-      <div className="version-history-header">
+    <div className="pf-chatbot__version-history-panel">
+      <div className="pf-chatbot__version-history-header">
         <Flex justifyContent={{ default: 'justifyContentSpaceBetween' }} alignItems={{ default: 'alignItemsCenter' }}>
           <FlexItem>
             <Title headingLevel="h2" size="lg">
@@ -658,7 +658,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
         </Flex>
       </div>
 
-      <div className="version-history-content">
+      <div className="pf-chatbot__version-history-content">
         <DataList
           aria-label="Version history list"
           isCompact
@@ -966,8 +966,8 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
           </ModalFooter>
         </Modal>
 
-        <div className="version-history-split-screen-demo">
-          <div className="version-history-split-canvas pf-chatbot__canvas-panel">
+        <div className="pf-chatbot__version-history-split-screen-demo">
+          <div className="pf-chatbot__version-history-split-canvas pf-chatbot__canvas-panel">
             <section className="pf-chatbot__canvas-section" tabIndex={-1} aria-label="Canvas">
               <div className="pf-chatbot__canvas-head">
                 <Flex spaceItems={{ default: 'spaceItemsMd' }} alignItems={{ default: 'alignItemsCenter' }}>
@@ -1000,7 +1000,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
               </div>
             </section>
           </div>
-          <div className="version-history-split-panel">{versionHistoryPanel}</div>
+          <div className="pf-chatbot__version-history-split-panel">{versionHistoryPanel}</div>
         </div>
       </>
     );

@@ -105,14 +105,14 @@ Version actions include:
 
 This demo reuses the [canvas](/patterns/canvas) `pf-chatbot__canvas*` classes from `@patternfly/chatbot` for the canvas and editor chrome. The classes below are used for the version history panel and split-screen layout, and are exported from `@patternfly/chatbot` (in `main.css`).
 
-| Class name                          | Purpose                                                                 |
-| ----------------------------------- | ----------------------------------------------------------------------- |
-| `version-history-panel`             | Flex column container for the version history panel and its spacing.    |
-| `version-history-header`            | Styles the panel header and its bottom border.                          |
-| `version-history-content`           | Scrollable area that holds the version list.                            |
-| `version-history-split-screen-demo` | Full-viewport flex row that hosts the split-screen layout.              |
-| `version-history-split-canvas`      | Left pane that contains the read-only canvas preview.                   |
-| `version-history-split-panel`       | Fixed-width right pane that contains the version history panel.         |
+| Class name                                     | Purpose                                                              |
+| ---------------------------------------------- | ------------------------------------------------------------------- |
+| `pf-chatbot__version-history-panel`            | Flex column container for the version history panel and its spacing. |
+| `pf-chatbot__version-history-header`           | Styles the panel header and its bottom border.                      |
+| `pf-chatbot__version-history-content`          | Scrollable area that holds the version list.                        |
+| `pf-chatbot__version-history-split-screen-demo`| Full-viewport flex row that hosts the split-screen layout.          |
+| `pf-chatbot__version-history-split-canvas`     | Left pane that contains the read-only canvas preview.               |
+| `pf-chatbot__version-history-split-panel`      | Fixed-width right pane that contains the version history panel.      |
 
 ## Demo
 
