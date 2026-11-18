@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect, FunctionComponent, ReactNode } from 'react';
+import { useState, useRef, useCallback, useEffect, FunctionComponent, ReactNode } from 'react';
 import {
   Brand,
   Button,
@@ -222,6 +222,12 @@ const iconLogo = (
 export const VersionHistorySplitScreen: FunctionComponent = () => {
   const [messages, setMessages] = useState<MessageProps[]>(initialMessages);
   const [announcement, setAnnouncement] = useState<string>();
+  // Version actions have their own live region, rendered in both views, so the message can be
+  // announced even when the action switches views (as save and restore do).
+  const [versionAnnouncement, setVersionAnnouncement] = useState<string>();
+  // Restoring closes a modal; an update made in that same tick can be swallowed while the dialog
+  // unmounts and focus is restored, so hold the message until the modal is gone.
+  const [pendingVersionAnnouncement, setPendingVersionAnnouncement] = useState<string>();
   const [isSendButtonDisabled, setIsSendButtonDisabled] = useState(false);
   const [isAttachMenuOpen, setIsAttachMenuOpen] = useState(false);
   const [isModelSelectOpen, setIsModelSelectOpen] = useState(false);
@@ -272,8 +278,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
   };
 
   const handleSend = useCallback(
-    (input: string | number) => {
-      const inputStr = String(input);
+    (input: string) => {
       const newDate = new Date();
       const newMessages: MessageProps[] = [];
       messages.forEach((message) => newMessages.push(message));
@@ -283,7 +288,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
         id: generateId(),
         name: 'You',
         role: 'user',
-        content: inputStr,
+        content: input,
         timestamp: `${newDate?.toLocaleDateString()} ${newDate?.toLocaleTimeString()}`
       });
       newMessages.push({
@@ -294,7 +299,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
         isLoading: true
       });
       setMessages(newMessages);
-      setAnnouncement(`Message from You: ${inputStr}. Message from Bot is loading.`);
+      setAnnouncement(`Message from You: ${input}. Message from Bot is loading.`);
       setIsSendButtonDisabled(true);
 
       setTimeout(() => {
@@ -334,6 +339,26 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
       scrollToBottomRef.current?.scrollIntoView();
     }
   }, [messages]);
+
+  // Flush restore announcements only once the dialog has actually left the DOM. aria-modal makes
+  // everything outside an open dialog invisible to assistive tech, and the modal stays mounted for
+  // its exit animation after isRestoreModalOpen flips, so announce only after it is gone.
+  useEffect(() => {
+    if (isRestoreModalOpen || !pendingVersionAnnouncement) {
+      return;
+    }
+    let frameId = 0;
+    const announceWhenClosed = () => {
+      if (document.querySelector('.pf-v6-c-modal-box')) {
+        frameId = window.requestAnimationFrame(announceWhenClosed);
+        return;
+      }
+      setVersionAnnouncement(pendingVersionAnnouncement);
+      setPendingVersionAnnouncement(undefined);
+    };
+    frameId = window.requestAnimationFrame(announceWhenClosed);
+    return () => window.cancelAnimationFrame(frameId);
+  }, [isRestoreModalOpen, pendingVersionAnnouncement]);
 
   const onModelSelect = (
     _event: React.MouseEvent<Element, MouseEvent> | undefined,
@@ -392,7 +417,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     window.requestAnimationFrame(() => document.getElementById(versionId)?.focus());
   };
 
-  const handleGeneratedAiLabelKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
+  const handleGeneratedAiLabelKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       (event.currentTarget as HTMLElement).click();
@@ -470,14 +495,18 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     const nextVersions = [newVersion, ...versions];
     setVersions(nextVersions);
     openVersionHistory(nextVersions);
+    setVersionAnnouncement(`Version "${newVersion.name}" saved.`);
   };
 
   const confirmRestore = () => {
     if (versionToRestore) {
+      const restoredName = versionToRestore.name;
       setCode(versionToRestore.code);
       setIsRestoreModalOpen(false);
       setVersionToRestore(null);
       closeVersionHistory();
+      // Flushed by the effect above once the modal has closed.
+      setPendingVersionAnnouncement(`Version "${restoredName}" restored.`);
     }
   };
 
@@ -504,6 +533,8 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
 
   const handleSaveRename = (versionId: string) => {
     setVersions((prev) => prev.map((v) => (v.id === versionId ? { ...v, name: editingName } : v)));
+    // The row updates in place, so nothing would be announced without this.
+    setVersionAnnouncement(`Version renamed to "${editingName}".`);
     setEditingVersionId(null);
     setEditingName('');
     focusVersionOptionsToggle(versionId);
@@ -528,6 +559,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
       duplicatedVersionId = newVersion.id;
       setVersions((prev) => [newVersion, ...prev]);
       setSelectedVersionId(newVersion.id);
+      setVersionAnnouncement(`Version "${newVersion.name}" duplicated.`);
     }
     setOpenMenuVersionId(null);
     focusVersionItem(duplicatedVersionId);
@@ -808,9 +840,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
                     ]}
                   />
                   {editingVersionId !== version.id && (
-                    <DataListAction
-                      id={`version-action-${version.id}`}
-                    >
+                    <DataListAction id={`version-action-${version.id}`}>
                       <Dropdown
                         isOpen={openMenuVersionId === version.id}
                         onOpenChange={(isOpen) => setOpenMenuVersionId(isOpen ? version.id : null)}
@@ -1039,9 +1069,22 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     </Modal>
   );
 
+  // Rendered by both views under the same key, so this element stays mounted when an action
+  // switches views. A live region that mounts with its text already set is not announced.
+  const versionAnnouncementRegion = (
+    <div
+      key="version-announcement"
+      className="pf-chatbot__version-history-announcement pf-chatbot-m-hidden"
+      aria-live="polite"
+    >
+      {versionAnnouncement}
+    </div>
+  );
+
   if (isVersionHistoryOpen) {
     return (
       <>
+        {versionAnnouncementRegion}
         {restoreModal}
 
         <div className="pf-chatbot__version-history-split-screen-demo">
@@ -1086,6 +1129,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
 
   return (
     <>
+      {versionAnnouncementRegion}
       {restoreModal}
 
       <input {...getInputProps()} hidden />
