@@ -118,7 +118,7 @@ This demo reuses the [canvas](/patterns/canvas) `pf-chatbot__canvas*` classes fr
 
 ### Fullscreen version history
 
-This demo shows a read-only code preview (canvas view) on the left and version history list on the right, utilizing a split-screen layout. Open the version history with the split menu toggle in the canvas panel header (next to close)—click the main button or **Show full history** in the dropdown. The chatbot panel is automatically hidden when the version history toggle is triggered. Close the version history with the X icon button to return to the chatbot and canvas.
+This demo uses a split-screen layout to show a read-only code preview (canvas view) and version history list.
 
 ```js file="./VersionHistorySplitScreen.tsx" isFullscreen
 

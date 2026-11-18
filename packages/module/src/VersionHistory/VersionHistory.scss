@@ -11,7 +11,7 @@
 }
 
 .pf-chatbot__version-history-header {
-  padding-bottom: var(--pf-t--global--spacer--md);
+  padding-block-end: var(--pf-t--global--spacer--md);
   border-bottom: 1px solid var(--pf-t--global--border--color--default);
   flex-shrink: 0;
 }
@@ -58,8 +58,8 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--pf-t--global--spacer--md);
-  padding-top: var(--pf-t--global--spacer--lg);
-  padding-bottom: var(--pf-t--global--spacer--md);
+  padding-block-start: var(--pf-t--global--spacer--lg);
+  padding-block-end: var(--pf-t--global--spacer--md);
   background-color: var(--pf-t--global--background--color--secondary--default);
   flex-shrink: 0;
 }
@@ -90,7 +90,6 @@
 
 .pf-chatbot__version-history-split-panel {
   width: 400px;
-  flex-shrink: 0;
   overflow: hidden;
   border-left: 1px solid var(--pf-t--global--border--color--default);
   background-color: var(--pf-t--global--background--color--primary--default);
@@ -98,4 +97,16 @@
 
 .pf-chatbot__version-history-split-panel .pf-chatbot__version-history-panel {
   height: 100%;
+}
+
+/* Icon + label content for the version history split button action */
+.pf-chatbot__version-history-action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pf-t--global--spacer--sm);
+  flex-wrap: nowrap;
+}
+
+.pf-chatbot__version-history-action-icon {
+  flex-shrink: 0;
 }
