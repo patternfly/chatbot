@@ -74,7 +74,6 @@ import PFIconLogoColor from '../UI/PF-IconLogo-Color.svg';
 import PFIconLogoReverse from '../UI/PF-IconLogo-Reverse.svg';
 import userAvatar from '../Messages/user_avatar.svg';
 import '@patternfly/react-core/dist/styles/base.css';
-import '@patternfly/react-styles/css/components/InlineEdit/inline-edit.css';
 import '@patternfly/chatbot/dist/css/main.css';
 
 const sampleCode = `apiVersion: v1
@@ -86,6 +85,25 @@ data:
 `;
 
 const date = new Date();
+
+const longTimestampFormatter = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+  hour12: true
+});
+
+// RelativeTimeFormat handles the unit, pluralization, and the word "ago" for us, so the list labels
+// stay correct without hand-rolled `${count} minute${count === 1 ? '' : 's'}` strings.
+const relativeTimeFormatter = new Intl.RelativeTimeFormat('en-US', { numeric: 'auto' });
+
+const MINUTE_MS = 60 * 1000;
+const HOUR_MS = 60 * MINUTE_MS;
+const DAY_MS = 24 * HOUR_MS;
+
+const GENERATED_WITH_AI_LABEL_ID = 'generated-with-ai-label';
+const GENERATED_WITH_AI_TEXT = 'Generated with AI';
 
 const initialMessages: MessageProps[] = [
   {
@@ -225,7 +243,6 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
   const [openMenuVersionId, setOpenMenuVersionId] = useState<string | null>(null);
   const [isRestoreModalOpen, setIsRestoreModalOpen] = useState(false);
   const [versionToRestore, setVersionToRestore] = useState<Version | null>(null);
-  const [previewCode, setPreviewCode] = useState<string | null>(null);
   const [isVersionHistoryMenuOpen, setIsVersionHistoryMenuOpen] = useState(false);
   const [canvasTitle, setCanvasTitle] = useState('Edit code');
   const [isEditingCanvasTitle, setIsEditingCanvasTitle] = useState(false);
@@ -237,6 +254,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
   const messageInputRef = useRef<HTMLTextAreaElement>(null);
   const messageActionsRef = useRef<HTMLButtonElement>(null);
   const canvasCloseButtonRef = useRef<HTMLButtonElement>(null);
+  const versionHistoryCloseButtonRef = useRef<HTMLButtonElement>(null);
   const canvasSectionRef = useRef<HTMLElement>(null);
   const wasCanvasOpen = useRef(isCanvasOpen);
   const shouldFocusCanvasCloseButton = useRef(false);
@@ -362,6 +380,18 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     window.requestAnimationFrame(() => messageActionsRef.current?.focus());
   };
 
+  const focusVersionHistoryOptionsToggle = () => {
+    window.requestAnimationFrame(() => document.getElementById('version-history-options-toggle')?.focus());
+  };
+
+  const focusVersionOptionsToggle = (versionId: string) => {
+    window.requestAnimationFrame(() => document.getElementById(`version-options-toggle-${versionId}`)?.focus());
+  };
+
+  const focusVersionItem = (versionId: string) => {
+    window.requestAnimationFrame(() => document.getElementById(versionId)?.focus());
+  };
+
   const handleGeneratedAiLabelKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
@@ -369,16 +399,12 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     }
   };
 
-  const openVersionHistory = () => {
+  const openVersionHistory = (availableVersions = versions) => {
     setIsVersionHistoryOpen(true);
-    const sortedVersions = [...versions].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
-    if (sortedVersions.length > 0) {
-      setSelectedVersionId(sortedVersions[0].id);
-      setPreviewCode(sortedVersions[0].code);
-    } else {
-      setSelectedVersionId(null);
-      setPreviewCode(null);
-    }
+    const sortedVersions = [...availableVersions].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+    const latestVersion = sortedVersions[0];
+    setSelectedVersionId(latestVersion ? latestVersion.id : null);
+    window.requestAnimationFrame(() => document.getElementById('version-history-heading')?.focus());
   };
 
   const closeVersionHistory = () => {
@@ -386,14 +412,12 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     setSelectedVersionId(null);
     setEditingVersionId(null);
     setOpenMenuVersionId(null);
-    setPreviewCode(null);
+    window.requestAnimationFrame(() => document.getElementById('version-history-split-action')?.focus());
   };
 
   const handleVersionSelect = (versionId: string) => {
-    setSelectedVersionId(versionId);
-    const version = versions.find((v) => v.id === versionId);
-    if (version) {
-      setPreviewCode(version.code);
+    if (versions.some((v) => v.id === versionId)) {
+      setSelectedVersionId(versionId);
     }
   };
 
@@ -410,6 +434,8 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     const sortedVersions = [...versions].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
     if (sortedVersions.length > 0) {
       handleRestoreVersion(sortedVersions[0].id);
+    } else {
+      focusVersionHistoryOptionsToggle();
     }
   };
 
@@ -423,11 +449,13 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     setCanvasTitle(nextTitle);
     setEditingCanvasTitle(nextTitle);
     setIsEditingCanvasTitle(false);
+    focusVersionHistoryOptionsToggle();
   };
 
   const handleCancelCanvasTitle = () => {
     setEditingCanvasTitle(canvasTitle);
     setIsEditingCanvasTitle(false);
+    focusVersionHistoryOptionsToggle();
   };
 
   const handleSaveCurrentVersion = () => {
@@ -439,8 +467,9 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
       code,
       name: canvasTitle === 'Edit code' ? 'Untitled version' : canvasTitle
     };
-    setVersions((prev) => [newVersion, ...prev]);
-    openVersionHistory();
+    const nextVersions = [newVersion, ...versions];
+    setVersions(nextVersions);
+    openVersionHistory(nextVersions);
   };
 
   const confirmRestore = () => {
@@ -453,21 +482,19 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
   };
 
   const cancelRestore = () => {
+    const restoreOriginId = versionToRestore?.id;
     setIsRestoreModalOpen(false);
     setVersionToRestore(null);
+    if (isVersionHistoryOpen) {
+      if (restoreOriginId) {
+        focusVersionOptionsToggle(restoreOriginId);
+      }
+    } else {
+      focusVersionHistoryOptionsToggle();
+    }
   };
 
-  const formatModalTimestamp = (timestamp: Date) =>
-    timestamp.toLocaleDateString('en-US', {
-      month: 'long',
-      day: 'numeric'
-    }) +
-    ' at ' +
-    timestamp.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
+  const formatModalTimestamp = (timestamp: Date) => longTimestampFormatter.format(timestamp);
 
   const handleStartRename = (versionId: string, currentName: string) => {
     setEditingVersionId(versionId);
@@ -479,15 +506,18 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     setVersions((prev) => prev.map((v) => (v.id === versionId ? { ...v, name: editingName } : v)));
     setEditingVersionId(null);
     setEditingName('');
+    focusVersionOptionsToggle(versionId);
   };
 
-  const handleCancelRename = () => {
+  const handleCancelRename = (versionId: string) => {
     setEditingVersionId(null);
     setEditingName('');
+    focusVersionOptionsToggle(versionId);
   };
 
   const handleDuplicateVersion = (versionId: string) => {
     const version = versions.find((v) => v.id === versionId);
+    let duplicatedVersionId = versionId;
     if (version) {
       const newVersion: Version = {
         ...version,
@@ -495,9 +525,12 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
         name: `${version.name} (copy)`,
         timestamp: new Date()
       };
+      duplicatedVersionId = newVersion.id;
       setVersions((prev) => [newVersion, ...prev]);
+      setSelectedVersionId(newVersion.id);
     }
     setOpenMenuVersionId(null);
+    focusVersionItem(duplicatedVersionId);
   };
 
   const handleMenuToggle = (versionId: string) => {
@@ -507,19 +540,21 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
   const formatTimestamp = (timestamp: Date) => {
     const now = new Date();
     const diff = now.getTime() - timestamp.getTime();
-    const minutes = Math.floor(diff / 60000);
-    const hours = Math.floor(diff / 3600000);
 
-    if (minutes < 1) {
+    // A future timestamp should not read as "Just now".
+    if (diff < 0) {
+      return longTimestampFormatter.format(timestamp);
+    }
+    if (diff < MINUTE_MS) {
       return 'Just now';
     }
-    if (minutes < 60) {
-      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    if (diff < HOUR_MS) {
+      return relativeTimeFormatter.format(-Math.floor(diff / MINUTE_MS), 'minute');
     }
-    if (hours < 24) {
-      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    if (diff < DAY_MS) {
+      return relativeTimeFormatter.format(-Math.floor(diff / HOUR_MS), 'hour');
     }
-    return timestamp.toLocaleString();
+    return longTimestampFormatter.format(timestamp);
   };
 
   const findMatchingItems = (targetValue: string) => {
@@ -591,6 +626,8 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
 
   const selectedVersion = versions.find((v) => v.id === selectedVersionId);
 
+  const previewCode = selectedVersion?.code ?? null;
+
   const canvasTitleHeading = isEditingCanvasTitle ? (
     <form
       className="pf-v6-c-inline-edit pf-m-inline-editable"
@@ -618,16 +655,20 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
         </div>
         <div className="pf-v6-c-inline-edit__group pf-m-action-group pf-m-icon-group">
           <div className="pf-v6-c-inline-edit__action pf-m-valid">
-            <Button type="submit" variant="plain" aria-label="Save edits" icon={<CheckIcon />} />
+            <Tooltip content="Save edits" position="bottom" aria="none">
+              <Button type="submit" variant="plain" aria-label="Save edits" icon={<CheckIcon />} />
+            </Tooltip>
           </div>
           <div className="pf-v6-c-inline-edit__action">
-            <Button
-              type="button"
-              variant="plain"
-              aria-label="Cancel edits"
-              icon={<TimesIcon />}
-              onClick={handleCancelCanvasTitle}
-            />
+            <Tooltip content="Cancel edits" position="bottom" aria="none">
+              <Button
+                type="button"
+                variant="plain"
+                aria-label="Cancel edits"
+                icon={<TimesIcon />}
+                onClick={handleCancelCanvasTitle}
+              />
+            </Tooltip>
           </div>
         </div>
       </div>
@@ -643,12 +684,19 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
       <div className="pf-chatbot__version-history-header">
         <Flex justifyContent={{ default: 'justifyContentSpaceBetween' }} alignItems={{ default: 'alignItemsCenter' }}>
           <FlexItem>
-            <Title headingLevel="h2" size="lg">
+            <Title id="version-history-heading" headingLevel="h2" size="lg" tabIndex={-1}>
               Version History
             </Title>
           </FlexItem>
           <FlexItem>
+            <Tooltip
+              content="Close version history"
+              triggerRef={versionHistoryCloseButtonRef}
+              position="bottom"
+              aria="none"
+            />
             <Button
+              ref={versionHistoryCloseButtonRef}
               variant="plain"
               aria-label="Close version history"
               icon={<RhMicronsCloseIcon />}
@@ -675,7 +723,18 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
                     dataListCells={[
                       <DataListCell key="primary">
                         {editingVersionId === version.id ? (
-                          <Flex spaceItems={{ default: 'spaceItemsSm' }} alignItems={{ default: 'alignItemsCenter' }}>
+                          <Flex
+                            spaceItems={{ default: 'spaceItemsSm' }}
+                            alignItems={{ default: 'alignItemsCenter' }}
+                            onKeyDown={(event) => {
+                              // The selectable DataList item handles Enter/Space by selecting the
+                              // row and calling preventDefault, which stops the save/cancel
+                              // buttons from activating and swallows spaces typed in the input.
+                              if (event.key === 'Enter' || event.key === ' ') {
+                                event.stopPropagation();
+                              }
+                            }}
+                          >
                             <FlexItem flex={{ default: 'flex_1' }}>
                               <TextInput
                                 value={editingName}
@@ -687,26 +746,30 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
                                     handleSaveRename(version.id);
                                   }
                                   if (e.key === 'Escape') {
-                                    handleCancelRename();
+                                    handleCancelRename(version.id);
                                   }
                                 }}
                               />
                             </FlexItem>
                             <FlexItem>
-                              <Button
-                                variant="plain"
-                                aria-label="Save name"
-                                icon={<CheckIcon />}
-                                onClick={() => handleSaveRename(version.id)}
-                              />
+                              <Tooltip content="Save name" position="bottom" aria="none">
+                                <Button
+                                  variant="plain"
+                                  aria-label="Save name"
+                                  icon={<CheckIcon />}
+                                  onClick={() => handleSaveRename(version.id)}
+                                />
+                              </Tooltip>
                             </FlexItem>
                             <FlexItem>
-                              <Button
-                                variant="plain"
-                                aria-label="Cancel rename"
-                                icon={<TimesIcon />}
-                                onClick={handleCancelRename}
-                              />
+                              <Tooltip content="Cancel rename" position="bottom" aria="none">
+                                <Button
+                                  variant="plain"
+                                  aria-label="Cancel rename"
+                                  icon={<TimesIcon />}
+                                  onClick={() => handleCancelRename(version.id)}
+                                />
+                              </Tooltip>
                             </FlexItem>
                           </Flex>
                         ) : (
@@ -753,19 +816,24 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
                       <Dropdown
                         isOpen={openMenuVersionId === version.id}
                         onOpenChange={(isOpen) => setOpenMenuVersionId(isOpen ? version.id : null)}
+                        shouldFocusFirstItemOnOpen
                         toggle={(toggleRef) => (
-                          <MenuToggle
-                            ref={toggleRef}
-                            variant="plain"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleMenuToggle(version.id);
-                            }}
-                            isExpanded={openMenuVersionId === version.id}
-                            aria-label="Version options"
-                          >
-                            <EllipsisVIcon />
-                          </MenuToggle>
+                          <>
+                            <Tooltip content="Version options" triggerRef={toggleRef} position="bottom" aria="none" />
+                            <MenuToggle
+                              ref={toggleRef}
+                              id={`version-options-toggle-${version.id}`}
+                              variant="plain"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleMenuToggle(version.id);
+                              }}
+                              isExpanded={openMenuVersionId === version.id}
+                              aria-label={`Version options for ${version.name}`}
+                            >
+                              <EllipsisVIcon />
+                            </MenuToggle>
+                          </>
                         )}
                         popperProps={{ position: 'right' }}
                       >
@@ -833,6 +901,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
                 onHide={() => setIsGeneratedAiPopoverOpen(false)}
               >
                 <Label
+                  id={GENERATED_WITH_AI_LABEL_ID}
                   isClickable
                   variant="outline"
                   icon={<RhUiAiInfoIcon aria-hidden />}
@@ -841,7 +910,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
                   aria-expanded={isGeneratedAiPopoverOpen}
                   onKeyDown={handleGeneratedAiLabelKeyDown}
                 >
-                  Generated with AI
+                  {GENERATED_WITH_AI_TEXT}
                 </Label>
               </Popover>
             </FlexItem>
@@ -851,41 +920,49 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
               isOpen={isVersionHistoryMenuOpen}
               onOpenChange={(isOpen) => setIsVersionHistoryMenuOpen(isOpen)}
               onSelect={() => setIsVersionHistoryMenuOpen(false)}
+              shouldFocusFirstItemOnOpen
               popperProps={{ position: 'right' }}
               toggle={(toggleRef) => (
-                <MenuToggle
-                  ref={toggleRef}
-                  isExpanded={isVersionHistoryMenuOpen}
-                  onClick={() => setIsVersionHistoryMenuOpen(!isVersionHistoryMenuOpen)}
-                  aria-label="Version history options"
-                  splitButtonItems={[
-                    <MenuToggleAction
-                      id="version-history-split-action"
-                      key="version-history-action"
-                      aria-label="Version history"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        setIsVersionHistoryMenuOpen(false);
-                        openVersionHistory();
-                      }}
-                    >
-                      <Flex
-                        spaceItems={{ default: 'spaceItemsSm' }}
-                        alignItems={{ default: 'alignItemsCenter' }}
-                        flexWrap={{ default: 'nowrap' }}
+                <>
+                  {/*
+                    The split-button MenuToggle's ref points at the wrapper <div>; focus lands on the inner
+                    caret <button> and the focus event does not bubble, so a tooltip bound to the wrapper never
+                    shows on keyboard focus. Target the caret button (the only one with aria-expanded) instead.
+                  */}
+                  <Tooltip
+                    content="Version history options"
+                    triggerRef={() => toggleRef.current?.querySelector('button[aria-expanded]') as HTMLElement}
+                    position="bottom"
+                    aria="none"
+                  />
+                  <MenuToggle
+                    ref={toggleRef}
+                    id="version-history-options-toggle"
+                    isExpanded={isVersionHistoryMenuOpen}
+                    onClick={() => setIsVersionHistoryMenuOpen(!isVersionHistoryMenuOpen)}
+                    aria-label="Version history options"
+                    splitButtonItems={[
+                      <MenuToggleAction
+                        id="version-history-split-action"
+                        key="version-history-action"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          setIsVersionHistoryMenuOpen(false);
+                          openVersionHistory();
+                        }}
                       >
-                        <FlexItem>
-                          <RhUiHistoryIcon aria-hidden />
-                        </FlexItem>
-                        <FlexItem>Version history</FlexItem>
-                      </Flex>
-                    </MenuToggleAction>
-                  ]}
-                />
+                        <span className="pf-chatbot__version-history-action">
+                          <RhUiHistoryIcon className="pf-chatbot__version-history-action-icon" aria-hidden />
+                          <span>Version history</span>
+                        </span>
+                      </MenuToggleAction>
+                    ]}
+                  />
+                </>
               )}
             >
               <DropdownList>
-                <DropdownItem key="show-full-history" onClick={openVersionHistory}>
+                <DropdownItem key="show-full-history" onClick={() => openVersionHistory()}>
                   Show full history
                 </DropdownItem>
                 <DropdownItem key="restore-latest-version" onClick={handleRestoreLatestVersion}>
@@ -934,37 +1011,40 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     </DrawerPanelContent>
   );
 
-  // Matches localhost option 2: chatbot hides; canvas + version history side by side
+  const restoreModal = (
+    <Modal
+      isOpen={isRestoreModalOpen}
+      onClose={cancelRestore}
+      aria-labelledby="restore-modal-title"
+      aria-describedby="restore-modal-body"
+      variant="small"
+      appendTo={document.body}
+    >
+      <ModalHeader title="Restore this version?" labelId="restore-modal-title" />
+      <ModalBody id="restore-modal-body">
+        {versionToRestore && (
+          <p>
+            {`Your current document will revert to the version from ${formatModalTimestamp(
+              versionToRestore.timestamp
+            )}.`}
+          </p>
+        )}
+      </ModalBody>
+      <ModalFooter>
+        <Button key="cancel" variant="link" onClick={cancelRestore}>
+          Cancel
+        </Button>
+        <Button key="restore" variant="primary" onClick={confirmRestore}>
+          Restore
+        </Button>
+      </ModalFooter>
+    </Modal>
+  );
+
   if (isVersionHistoryOpen) {
     return (
       <>
-        <Modal
-          isOpen={isRestoreModalOpen}
-          onClose={cancelRestore}
-          aria-labelledby="restore-modal-title"
-          aria-describedby="restore-modal-body"
-          variant="small"
-          appendTo={document.body}
-        >
-          <ModalHeader title="Restore this version?" labelId="restore-modal-title" />
-          <ModalBody id="restore-modal-body">
-            {versionToRestore && (
-              <p>
-                {`Your current document will revert to the version from ${formatModalTimestamp(
-                  versionToRestore.timestamp
-                )}.`}
-              </p>
-            )}
-          </ModalBody>
-          <ModalFooter>
-            <Button key="cancel" variant="link" onClick={cancelRestore}>
-              Cancel
-            </Button>
-            <Button key="restore" variant="primary" onClick={confirmRestore}>
-              Restore
-            </Button>
-          </ModalFooter>
-        </Modal>
+        {restoreModal}
 
         <div className="pf-chatbot__version-history-split-screen-demo">
           <div className="pf-chatbot__version-history-split-canvas pf-chatbot__canvas-panel">
@@ -1008,38 +1088,12 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
 
   return (
     <>
-      <Modal
-        isOpen={isRestoreModalOpen}
-        onClose={cancelRestore}
-        aria-labelledby="restore-modal-title"
-        aria-describedby="restore-modal-body"
-        variant="small"
-        appendTo={document.body}
-      >
-        <ModalHeader title="Restore this version?" labelId="restore-modal-title" />
-        <ModalBody id="restore-modal-body">
-          {versionToRestore && (
-            <p>
-              {`Your current document will revert to the version from ${formatModalTimestamp(
-                versionToRestore.timestamp
-              )}.`}
-            </p>
-          )}
-        </ModalBody>
-        <ModalFooter>
-          <Button key="cancel" variant="link" onClick={cancelRestore}>
-            Cancel
-          </Button>
-          <Button key="restore" variant="primary" onClick={confirmRestore}>
-            Restore
-          </Button>
-        </ModalFooter>
-      </Modal>
+      {restoreModal}
 
       <input {...getInputProps()} hidden />
 
       <Chatbot displayMode={displayMode} isVisible={chatbotVisible}>
-        <div className="pf-chatbot__canvas">
+        <div className="pf-chatbot__canvas pf-chatbot__version-history-demo">
           <ChatbotConversationHistoryNav
             displayMode={displayMode}
             onDrawerToggle={() => {
