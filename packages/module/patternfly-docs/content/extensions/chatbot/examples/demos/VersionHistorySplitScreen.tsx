@@ -809,9 +809,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
                   />
                   {editingVersionId !== version.id && (
                     <DataListAction
-                      aria-labelledby={`version-${version.id}`}
                       id={`version-action-${version.id}`}
-                      aria-label="Version actions"
                     >
                       <Dropdown
                         isOpen={openMenuVersionId === version.id}
