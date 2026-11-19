@@ -20,6 +20,8 @@ DropdownItem,
 DropdownList,
 Flex,
 FlexItem,
+Form,
+FormGroup,
 Label,
 MenuToggle,
 MenuToggleAction,
@@ -58,14 +60,13 @@ ChatbotHeaderMain,
 ChatbotHeaderMenu,
 ChatbotHeaderTitle
 } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
+import { ChatbotModal } from '@patternfly/chatbot/dist/dynamic/ChatbotModal';
 import RhUiAiInfoIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-ai-info-icon';
 import RhUiImageFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-image-fill-icon';
 import RhUiAddIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-add-icon';
 import RhUiTaskFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-task-fill-icon';
 import RhUiHistoryIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-history-icon';
 import RhUiSaveIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-save-icon';
-import CheckIcon from '@patternfly/react-icons/dist/esm/icons/check-icon';
-import TimesIcon from '@patternfly/react-icons/dist/esm/icons/times-icon';
 import EllipsisVIcon from '@patternfly/react-icons/dist/esm/icons/ellipsis-v-icon';
 import RhUiRedoIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-redo-icon';
 import RhUiUndoIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-undo-icon';
@@ -83,6 +84,7 @@ import userAvatar from '../Messages/user_avatar.svg';
 ## Use cases
 
 Version history is useful when:
+
 - Users need to track changes made by both AI and humans over time
 - Users want to restore a previous version of their work
 - Users need to compare different iterations of AI-generated content
@@ -91,12 +93,14 @@ Version history is useful when:
 ## Version list features
 
 Each version in the list displays:
+
 - **Version name**: A user editable name for each version
 - **Author**: Who created the version (user or AI bot)
 - **Timestamp**: Meta data that displays relative time since the version was created
 - **AI label**: A badge indicating AI-generated edits
 
 Version actions include:
+
 - **Name this version**: Rename a version for easier identification
 - **Restore this version**: Revert the canvas to a past version's content
 - **Duplicate**: Create a copy of the version
@@ -105,14 +109,16 @@ Version actions include:
 
 This demo reuses the [canvas](/patterns/canvas) `pf-chatbot__canvas*` classes from `@patternfly/chatbot` for the canvas and editor chrome. The classes below are used for the version history panel and split-screen layout, and are exported from `@patternfly/chatbot` (in `main.css`).
 
-| Class name                                     | Purpose                                                              |
-| ---------------------------------------------- | ------------------------------------------------------------------- |
-| `pf-chatbot__version-history-panel`            | Flex column container for the version history panel and its spacing. |
-| `pf-chatbot__version-history-header`           | Styles the panel header and its bottom border.                      |
-| `pf-chatbot__version-history-content`          | Scrollable area that holds the version list.                        |
-| `pf-chatbot__version-history-split-screen-demo`| Full-viewport flex row that hosts the split-screen layout.          |
-| `pf-chatbot__version-history-split-canvas`     | Left pane that contains the read-only canvas preview.               |
-| `pf-chatbot__version-history-split-panel`      | Fixed-width right pane that contains the version history panel.      |
+| Class name                                      | Purpose                                                              |
+| ----------------------------------------------- | -------------------------------------------------------------------- |
+| `pf-chatbot__version-history-panel`             | Flex column container for the version history panel and its spacing. |
+| `pf-chatbot__version-history-header`            | Styles the panel header and its bottom border.                       |
+| `pf-chatbot__version-history-content`           | Scrollable area that holds the version list.                         |
+| `pf-chatbot__version-history-split-screen-demo` | Full-viewport flex row that hosts the split-screen layout.           |
+| `pf-chatbot__version-history-split-canvas`      | Left pane that contains the read-only canvas preview.                |
+| `pf-chatbot__version-history-split-panel`       | Fixed-width right pane that contains the version history panel.      |
+| `pf-chatbot__version-history-action`            | Spaces the icon and label inside the version history button.         |
+| `pf-chatbot__version-history-action-icon`       | Keeps the version history button icon from shrinking.                |
 
 ## Demo
 

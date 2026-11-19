@@ -14,6 +14,8 @@ import {
   DropdownList,
   Flex,
   FlexItem,
+  Form,
+  FormGroup,
   Label,
   MenuToggle,
   MenuToggleAction,
@@ -54,14 +56,13 @@ import ChatbotHeader, {
   ChatbotHeaderMenu,
   ChatbotHeaderTitle
 } from '@patternfly/chatbot/dist/dynamic/ChatbotHeader';
+import { ChatbotModal } from '@patternfly/chatbot/dist/dynamic/ChatbotModal';
 import { RhUiAiInfoIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-ai-info-icon';
 import { RhUiImageFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-image-fill-icon';
 import { RhUiAddIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-add-icon';
 import { RhUiTaskFillIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-task-fill-icon';
 import { RhUiHistoryIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-history-icon';
 import { RhUiSaveIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-save-icon';
-import { CheckIcon } from '@patternfly/react-icons/dist/esm/icons/check-icon';
-import { TimesIcon } from '@patternfly/react-icons/dist/esm/icons/times-icon';
 import { EllipsisVIcon } from '@patternfly/react-icons/dist/esm/icons/ellipsis-v-icon';
 import { RhUiRedoIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-redo-icon';
 import { RhUiUndoIcon } from '@patternfly/react-icons/dist/esm/icons/rh-ui-undo-icon';
@@ -104,6 +105,9 @@ const DAY_MS = 24 * HOUR_MS;
 
 const GENERATED_WITH_AI_LABEL_ID = 'generated-with-ai-label';
 const GENERATED_WITH_AI_TEXT = 'Generated with AI';
+
+const CANVAS_TITLE = 'Edit code';
+const NEW_CANVAS_TITLE = 'Untitled version';
 
 const initialMessages: MessageProps[] = [
   {
@@ -244,15 +248,14 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
   const [isVersionHistoryOpen, setIsVersionHistoryOpen] = useState(false);
   const [versions, setVersions] = useState<Version[]>(initialVersions);
   const [selectedVersionId, setSelectedVersionId] = useState<string | null>(null);
-  const [editingVersionId, setEditingVersionId] = useState<string | null>(null);
-  const [editingName, setEditingName] = useState('');
+  const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
+  const [renameVersionId, setRenameVersionId] = useState<string | null>(null);
+  const [renameName, setRenameName] = useState('');
   const [openMenuVersionId, setOpenMenuVersionId] = useState<string | null>(null);
   const [isRestoreModalOpen, setIsRestoreModalOpen] = useState(false);
   const [versionToRestore, setVersionToRestore] = useState<Version | null>(null);
+  const [isRestoringLatest, setIsRestoringLatest] = useState(false);
   const [isVersionHistoryMenuOpen, setIsVersionHistoryMenuOpen] = useState(false);
-  const [canvasTitle, setCanvasTitle] = useState('Edit code');
-  const [isEditingCanvasTitle, setIsEditingCanvasTitle] = useState(false);
-  const [editingCanvasTitle, setEditingCanvasTitle] = useState('Edit code');
 
   const scrollToBottomRef = useRef<HTMLDivElement>(null);
   const historyRef = useRef<HTMLButtonElement>(null);
@@ -262,6 +265,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
   const canvasCloseButtonRef = useRef<HTMLButtonElement>(null);
   const versionHistoryCloseButtonRef = useRef<HTMLButtonElement>(null);
   const canvasSectionRef = useRef<HTMLElement>(null);
+  const renameInputRef = useRef<HTMLInputElement>(null);
   const wasCanvasOpen = useRef(isCanvasOpen);
   const shouldFocusCanvasCloseButton = useRef(false);
   const displayMode = ChatbotDisplayMode.fullscreen;
@@ -340,9 +344,9 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     }
   }, [messages]);
 
-  // Flush restore announcements only once the dialog has actually left the DOM. aria-modal makes
-  // everything outside an open dialog invisible to assistive tech, and the modal stays mounted for
-  // its exit animation after isRestoreModalOpen flips, so announce only after it is gone.
+  // Flush modal announcements only once the dialog has actually left the DOM. aria-modal makes
+  // everything outside an open dialog invisible to assistive tech, and a closing modal stays
+  // mounted for its exit animation, so announce only after it is gone.
   useEffect(() => {
     if (isRestoreModalOpen || !pendingVersionAnnouncement) {
       return;
@@ -414,7 +418,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
   };
 
   const focusVersionItem = (versionId: string) => {
-    window.requestAnimationFrame(() => document.getElementById(versionId)?.focus());
+    window.requestAnimationFrame(() => document.getElementById(`version-${versionId}`)?.focus());
   };
 
   const handleGeneratedAiLabelKeyDown = (event: React.KeyboardEvent) => {
@@ -435,21 +439,26 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
   const closeVersionHistory = () => {
     setIsVersionHistoryOpen(false);
     setSelectedVersionId(null);
-    setEditingVersionId(null);
+    setIsRenameModalOpen(false);
+    setRenameVersionId(null);
+    setRenameName('');
     setOpenMenuVersionId(null);
     window.requestAnimationFrame(() => document.getElementById('version-history-split-action')?.focus());
   };
 
   const handleVersionSelect = (versionId: string) => {
-    if (versions.some((v) => v.id === versionId)) {
+    const version = versions.find((v) => v.id === versionId);
+    if (version) {
       setSelectedVersionId(versionId);
+      setVersionAnnouncement(`Version "${version.name}" selected.`);
     }
   };
 
-  const handleRestoreVersion = (versionId: string) => {
+  const handleRestoreVersion = (versionId: string, isLatest = false) => {
     const version = versions.find((v) => v.id === versionId);
     if (version) {
       setVersionToRestore(version);
+      setIsRestoringLatest(isLatest);
       setIsRestoreModalOpen(true);
       setOpenMenuVersionId(null);
     }
@@ -458,29 +467,11 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
   const handleRestoreLatestVersion = () => {
     const sortedVersions = [...versions].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
     if (sortedVersions.length > 0) {
-      handleRestoreVersion(sortedVersions[0].id);
+      handleRestoreVersion(sortedVersions[0].id, true);
     } else {
+      setVersionAnnouncement('There are no versions to restore.');
       focusVersionHistoryOptionsToggle();
     }
-  };
-
-  const handleNameCurrentVersion = () => {
-    setEditingCanvasTitle(canvasTitle);
-    setIsEditingCanvasTitle(true);
-  };
-
-  const handleSaveCanvasTitle = () => {
-    const nextTitle = editingCanvasTitle.trim() || 'Edit code';
-    setCanvasTitle(nextTitle);
-    setEditingCanvasTitle(nextTitle);
-    setIsEditingCanvasTitle(false);
-    focusVersionHistoryOptionsToggle();
-  };
-
-  const handleCancelCanvasTitle = () => {
-    setEditingCanvasTitle(canvasTitle);
-    setIsEditingCanvasTitle(false);
-    focusVersionHistoryOptionsToggle();
   };
 
   const handleSaveCurrentVersion = () => {
@@ -490,7 +481,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
       author: 'user',
       authorName: 'You',
       code,
-      name: canvasTitle === 'Edit code' ? 'Untitled version' : canvasTitle
+      name: NEW_CANVAS_TITLE
     };
     const nextVersions = [newVersion, ...versions];
     setVersions(nextVersions);
@@ -506,7 +497,10 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
       setVersionToRestore(null);
       closeVersionHistory();
       // Flushed by the effect above once the modal has closed.
-      setPendingVersionAnnouncement(`Version "${restoredName}" restored.`);
+      setPendingVersionAnnouncement(
+        isRestoringLatest ? `Latest version "${restoredName}" restored.` : `Version "${restoredName}" restored.`
+      );
+      setIsRestoringLatest(false);
     }
   };
 
@@ -514,6 +508,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     const restoreOriginId = versionToRestore?.id;
     setIsRestoreModalOpen(false);
     setVersionToRestore(null);
+    setIsRestoringLatest(false);
     if (isVersionHistoryOpen) {
       if (restoreOriginId) {
         focusVersionOptionsToggle(restoreOriginId);
@@ -526,24 +521,44 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
   const formatModalTimestamp = (timestamp: Date) => longTimestampFormatter.format(timestamp);
 
   const handleStartRename = (versionId: string, currentName: string) => {
-    setEditingVersionId(versionId);
-    setEditingName(currentName);
+    setRenameVersionId(versionId);
+    setRenameName(currentName);
+    setIsRenameModalOpen(true);
     setOpenMenuVersionId(null);
   };
 
-  const handleSaveRename = (versionId: string) => {
-    setVersions((prev) => prev.map((v) => (v.id === versionId ? { ...v, name: editingName } : v)));
-    // The row updates in place, so nothing would be announced without this.
-    setVersionAnnouncement(`Version renamed to "${editingName}".`);
-    setEditingVersionId(null);
-    setEditingName('');
-    focusVersionOptionsToggle(versionId);
+  const closeRenameModal = () => {
+    setIsRenameModalOpen(false);
+    setRenameVersionId(null);
+    setRenameName('');
   };
 
-  const handleCancelRename = (versionId: string) => {
-    setEditingVersionId(null);
-    setEditingName('');
-    focusVersionOptionsToggle(versionId);
+  const handleSaveRename = () => {
+    if (!renameVersionId) {
+      return;
+    }
+    const renamedVersionId = renameVersionId;
+    const nextName = renameName.trim() || NEW_CANVAS_TITLE;
+    setVersions((prev) => prev.map((v) => (v.id === renamedVersionId ? { ...v, name: nextName } : v)));
+    // The open modal hides the page from assistive tech, so hold the message until it closes.
+    setPendingVersionAnnouncement(`Version renamed to "${nextName}".`);
+    closeRenameModal();
+    focusVersionOptionsToggle(renamedVersionId);
+  };
+
+  const handleCancelRename = () => {
+    const cancelledVersionId = renameVersionId;
+    closeRenameModal();
+    if (cancelledVersionId) {
+      focusVersionOptionsToggle(cancelledVersionId);
+    }
+  };
+
+  const handleRenameInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSaveRename();
+    }
   };
 
   const handleDuplicateVersion = (versionId: string) => {
@@ -660,54 +675,9 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
 
   const previewCode = selectedVersion?.code ?? null;
 
-  const canvasTitleHeading = isEditingCanvasTitle ? (
-    <form
-      className="pf-v6-c-inline-edit pf-m-inline-editable"
-      id="canvas-title-inline-edit"
-      onSubmit={(event) => {
-        event.preventDefault();
-        handleSaveCanvasTitle();
-      }}
-    >
-      <div className="pf-v6-c-inline-edit__group">
-        <div className="pf-v6-c-inline-edit__input">
-          <TextInput
-            id="canvas-title-input"
-            value={editingCanvasTitle}
-            onChange={(_event, value) => setEditingCanvasTitle(value)}
-            aria-label="Canvas title"
-            autoFocus
-            onKeyDown={(event) => {
-              if (event.key === 'Escape') {
-                event.preventDefault();
-                handleCancelCanvasTitle();
-              }
-            }}
-          />
-        </div>
-        <div className="pf-v6-c-inline-edit__group pf-m-action-group pf-m-icon-group">
-          <div className="pf-v6-c-inline-edit__action pf-m-valid">
-            <Tooltip content="Save edits" position="bottom" aria="none">
-              <Button type="submit" variant="plain" aria-label="Save edits" icon={<CheckIcon />} />
-            </Tooltip>
-          </div>
-          <div className="pf-v6-c-inline-edit__action">
-            <Tooltip content="Cancel edits" position="bottom" aria="none">
-              <Button
-                type="button"
-                variant="plain"
-                aria-label="Cancel edits"
-                icon={<TimesIcon />}
-                onClick={handleCancelCanvasTitle}
-              />
-            </Tooltip>
-          </div>
-        </div>
-      </div>
-    </form>
-  ) : (
+  const canvasTitleHeading = (
     <Title id="chatbot-canvas-title" headingLevel="h2" size="lg">
-      {canvasTitle}
+      {CANVAS_TITLE}
     </Title>
   );
 
@@ -739,146 +709,90 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
       </div>
 
       <div className="pf-chatbot__version-history-content">
-        <DataList
-          aria-label="Version history list"
-          isCompact
-          selectedDataListItemId={selectedVersionId || ''}
-          onSelectDataListItem={(_event, id) => handleVersionSelect(id)}
-          onSelectableRowChange={(_event, id) => handleVersionSelect(id)}
-        >
+        <DataList aria-label="Version history list" isCompact>
           {[...versions]
             .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
             .map((version) => (
-              <DataListItem key={version.id} id={version.id} aria-labelledby={`version-${version.id}`}>
+              <DataListItem
+                key={version.id}
+                id={version.id}
+                className={selectedVersionId === version.id ? 'pf-m-selected' : undefined}
+              >
                 <DataListItemRow>
                   <DataListItemCells
                     dataListCells={[
                       <DataListCell key="primary">
-                        {editingVersionId === version.id ? (
-                          <Flex
-                            spaceItems={{ default: 'spaceItemsSm' }}
-                            alignItems={{ default: 'alignItemsCenter' }}
-                            onKeyDown={(event) => {
-                              // The selectable DataList item handles Enter/Space by selecting the
-                              // row and calling preventDefault, which stops the save/cancel
-                              // buttons from activating and swallows spaces typed in the input.
-                              if (event.key === 'Enter' || event.key === ' ') {
-                                event.stopPropagation();
-                              }
-                            }}
-                          >
-                            <FlexItem flex={{ default: 'flex_1' }}>
-                              <TextInput
-                                value={editingName}
-                                onChange={(_event, value) => setEditingName(value)}
-                                aria-label="Version name"
-                                autoFocus
-                                onKeyDown={(e) => {
-                                  if (e.key === 'Enter') {
-                                    handleSaveRename(version.id);
-                                  }
-                                  if (e.key === 'Escape') {
-                                    handleCancelRename(version.id);
-                                  }
-                                }}
-                              />
-                            </FlexItem>
-                            <FlexItem>
-                              <Tooltip content="Save name" position="bottom" aria="none">
-                                <Button
-                                  variant="plain"
-                                  aria-label="Save name"
-                                  icon={<CheckIcon />}
-                                  onClick={() => handleSaveRename(version.id)}
-                                />
-                              </Tooltip>
-                            </FlexItem>
-                            <FlexItem>
-                              <Tooltip content="Cancel rename" position="bottom" aria="none">
-                                <Button
-                                  variant="plain"
-                                  aria-label="Cancel rename"
-                                  icon={<TimesIcon />}
-                                  onClick={() => handleCancelRename(version.id)}
-                                />
-                              </Tooltip>
-                            </FlexItem>
-                          </Flex>
-                        ) : (
-                          <Flex direction={{ default: 'column' }} spaceItems={{ default: 'spaceItemsXs' }}>
-                            <FlexItem>
-                              <Content
-                                id={`version-${version.id}`}
-                                component={ContentVariants.p}
-                                className="pf-v6-u-font-weight-bold"
-                              >
-                                {version.name}
-                              </Content>
-                            </FlexItem>
-                            <FlexItem>
-                              <Flex
-                                spaceItems={{ default: 'spaceItemsSm' }}
-                                alignItems={{ default: 'alignItemsCenter' }}
-                              >
+                        <Flex direction={{ default: 'column' }} spaceItems={{ default: 'spaceItemsXs' }}>
+                          <FlexItem>
+                            <Button
+                              id={`version-${version.id}`}
+                              variant="link"
+                              isInline
+                              className="pf-v6-u-font-weight-bold"
+                              aria-current={selectedVersionId === version.id ? 'true' : undefined}
+                              onClick={() => handleVersionSelect(version.id)}
+                            >
+                              {version.name}
+                            </Button>
+                          </FlexItem>
+                          <FlexItem>
+                            <Flex spaceItems={{ default: 'spaceItemsSm' }} alignItems={{ default: 'alignItemsCenter' }}>
+                              <FlexItem>
+                                <Content component={ContentVariants.small}>
+                                  {version.author === 'bot' ? 'Bot' : 'You'} · {formatTimestamp(version.timestamp)}
+                                </Content>
+                              </FlexItem>
+                              {version.author === 'bot' && (
                                 <FlexItem>
-                                  <Content component={ContentVariants.small}>
-                                    {version.author === 'bot' ? 'Bot' : 'You'} · {formatTimestamp(version.timestamp)}
-                                  </Content>
+                                  <Label isCompact variant="outline">
+                                    AI
+                                  </Label>
                                 </FlexItem>
-                                {version.author === 'bot' && (
-                                  <FlexItem>
-                                    <Label isCompact variant="outline">
-                                      AI
-                                    </Label>
-                                  </FlexItem>
-                                )}
-                              </Flex>
-                            </FlexItem>
-                          </Flex>
-                        )}
+                              )}
+                            </Flex>
+                          </FlexItem>
+                        </Flex>
                       </DataListCell>
                     ]}
                   />
-                  {editingVersionId !== version.id && (
-                    <DataListAction id={`version-action-${version.id}`}>
-                      <Dropdown
-                        isOpen={openMenuVersionId === version.id}
-                        onOpenChange={(isOpen) => setOpenMenuVersionId(isOpen ? version.id : null)}
-                        shouldFocusFirstItemOnOpen
-                        toggle={(toggleRef) => (
-                          <>
-                            <Tooltip content="Version options" triggerRef={toggleRef} position="bottom" aria="none" />
-                            <MenuToggle
-                              ref={toggleRef}
-                              id={`version-options-toggle-${version.id}`}
-                              variant="plain"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleMenuToggle(version.id);
-                              }}
-                              isExpanded={openMenuVersionId === version.id}
-                              aria-label={`Version options for ${version.name}`}
-                            >
-                              <EllipsisVIcon />
-                            </MenuToggle>
-                          </>
-                        )}
-                        popperProps={{ position: 'right' }}
-                      >
-                        <DropdownList>
-                          <DropdownItem key="name" onClick={() => handleStartRename(version.id, version.name)}>
-                            Name this version
-                          </DropdownItem>
-                          <DropdownItem key="restore" onClick={() => handleRestoreVersion(version.id)}>
-                            Restore this version
-                          </DropdownItem>
-                          <DropdownItem key="duplicate" onClick={() => handleDuplicateVersion(version.id)}>
-                            Duplicate
-                          </DropdownItem>
-                        </DropdownList>
-                      </Dropdown>
-                    </DataListAction>
-                  )}
+                  <DataListAction id={`version-action-${version.id}`}>
+                    <Dropdown
+                      isOpen={openMenuVersionId === version.id}
+                      onOpenChange={(isOpen) => setOpenMenuVersionId(isOpen ? version.id : null)}
+                      shouldFocusFirstItemOnOpen
+                      toggle={(toggleRef) => (
+                        <>
+                          <Tooltip content="Version options" triggerRef={toggleRef} position="bottom" aria="none" />
+                          <MenuToggle
+                            ref={toggleRef}
+                            id={`version-options-toggle-${version.id}`}
+                            variant="plain"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleMenuToggle(version.id);
+                            }}
+                            isExpanded={openMenuVersionId === version.id}
+                            aria-label={`Version options for ${version.name}`}
+                          >
+                            <EllipsisVIcon />
+                          </MenuToggle>
+                        </>
+                      )}
+                      popperProps={{ position: 'right' }}
+                    >
+                      <DropdownList>
+                        <DropdownItem key="name" onClick={() => handleStartRename(version.id, version.name)}>
+                          Name this version
+                        </DropdownItem>
+                        <DropdownItem key="restore" onClick={() => handleRestoreVersion(version.id)}>
+                          Restore this version
+                        </DropdownItem>
+                        <DropdownItem key="duplicate" onClick={() => handleDuplicateVersion(version.id)}>
+                          Duplicate
+                        </DropdownItem>
+                      </DropdownList>
+                    </Dropdown>
+                  </DataListAction>
                 </DataListItemRow>
               </DataListItem>
             ))}
@@ -996,9 +910,6 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
                 <DropdownItem key="restore-latest-version" onClick={handleRestoreLatestVersion}>
                   Restore latest version
                 </DropdownItem>
-                <DropdownItem key="name-current-version" onClick={handleNameCurrentVersion}>
-                  Name current version
-                </DropdownItem>
                 <DropdownItem key="save-current-version" onClick={handleSaveCurrentVersion}>
                   Save current version
                 </DropdownItem>
@@ -1069,6 +980,34 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     </Modal>
   );
 
+  const renameModal = (
+    <ChatbotModal displayMode={displayMode} isOpen={isRenameModalOpen} onClose={handleCancelRename}>
+      <ModalHeader title="Name this version" labelId="chatbot-modal-title" />
+      <ModalBody id="chatbot-modal">
+        <Form>
+          <FormGroup label="Version name" fieldId="rename-version-name" isRequired>
+            <TextInput
+              isRequired
+              ref={renameInputRef}
+              id="rename-version-name"
+              value={renameName}
+              onChange={(_event, value) => setRenameName(value)}
+              onKeyDown={handleRenameInputKeyDown}
+            />
+          </FormGroup>
+        </Form>
+      </ModalBody>
+      <ModalFooter>
+        <Button key="save" variant="primary" onClick={handleSaveRename}>
+          Save
+        </Button>
+        <Button key="cancel" variant="link" onClick={handleCancelRename}>
+          Cancel
+        </Button>
+      </ModalFooter>
+    </ChatbotModal>
+  );
+
   // Rendered by both views under the same key, so this element stays mounted when an action
   // switches views. A live region that mounts with its text already set is not announced.
   const versionAnnouncementRegion = (
@@ -1086,6 +1025,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
       <>
         {versionAnnouncementRegion}
         {restoreModal}
+        {renameModal}
 
         <div className="pf-chatbot__version-history-split-screen-demo">
           <div className="pf-chatbot__version-history-split-canvas pf-chatbot__canvas-panel">
@@ -1114,7 +1054,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
                     isCopyEnabled
                     isDownloadEnabled
                     downloadFileName="canvas-mode"
-                    code={previewCode || code}
+                    code={previewCode ?? code}
                     language={Language.yaml}
                   />
                 </div>
@@ -1131,6 +1071,7 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     <>
       {versionAnnouncementRegion}
       {restoreModal}
+      {renameModal}
 
       <input {...getInputProps()} hidden />
 

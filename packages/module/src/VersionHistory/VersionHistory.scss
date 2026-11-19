@@ -12,7 +12,7 @@
 
 .pf-chatbot__version-history-header {
   padding-block-end: var(--pf-t--global--spacer--md);
-  border-bottom: 1px solid var(--pf-t--global--border--color--default);
+  border-block-end: 1px solid var(--pf-t--global--border--color--default);
   flex-shrink: 0;
 }
 
@@ -39,6 +39,10 @@
 }
 
 .pf-chatbot__version-history-split-canvas {
+  // This element reuses the canvas panel styles but renders without a
+  // .pf-chatbot__canvas ancestor, so the canvas tokens are never inherited.
+  --pf-chatbot__canvas--BackgroundColor: var(--pf-t--global--background--color--secondary--default);
+
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -64,7 +68,7 @@
   flex-shrink: 0;
 }
 
-.pf-chatbot__canvas-head .pf-v6-c-drawer__actions {
+.pf-chatbot__version-history-demo .pf-chatbot__canvas-head .pf-v6-c-drawer__actions {
   gap: var(--pf-t--global--spacer--md);
 }
 
@@ -91,7 +95,7 @@
 .pf-chatbot__version-history-split-panel {
   width: 400px;
   overflow: hidden;
-  border-left: 1px solid var(--pf-t--global--border--color--default);
+  border-inline-start: 1px solid var(--pf-t--global--border--color--default);
   background-color: var(--pf-t--global--background--color--primary--default);
 }
 
