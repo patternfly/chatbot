@@ -277,15 +277,6 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
         return;
       }
 
-      // Block browser formatting shortcuts (Ctrl/Cmd+B/I/U) when inline elements are allowed —
-      // we want programmatic tags only, not user-driven formatting.
-      if (allowInlineElements && (event.ctrlKey || event.metaKey)) {
-        if (['b', 'i', 'u'].includes(event.key.toLowerCase())) {
-          event.preventDefault();
-          return;
-        }
-      }
-
       const nativeEvent = event.nativeEvent as KeyboardEvent;
       const isCompositionKey = nativeEvent.which === 229;
       const isCurrentlyComposing = isComposing || isCompositionKey;
@@ -298,7 +289,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
       }
       // Shift+Enter naturally inserts a newline in contenteditable — no special handling needed.
     },
-    [onKeyDown, allowInlineElements, isSendButtonDisabled, hasStopButton, handleSend, message, isComposing]
+    [onKeyDown, isSendButtonDisabled, hasStopButton, handleSend, message, isComposing]
   );
 
   const handleCompositionStart = useCallback(() => {

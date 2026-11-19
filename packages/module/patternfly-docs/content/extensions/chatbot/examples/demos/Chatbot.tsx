@@ -195,9 +195,7 @@ export const ChatbotDemo: FunctionComponent = () => {
   const [activeTagIndex, setActiveTagIndex] = useState(0);
   const savedRangeRef = useRef<Range | null>(null);
 
-  const filteredResources = TAG_RESOURCES.filter((r) =>
-    r.name.toLowerCase().includes(tagFilter.toLowerCase())
-  );
+  const filteredResources = TAG_RESOURCES.filter((r) => r.name.toLowerCase().includes(tagFilter.toLowerCase()));
 
   // Auto-scrolls to the latest message
   useEffect(() => {
@@ -608,7 +606,6 @@ export const ChatbotDemo: FunctionComponent = () => {
               <ChatbotFooter>
                 <div style={{ position: 'relative' }}>
                   {isTagMenuOpen && filteredResources.length > 0 && (
-                    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
                     <div
                       onMouseDown={(e) => e.preventDefault()}
                       style={{
