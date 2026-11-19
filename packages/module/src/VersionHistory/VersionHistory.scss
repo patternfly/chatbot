@@ -1,0 +1,116 @@
+/* Version History Panel Styles */
+.pf-chatbot__version-history-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  padding: var(--pf-t--global--spacer--lg);
+  background-color: var(--pf-t--global--background--color--primary--default);
+  box-sizing: border-box;
+}
+
+.pf-chatbot__version-history-header {
+  padding-block-end: var(--pf-t--global--spacer--md);
+  border-block-end: var(--pf-t--global--border--width--default) solid var(--pf-t--global--border--color--default);
+  flex-shrink: 0;
+}
+
+.pf-chatbot__version-history-content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* Remove top border from first data list item */
+.pf-chatbot__version-history-panel .pf-v6-c-data-list {
+  border-top: none;
+}
+
+.pf-chatbot__version-history-panel .pf-v6-c-data-list__item:first-child {
+  border-block-start: none;
+}
+
+.pf-chatbot__version-history-split-screen-demo {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background-color: var(--pf-t--global--background--color--secondary--default);
+}
+
+.pf-chatbot__version-history-split-canvas {
+  // This element reuses the canvas panel styles but renders without a
+  // .pf-chatbot__canvas ancestor, so the canvas tokens are never inherited.
+  --pf-chatbot__canvas--BackgroundColor: var(--pf-t--global--background--color--secondary--default);
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.pf-chatbot__version-history-split-canvas .pf-chatbot__canvas-section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--pf-t--global--background--color--secondary--default);
+}
+
+.pf-chatbot__version-history-split-canvas .pf-chatbot__canvas-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--pf-t--global--spacer--md);
+  padding-block-start: var(--pf-t--global--spacer--lg);
+  padding-block-end: var(--pf-t--global--spacer--md);
+  background-color: var(--pf-t--global--background--color--secondary--default);
+  flex-shrink: 0;
+}
+
+.pf-chatbot__version-history-demo .pf-chatbot__canvas-head .pf-v6-c-drawer__actions {
+  gap: var(--pf-t--global--spacer--md);
+}
+
+.pf-chatbot__version-history-split-canvas .pf-chatbot__canvas-panel-body {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: var(--pf-t--global--spacer--md);
+  min-height: 0;
+}
+
+.pf-chatbot__version-history-split-canvas .pf-chatbot__canvas-editor {
+  flex: 1;
+  overflow: hidden;
+  border-radius: var(--pf-t--global--border--radius--medium);
+  min-height: 0;
+}
+
+.pf-chatbot__version-history-split-canvas .pf-v6-c-code-editor {
+  height: 100%;
+}
+
+.pf-chatbot__version-history-split-panel {
+  width: 400px;
+  overflow: hidden;
+  border-inline-start: var(--pf-t--global--border--width--default) solid var(--pf-t--global--border--color--default);
+  background-color: var(--pf-t--global--background--color--primary--default);
+}
+
+.pf-chatbot__version-history-split-panel .pf-chatbot__version-history-panel {
+  height: 100%;
+}
+
+/* Icon + label content for the version history split button action */
+.pf-chatbot__version-history-action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pf-t--global--spacer--sm);
+  flex-wrap: nowrap;
+}
+
+.pf-chatbot__version-history-action-icon {
+  flex-shrink: 0;
+}
