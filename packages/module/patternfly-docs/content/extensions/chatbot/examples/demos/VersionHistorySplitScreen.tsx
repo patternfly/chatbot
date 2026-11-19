@@ -525,8 +525,10 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
       code,
       name: getUniqueVersionName(NEW_CANVAS_TITLE, versions)
     };
+    // Generate the name and write the state from the same snapshot so the name stays unique in the
+    // list we persist and announce.
     const nextVersions = [newVersion, ...versions];
-    setVersions((prev) => [newVersion, ...prev]);
+    setVersions(nextVersions);
     openVersionHistory(nextVersions);
     setVersionAnnouncement(`Version "${newVersion.name}" saved.`);
   };
@@ -582,7 +584,8 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     const renamedVersionId = renameVersionId;
     const otherVersions = versions.filter((v) => v.id !== renamedVersionId);
     const nextName = renameName.trim() || getUniqueVersionName(NEW_CANVAS_TITLE, otherVersions);
-    setVersions((prev) => prev.map((v) => (v.id === renamedVersionId ? { ...v, name: nextName } : v)));
+    // Keep the rename on the same snapshot the name was checked against.
+    setVersions(versions.map((v) => (v.id === renamedVersionId ? { ...v, name: nextName } : v)));
     // The open modal hides the page from assistive tech, so hold the message until it closes.
     setPendingVersionAnnouncement(`Version renamed to "${nextName}".`);
     closeRenameModal();
@@ -615,7 +618,8 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
         timestamp: new Date()
       };
       duplicatedVersionId = newVersion.id;
-      setVersions((prev) => [newVersion, ...prev]);
+      // Name and state come from one snapshot so the copy name stays unique in the persisted list.
+      setVersions([newVersion, ...versions]);
       setSelectedVersionId(newVersion.id);
       setVersionAnnouncement(`Version "${version.name}" duplicated.`);
     }
