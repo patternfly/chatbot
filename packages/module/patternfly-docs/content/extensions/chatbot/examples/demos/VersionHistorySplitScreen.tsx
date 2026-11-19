@@ -106,6 +106,10 @@ const DAY_MS = 24 * HOUR_MS;
 const GENERATED_WITH_AI_LABEL_ID = 'generated-with-ai-label';
 const GENERATED_WITH_AI_TEXT = 'Generated with AI';
 
+// Long enough for a short message to finish being announced, short enough that stale text isn't
+// re-read when someone navigates back through the page later.
+const ANNOUNCEMENT_CLEAR_DELAY_MS = 10000;
+
 const CANVAS_TITLE = 'Edit code';
 const NEW_CANVAS_TITLE = 'Untitled version';
 
@@ -215,6 +219,33 @@ data:
     name: 'Bot added version label and logLevel'
   }
 ];
+
+// Unnamed saves all start from the same default, so number later ones to keep the list distinguishable.
+const getUniqueVersionName = (baseName: string, existingVersions: Version[]) => {
+  const existingNames = new Set(existingVersions.map((version) => version.name));
+  if (!existingNames.has(baseName)) {
+    return baseName;
+  }
+  let suffix = 2;
+  while (existingNames.has(`${baseName} ${suffix}`)) {
+    suffix += 1;
+  }
+  return `${baseName} ${suffix}`;
+};
+
+// Copies follow the same pattern so repeated duplicates stay distinguishable. Duplicating an existing
+// copy continues its series rather than producing names like "Untitled version (copy) (copy)".
+const getUniqueCopyName = (baseName: string, existingVersions: Version[]) => {
+  const existingNames = new Set(existingVersions.map((version) => version.name));
+  const rootName = baseName.replace(/ \(copy(?: \d+)?\)$/, '');
+  let suffix = 1;
+  let candidate = `${rootName} (copy)`;
+  while (existingNames.has(candidate)) {
+    suffix += 1;
+    candidate = `${rootName} (copy ${suffix})`;
+  }
+  return candidate;
+};
 
 const iconLogo = (
   <>
@@ -364,6 +395,17 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
     return () => window.cancelAnimationFrame(frameId);
   }, [isRestoreModalOpen, pendingVersionAnnouncement]);
 
+  // A live region keeps its last message in the accessibility tree indefinitely, so clear it once it
+  // has had time to be announced. This also lets an identical message be announced again next time,
+  // since setting the same text on an unchanged region is otherwise not announced.
+  useEffect(() => {
+    if (!versionAnnouncement) {
+      return;
+    }
+    const timeoutId = window.setTimeout(() => setVersionAnnouncement(undefined), ANNOUNCEMENT_CLEAR_DELAY_MS);
+    return () => window.clearTimeout(timeoutId);
+  }, [versionAnnouncement]);
+
   const onModelSelect = (
     _event: React.MouseEvent<Element, MouseEvent> | undefined,
     value: string | number | undefined
@@ -481,10 +523,10 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
       author: 'user',
       authorName: 'You',
       code,
-      name: NEW_CANVAS_TITLE
+      name: getUniqueVersionName(NEW_CANVAS_TITLE, versions)
     };
     const nextVersions = [newVersion, ...versions];
-    setVersions(nextVersions);
+    setVersions((prev) => [newVersion, ...prev]);
     openVersionHistory(nextVersions);
     setVersionAnnouncement(`Version "${newVersion.name}" saved.`);
   };
@@ -538,7 +580,8 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
       return;
     }
     const renamedVersionId = renameVersionId;
-    const nextName = renameName.trim() || NEW_CANVAS_TITLE;
+    const otherVersions = versions.filter((v) => v.id !== renamedVersionId);
+    const nextName = renameName.trim() || getUniqueVersionName(NEW_CANVAS_TITLE, otherVersions);
     setVersions((prev) => prev.map((v) => (v.id === renamedVersionId ? { ...v, name: nextName } : v)));
     // The open modal hides the page from assistive tech, so hold the message until it closes.
     setPendingVersionAnnouncement(`Version renamed to "${nextName}".`);
@@ -568,13 +611,13 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
       const newVersion: Version = {
         ...version,
         id: `v${Date.now()}`,
-        name: `${version.name} (copy)`,
+        name: getUniqueCopyName(version.name, versions),
         timestamp: new Date()
       };
       duplicatedVersionId = newVersion.id;
       setVersions((prev) => [newVersion, ...prev]);
       setSelectedVersionId(newVersion.id);
-      setVersionAnnouncement(`Version "${newVersion.name}" duplicated.`);
+      setVersionAnnouncement(`Version "${version.name}" duplicated.`);
     }
     setOpenMenuVersionId(null);
     focusVersionItem(duplicatedVersionId);
@@ -965,7 +1008,8 @@ export const VersionHistorySplitScreen: FunctionComponent = () => {
           <p>
             {`Your current document will revert to the version from ${formatModalTimestamp(
               versionToRestore.timestamp
-            )}.`}
+            )}.`}{' '}
+            Unsaved changes will be permanently discarded.
           </p>
         )}
       </ModalBody>

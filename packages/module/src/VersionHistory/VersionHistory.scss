@@ -12,7 +12,7 @@
 
 .pf-chatbot__version-history-header {
   padding-block-end: var(--pf-t--global--spacer--md);
-  border-block-end: 1px solid var(--pf-t--global--border--color--default);
+  border-block-end: var(--pf-t--global--border--width--default) solid var(--pf-t--global--border--color--default);
   flex-shrink: 0;
 }
 
@@ -95,7 +95,7 @@
 .pf-chatbot__version-history-split-panel {
   width: 400px;
   overflow: hidden;
-  border-inline-start: 1px solid var(--pf-t--global--border--color--default);
+  border-inline-start: var(--pf-t--global--border--width--default) solid var(--pf-t--global--border--color--default);
   background-color: var(--pf-t--global--background--color--primary--default);
 }
 
