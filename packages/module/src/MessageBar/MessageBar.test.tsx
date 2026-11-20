@@ -7,11 +7,29 @@ import {
   MenuSearchProps
 } from '@patternfly/react-core';
 import { RhUiAttentionBellIcon, RhUiCalendarIcon, RhUiClipboardIcon, RhUiCodeIcon } from '@patternfly/react-icons';
-import { render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import SourceDetailsMenuItem from '../SourceDetailsMenuItem';
 import { MessageBar } from './MessageBar';
+
+/**
+ * jsdom 20 doesn't implement contenteditable text insertion via Selection/Range,
+ * so userEvent.type doesn't work for contenteditable divs. This helper simulates
+ * typing by directly setting text content and dispatching an input event.
+ */
+const typeInContentEditable = (element: HTMLElement, text: string) => {
+  act(() => {
+    element.focus();
+    element.textContent = (element.textContent || '') + text;
+    fireEvent.input(element);
+  });
+};
+
+/** Simulate pressing Enter on a contenteditable element. */
+const pressEnter = (element: HTMLElement) => {
+  fireEvent.keyDown(element, { key: 'Enter', code: 'Enter' });
+};
 
 const ATTACH_MENU_ITEMS = [
   <DropdownList key="list-1">
@@ -73,6 +91,33 @@ const mockSpeechRecognition = () => {
   window.SpeechRecognition = MockSpeechRecognition as any;
 };
 
+// jsdom 20 doesn't implement contentEditable/isContentEditable.
+// Polyfill them so user-event can type into contenteditable elements.
+if (!('contentEditable' in HTMLElement.prototype)) {
+  Object.defineProperty(HTMLElement.prototype, 'contentEditable', {
+    get() {
+      return this.getAttribute('contenteditable') ?? 'inherit';
+    },
+    set(value: string) {
+      this.setAttribute('contenteditable', value);
+    }
+  });
+}
+if (!('isContentEditable' in HTMLElement.prototype)) {
+  Object.defineProperty(HTMLElement.prototype, 'isContentEditable', {
+    get() {
+      const val = this.contentEditable;
+      if (val === 'true' || val === 'plaintext-only' || val === '') {
+        return true;
+      }
+      if (val === 'false') {
+        return false;
+      }
+      return this.parentElement?.isContentEditable ?? false;
+    }
+  });
+}
+
 describe('Message bar', () => {
   afterAll(() => {
     window.SpeechRecognition = originalSpeechRecognition;
@@ -84,44 +129,44 @@ describe('Message bar', () => {
     expect(screen.queryByRole('button', { name: 'Use microphone' })).toBeFalsy();
     expect(screen.getByRole('textbox', { name: /Send a message.../i })).toBeTruthy();
   });
-  it('can send via enter key', async () => {
+  it('can send via enter key', () => {
     const spy = jest.fn();
     render(<MessageBar onSendMessage={spy} />);
     const input = screen.getByRole('textbox', { name: /Send a message.../i });
-    await userEvent.type(input, 'Hello world');
+    typeInContentEditable(input, 'Hello world');
     expect(input).toHaveTextContent('Hello world');
-    await userEvent.type(input, '[Enter]');
+    pressEnter(input);
     expect(spy).toHaveBeenCalledTimes(1);
   });
-  it('calls onChange callback appropriately', async () => {
+  it('calls onChange callback appropriately', () => {
     const spy = jest.fn();
     render(<MessageBar onSendMessage={jest.fn} onChange={spy} />);
     const input = screen.getByRole('textbox', { name: /Send a message.../i });
-    await userEvent.type(input, 'A');
+    typeInContentEditable(input, 'A');
     expect(input).toHaveTextContent('A');
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(expect.any(Object), 'A');
   });
-  it('can use specified placeholder text', async () => {
+  it('can use specified placeholder text', () => {
     render(<MessageBar onSendMessage={jest.fn} placeholder="test placeholder" />);
     const input = screen.getByRole('textbox', { name: /test placeholder/i });
-    await userEvent.type(input, 'Hello world');
+    typeInContentEditable(input, 'Hello world');
     expect(input).toHaveTextContent('Hello world');
   });
 
   // Send button
   // --------------------------------------------------------------------------
-  it('shows send button when text is input', async () => {
+  it('shows send button when text is input', () => {
     render(<MessageBar onSendMessage={jest.fn} />);
     const input = screen.getByRole('textbox', { name: /Send a message.../i });
-    await userEvent.type(input, 'Hello world');
+    typeInContentEditable(input, 'Hello world');
     expect(input).toHaveTextContent('Hello world');
     expect(screen.getByRole('button', { name: 'Send' })).toBeTruthy();
   });
-  it('can disable send button shown when text is input', async () => {
+  it('can disable send button shown when text is input', () => {
     render(<MessageBar onSendMessage={jest.fn} isSendButtonDisabled />);
     const input = screen.getByRole('textbox', { name: /Send a message.../i });
-    await userEvent.type(input, 'Hello world');
+    typeInContentEditable(input, 'Hello world');
     expect(input).toHaveTextContent('Hello world');
     expect(screen.getByRole('button', { name: 'Send' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Send' })).toBeDisabled();
@@ -130,7 +175,7 @@ describe('Message bar', () => {
     const spy = jest.fn();
     render(<MessageBar onSendMessage={spy} />);
     const input = screen.getByRole('textbox', { name: /Send a message.../i });
-    await userEvent.type(input, 'Hello world');
+    typeInContentEditable(input, 'Hello world');
     expect(input).toHaveTextContent('Hello world');
     const sendButton = screen.getByRole('button', { name: 'Send' });
     expect(sendButton).toBeTruthy();
@@ -147,7 +192,7 @@ describe('Message bar', () => {
     expect(screen.getByRole('button', { name: 'Send' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Send' })).toBeDisabled();
   });
-  it('can handle buttonProps tooltipContent  appropriately for send', async () => {
+  it('can handle buttonProps tooltipContent appropriately for send', async () => {
     render(
       <MessageBar onSendMessage={jest.fn} alwayShowSendButton buttonProps={{ send: { tooltipContent: 'Test' } }} />
     );
@@ -484,10 +529,10 @@ describe('Message bar', () => {
     expect(screen.getByRole('button', { name: 'Send' })).toBeTruthy();
     expect(screen.queryByRole('button', { name: 'Use microphone' })).toBeFalsy();
     expect(screen.getByRole('textbox', { name: /Send a message.../i })).toBeTruthy();
-    expect(screen.getByRole('textbox', { name: /Send a message.../i })).toHaveValue('test');
+    expect(screen.getByRole('textbox', { name: /Send a message.../i })).toHaveTextContent('test');
   });
   it('should focus textarea when using a custom ref', () => {
-    const ref = createRef<HTMLTextAreaElement>();
+    const ref = createRef<HTMLDivElement>();
     render(<MessageBar onSendMessage={jest.fn} innerRef={ref} />);
     ref.current?.focus();
     expect(document.activeElement).toBe(screen.getByRole('textbox'));

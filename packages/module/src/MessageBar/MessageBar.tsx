@@ -1,4 +1,4 @@
-import type { ChangeEvent, FunctionComponent, KeyboardEvent as ReactKeyboardEvent, Ref } from 'react';
+import type { FunctionComponent, KeyboardEvent as ReactKeyboardEvent, Ref } from 'react';
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { Accept, DropEvent, DropzoneOptions, FileError, FileRejection } from 'react-dropzone';
 import {
@@ -6,8 +6,6 @@ import {
   MenuSearchInputProps,
   MenuSearchProps,
   SearchInputProps,
-  TextArea,
-  TextAreaProps,
   TooltipProps
 } from '@patternfly/react-core';
 import { css } from '@patternfly/react-styles';
@@ -47,7 +45,7 @@ export interface MessageBarWithAttachMenuProps {
   searchInputProps?: SearchInputProps;
 }
 
-export interface MessageBarProps extends Omit<TextAreaProps, 'innerRef'> {
+export interface MessageBarProps {
   /** Callback to get the value of input message by user */
   onSendMessage: (message: string | number) => void;
   /** Class Name for the MessageBar component */
@@ -108,21 +106,34 @@ export interface MessageBarProps extends Omit<TextAreaProps, 'innerRef'> {
       tooltipProps?: Omit<TooltipProps, 'content'>;
     };
   };
-  /** A callback for when the text area value changes. */
-  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>, value: string | number) => void;
+  /** A callback for when the input value changes. */
+  onChange?: (event: React.FormEvent<HTMLDivElement> | null, value: string) => void;
   /** Display mode of chatbot, if you want to message bar to resize when the display mode changes */
   displayMode?: ChatbotDisplayMode;
   /** Whether message bar is compact */
   isCompact?: boolean;
-  /** Ref applied to message bar textarea, for use with focus or other custom behaviors  */
-  innerRef?: React.Ref<HTMLTextAreaElement>;
+  /** Ref applied to message bar input, for use with focus or other custom behaviors  */
+  innerRef?: React.Ref<HTMLDivElement>;
   /** Sets background color to primary */
   isPrimary?: boolean;
   /** Additional actions to render for the message bar. This will force a multiline layout, and the actions will render at the start of the container.  */
   additionalActions?: React.ReactNode;
   /** Flag indicating whether a multiline layout for the message input and actions should be forced. This can be used to always render actions below the message input. */
   forceMultilineLayout?: boolean;
+  /** Controlled value of the message input */
+  value?: string | number;
+  /** When true, allows styled inline elements within the input (e.g., for mention or tag systems). Uses contenteditable="true" instead of "plaintext-only". */
+  allowInlineElements?: boolean;
+  /** Additional onKeyDown handler that runs before the internal handler. Call event.preventDefault() to suppress the default send-on-Enter behavior. */
+  onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
 }
+
+/** Extract plain text from a contenteditable element, normalizing the trailing <br> browsers leave in empty divs.
+ *  Falls back to textContent for environments that don't implement innerText (jsdom). */
+const getText = (el: HTMLElement): string => {
+  const text = el.innerText ?? el.textContent ?? '';
+  return text === '\n' ? '' : text;
+};
 
 export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
   onSendMessage,
@@ -156,189 +167,116 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
   isPrimary,
   additionalActions,
   forceMultilineLayout = false,
-  ...props
+  allowInlineElements,
+  onKeyDown
 }: MessageBarProps) => {
   // Text Input
   // --------------------------------------------------------------------------
-  const [message, setMessage] = useState<string | number>(value ?? '');
+  const [message, setMessage] = useState<string>('');
   const [isListeningMessage, setIsListeningMessage] = useState<boolean>(false);
-  const [hasSentMessage, setHasSentMessage] = useState(false);
   const [isComposing, setIsComposing] = useState(false);
 
   const shouldForceMultiline = forceMultilineLayout || additionalActions;
   const [isMultiline, setIsMultiline] = useState(shouldForceMultiline);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
-  const textareaRef = (innerRef as React.RefObject<HTMLTextAreaElement>) ?? inputRef;
+  const inputRef = useRef<HTMLDivElement>(null);
+  const resolvedRef = (innerRef as React.RefObject<HTMLDivElement>) ?? inputRef;
   const attachButtonRef = useRef<HTMLButtonElement>(null);
 
-  const topMargin = '1rem';
+  // Sync controlled value from parent — only touch the DOM when the
+  // value actually diverges from what the user typed.
+  useEffect(() => {
+    if (value !== undefined) {
+      const stringValue = String(value);
+      setMessage(stringValue);
+      if (resolvedRef.current && getText(resolvedRef.current) !== stringValue) {
+        resolvedRef.current.textContent = stringValue;
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
+  // Layout: detect multiline state and adjust flex-basis so buttons
+  // wrap below the input when text exceeds two lines.
+  const updateLayout = useCallback(() => {
+    const field = resolvedRef.current;
+    if (!field) {
+      return;
+    }
+    const inputWrapper = field.parentElement;
+    if (!inputWrapper) {
+      return;
+    }
+
+    const isEmpty = !getText(field);
+
+    if (isEmpty) {
+      inputWrapper.style.setProperty('flex-basis', shouldForceMultiline ? '100%' : 'auto');
+      if (!shouldForceMultiline) {
+        setIsMultiline(false);
+      }
+    } else {
+      const lineHeight = parseFloat(window.getComputedStyle(field).lineHeight) || 24;
+      const lines = field.scrollHeight / lineHeight;
+      inputWrapper.style.setProperty('flex-basis', lines > 2 || shouldForceMultiline ? '100%' : 'auto');
+
+      if (!shouldForceMultiline) {
+        const bar = inputWrapper.parentElement;
+        if (bar) {
+          const threshold = isCompact ? 56 : 70;
+          setIsMultiline(bar.offsetHeight > threshold);
+        }
+      }
+    }
+  }, [shouldForceMultiline, isCompact]);
 
   useEffect(() => {
-    if (value !== undefined && value !== message) {
-      setMessage(value);
-    }
-  }, [value, message]);
+    updateLayout();
+  }, [message, displayMode, updateLayout]);
 
-  const setInitialLineHeight = (field: HTMLTextAreaElement) => {
-    field.style.setProperty('line-height', '1rem');
-    const parent = field.parentElement;
-    if (parent) {
-      parent.style.setProperty('margin-top', topMargin);
-      parent.style.setProperty('margin-bottom', `0rem`);
-      parent.style.setProperty('height', 'inherit');
+  useEffect(() => {
+    window.addEventListener('resize', updateLayout);
+    return () => window.removeEventListener('resize', updateLayout);
+  }, [updateLayout]);
 
-      const grandparent = parent.parentElement;
-      if (grandparent) {
-        grandparent.style.setProperty('flex-basis', shouldForceMultiline ? '100%' : 'auto');
-      }
-    }
-  };
-
-  const setAutoHeight = (field: HTMLTextAreaElement) => {
-    const parent = field.parentElement;
-    if (parent) {
-      parent.style.setProperty('height', 'inherit');
-      const computed = window.getComputedStyle(field);
-      // Calculate the height
-      const height =
-        parseInt(computed.getPropertyValue('border-top-width')) +
-        parseInt(computed.getPropertyValue('padding-top')) +
-        field.scrollHeight +
-        parseInt(computed.getPropertyValue('padding-bottom')) +
-        parseInt(computed.getPropertyValue('border-bottom-width'));
-      parent.style.setProperty('height', `${height}px`);
-
-      if (height > 32 || window.innerWidth <= 507) {
-        parent.style.setProperty('margin-bottom', topMargin);
-        parent.style.setProperty('margin-top', topMargin);
-      }
-    }
-  };
-
-  const textIsLongerThan2Lines = (field: HTMLTextAreaElement) => {
-    const lineHeight = parseFloat(window.getComputedStyle(field).lineHeight);
-    const lines = field.scrollHeight / lineHeight;
-    return lines > 2;
-  };
-
-  const checkIfMultiline = useCallback(
-    (field: HTMLTextAreaElement) => {
-      const parent = field.parentElement;
-      const grandparent = parent?.parentElement;
-      if (grandparent) {
-        const containerHeight = grandparent.offsetHeight;
-        const threshold = isCompact ? 56 : 70;
-        setIsMultiline(containerHeight > threshold);
-      }
+  // Input handler — reads directly from the DOM so React never fights
+  // the browser's own text mutations.
+  const handleInput = useCallback(
+    (event: React.FormEvent<HTMLDivElement>) => {
+      const text = getText(event.currentTarget);
+      setMessage(text);
+      onChange && onChange(event, text);
     },
-    [isCompact]
+    [onChange]
   );
 
-  const setAutoWidth = useCallback((field: HTMLTextAreaElement) => {
-    const parent = field.parentElement;
-    if (parent) {
-      const grandparent = parent.parentElement;
-      if ((textIsLongerThan2Lines(field) || shouldForceMultiline) && grandparent) {
-        grandparent.style.setProperty('flex-basis', `100%`);
-      }
-    }
+  // Paste handler — enforce plain text to prevent XSS and messy
+  // markup from external sources. contenteditable="plaintext-only"
+  // handles this natively in modern browsers, but this is a safety net.
+  const handlePaste = useCallback((event: React.ClipboardEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const text = event.clipboardData.getData('text/plain');
+    // execCommand preserves the browser's native undo stack
+    document.execCommand('insertText', false, text);
   }, []);
 
-  const handleNewLine = (field: HTMLTextAreaElement) => {
-    const parent = field.parentElement;
-    if (parent) {
-      parent.style.setProperty('margin-bottom', topMargin);
-      parent.style.setProperty('margin-top', topMargin);
-    }
-  };
-
-  useEffect(() => {
-    const field = textareaRef.current;
-    if (field) {
-      if (field.value === '') {
-        if (window.innerWidth > 507) {
-          setInitialLineHeight(field);
-        }
-      } else {
-        setAutoHeight(field);
-        setAutoWidth(field);
-      }
-    }
-    const resetHeight = () => {
-      if (field) {
-        if (field.value === '') {
-          if (window.innerWidth > 507) {
-            setInitialLineHeight(field);
-          }
-        } else {
-          setAutoHeight(field);
-          setAutoWidth(field);
-        }
-      }
-    };
-    window.addEventListener('resize', resetHeight);
-
-    return () => {
-      window.removeEventListener('resize', resetHeight);
-    };
-  }, [setAutoWidth]);
-
-  useEffect(() => {
-    const field = textareaRef.current;
-    if (field) {
-      if (field.value === '') {
-        setInitialLineHeight(field);
-        !shouldForceMultiline && setIsMultiline(false);
-      } else {
-        setAutoHeight(field);
-        setAutoWidth(field);
-        !shouldForceMultiline && checkIfMultiline(field);
-      }
-    }
-  }, [displayMode, message, setAutoWidth, shouldForceMultiline, checkIfMultiline]);
-
-  useEffect(() => {
-    const field = textareaRef.current;
-    if (field) {
-      setInitialLineHeight(field);
-      setHasSentMessage(false);
-    }
-  }, [hasSentMessage]);
-
-  const handleChange = useCallback(
-    (event) => {
-      onChange && onChange(event, event.target.value);
-      if (textareaRef.current) {
-        if (event.target.value === '') {
-          setInitialLineHeight(textareaRef.current);
-          !shouldForceMultiline && setIsMultiline(false);
-        } else {
-          setAutoHeight(textareaRef.current);
-          !shouldForceMultiline && checkIfMultiline(textareaRef.current);
-        }
-      }
-      setMessage(event.target.value);
-    },
-    [onChange, checkIfMultiline]
-  );
-
-  // Handle sending message
   const handleSend = useCallback(
-    (newMessage: string | number) => {
+    (newMessage: string) => {
       onSendMessage(newMessage);
-      setHasSentMessage(true);
       setMessage('');
+      if (resolvedRef.current) {
+        resolvedRef.current.textContent = '';
+      }
     },
     [onSendMessage]
   );
 
   const handleKeyDown = useCallback(
-    (event: ReactKeyboardEvent) => {
-      // Japanese and other languages may use IME for character input.
-      // In these cases, enter is used to select the final input, so we need to check for composition end instead.
-      // See more info at https://www.stum.de/2016/06/24/handling-ime-events-in-javascript/
-      // Chrome, Edge, and Firefox seem to work well with just the compose event.
-      // Safari is a little bit special. We need to handle 229 as well in this case.
+    (event: ReactKeyboardEvent<HTMLDivElement>) => {
+      onKeyDown?.(event);
+      if (event.defaultPrevented) {
+        return;
+      }
+
       const nativeEvent = event.nativeEvent as KeyboardEvent;
       const isCompositionKey = nativeEvent.which === 229;
       const isCurrentlyComposing = isComposing || isCompositionKey;
@@ -349,13 +287,9 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
           handleSend(message);
         }
       }
-      if (event.key === 'Enter' && !isCurrentlyComposing && event.shiftKey) {
-        if (textareaRef.current) {
-          handleNewLine(textareaRef.current);
-        }
-      }
+      // Shift+Enter naturally inserts a newline in contenteditable — no special handling needed.
     },
-    [isSendButtonDisabled, hasStopButton, handleSend, message, isComposing]
+    [onKeyDown, isSendButtonDisabled, hasStopButton, handleSend, message, isComposing]
   );
 
   const handleCompositionStart = useCallback(() => {
@@ -371,10 +305,17 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
     attachMenuProps?.onAttachMenuToggleClick?.();
   };
 
-  const handleSpeechRecognition = (message) => {
-    setMessage(message);
-    onChange && onChange({} as ChangeEvent<HTMLTextAreaElement>, message);
-  };
+  const handleSpeechRecognition: React.Dispatch<React.SetStateAction<string>> = useCallback(
+    (action) => {
+      const msg = typeof action === 'function' ? action(message) : action;
+      setMessage(msg);
+      if (resolvedRef.current) {
+        resolvedRef.current.textContent = msg;
+      }
+      onChange && onChange(null, msg);
+    },
+    [message, onChange]
+  );
 
   const renderAttachButton = () => {
     if (!attachMenuProps && hasAttachButton) {
@@ -476,17 +417,19 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
         <div className="pf-chatbot__message-bar-actions test">{renderAttachButton()}</div>
       )}
       <div className={`pf-chatbot__message-bar-input ${isCompact ? 'pf-m-compact' : ''}`}>
-        <TextArea
-          className="pf-chatbot__message-textarea"
-          value={message}
-          onChange={handleChange}
+        <div
+          ref={resolvedRef}
+          className={css('pf-chatbot__message-textarea', !message && 'pf-m-empty')}
+          contentEditable={allowInlineElements ? true : 'plaintext-only'}
+          role="textbox"
+          aria-multiline="true"
           aria-label={isListeningMessage ? listeningText : placeholder}
-          placeholder={isListeningMessage ? listeningText : placeholder}
-          ref={textareaRef}
+          data-placeholder={isListeningMessage ? listeningText : placeholder}
+          onInput={handleInput}
           onKeyDown={handleKeyDown}
+          onPaste={handlePaste}
           onCompositionStart={handleCompositionStart}
           onCompositionEnd={handleCompositionEnd}
-          {...props}
         />
       </div>
       <div className={css('pf-chatbot__message-bar-actions', hasGroupedActions && 'pf-m-grouped')}>
@@ -546,7 +489,7 @@ export const MessageBarBase: FunctionComponent<MessageBarProps> = ({
   );
 };
 
-const MessageBar = forwardRef((props: MessageBarProps, ref: Ref<HTMLTextAreaElement>) => (
+const MessageBar = forwardRef((props: MessageBarProps, ref: Ref<HTMLDivElement>) => (
   <MessageBarBase innerRef={ref} {...props} />
 ));
 

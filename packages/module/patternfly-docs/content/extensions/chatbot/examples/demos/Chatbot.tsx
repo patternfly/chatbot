@@ -1,5 +1,16 @@
 import { useEffect, useRef, useState, FunctionComponent, MouseEvent } from 'react';
-import { Bullseye, Brand, DropdownList, DropdownItem, DropdownGroup, SkipToContent } from '@patternfly/react-core';
+import {
+  Bullseye,
+  Brand,
+  DropdownList,
+  DropdownItem,
+  DropdownGroup,
+  Menu,
+  MenuContent,
+  MenuList,
+  MenuItem,
+  SkipToContent
+} from '@patternfly/react-core';
 
 import ChatbotToggle from '@patternfly/chatbot/dist/dynamic/ChatbotToggle';
 import Chatbot, { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
@@ -152,6 +163,14 @@ const initialConversations = {
   ]
 };
 
+const TAG_RESOURCES = [
+  { name: 'auth-operator', type: 'Pod' },
+  { name: 'api-server', type: 'Service' },
+  { name: 'data-pipeline', type: 'Deployment' },
+  { name: 'ingress-controller', type: 'Ingress' },
+  { name: 'config-map', type: 'ConfigMap' }
+];
+
 const actionEvent2 = 'ActionEvent2';
 export const ChatbotDemo: FunctionComponent = () => {
   const [chatbotVisible, setChatbotVisible] = useState<boolean>(true);
@@ -168,6 +187,15 @@ export const ChatbotDemo: FunctionComponent = () => {
   const toggleRef = useRef<HTMLButtonElement>(null);
   const chatbotRef = useRef<HTMLDivElement>(null);
   const historyRef = useRef<HTMLButtonElement>(null);
+  const messageBarRef = useRef<HTMLDivElement>(null);
+
+  // Tag menu state
+  const [isTagMenuOpen, setIsTagMenuOpen] = useState(false);
+  const [tagFilter, setTagFilter] = useState('');
+  const [activeTagIndex, setActiveTagIndex] = useState(0);
+  const savedRangeRef = useRef<Range | null>(null);
+
+  const filteredResources = TAG_RESOURCES.filter((r) => r.name.toLowerCase().includes(tagFilter.toLowerCase()));
 
   // Auto-scrolls to the latest message
   useEffect(() => {
@@ -255,6 +283,138 @@ export const ChatbotDemo: FunctionComponent = () => {
       setIsSendButtonDisabled(false);
     }, 5000);
   };
+
+  // --- Tag / mention system ---------------------------------------------------
+  const handleMessageBarChange = (_event: React.FormEvent<HTMLDivElement> | null, _value: string) => {
+    const el = messageBarRef.current;
+    if (!el) {
+      return;
+    }
+
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) {
+      setIsTagMenuOpen(false);
+      return;
+    }
+
+    const range = sel.getRangeAt(0);
+    const container = range.startContainer;
+
+    if (container.nodeType === Node.TEXT_NODE) {
+      const text = container.textContent || '';
+      const offset = range.startOffset;
+      const before = text.slice(0, offset);
+      const hashIdx = before.lastIndexOf('#');
+
+      if (hashIdx >= 0) {
+        const filter = before.slice(hashIdx + 1);
+        if (!filter.includes(' ') && !filter.includes('\n')) {
+          savedRangeRef.current = range.cloneRange();
+          setIsTagMenuOpen(true);
+          setTagFilter(filter);
+          setActiveTagIndex(0);
+          return;
+        }
+      }
+    }
+
+    setIsTagMenuOpen(false);
+    setTagFilter('');
+  };
+
+  const insertTag = (resourceName: string) => {
+    const el = messageBarRef.current;
+    if (!el || !savedRangeRef.current) {
+      return;
+    }
+
+    el.focus();
+    const sel = window.getSelection();
+    if (!sel) {
+      return;
+    }
+    sel.removeAllRanges();
+    sel.addRange(savedRangeRef.current);
+
+    const range = sel.getRangeAt(0);
+    const container = range.startContainer;
+    if (container.nodeType !== Node.TEXT_NODE) {
+      return;
+    }
+
+    const text = container.textContent || '';
+    const offset = range.startOffset;
+    const before = text.slice(0, offset);
+    const hashIdx = before.lastIndexOf('#');
+    if (hashIdx < 0) {
+      return;
+    }
+
+    // Remove the #filter text the user typed
+    const deleteRange = document.createRange();
+    deleteRange.setStart(container, hashIdx);
+    deleteRange.setEnd(container, offset);
+    deleteRange.deleteContents();
+
+    // Split the text node so we can insert the styled span between halves
+    const textNode = container as Text;
+    const afterNode = textNode.splitText(hashIdx);
+
+    // Build the tag element
+    const span = document.createElement('span');
+    span.className = 'pf-chatbot__message-tag';
+    span.contentEditable = 'false';
+    span.textContent = `#${resourceName}`;
+
+    const space = document.createTextNode(' ');
+    const parent = textNode.parentNode;
+    if (!parent) {
+      return;
+    }
+    parent.insertBefore(span, afterNode);
+    parent.insertBefore(space, afterNode);
+
+    // Place the cursor after the trailing space
+    const newRange = document.createRange();
+    newRange.setStartAfter(space);
+    newRange.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(newRange);
+
+    savedRangeRef.current = null;
+    setIsTagMenuOpen(false);
+    setTagFilter('');
+
+    // Let the MessageBar know the content changed
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  };
+
+  const handleTagKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!isTagMenuOpen || filteredResources.length === 0) {
+      return;
+    }
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        setActiveTagIndex((prev) => Math.min(prev + 1, filteredResources.length - 1));
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        setActiveTagIndex((prev) => Math.max(prev - 1, 0));
+        break;
+      case 'Enter':
+        event.preventDefault();
+        insertTag(filteredResources[activeTagIndex].name);
+        break;
+      case 'Escape':
+        event.preventDefault();
+        setIsTagMenuOpen(false);
+        setTagFilter('');
+        break;
+    }
+  };
+  // --- end tag system --------------------------------------------------------
 
   const findMatchingItems = (targetValue: string) => {
     let filteredConversations = Object.entries(initialConversations).reduce((acc, [key, items]) => {
@@ -444,11 +604,50 @@ export const ChatbotDemo: FunctionComponent = () => {
                 </MessageBox>
               </ChatbotContent>
               <ChatbotFooter>
-                <MessageBar
-                  onSendMessage={handleSend}
-                  hasMicrophoneButton
-                  isSendButtonDisabled={isSendButtonDisabled}
-                />
+                <div style={{ position: 'relative' }}>
+                  {isTagMenuOpen && filteredResources.length > 0 && (
+                    <div
+                      onMouseDown={(e) => e.preventDefault()}
+                      style={{
+                        position: 'absolute',
+                        bottom: '100%',
+                        left: 0,
+                        right: 0,
+                        marginBottom: '4px',
+                        zIndex: 1000
+                      }}
+                    >
+                      <Menu activeItemId={filteredResources[activeTagIndex]?.name}>
+                        <MenuContent>
+                          <MenuList>
+                            {filteredResources.map((resource, index) => (
+                              <MenuItem
+                                key={resource.name}
+                                itemId={resource.name}
+                                className={index === activeTagIndex ? 'pf-m-focus' : undefined}
+                                onClick={() => insertTag(resource.name)}
+                              >
+                                {resource.name}{' '}
+                                <span style={{ opacity: 0.6, marginLeft: '4px', fontSize: '0.85em' }}>
+                                  {resource.type}
+                                </span>
+                              </MenuItem>
+                            ))}
+                          </MenuList>
+                        </MenuContent>
+                      </Menu>
+                    </div>
+                  )}
+                  <MessageBar
+                    ref={messageBarRef}
+                    onSendMessage={handleSend}
+                    hasMicrophoneButton
+                    isSendButtonDisabled={isSendButtonDisabled}
+                    allowInlineElements
+                    onChange={handleMessageBarChange}
+                    onKeyDown={handleTagKeyDown}
+                  />
+                </div>
                 <ChatbotFootnote {...footnoteProps} />
               </ChatbotFooter>
             </>
