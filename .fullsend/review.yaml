@@ -1,7 +1,7 @@
 # Harness overlay for the review agent.
-# Base: fullsend-ai/agents v0.52.0 (matches the repo's fullsend workflow pin).
+# Base: fullsend-ai/agents v0.57.1 (matches the repo's fullsend workflow pin).
 # Per-key merge: unset keys inherit from the base harness (ADR 0045/0055).
-base: https://raw.githubusercontent.com/fullsend-ai/agents/f9908adce062d7e0a37635aac4b6c889835476cc/harness/review.yaml#sha256=f59b05ff7df3e8d009a6b6cf385057cd6b247e42e1fbf52f488d579a674f79d7
+base: https://raw.githubusercontent.com/fullsend-ai/agents/ea29de9bb8b1729b04c0597b48a5c7aae62deb71/harness/review.yaml#sha256=c31ab2ff59b288ad1b8e3755751549c00c1606649cdb239bbbe5df58ba6f3112
 
 forge:
   github:
